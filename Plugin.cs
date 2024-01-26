@@ -14,12 +14,14 @@ using UnityEngine.UIElements;
 
 namespace NikoArchipelago
 {
-
-
-    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
     [BepInProcess("Here Comes Niko!.exe")]
     public class Plugin : BaseUnityPlugin
     {
+        public const string PLUGIN_GUID = "NikoArchipelago";
+        public const string PLUGIN_NAME = "NikoArchipelago";
+        public const string PLUGIN_VERSION = "0.0.1";
+        
         public Notification test;
         public static CustomButton AptestButton;
         private List<string> _saveDataCoinFlag, _saveDataCassetteFlag, _saveDataFishFlag, _saveDataMiscFlag, _saveDataLetterFlag, _saveDataGeneralFlag;
@@ -27,10 +29,11 @@ namespace NikoArchipelago
         private int _nFlg1, _nFlg2, _nFlg3, _nFlg4, _nFlg5, _nFlg6, _coinTotal, _coinOld, _levelIndex, _currentLevel, _currentTemp;
         private Notification _newFlag = new ();
         private Notification _note = ScriptableObject.CreateInstance<Notification>();
+        
         private void Awake()
         {
             // Plugin startup logic
-            Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Logger.LogInfo($"Hey, Niko here! btw Plugin {PLUGIN_NAME} Loaded! :)");
         }
 
 
