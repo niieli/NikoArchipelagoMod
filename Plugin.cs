@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Archipelago.MultiClient.Net;
 using BepInEx;
 using HarmonyLib;
 using HarmonyLib.Tools;
 using KinematicCharacterController.Core;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
+using UnityEngine.PlayerLoop;
 
 namespace NikoArchipelago
 {
@@ -18,15 +14,27 @@ namespace NikoArchipelago
     [BepInProcess("Here Comes Niko!.exe")]
     public class Plugin : BaseUnityPlugin
     {
-        public const string PLUGIN_GUID = "NikoArchipelago";
-        public const string PLUGIN_NAME = "NikoArchipelago";
-        public const string PLUGIN_VERSION = "0.0.1";
+        /*
+         * Goal for 0.1.0 - Have checks working (Sending & Receiving)
+         * 
+         * # UI - Not sure how to make it look nice, preferably use the in-game ui
+         *  to create a server button to join an archipelago session + create a new save file for it (likely upon pressing start)
+         *
+         * #Find a way to use the in-game Notification system to show item received and send
+         *  with the AP logo preferably and no noise/voice
+         *
+         * #Flags are documented on the spreadsheet + Handsome Frog checks are addable 
+         */
+        
+        private const string PLUGIN_GUID = "NikoArchipelago";
+        private const string PLUGIN_NAME = "NikoArchipelago";
+        private const string PLUGIN_VERSION = "0.0.0";
         
         public Notification test;
         public static CustomButton AptestButton;
         private List<string> _saveDataCoinFlag, _saveDataCassetteFlag, _saveDataFishFlag, _saveDataMiscFlag, _saveDataLetterFlag, _saveDataGeneralFlag;
         private List<bool> _unlockedLevels;
-        private int _nFlg1, _nFlg2, _nFlg3, _nFlg4, _nFlg5, _nFlg6, _coinTotal, _coinOld, _levelIndex, _currentLevel, _currentTemp;
+        private int _coinFlg, _cassetteFlg, _fishFlg, _miscFlg, _letterFlg, _generalFlg, _coinTotal, _coinOld, _levelIndex;
         private Notification _newFlag = new ();
         private Notification _note = ScriptableObject.CreateInstance<Notification>();
         
@@ -46,7 +54,7 @@ namespace NikoArchipelago
         {
             //
         }
-
+        
         public void Update()
         {
             //scrGameSaveManager.instance.SaveGame();
@@ -58,7 +66,17 @@ namespace NikoArchipelago
             Flags();
         }
         
-        
+        [HarmonyPatch(typeof(MainMenu))]
+        [HarmonyPatch("Start")]
+        internal class MainMenu
+        {
+            [HarmonyPostfix]
+            public static void CreateUI()
+            {
+                var guiGameobject = new GameObject();
+                GameObject.DontDestroyOnLoad(guiGameobject);
+            }
+        }
         
         public void Flags()
         {
@@ -71,65 +89,64 @@ namespace NikoArchipelago
             _saveDataGeneralFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
             _unlockedLevels = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels;
             _coinTotal = scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal;
-            _currentLevel = scrWorldSaveDataContainer.instance.worldIndex;
-            if (_saveDataCoinFlag.Count > _nFlg1) // Check if a new flag has been added
+            if (_saveDataCoinFlag.Count > _coinFlg) // Check if a new flag has been added
             {
-                Logger.LogFatal("New Coin Flag! '" + _saveDataCoinFlag[_nFlg1] + "'");
-                _nFlg1++;
+                Logger.LogFatal("New Coin Flag! '" + _saveDataCoinFlag[_coinFlg] + "'");
+                _coinFlg++;
             }
-            else if (_nFlg1 > _saveDataCoinFlag.Count) // Probably not needed, but just in case of a level transition
+            else if (_coinFlg > _saveDataCoinFlag.Count) // Probably not needed, but just in case of a level transition
             {
-                _nFlg1 = 0;
-            }
-
-            if (_saveDataCassetteFlag.Count > _nFlg2) // Check if a new flag has been added
-            {
-                Logger.LogFatal("New Cassette Flag! '" + _saveDataCassetteFlag[_nFlg2] + "'");
-                _nFlg2++;
-            }
-            else if (_nFlg2 > _saveDataCassetteFlag.Count) // Probably not needed, but just in case of a level transition
-            {
-                _nFlg2 = 0;
+                _coinFlg = 0;
             }
 
-            if (_saveDataFishFlag.Count > _nFlg3) // Check if a new flag has been added
+            if (_saveDataCassetteFlag.Count > _cassetteFlg) // Check if a new flag has been added
             {
-                Logger.LogFatal("New Fish Flag! '" + _saveDataFishFlag[_nFlg3] + "'");
-                _nFlg3++;
+                Logger.LogFatal("New Cassette Flag! '" + _saveDataCassetteFlag[_cassetteFlg] + "'");
+                _cassetteFlg++;
             }
-            else if (_nFlg3 > _saveDataFishFlag.Count) // Probably not needed, but just in case of a level transition
+            else if (_cassetteFlg > _saveDataCassetteFlag.Count) // Probably not needed, but just in case of a level transition
             {
-                _nFlg3 = 0;
-            }
-
-            if (_saveDataMiscFlag.Count > _nFlg4) // Check if a new flag has been added
-            {
-                Logger.LogFatal("New Misc Flag! '" + _saveDataMiscFlag[_nFlg4] + "'");
-                _nFlg4++;
-            }
-            else if (_nFlg4 > _saveDataMiscFlag.Count) // Probably not needed, but just in case of a level transition
-            {
-                _nFlg4 = 0;
+                _cassetteFlg = 0;
             }
 
-            if (_saveDataLetterFlag.Count > _nFlg5) // Check if a new flag has been added
+            if (_saveDataFishFlag.Count > _fishFlg) // Check if a new flag has been added
             {
-                Logger.LogFatal("New Letter Flag! '" + _saveDataLetterFlag[_nFlg5] + "'");
-                _nFlg5++;
+                Logger.LogFatal("New Fish Flag! '" + _saveDataFishFlag[_fishFlg] + "'");
+                _fishFlg++;
             }
-            else if (_nFlg5 > _saveDataLetterFlag.Count) // Probably not needed, but just in case of a level transition
+            else if (_fishFlg > _saveDataFishFlag.Count) // Probably not needed, but just in case of a level transition
             {
-                _nFlg5 = 0;
+                _fishFlg = 0;
+            }
+
+            if (_saveDataMiscFlag.Count > _miscFlg) // Check if a new flag has been added
+            {
+                Logger.LogFatal("New Misc Flag! '" + _saveDataMiscFlag[_miscFlg] + "'");
+                _miscFlg++;
+            }
+            else if (_miscFlg > _saveDataMiscFlag.Count) // Probably not needed, but just in case of a level transition
+            {
+                _miscFlg = 0;
+            }
+
+            if (_saveDataLetterFlag.Count > _letterFlg) // Check if a new flag has been added
+            {
+                Logger.LogFatal("New Letter Flag! '" + _saveDataLetterFlag[_letterFlg] + "'");
+                _letterFlg++;
+            }
+            else if (_letterFlg > _saveDataLetterFlag.Count) // Probably not needed, but just in case of a level transition
+            {
+                _letterFlg = 0;
             }
             
-            if (_saveDataGeneralFlag.Count > _nFlg6) // Check if a new flag has been added
+            if (_saveDataGeneralFlag.Count > _generalFlg) // Check if a new flag has been added
             {
-                Logger.LogFatal("New General Flag! '" + _saveDataGeneralFlag[_nFlg6] + "'");
-                _nFlg6++;
+                Logger.LogFatal("New General Flag! '" + _saveDataGeneralFlag[_generalFlg] + "'");
+                _generalFlg++;
             }
-            else if (_nFlg6 > _saveDataGeneralFlag.Count) // Probably not needed, but just in case of a level transition
+            else if (_generalFlg > _saveDataGeneralFlag.Count) // Probably not needed, but just in case of a level transition
             {
-                _nFlg6 = 0;
+                _generalFlg = 0;
             }
 
             if (_unlockedLevels.Count > _levelIndex)
@@ -143,12 +160,6 @@ namespace NikoArchipelago
                 Logger.LogWarning("Total Coin Count = " + _coinTotal);
                 _coinOld++;
             }
-
-            if (_currentTemp == _currentLevel)
-            {
-                Logger.LogInfo("Current Level Index: '" + _currentLevel + "'");
-                _currentTemp = _currentLevel;
-            }
         }
 
         public void StuffX()
@@ -156,14 +167,21 @@ namespace NikoArchipelago
             scrTrainManager.instance.UseTrain(1,false);
         }
 
+        public TextMesh TextMesh;
         public void NewItem()
         {
             _newFlag.key = "pls work man i have kids and wife";
             _newFlag.name = "Help";
             _newFlag.duration = 5f;
-            scrNotificationDisplayer.instance.AddNotification(_newFlag);
+            //scrNotificationDisplayer.instance.AddNotification(_newFlag);
             _note.key = "This is a new note by nieli";
-            scrNotificationDisplayer.instance.AddNotification(_note);
+            _note.name = "Testing AP";
+            _note.avatar = Sprite.Create(Texture2D.blackTexture, new Rect(), Vector2.down);
+            test = _note;
+            Logger.LogError(test);
+            Logger.LogError(test.name);
+            Logger.LogError(test.key);
+            scrNotificationDisplayer.instance.AddNotification(test);
         }
 
         public void SoundFix()
@@ -172,7 +190,7 @@ namespace NikoArchipelago
         }
         
         // Apply Harmony patches (?)
-        public static void LoadPatches()
+        private static void LoadPatches()
         {
             HarmonyFileLog.Enabled = true;
             var harmony = new Harmony("apniko");
@@ -181,7 +199,7 @@ namespace NikoArchipelago
         
         public Rect windowRect = new Rect(600, 500, 400, 200);
 
-        void WindoFunc(int windowID)
+        void WindowFunc(int windowID)
         {
             GUI.color = Color.yellow;
             if (GUI.Button(new Rect(10, 20, 100, 20), "Current Flags"))
@@ -215,7 +233,6 @@ namespace NikoArchipelago
             GUI.color = Color.white;
             if (GUI.Button(new Rect(120, 50, 100, 20), "Add Flag"))
             {
-                var temp = _currentLevel;
                 var pls = scrGameSaveManager.instance.gameData.worldsData; // Enthält alle welten/level
                 for (int i = 0; i < pls.Count; i++)
                 {
@@ -251,26 +268,24 @@ namespace NikoArchipelago
                 }
                 Logger.LogFatal("Current Level: " + scrTrainManager.instance.currentLevel);
             }
+            if (GUI.Button(new Rect(230, 20, 100, 20), "TP to 1"))
+            {
+                scrTrainManager.instance.UseTrain(1, false);
+            }
+            if (GUI.Button(new Rect(230, 50, 100, 20), "TP to 2"))
+            {
+                scrTrainManager.instance.UseTrain(2, false);
+            }
+            if (GUI.Button(new Rect(230, 80, 100, 20), "TP to 3"))
+            {
+                scrTrainManager.instance.UseTrain(3, false);
+            }
             GUI.DragWindow(new Rect(0, 0, 10000, 10000));
         }
         
         public void OnGUI()
         {
-            windowRect = GUI.Window(0, windowRect, WindoFunc, "DEBUG");
-            
-            float test = 0.0f;
-            test = GUI.HorizontalSlider(new Rect(20, 20, 100, 20), test, 0.0f, 15.0f);
-            if (GUI.Button(new Rect(20, 50, 100, 20), "Load Area"))
-            {
-                scrTrainManager.instance.UseTrain((int)test, false);
-            }
-            /*
-             * #Not sure how to make it look nice, preferably use the in-game ui
-             *  to create a server button to join an archipelago session + create a new savefile for it
-             *
-             * #Find a way to use the in-game Notification system to show item received and send
-             *  with the AP logo preferably and no noise/voice
-             */
+            windowRect = GUI.Window(0, windowRect, WindowFunc, "DEBUG");
             // GUI.Label(new Rect(10, 10, 200, 20), "Hello, IMGUI!");
             // if (GUI.Button(new Rect(10, 40, 100, 20), "+1 Coin"))
             // {
@@ -297,10 +312,10 @@ namespace NikoArchipelago
     { 
         public CustomButton apTestButton;
         [HarmonyPostfix]
-        public void Menu(MainMenu __instance)
+        public void Menu(MainMenu instance)
         {
-            __instance.OptionsButton.DefaultColor.g=4F;
-            var apButton = this.apTestButton;
+            instance.OptionsButton.DefaultColor.g=4F;
+            var apButton = apTestButton;
             if (apButton != null)
             {
                 apButton.OnClickFinished.AddListener(new UnityAction(MainMenu.Instance.OnExitButtonPressed));
