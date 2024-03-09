@@ -19,7 +19,7 @@ public class ArchipelagoClient
     private bool attemptingConnection;
 
     public static ArchipelagoData ServerData = new();
-    //private DeathLinkHandler DeathLinkHandler;
+    private DeathLinkHandler DeathLinkHandler;
     private ArchipelagoSession session;
 
     /// <summary>
@@ -95,7 +95,7 @@ public class ArchipelagoClient
             ServerData.SetupSession(success.SlotData, session.RoomState.Seed);
             Authenticated = true;
 
-            //DeathLinkHandler = new(session.CreateDeathLinkService(), ServerData.SlotName);
+            DeathLinkHandler = new(session.CreateDeathLinkService(), ServerData.SlotName);
 #if NET35
             session.Locations.CompleteLocationChecksAsync(null, ServerData.CheckedLocations.ToArray());
 #else
