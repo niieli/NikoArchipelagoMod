@@ -33,9 +33,6 @@
     <Reference Include="BepInEx.Harmony">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\BepInEx\core\BepInEx.Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="DearImGuiInjection">
-      <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\BepInEx\core\DearImGuiInjection.dll</HintPath>
-    </Reference>
     <Reference Include="MonoMod">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\BepInEx\core\MonoMod.dll</HintPath>
     </Reference>

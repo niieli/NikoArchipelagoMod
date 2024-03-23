@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using HarmonyLib.Tools;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using Unity.Baselib.LowLevel;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.PlayerLoop;
+
 
 namespace NikoArchipelago
 {
@@ -36,6 +39,7 @@ namespace NikoArchipelago
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
         public static ManualLogSource BepinLogger;
         public static ArchipelagoClient ArchipelagoClient;
+        private string SaveName;
         
         public Notification test;
         public static CustomButton AptestButton;
@@ -52,40 +56,37 @@ namespace NikoArchipelago
             ArchipelagoConsole.Awake();
             // Plugin startup logic
             Logger.LogInfo($"Hey, Niko here! btw Plugin {PLUGIN_NAME} Loaded! :)");
+            SaveName = ArchipelagoClient.ServerData.SlotName;
         }
 
 
         public void Load()
         {
-            LoadPatches();
+            //LoadPatches();
         }
 
         public void Start()
         {
-            //
+            
         }
-        
         public void Update()
         {
             //scrGameSaveManager.instance.SaveGame();
-            if (!string.Equals(scrGameSaveManager.saveName, "NieDebug2024Save", StringComparison.Ordinal))
+            // if (!string.Equals(scrGameSaveManager.saveName, "NieDebug2024Save", StringComparison.Ordinal))
+            // {
+            //     // scrGameSaveManager.saveName = "APLogicSave";
+            //     //scrGameSaveManager.saveName = "NieDebug2024Save";
+            // }
+            SaveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri; //Savefile is the same as SlotName & ServerPort
+            if (scrGameSaveManager.saveName != SaveName && ArchipelagoClient.Authenticated)
             {
-                // scrGameSaveManager.saveName = "APLogicSave";
-                scrGameSaveManager.saveName = "NieDebug2024Save";
+                scrGameSaveManager.saveName = SaveName;
+                scrGameSaveManager.dataPath = Path.Combine(Application.persistentDataPath, SaveName + ".json");
+                scrGameSaveManager.instance.SaveGame();
+                scrGameSaveManager.instance.LoadGame();
+                scrTrainManager.instance.UseTrain(2, false);
             }
             Flags();
-        }
-        
-        [HarmonyPatch(typeof(MainMenu))]
-        [HarmonyPatch("Start")]
-        internal class MainMenu
-        {
-            [HarmonyPostfix]
-            public static void CreateUI()
-            {
-                var guiGameobject = new GameObject();
-                GameObject.DontDestroyOnLoad(guiGameobject);
-            }
         }
         
         public void Flags()
@@ -304,7 +305,7 @@ namespace NikoArchipelago
             if (ArchipelagoClient.Authenticated)
             {
                 // if your game doesn't usually show the cursor this line may be necessary
-                // Cursor.visible = false;
+                //Cursor.visible = false;
 
                 statusMessage = " Status: Connected";
                 GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
@@ -312,7 +313,7 @@ namespace NikoArchipelago
             else
             {
                 // if your game doesn't usually show the cursor this line may be necessary
-                // Cursor.visible = true;
+                //Cursor.visible = true;
 
                 statusMessage = " Status: Disconnected";
                 GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
