@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using BepInEx;
 using BepInEx.Logging;
-using HarmonyLib;
-using HarmonyLib.Tools;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
-using Unity.Baselib.LowLevel;
 using UnityEngine;
 using UnityEngine.Events;
-
 
 namespace NikoArchipelago
 {
@@ -22,7 +16,7 @@ namespace NikoArchipelago
         /*
          * Goal for 0.1.0 - Have checks working (Sending & Receiving)
          * 
-         * # UI - Not sure how to make it look nice, preferably use the in-game ui
+         * 1.0.0 UI - Not sure how to make it look nice, preferably use the in-game ui
          *  to create a server button to join an archipelago session + create a new save file for it (likely upon pressing start)
          *
          * #Find a way to use the in-game Notification system to show item received and send
@@ -31,15 +25,15 @@ namespace NikoArchipelago
          * #Flags are documented on the spreadsheet + Handsome Frog checks are addable 
          */
         
-        private const string PLUGIN_GUID = "NikoArchipelago";
+        private const string PLUGIN_GUID = "nieli.NikoArchipelago";
         private const string PLUGIN_NAME = "NikoArchipelago";
         private const string PLUGIN_VERSION = "0.0.1";
         
-        public const string ModDisplayInfo = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
+        private const string ModDisplayInfo = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
         public static ManualLogSource BepinLogger;
         public static ArchipelagoClient ArchipelagoClient;
-        private string SaveName;
+        private string _saveName;
         
         public Notification test;
         public static CustomButton AptestButton;
@@ -56,7 +50,8 @@ namespace NikoArchipelago
             ArchipelagoConsole.Awake();
             // Plugin startup logic
             Logger.LogInfo($"Hey, Niko here! btw Plugin {PLUGIN_NAME} Loaded! :)");
-            SaveName = ArchipelagoClient.ServerData.SlotName;
+            ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
+            _saveName = ArchipelagoClient.ServerData.SlotName;
         }
 
 
@@ -77,16 +72,20 @@ namespace NikoArchipelago
             //     // scrGameSaveManager.saveName = "APLogicSave";
             //     //scrGameSaveManager.saveName = "NieDebug2024Save";
             // }
-            SaveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri; //Savefile is the same as SlotName & ServerPort
-            if (scrGameSaveManager.saveName != SaveName && ArchipelagoClient.Authenticated)
+            _saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri; //Savefile is the same as SlotName & ServerPort
+            if (scrGameSaveManager.saveName != _saveName && ArchipelagoClient.Authenticated)
             {
-                scrGameSaveManager.saveName = SaveName;
-                scrGameSaveManager.dataPath = Path.Combine(Application.persistentDataPath, SaveName + ".json");
+                scrGameSaveManager.saveName = _saveName;
+                scrGameSaveManager.dataPath = Path.Combine(Application.persistentDataPath, _saveName + ".json");
                 scrGameSaveManager.instance.SaveGame();
                 scrGameSaveManager.instance.LoadGame();
-                scrTrainManager.instance.UseTrain(2, false);
+                scrTrainManager.instance.UseTrain(1, false);
+                scrGameSaveManager.instance.ClearSaveData();
             }
             Flags();
+            GameOptions.MasterVolume = 0.5F;
+            GameOptions.EnvVolume = 0.3F;
+            GameOptions.MusicVolume = 0.4F;
         }
         
         public void Flags()
@@ -160,7 +159,7 @@ namespace NikoArchipelago
                 _generalFlg = 0;
             }
 
-            if (_unlockedLevels.Count > _levelIndex)
+            if (_unlockedLevels.Count > _levelIndex) //TODO: Besseres System zum checken, ob ein level freigeschaltet ist oder nicht (True or False)
             {
                 Logger.LogWarning("New Level unlocked! " + _unlockedLevels[_levelIndex]);
                 _levelIndex++;
@@ -173,12 +172,6 @@ namespace NikoArchipelago
             }
         }
 
-        public void StuffX()
-        {
-            scrTrainManager.instance.UseTrain(1,false);
-        }
-
-        public TextMesh TextMesh;
         public void NewItem()
         {
             _newFlag.key = "pls work man i have kids and wife";
@@ -194,21 +187,6 @@ namespace NikoArchipelago
             Logger.LogError(test.key);
             scrNotificationDisplayer.instance.AddNotification(test);
         }
-
-        public void SoundFix()
-        {
-            GameOptions.AudioOptions.ForEach(Logger.LogMessage);
-        }
-        
-        // Apply Harmony patches (?)
-        private static void LoadPatches()
-        {
-            HarmonyFileLog.Enabled = true;
-            var harmony = new Harmony("apniko");
-            harmony.PatchAll();
-        }
-        
-        public Rect windowRect = new Rect(600, 500, 400, 200);
 
         void WindowFunc(int windowID)
         {
@@ -336,30 +314,12 @@ namespace NikoArchipelago
                 }
             }
             // this is a good place to create and add a bunch of debug buttons
-        }
-
-    }
-
-    public class ImGUI : MonoBehaviour
-    {
-        public string text = string.Empty;
-    }
-
-    [HarmonyPatch]
-    [HarmonyPatch(typeof(MainMenu), nameof(MainMenu.Instance))]
-    class ApMenu
-    { 
-        public CustomButton apTestButton;
-        [HarmonyPostfix]
-        public void Menu(MainMenu instance)
-        {
-            instance.OptionsButton.DefaultColor.g=4F;
-            var apButton = apTestButton;
-            if (apButton != null)
+            if (GUI.Button(new Rect(16, 150, 100, 20), "Add Coin Prize"))
             {
-                apButton.OnClickFinished.AddListener(new UnityAction(MainMenu.Instance.OnExitButtonPressed));
+                levelData.levelPrices[3]++;
+                scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[3]=true;
             }
         }
-        
+
     }
 }
