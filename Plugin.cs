@@ -77,15 +77,29 @@ namespace NikoArchipelago
             {
                 scrGameSaveManager.saveName = _saveName;
                 scrGameSaveManager.dataPath = Path.Combine(Application.persistentDataPath, _saveName + ".json");
-                scrGameSaveManager.instance.SaveGame();
-                scrGameSaveManager.instance.LoadGame();
-                scrTrainManager.instance.UseTrain(1, false);
-                scrGameSaveManager.instance.ClearSaveData();
+                if (scrGameSaveManager.dataPath.Contains(_saveName)) //Check if there already is a Save with the SlotData
+                {
+                    Logger.LogInfo("Found a SaveFile with the current SlotName!");
+                    scrGameSaveManager.instance.LoadGame();
+                }
+                else
+                {
+                    Logger.LogWarning("No SaveFile found. Creating a new one!");
+                    scrGameSaveManager.instance.SaveGame();
+                    scrGameSaveManager.instance.LoadGame();
+                    scrGameSaveManager.instance.ClearSaveData();
+                }
+                scrTrainManager.instance.UseTrain(1, false);                
             }
             Flags();
             GameOptions.MasterVolume = 0.5F;
             GameOptions.EnvVolume = 0.3F;
             GameOptions.MusicVolume = 0.4F;
+        }
+
+        public void ConvertFlags()
+        {
+            
         }
         
         public void Flags()
