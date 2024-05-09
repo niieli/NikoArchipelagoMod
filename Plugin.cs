@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using BepInEx;
 using BepInEx.Logging;
@@ -42,6 +43,7 @@ namespace NikoArchipelago
         private int _coinFlg, _cassetteFlg, _fishFlg, _miscFlg, _letterFlg, _generalFlg, _coinTotal, _coinOld, _levelIndex;
         private Notification _newFlag = new ();
         private Notification _note = ScriptableObject.CreateInstance<Notification>();
+        private int _goToLevel;
         
         private void Awake()
         {
@@ -76,25 +78,37 @@ namespace NikoArchipelago
             if (scrGameSaveManager.saveName != _saveName && ArchipelagoClient.Authenticated)
             {
                 scrGameSaveManager.saveName = _saveName;
-                scrGameSaveManager.dataPath = Path.Combine(Application.persistentDataPath, _saveName + ".json");
-                if (scrGameSaveManager.dataPath.Contains(_saveName)) //Check if there already is a Save with the SlotData
+                var savePath = Path.Combine(Application.persistentDataPath, _saveName + ".json");
+                if (File.Exists(savePath)) //Check if there already is a Save with the SlotName & ServerPort
                 {
-                    Logger.LogInfo("Found a SaveFile with the current SlotName!");
+                    scrGameSaveManager.dataPath = Path.Combine(Application.persistentDataPath, _saveName + ".json");
+                    Logger.LogInfo("Found a SaveFile with the current SlotName & Port!");
+                    ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
                     scrGameSaveManager.instance.LoadGame();
                 }
                 else
                 {
+                    scrGameSaveManager.dataPath = Path.Combine(Application.persistentDataPath, _saveName + ".json");
                     Logger.LogWarning("No SaveFile found. Creating a new one!");
+                    ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
                     scrGameSaveManager.instance.SaveGame();
                     scrGameSaveManager.instance.LoadGame();
                     scrGameSaveManager.instance.ClearSaveData();
                 }
-                scrTrainManager.instance.UseTrain(1, false);                
+                scrTrainManager.instance.UseTrain(1, false);       
+                _saveDataCoinFlag.ForEach(Logger.LogInfo);
+                _saveDataCassetteFlag.ForEach(Logger.LogInfo);
+                _saveDataFishFlag.ForEach(Logger.LogInfo);
+                _saveDataMiscFlag.ForEach(Logger.LogInfo);
+                _saveDataLetterFlag.ForEach(Logger.LogInfo);
+                _saveDataGeneralFlag.ForEach(Logger.LogInfo); //Quick flag checking
             }
             Flags();
+            //Bandaid fix for broken audiosavings.
             GameOptions.MasterVolume = 0.5F;
             GameOptions.EnvVolume = 0.3F;
             GameOptions.MusicVolume = 0.4F;
+            GameOptions.SFXVolume = 0.3F;
         }
 
         public void ConvertFlags()
@@ -330,8 +344,14 @@ namespace NikoArchipelago
             // this is a good place to create and add a bunch of debug buttons
             if (GUI.Button(new Rect(16, 150, 100, 20), "Add Coin Prize"))
             {
-                levelData.levelPrices[3]++;
+                levelData.levelPrices[1]++;
                 scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[3]=true;
+            }
+
+            _goToLevel = Convert.ToInt32(GUI.TextField(new Rect(150, 170, 80, 20), _goToLevel.ToString()));
+            if (GUI.Button(new Rect(16, 190, 100, 20),"TP to Level"))
+            {
+                scrTrainManager.instance.UseTrain(_goToLevel,false);
             }
         }
 
