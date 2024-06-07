@@ -11,7 +11,7 @@ namespace NikoArchipelago.Archipelago;
 
 public class ArchipelagoClient
 {
-    public const string APVersion = "0.4.4";
+    public const string APVersion = "0.4.6";
     private const string Game = "Here Comes Niko!";
 
     public static bool Authenticated;
@@ -20,6 +20,7 @@ public class ArchipelagoClient
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler DeathLinkHandler;
     private ArchipelagoSession session;
+    
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
