@@ -10,6 +10,7 @@ public class DeathLinkHandler
     private static bool deathLinkEnabled;
     private string slotName;
     private readonly DeathLinkService service;
+    private Plugin main;
     private readonly Queue<DeathLink> deathLinks = new();
 
     /// <summary>
@@ -75,6 +76,7 @@ public class DeathLinkHandler
             var cause = deathLink.Cause.IsNullOrWhiteSpace() ? GetDeathLinkCause(deathLink) : deathLink.Cause;
 
             //TODO kill the player
+            main.KillPlayer();
             Plugin.BepinLogger.LogMessage(cause);
         }
         catch (Exception e)
