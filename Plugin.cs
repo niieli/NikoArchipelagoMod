@@ -23,8 +23,14 @@ namespace NikoArchipelago
          * --> Add the checks to the UI
          * --> Create APWorld file
          *
-         *  1.0.0 UI - Not sure how to make it look nice, preferably use the in-game ui
+         *  0.2.0 UI - Not sure how to make it look nice, preferably use the in-game ui
          *  to create a server button to join an archipelago session + create a new save file for it (likely upon pressing start)
+         *  
+         *  0.3.0 - Add DeathLink
+         * 
+         *  1.0.0 - Release
+         *  --> Refactor & clean up
+         *  --> PR submission
          *
          *  COMPLETE, without APLogo - #Find a way to use the in-game Notification system to show item received and send
          *                              with the AP logo preferably and no noise/voice
@@ -56,6 +62,8 @@ namespace NikoArchipelago
         private int _goToLevel;
         private float _env, _mas, _mus, _sfx;
         public scrNotificationDisplayer noteDisplayer;
+        Notification noteItem = ScriptableObject.CreateInstance<Notification>();
+        private scrHopOnBump hopOnBump;
         
         private void Awake()
         {
@@ -131,11 +139,9 @@ namespace NikoArchipelago
                 }
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
-                if (!_loggedSuccess)
-                {
-                    Logger.LogMessage("Game finished initialising");
-                    _loggedSuccess = true;
-                }
+                if (_loggedSuccess) return;
+                Logger.LogMessage("Game finished initialising");
+                _loggedSuccess = true;
             }
             catch (Exception e)
             {
@@ -159,13 +165,20 @@ namespace NikoArchipelago
 
         public void SendNote(string note, float time)
         {
-            var noteItem = ScriptableObject.CreateInstance<Notification>();
-            noteItem.key = note;
-            noteItem.duration = time;
-            noteItem.timed = true;
-            noteItem.avatar = scrSnail.instance.sprFoodFull;
-            noteDisplayer.AddNotification(noteItem);
-            noteDisplayer.textMesh.text = noteItem.key;
+            var errorNote = noteItem;
+            errorNote.key = "!!What's my line?!!";
+            var tmp = noteItem;
+            //TODO: Find a more suitable fix for errorNote.key or fix the Note.key being set to null
+            if (noteDisplayer.notificationQueue.Count > 0)
+            {
+                noteDisplayer.notificationQueue.Clear();
+            }
+            tmp.timed = true;
+            tmp.avatar = scrSnail.instance.sprFoodFull;
+            tmp.duration = time;
+            tmp.key = note;
+            noteDisplayer.AddNotification(tmp);
+            noteDisplayer.textMesh.text = tmp.key;
             Logger.LogInfo("Note: " + noteDisplayer.textMesh.text);
         }
 
@@ -230,15 +243,17 @@ namespace NikoArchipelago
         {
             GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
             ArchipelagoConsole.OnGUI();
-
+            
             string statusMessage;
             if (ArchipelagoClient.Authenticated)
             {
+                BackgroundForText(new Rect(10, 10, 280, 60));
                 statusMessage = " Status: Connected";
                 GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
             }
             else
             {
+                BackgroundForText(new Rect(10, 14, 320, 136));
                 statusMessage = " Status: Disconnected";
                 GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
                 GUI.Label(new Rect(16, 70, 150, 20), "Host: ");
@@ -273,7 +288,7 @@ namespace NikoArchipelago
             
             if (GUI.Button(new Rect(16, 220, 100, 20), "Note"))
             {
-                SendNote("Hallo?", 2F);
+                SendNote("VERY LOOOONG text. Here goes nothing hihihihihihi", 2F);
             }
             if (GUI.Button(new Rect(16, 250, 100, 20), "Kill"))
             {
@@ -287,6 +302,14 @@ namespace NikoArchipelago
             {
                 ArchipelagoClient.Disconnect();
             }
+        }
+
+        private void BackgroundForText(Rect rect)
+        {
+            var startingColor = GUI.color;
+            GUI.color = new Color(0f, 0f, 0f, 0.5F);
+            GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            GUI.color = startingColor;
         }
 
         [HarmonyPostfix, HarmonyPatch(typeof(MainMenu))]
