@@ -158,6 +158,11 @@ public class ArchipelagoClient
         // queue to be handled later
     }
 
+    public void OnLocationChecked(long locationId)
+    {
+        session.Locations.CompleteLocationChecks(locationId);
+    }
+
     /// <summary>
     /// something went wrong with our socket connection
     /// </summary>

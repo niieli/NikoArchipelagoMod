@@ -2,14 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NikoArchipelago
 {
@@ -73,6 +71,10 @@ namespace NikoArchipelago
             Logger.LogInfo($"Hey, Niko here! Plugin {PLUGIN_NAME} Loaded! :)");
             ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
             _saveName = ArchipelagoClient.ServerData.SlotName;
+            _mas = 0.5f;
+            _env = 0.4f;
+            _sfx = 0.4f;
+            _mus = 0.4f;
         }
 
         public void Load()
@@ -107,9 +109,9 @@ namespace NikoArchipelago
             if (!_saveReady) return;
             try
             {
-                levelData_Prefix();
+                levelData_Prefix(); // Changes Home[2] & Hairball City[3] Kiosk cost to 5 & 3 respectively
                 noteDisplayer = scrNotificationDisplayer.instance;
-                //Savefile is the same as SlotName & ServerPort
+                //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
                 _saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
                 if (scrGameSaveManager.saveName != _saveName && ArchipelagoClient.Authenticated)
                 {
@@ -132,13 +134,17 @@ namespace NikoArchipelago
                         gameSaveManager.LoadGame();
                         gameSaveManager.ClearSaveData();
                     }
-                    //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file
+                    //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
                     scrTrainManager.instance.UseTrain(!_newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
                     LogFlags();
-                    SendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 5F);
+                    SendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
+                if (scrWorldSaveDataContainer.instance.coinFlags.Contains("Fetch"))
+                {
+                    
+                }
                 if (_loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
                 _loggedSuccess = true;
@@ -179,22 +185,26 @@ namespace NikoArchipelago
             tmp.key = note;
             noteDisplayer.AddNotification(tmp);
             noteDisplayer.textMesh.text = tmp.key;
-            Logger.LogInfo("Note: " + noteDisplayer.textMesh.text);
+            Logger.LogMessage("Note: " + noteDisplayer.textMesh.text);
         }
 
         public void KillPlayer()
         {
-            _waited = false;
-            scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
             ArchipelagoConsole.LogMessage("get deathlinked LMAO");
-            StartCoroutine(KillPlayerDelay());
+            scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
+            StartCoroutine(SendNoteDelay("Deathlink LMAO", 8.2f, 5.0f, true));
         }
         
-        private IEnumerator KillPlayerDelay()
+        private IEnumerator SendNoteDelay(string text, float delay, float noteTime, bool isDeath = false)
         {
-            yield return new WaitForSeconds(6.5f);
+            _waited = false;
+            yield return new WaitForSeconds(delay);
             _waited = true;
-            SendNote("Deathlink LMAO", 5.0F);
+            SendNote(text, noteTime);
+            if (isDeath)
+            {
+                //Add grace period
+            }
         }
         
         public void Flags()
@@ -222,7 +232,7 @@ namespace NikoArchipelago
             }
 
             if (_coinTotal <= _coinOld) return;
-            Logger.LogWarning("Total Coin Count = " + _coinTotal);
+            Logger.LogMessage("Total Coin Count = " + _coinTotal);
             _coinOld++;
         }
 
@@ -230,7 +240,7 @@ namespace NikoArchipelago
         {
             if (flagList.Count > flagIndex)
             {
-                Logger.LogFatal($"New {flagType} Flag! '{flagList[flagIndex]}'");
+                Logger.LogMessage($"New {flagType} Flag! '{flagList[flagIndex]}'");
                 flagIndex++;
             }
             else if (flagIndex > flagList.Count)
@@ -310,31 +320,6 @@ namespace NikoArchipelago
             GUI.color = new Color(0f, 0f, 0f, 0.5F);
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
             GUI.color = startingColor;
-        }
-
-        [HarmonyPostfix, HarmonyPatch(typeof(MainMenu))]
-        public static void MainMenu_Postfix()
-        {
-            var quitButton = MainMenu.Instance.ExitButton;
-            if (!_dc)
-            {
-                quitButton.onClick.RemoveListener(MainMenu.Instance.OnExitButtonPressed);
-            }
-            else
-            {
-                quitButton.onClick.AddListener(MainMenu.Instance.OnExitButtonPressed);
-            }
-            if (quitButton && !_dc)
-            {
-                quitButton.onClick.AddListener(OnQuitButtonPressed);
-            }
-        }
-        
-        private static void OnQuitButtonPressed()
-        {
-            if (_dc) return;
-            ArchipelagoClient.Disconnect();
-            _dc = true;
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(levelData))]
