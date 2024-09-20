@@ -7,6 +7,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Patches;
 using UnityEngine;
 
 namespace NikoArchipelago
@@ -63,6 +64,7 @@ namespace NikoArchipelago
         Notification noteItem = ScriptableObject.CreateInstance<Notification>();
         private scrHopOnBump hopOnBump;
         private LocationHandler locationHandler;
+        private static scrKioskManager _kioskManager;
         
         private void Awake()
         {
@@ -80,12 +82,11 @@ namespace NikoArchipelago
 
         public void Load()
         {
-            levelData_Prefix();
         }
 
         public void Start()
         {
-            levelData_Prefix();
+            //KioskCost.Init();
             GameOptions.MasterVolume = _mas;
             GameOptions.EnvVolume = _env;
             GameOptions.MusicVolume = _mus;
@@ -110,7 +111,8 @@ namespace NikoArchipelago
             if (!_saveReady) return;
             try
             {
-                //levelData_Prefix(); // Changes Home[2] & Hairball City[3] Kiosk cost to 5 & 3 respectively
+                levelData_Prefix();
+                scrKioskManager_Prefix();
                 noteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
                 _saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
@@ -319,12 +321,24 @@ namespace NikoArchipelago
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
             GUI.color = startingColor;
         }
-
         [HarmonyPrefix, HarmonyPatch(typeof(levelData))]
         public static void levelData_Prefix()
         {
-            levelData.levelPrices[2] = 5;
-            levelData.levelPrices[3] = 3;
+            levelData.levelPrices[3] = 6;
+            levelData.levelPrices[4] = 11;
+            levelData.levelPrices[5] = 21;
+            levelData.levelPrices[6] = 26;
+            levelData.levelPrices[7] = 31;
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(scrKioskManager), "RemoveIfObtained", MethodType.Enumerator)]
+        public static void scrKioskManager_Prefix()
+        {
+            if (GameObject.Find("Kiosk tk"))
+            {
+                _kioskManager.buyableLevel += 8;
+            }
         }
     }
+    
 }

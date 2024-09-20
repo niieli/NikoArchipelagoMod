@@ -1,4 +1,5 @@
-﻿using BepInEx.Logging;
+﻿using Archipelago.MultiClient.Net.Enums;
+using BepInEx.Logging;
 using NikoArchipelago.Archipelago;
 
 namespace NikoArchipelago;
@@ -19,10 +20,10 @@ public class LocationHandler
 
     public void WinCompletion()
     {
-        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 3 &&
-            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview"))
-        {
-            ArchipelagoClient.SendCompletion();
-        }
+        //TODO: Still not working
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 1 ||
+            !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview")) return;
+        BepinLogger.LogWarning("HEEEEEEEELEP PEPPER INTERVIEW!");
+        ArchipelagoClient.SendCompletion();
     }
 }

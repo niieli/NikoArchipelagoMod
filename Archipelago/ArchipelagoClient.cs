@@ -66,10 +66,10 @@ public class ArchipelagoClient
                     session.TryConnectAndLogin(
                         Game,
                         ServerData.SlotName,
-                        ItemsHandlingFlags.AllItems, // TODO make sure to change this line
+                        ItemsHandlingFlags.AllItems,
                         new Version(APVersion),
                         password: ServerData.Password,
-                        requestSlotData: false // ServerData.NeedSlotData
+                        requestSlotData: true // ServerData.NeedSlotData
                     )));
         }
         catch (Exception e)
@@ -178,6 +178,24 @@ public class ArchipelagoClient
             case 598_145_444_000+7:
                 ItemHandler.AddLetter();
                 break;
+            case 598_145_444_000+8:
+                ItemHandler.AddTicket(2);
+                break;
+            case 598_145_444_000+9:
+                ItemHandler.AddTicket(3);
+                break;
+            case 598_145_444_000+10:
+                ItemHandler.AddTicket(4);
+                break;
+            case 598_145_444_000+11:
+                ItemHandler.AddTicket(5);
+                break;
+            case 598_145_444_000+12:
+                ItemHandler.AddTicket(6);
+                break;
+            case 598_145_444_000+13:
+                ItemHandler.AddTicket(7);
+                break;
         }
         // Add the Note system to receiving an Item
         // if items can be received while in an invalid state for actually handling them, they can be placed in a local
@@ -189,6 +207,11 @@ public class ArchipelagoClient
         var statusUpdatePacket = new StatusUpdatePacket();
         statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
         session.Socket.SendPacket(statusUpdatePacket);
+    }
+
+    public void GetDataStorage(string key)
+    {
+        session.DataStorage[key].GetAsync();
     }
 
     public void OnLocationChecked(long locationId)

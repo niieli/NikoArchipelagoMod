@@ -41,4 +41,13 @@ public static class ItemHandler
     {
         scrGameSaveManager.instance.gameData.generalGameData.wave2 = true;
     }
+
+    /// <summary>
+    /// Unlocks the specified level
+    /// </summary>
+    /// <param name="level">The level in question 1=Home etc.</param>
+    public static void AddTicket(int level)
+    {
+        scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[level] = true;
+    }
 }
