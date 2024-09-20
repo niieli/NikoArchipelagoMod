@@ -62,6 +62,7 @@ namespace NikoArchipelago
         public scrNotificationDisplayer noteDisplayer;
         Notification noteItem = ScriptableObject.CreateInstance<Notification>();
         private scrHopOnBump hopOnBump;
+        private LocationHandler locationHandler;
         
         private void Awake()
         {
@@ -109,7 +110,7 @@ namespace NikoArchipelago
             if (!_saveReady) return;
             try
             {
-                levelData_Prefix(); // Changes Home[2] & Hairball City[3] Kiosk cost to 5 & 3 respectively
+                //levelData_Prefix(); // Changes Home[2] & Hairball City[3] Kiosk cost to 5 & 3 respectively
                 noteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
                 _saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
@@ -141,10 +142,7 @@ namespace NikoArchipelago
                 }
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
-                if (scrWorldSaveDataContainer.instance.coinFlags.Contains("Fetch"))
-                {
-                    
-                }
+                locationHandler.WinCompletion();
                 if (_loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
                 _loggedSuccess = true;

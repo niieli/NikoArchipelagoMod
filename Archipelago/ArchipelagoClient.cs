@@ -20,7 +20,6 @@ public class ArchipelagoClient
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler DeathLinkHandler;
     private ArchipelagoSession session;
-    
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -153,9 +152,43 @@ public class ArchipelagoClient
 
         ServerData.Index++;
 
-        // TODO reward the item here
+        switch (receivedItem.Item)
+        {
+            case 598_145_444_000:
+                ItemHandler.AddCoin();
+                break;
+            case 598_145_444_000+1:
+                ItemHandler.AddCassette();
+                break;
+            case 598_145_444_000+2:
+                ItemHandler.AddKey();
+                break;
+            case 598_145_444_000+3:
+                ItemHandler.AddApples();
+                break;
+            case 598_145_444_000+4:
+                ItemHandler.AddContactList1();
+                break;
+            case 598_145_444_000+5:
+                ItemHandler.AddContactList2();
+                break;
+            case 598_145_444_000+6:
+                ItemHandler.AddSuperJump();
+                break;
+            case 598_145_444_000+7:
+                ItemHandler.AddLetter();
+                break;
+        }
+        // Add the Note system to receiving an Item
         // if items can be received while in an invalid state for actually handling them, they can be placed in a local
         // queue to be handled later
+    }
+
+    public void SendCompletion()
+    {
+        var statusUpdatePacket = new StatusUpdatePacket();
+        statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
+        session.Socket.SendPacket(statusUpdatePacket);
     }
 
     public void OnLocationChecked(long locationId)
