@@ -63,8 +63,12 @@ namespace NikoArchipelago
         public scrNotificationDisplayer noteDisplayer;
         Notification noteItem = ScriptableObject.CreateInstance<Notification>();
         private scrHopOnBump hopOnBump;
-        private LocationHandler locationHandler;
         private static scrKioskManager _kioskManager;
+        public scrWorldSaveDataContainer worldSaveDataContainer;
+        public bool worldReady;
+        private float checkInterval = 5.0f; // Check every 5 seconds
+        private float timeSinceLastCheck = 0.0f;
+        private int _indexCounter = 0;
         
         private void Awake()
         {
@@ -86,12 +90,12 @@ namespace NikoArchipelago
 
         public void Start()
         {
-            //KioskCost.Init();
             GameOptions.MasterVolume = _mas;
             GameOptions.EnvVolume = _env;
             GameOptions.MusicVolume = _mus;
             GameOptions.SFXVolume = _sfx;
             StartCoroutine(CheckGameSaveManager());
+            StartCoroutine(CheckWorldSaveManager());
         }
         
         private IEnumerator CheckGameSaveManager()
@@ -105,14 +109,25 @@ namespace NikoArchipelago
             gameSaveManager = scrGameSaveManager.instance;
             _saveReady = true;
         }
+
+        private IEnumerator CheckWorldSaveManager()
+        {
+            while (!scrWorldSaveDataContainer.instance)
+            {
+                Logger.LogError("WorldSaveDataContainer is null.");
+                yield return new WaitForSeconds(3.0f);
+            }
+            Logger.LogInfo("WorldSaveDataContainer is not null.");
+            worldSaveDataContainer = scrWorldSaveDataContainer.instance;
+            LocationHandler.Initialize(worldSaveDataContainer, ArchipelagoClient);
+            worldReady = true;
+        }
         
         public void Update()
         {
             if (!_saveReady) return;
             try
             {
-                levelData_Prefix();
-                scrKioskManager_Prefix();
                 noteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
                 _saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
@@ -140,11 +155,18 @@ namespace NikoArchipelago
                     //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
                     scrTrainManager.instance.UseTrain(!_newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
                     LogFlags();
+                    StartCoroutine(CheckWorldSaveManager());
                     SendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
+
+                if (worldReady && ArchipelagoClient.Authenticated)
+                {
+                    LocationHandler.CheckLocationsForFlags(0);
+                    LocationHandler.CheckLocationsForFlags(1);
+                }
+                KioskCost.levelData_Prefix();
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
-                locationHandler.WinCompletion();
                 if (_loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
                 _loggedSuccess = true;
@@ -158,7 +180,7 @@ namespace NikoArchipelago
                 }
             }
         }
-
+        
         private void LogFlags()
         {
             _saveDataCoinFlag.ForEach(Logger.LogMessage);
@@ -330,14 +352,11 @@ namespace NikoArchipelago
             levelData.levelPrices[6] = 26;
             levelData.levelPrices[7] = 31;
         }
-
-        [HarmonyPostfix, HarmonyPatch(typeof(scrKioskManager), "RemoveIfObtained", MethodType.Enumerator)]
-        public static void scrKioskManager_Prefix()
+        [HarmonyPatch(typeof(scrKioskManager), "Start", MethodType.Constructor)]
+        public static void KioskLevelFix()
         {
-            if (GameObject.Find("Kiosk tk"))
-            {
-                _kioskManager.buyableLevel += 8;
-            }
+            _kioskManager = GameObject.Find("Kiosk").GetComponent<scrKioskManager>();
+            _kioskManager.buyableLevel += 8;
         }
     }
     

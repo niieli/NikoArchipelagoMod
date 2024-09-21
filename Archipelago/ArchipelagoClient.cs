@@ -6,6 +6,7 @@ using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Packets;
+using Newtonsoft.Json.Linq;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -20,6 +21,7 @@ public class ArchipelagoClient
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler DeathLinkHandler;
     private ArchipelagoSession session;
+    public int Coins;
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -68,6 +70,7 @@ public class ArchipelagoClient
                         ServerData.SlotName,
                         ItemsHandlingFlags.AllItems,
                         new Version(APVersion),
+                        uuid: null,
                         password: ServerData.Password,
                         requestSlotData: true // ServerData.NeedSlotData
                     )));
@@ -151,7 +154,9 @@ public class ArchipelagoClient
         if (helper.Index < ServerData.Index) return;
 
         ServerData.Index++;
-
+        // session.DataStorage["TotalCoins"] = JObject.FromObject(new {Number = ItemHandler.TotalCoins});
+        // var obj = session.DataStorage["TotalCoins"].To<JObject>();
+        // Coins = (int)obj["Number"];
         switch (receivedItem.Item)
         {
             case 598_145_444_000:

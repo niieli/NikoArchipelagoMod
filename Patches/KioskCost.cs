@@ -1,14 +1,22 @@
 ﻿using HarmonyLib;
+using UnityEngine;
+using UnityEngine.Bindings;
 
 namespace NikoArchipelago.Patches;
 
 public class KioskCost
 {
     private static scrKioskManager _kioskManager;
+    private static Plugin plugin;
+    private static bool _changed;
+    public KioskCost()
+    {
+        _kioskManager = GameObject.Find("Kiosk").GetComponent<scrKioskManager>();
+    }
+    
     public static void Init()
     {
-        scrKioskManager_Prefix();
-        levelData_Prefix();
+        Harmony.CreateAndPatchAll(typeof(levelData));
     }
     [HarmonyPrefix, HarmonyPatch(typeof(levelData))]
     public static void levelData_Prefix()
@@ -18,10 +26,13 @@ public class KioskCost
         levelData.levelPrices[5] = 21;
         levelData.levelPrices[6] = 26;
         levelData.levelPrices[7] = 31;
+        if (_changed) return;
+        Plugin.BepinLogger.LogInfo("Changed LevelPrices");
+        _changed = true;
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(scrKioskManager), "RemoveIfObtained", MethodType.Enumerator)]
-    public static void scrKioskManager_Prefix()
+    [HarmonyPatch(typeof(scrKioskManager), "Start", MethodType.Constructor)]
+    public static void KioskLevelFix()
     {
         _kioskManager.buyableLevel += 8;
     }
