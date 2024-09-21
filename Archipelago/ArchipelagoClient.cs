@@ -21,7 +21,7 @@ public class ArchipelagoClient
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler DeathLinkHandler;
     private ArchipelagoSession session;
-    public int Coins;
+    public static int Coins;
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -154,55 +154,55 @@ public class ArchipelagoClient
         if (helper.Index < ServerData.Index) return;
 
         ServerData.Index++;
+        var senderName = session.Players.GetPlayerName(receivedItem.Player);
         // session.DataStorage["TotalCoins"] = JObject.FromObject(new {Number = ItemHandler.TotalCoins});
         // var obj = session.DataStorage["TotalCoins"].To<JObject>();
         // Coins = (int)obj["Number"];
         switch (receivedItem.Item)
         {
             case 598_145_444_000:
-                ItemHandler.AddCoin();
+                ItemHandler.AddCoin(1, senderName);
                 break;
             case 598_145_444_000+1:
-                ItemHandler.AddCassette();
+                ItemHandler.AddCassette(1, senderName);
                 break;
             case 598_145_444_000+2:
-                ItemHandler.AddKey();
+                ItemHandler.AddKey(1, senderName);
                 break;
             case 598_145_444_000+3:
-                ItemHandler.AddApples();
+                ItemHandler.AddApples(25,senderName);
                 break;
             case 598_145_444_000+4:
-                ItemHandler.AddContactList1();
+                ItemHandler.AddContactList1(senderName);
                 break;
             case 598_145_444_000+5:
-                ItemHandler.AddContactList2();
+                ItemHandler.AddContactList2(senderName);
                 break;
             case 598_145_444_000+6:
-                ItemHandler.AddSuperJump();
+                ItemHandler.AddSuperJump(senderName);
                 break;
             case 598_145_444_000+7:
-                ItemHandler.AddLetter();
+                ItemHandler.AddLetter(1, senderName);
                 break;
             case 598_145_444_000+8:
-                ItemHandler.AddTicket(2);
+                ItemHandler.AddTicket(2, senderName);
                 break;
             case 598_145_444_000+9:
-                ItemHandler.AddTicket(3);
+                ItemHandler.AddTicket(3, senderName);
                 break;
             case 598_145_444_000+10:
-                ItemHandler.AddTicket(4);
+                ItemHandler.AddTicket(4, senderName);
                 break;
             case 598_145_444_000+11:
-                ItemHandler.AddTicket(5);
+                ItemHandler.AddTicket(5, senderName);
                 break;
             case 598_145_444_000+12:
-                ItemHandler.AddTicket(6);
+                ItemHandler.AddTicket(6, senderName);
                 break;
             case 598_145_444_000+13:
-                ItemHandler.AddTicket(7);
+                ItemHandler.AddTicket(7, senderName);
                 break;
         }
-        // Add the Note system to receiving an Item
         // if items can be received while in an invalid state for actually handling them, they can be placed in a local
         // queue to be handled later
     }

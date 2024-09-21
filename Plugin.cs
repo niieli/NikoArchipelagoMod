@@ -41,7 +41,7 @@ namespace NikoArchipelago
          * -> WorldsData.cassetteFlags geht von 0-6 cassetteFlags, etc. Enthält alle welten/level| 7-15 existieren nicht bzw. cutscenes
          */
         private const string PLUGIN_GUID = "nieli.NikoArchipelago";
-        private const string PLUGIN_NAME = "NikoArchipelago";
+        private const string PLUGIN_NAME = nameof(NikoArchipelago);
         private const string PLUGIN_VERSION = "0.0.1";
         
         private const string ModDisplayInfo = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
@@ -60,15 +60,16 @@ namespace NikoArchipelago
         private int _coinFlg, _cassetteFlg, _fishFlg, _miscFlg, _letterFlg, _generalFlg, _coinTotal, _coinOld, _levelIndex;
         private int _goToLevel;
         private float _env, _mas, _mus, _sfx;
-        public scrNotificationDisplayer noteDisplayer;
+        public static scrNotificationDisplayer noteDisplayer;
         Notification noteItem = ScriptableObject.CreateInstance<Notification>();
         private scrHopOnBump hopOnBump;
         private static scrKioskManager _kioskManager;
         public scrWorldSaveDataContainer worldSaveDataContainer;
         public bool worldReady;
-        private float checkInterval = 5.0f; // Check every 5 seconds
+        private float checkInterval = 3.0f; // Check every 5 seconds
         private float timeSinceLastCheck = 0.0f;
         private int _indexCounter = 0;
+        private static Notification apNotification = ScriptableObject.CreateInstance<Notification>();
         
         private void Awake()
         {
@@ -159,11 +160,11 @@ namespace NikoArchipelago
                     SendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
 
-                if (worldReady && ArchipelagoClient.Authenticated)
-                {
-                    LocationHandler.CheckLocationsForFlags(0);
-                    LocationHandler.CheckLocationsForFlags(1);
-                }
+                // if (worldReady && ArchipelagoClient.Authenticated)
+                // {
+                //     LocationHandler.CheckLocationsForFlags(0);
+                //     LocationHandler.CheckLocationsForFlags(1);
+                // }
                 KioskCost.levelData_Prefix();
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
@@ -209,7 +210,28 @@ namespace NikoArchipelago
             noteDisplayer.textMesh.text = tmp.key;
             Logger.LogMessage("Note: " + noteDisplayer.textMesh.text);
         }
-
+        
+        public static void APSendNote(string note, float time)
+        {
+            var apNote = ScriptableObject.CreateInstance<Notification>();
+            //TODO: create a new apNote instead of using the same one and add it to the queue
+            if (noteDisplayer.notificationQueue.Count > 0)
+            {
+                noteDisplayer.notificationQueue.Clear();
+            }
+            apNote.timed = true;
+            apNote.avatar = scrSnail.instance.sprFoodFull;
+            apNote.duration = time;
+            apNote.key = note;
+            noteDisplayer.AddNotification(apNote);
+            noteDisplayer.textMesh.text = note;
+            BepinLogger.LogMessage("Note: " + noteDisplayer.textMesh.text);
+            var i = noteDisplayer.notificationQueue.Count;
+            // for (int j = 0; j < i; j++)
+            // {
+            //     noteDisplayer.notificationQueue[j].duration = 0.1f;
+            // }
+        }
         public void KillPlayer()
         {
             ArchipelagoConsole.LogMessage("get deathlinked LMAO");
@@ -241,10 +263,10 @@ namespace NikoArchipelago
             _coinTotal = scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal;
 
             CheckNewFlag(ref _coinFlg, _saveDataCoinFlag, "Coin");
-            CheckNewFlag(ref _cassetteFlg, _saveDataCassetteFlag, "Cassette");
-            CheckNewFlag(ref _fishFlg, _saveDataFishFlag, "Fish");
+            CheckNewFlag(ref _cassetteFlg, _saveDataCassetteFlag, nameof(Cassette));
+            CheckNewFlag(ref _fishFlg, _saveDataFishFlag, nameof(Fish));
             CheckNewFlag(ref _miscFlg, _saveDataMiscFlag, "Misc");
-            CheckNewFlag(ref _letterFlg, _saveDataLetterFlag, "Letter");
+            CheckNewFlag(ref _letterFlg, _saveDataLetterFlag, nameof(Letter));
             CheckNewFlag(ref _generalFlg, _saveDataGeneralFlag, "General");
 
             if (_unlockedLevels.Count > _levelIndex)
@@ -352,7 +374,7 @@ namespace NikoArchipelago
             levelData.levelPrices[6] = 26;
             levelData.levelPrices[7] = 31;
         }
-        [HarmonyPatch(typeof(scrKioskManager), "Start", MethodType.Constructor)]
+        [HarmonyPatch(typeof(scrKioskManager), nameof(Start), MethodType.Constructor)]
         public static void KioskLevelFix()
         {
             _kioskManager = GameObject.Find("Kiosk").GetComponent<scrKioskManager>();
