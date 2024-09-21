@@ -6,7 +6,6 @@ using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Packets;
-using Newtonsoft.Json.Linq;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -150,7 +149,7 @@ public class ArchipelagoClient
     private void OnItemReceived(ReceivedItemsHelper helper)
     {
         var receivedItem = helper.DequeueItem();
-
+        
         if (helper.Index < ServerData.Index) return;
 
         ServerData.Index++;
@@ -158,7 +157,7 @@ public class ArchipelagoClient
         // session.DataStorage["TotalCoins"] = JObject.FromObject(new {Number = ItemHandler.TotalCoins});
         // var obj = session.DataStorage["TotalCoins"].To<JObject>();
         // Coins = (int)obj["Number"];
-        switch (receivedItem.Item)
+        switch (receivedItem.ItemId)
         {
             case 598_145_444_000:
                 ItemHandler.AddCoin(1, senderName);

@@ -26,7 +26,7 @@ public class ArchipelagoData
     {
         Uri = "localhost";
         SlotName = "Player1";
-        CheckedLocations = new();
+        CheckedLocations = [];
     }
 
     public ArchipelagoData(string uri, string slotName, string password)
@@ -34,7 +34,7 @@ public class ArchipelagoData
         Uri = uri;
         SlotName = slotName;
         Password = password;
-        CheckedLocations = new();
+        CheckedLocations = [];
     }
 
     /// <summary>

@@ -9,7 +9,7 @@ public class ArchipelagoConsole
 {
     public static bool Hidden = true;
 
-    private static List<string> logLines = new();
+    private static List<string> logLines = [];
     private static Vector2 scrollView;
     private static Rect window;
     private static Rect scroll;
