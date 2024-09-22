@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace NikoArchipelago
 {
-    [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
+    [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
     [BepInProcess("Here Comes Niko!.exe")]
     public class Plugin : BaseUnityPlugin
     {
@@ -40,49 +40,44 @@ namespace NikoArchipelago
          * -> WorldsData.coinFlags geht von 0-6 coinFlags
          * -> WorldsData.cassetteFlags geht von 0-6 cassetteFlags, etc. Enthält alle welten/level| 7-15 existieren nicht bzw. cutscenes
          */
-        private const string PLUGIN_GUID = "nieli.NikoArchipelago";
-        private const string PLUGIN_NAME = nameof(NikoArchipelago);
-        private const string PLUGIN_VERSION = "0.0.1";
+        private const string PluginGuid = "nieli.NikoArchipelago";
+        private const string PluginName = nameof(NikoArchipelago);
+        private const string PluginVersion = "0.0.1";
         
-        private const string ModDisplayInfo = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
+        private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
         public static ManualLogSource BepinLogger;
         public static ArchipelagoClient ArchipelagoClient;
-        private string _saveName;
+        private string saveName;
         public scrGameSaveManager gameSaveManager;
-        private bool _loggedError, _loggedSuccess, _newFile, _saveReady, _waited;
-        private static bool _dc;
-        
+        private bool loggedError, loggedSuccess, newFile, saveReady, waited;
+
         public static CustomButton AptestButton;
-        private List<string> _saveDataCoinFlag, _saveDataCassetteFlag, _saveDataFishFlag, _saveDataMiscFlag, _saveDataLetterFlag, _saveDataGeneralFlag;
-        private List<bool> _unlockedLevels;
-        private List<string> _uniqueFlags = new List<string>();
-        private int _coinFlg, _cassetteFlg, _fishFlg, _miscFlg, _letterFlg, _generalFlg, _coinTotal, _coinOld, _levelIndex;
-        private int _goToLevel;
-        private float _env, _mas, _mus, _sfx;
-        public static scrNotificationDisplayer noteDisplayer;
+        private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
+        private List<bool> unlockedLevels;
+        private int coinFlg, cassetteFlg, fishFlg, miscFlg, letterFlg, generalFlg, coinTotal, coinOld, levelIndex;
+        private int goToLevel;
+        private float env, mas, mus, sfx;
+        public static scrNotificationDisplayer NoteDisplayer;
         Notification noteItem = ScriptableObject.CreateInstance<Notification>();
         private scrHopOnBump hopOnBump;
         private static scrKioskManager _kioskManager;
-        public scrWorldSaveDataContainer worldSaveDataContainer;
         public bool worldReady;
-        private float checkInterval = 3.0f; // Check every 5 seconds
-        private float timeSinceLastCheck = 0.0f;
-        private int _indexCounter = 0;
-        private static Notification apNotification = ScriptableObject.CreateInstance<Notification>();
+        public static int cLevel;
+        public static List<string> cFlags;
         
         private void Awake()
         {
             BepinLogger = Logger;
             ArchipelagoClient = new ArchipelagoClient();
             ArchipelagoConsole.Awake();
-            Logger.LogInfo($"Hey, Niko here! Plugin {PLUGIN_NAME} Loaded! :)");
+            Logger.LogInfo($"Hey, Niko here! Plugin {PluginName} Loaded! :)");
             ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
-            _saveName = ArchipelagoClient.ServerData.SlotName;
-            _mas = 0.5f;
-            _env = 0.4f;
-            _sfx = 0.4f;
-            _mus = 0.4f;
+            saveName = ArchipelagoClient.ServerData.SlotName;
+            mas = 0.5f;
+            env = 0.4f;
+            sfx = 0.4f;
+            mus = 0.4f;
         }
 
         public void Load()
@@ -91,12 +86,12 @@ namespace NikoArchipelago
 
         public void Start()
         {
-            GameOptions.MasterVolume = _mas;
-            GameOptions.EnvVolume = _env;
-            GameOptions.MusicVolume = _mus;
-            GameOptions.SFXVolume = _sfx;
+            GameOptions.MasterVolume = mas;
+            GameOptions.EnvVolume = env;
+            GameOptions.MusicVolume = mus;
+            GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
-            StartCoroutine(CheckWorldSaveManager());
+            //StartCoroutine(CheckWorldSaveManager());
         }
         
         private IEnumerator CheckGameSaveManager()
@@ -108,7 +103,7 @@ namespace NikoArchipelago
             }
             Logger.LogInfo("GameSaveManager is not null.");
             gameSaveManager = scrGameSaveManager.instance;
-            _saveReady = true;
+            saveReady = true;
         }
 
         private IEnumerator CheckWorldSaveManager()
@@ -119,23 +114,21 @@ namespace NikoArchipelago
                 yield return new WaitForSeconds(3.0f);
             }
             Logger.LogInfo("WorldSaveDataContainer is not null.");
-            worldSaveDataContainer = scrWorldSaveDataContainer.instance;
-            LocationHandler.Initialize(worldSaveDataContainer, ArchipelagoClient);
             worldReady = true;
         }
         
         public void Update()
         {
-            if (!_saveReady) return;
+            if (!saveReady) return;
             try
             {
-                noteDisplayer = scrNotificationDisplayer.instance;
+                NoteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
-                _saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
-                if (scrGameSaveManager.saveName != _saveName && ArchipelagoClient.Authenticated)
+                saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
+                if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
                 {
-                    scrGameSaveManager.saveName = _saveName;
-                    var savePath = Path.Combine(Application.persistentDataPath, _saveName + ".json");
+                    scrGameSaveManager.saveName = saveName;
+                    var savePath = Path.Combine(Application.persistentDataPath, saveName + ".json");
                     if (File.Exists(savePath))
                     {
                         scrGameSaveManager.dataPath = savePath;
@@ -145,7 +138,7 @@ namespace NikoArchipelago
                     }
                     else
                     {
-                        _newFile = true;
+                        newFile = true;
                         scrGameSaveManager.dataPath = savePath;
                         Logger.LogWarning("No SaveFile found. Creating a new one!");
                         ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
@@ -154,42 +147,105 @@ namespace NikoArchipelago
                         gameSaveManager.ClearSaveData();
                     }
                     //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
-                    scrTrainManager.instance.UseTrain(!_newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
+                    scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
+                    if (newFile)
+                    {
+                        ArchipelagoClient.Disconnect();
+                        StartCoroutine(FirstLoginFix());
+                    }
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     SendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
-
-                // if (worldReady && ArchipelagoClient.Authenticated)
-                // {
-                //     LocationHandler.CheckLocationsForFlags(0);
-                //     LocationHandler.CheckLocationsForFlags(1);
-                // }
                 KioskCost.levelData_Prefix();
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
-                if (_loggedSuccess) return;
+                if (worldReady && ArchipelagoClient.Authenticated)
+                {
+                    StartCoroutine(DelayInformation());
+                    //_ = ArchipelagoClient.SyncItemsFromDataStorage();
+                    LocationHandler.Update2();
+                    LocationHandler.WinCompletion();
+                    StartCoroutine(SyncState());
+                }
+                if (loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
-                _loggedSuccess = true;
+                loggedSuccess = true;
             }
             catch (Exception e)
             {
-                if (!_loggedError)
+                if (!loggedError)
                 {
-                    Logger.LogMessage("Waiting for game to finish initialising");
-                    _loggedError = true;
+                    Logger.LogMessage("Waiting for game to finish initialising. Error:"+e);
+                    loggedError = true;
                 }
             }
         }
+
+        private void OnApplicationQuit()
+        {
+            ArchipelagoClient.Disconnect();
+            Application.Quit();
+        }
+
+        private IEnumerator DelayInformation()
+        {
+            yield return new WaitForSeconds(5.0f);
+            cLevel = gameSaveManager.gameData.generalGameData.currentLevel - 1;
+            cFlags = scrWorldSaveDataContainer.instance.coinFlags;
+        }
         
+        private IEnumerator FirstLoginFix()
+        {
+            yield return new WaitForSeconds(3.0f);
+            ArchipelagoClient.Connect();
+        }
+        
+        private static IEnumerator SyncState()
+        {
+            yield return new WaitForSeconds(4f);
+            var generalGameData = scrGameSaveManager.instance.gameData.generalGameData;
+            void SyncValue<T>(ref T gameDataValue, T clientValue)
+            {
+                if (!EqualityComparer<T>.Default.Equals(gameDataValue, clientValue))
+                {
+                    gameDataValue = clientValue;
+                }
+            }
+            // Sync Coins, Cassettes, Keys
+            SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.coinAmount);
+            SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.coinAmount);
+            SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.cassetteAmount);
+            SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.keyAmount);
+            // Sync Special Unlocks (Super Jump, Contact Lists)
+            SyncValue(ref generalGameData.secretMove, ArchipelagoClient.superJump);
+            SyncValue(ref generalGameData.wave1, ArchipelagoClient.contactList1);
+            SyncValue(ref generalGameData.wave2, ArchipelagoClient.contactList2);
+            // Sync Level Unlocks (Tickets) - No ref here
+            void SyncLevel(int levelIndex, bool clientValue)
+            {
+                if (generalGameData.unlockedLevels[levelIndex] != clientValue)
+                {
+                    generalGameData.unlockedLevels[levelIndex] = clientValue;
+                }
+            }
+            // Sync levels
+            SyncLevel(2, ArchipelagoClient.ticket1);
+            SyncLevel(3, ArchipelagoClient.ticket2);
+            SyncLevel(4, ArchipelagoClient.ticket3);
+            SyncLevel(5, ArchipelagoClient.ticket4);
+            SyncLevel(6, ArchipelagoClient.ticket5);
+            SyncLevel(7, ArchipelagoClient.ticket6);
+        }
+
         private void LogFlags()
         {
-            _saveDataCoinFlag.ForEach(Logger.LogMessage);
-            _saveDataCassetteFlag.ForEach(Logger.LogMessage);
-            _saveDataFishFlag.ForEach(Logger.LogMessage);
-            _saveDataMiscFlag.ForEach(Logger.LogMessage);
-            _saveDataLetterFlag.ForEach(Logger.LogMessage);
-            _saveDataGeneralFlag.ForEach(Logger.LogMessage);
+            saveDataCoinFlag.ForEach(Logger.LogMessage);
+            saveDataCassetteFlag.ForEach(Logger.LogMessage);
+            saveDataFishFlag.ForEach(Logger.LogMessage);
+            saveDataMiscFlag.ForEach(Logger.LogMessage);
+            saveDataLetterFlag.ForEach(Logger.LogMessage);
+            saveDataGeneralFlag.ForEach(Logger.LogMessage);
         }
 
         public void SendNote(string note, float time)
@@ -198,35 +254,35 @@ namespace NikoArchipelago
             errorNote.key = "!!What's my line?!!";
             var tmp = noteItem;
             //TODO: Find a more suitable fix for errorNote.key or fix the Note.key being set to null
-            if (noteDisplayer.notificationQueue.Count > 0)
+            if (NoteDisplayer.notificationQueue.Count > 0)
             {
-                noteDisplayer.notificationQueue.Clear();
+                NoteDisplayer.notificationQueue.Clear();
             }
             tmp.timed = true;
             tmp.avatar = scrSnail.instance.sprFoodFull;
             tmp.duration = time;
             tmp.key = note;
-            noteDisplayer.AddNotification(tmp);
-            noteDisplayer.textMesh.text = tmp.key;
-            Logger.LogMessage("Note: " + noteDisplayer.textMesh.text);
+            NoteDisplayer.AddNotification(tmp);
+            NoteDisplayer.textMesh.text = tmp.key;
+            Logger.LogMessage("Note: " + NoteDisplayer.textMesh.text);
         }
         
         public static void APSendNote(string note, float time)
         {
             var apNote = ScriptableObject.CreateInstance<Notification>();
             //TODO: create a new apNote instead of using the same one and add it to the queue
-            if (noteDisplayer.notificationQueue.Count > 0)
+            if (NoteDisplayer.notificationQueue.Count > 0)
             {
-                noteDisplayer.notificationQueue.Clear();
+                NoteDisplayer.notificationQueue.Clear();
             }
             apNote.timed = true;
             apNote.avatar = scrSnail.instance.sprFoodFull;
             apNote.duration = time;
             apNote.key = note;
-            noteDisplayer.AddNotification(apNote);
-            noteDisplayer.textMesh.text = note;
-            BepinLogger.LogMessage("Note: " + noteDisplayer.textMesh.text);
-            var i = noteDisplayer.notificationQueue.Count;
+            NoteDisplayer.AddNotification(apNote);
+            NoteDisplayer.textMesh.text = note;
+            BepinLogger.LogMessage("Note: " + NoteDisplayer.textMesh.text);
+            //var i = noteDisplayer.notificationQueue.Count;
             // for (int j = 0; j < i; j++)
             // {
             //     noteDisplayer.notificationQueue[j].duration = 0.1f;
@@ -241,9 +297,9 @@ namespace NikoArchipelago
         
         private IEnumerator SendNoteDelay(string text, float delay, float noteTime, bool isDeath = false)
         {
-            _waited = false;
+            waited = false;
             yield return new WaitForSeconds(delay);
-            _waited = true;
+            waited = true;
             SendNote(text, noteTime);
             if (isDeath)
             {
@@ -253,31 +309,31 @@ namespace NikoArchipelago
         
         public void Flags()
         {
-            _saveDataCoinFlag = scrWorldSaveDataContainer.instance.coinFlags;
-            _saveDataCassetteFlag = scrWorldSaveDataContainer.instance.cassetteFlags;
-            _saveDataFishFlag = scrWorldSaveDataContainer.instance.fishFlags;
-            _saveDataLetterFlag = scrWorldSaveDataContainer.instance.letterFlags;
-            _saveDataMiscFlag = scrWorldSaveDataContainer.instance.miscFlags;
-            _saveDataGeneralFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
-            _unlockedLevels = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels;
-            _coinTotal = scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal;
+            saveDataCoinFlag = scrWorldSaveDataContainer.instance.coinFlags;
+            saveDataCassetteFlag = scrWorldSaveDataContainer.instance.cassetteFlags;
+            saveDataFishFlag = scrWorldSaveDataContainer.instance.fishFlags;
+            saveDataLetterFlag = scrWorldSaveDataContainer.instance.letterFlags;
+            saveDataMiscFlag = scrWorldSaveDataContainer.instance.miscFlags;
+            saveDataGeneralFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
+            unlockedLevels = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels;
+            coinTotal = scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal;
 
-            CheckNewFlag(ref _coinFlg, _saveDataCoinFlag, "Coin");
-            CheckNewFlag(ref _cassetteFlg, _saveDataCassetteFlag, nameof(Cassette));
-            CheckNewFlag(ref _fishFlg, _saveDataFishFlag, nameof(Fish));
-            CheckNewFlag(ref _miscFlg, _saveDataMiscFlag, "Misc");
-            CheckNewFlag(ref _letterFlg, _saveDataLetterFlag, nameof(Letter));
-            CheckNewFlag(ref _generalFlg, _saveDataGeneralFlag, "General");
+            CheckNewFlag(ref coinFlg, saveDataCoinFlag, "Coin");
+            CheckNewFlag(ref cassetteFlg, saveDataCassetteFlag, nameof(Cassette));
+            CheckNewFlag(ref fishFlg, saveDataFishFlag, nameof(Fish));
+            CheckNewFlag(ref miscFlg, saveDataMiscFlag, "Misc");
+            CheckNewFlag(ref letterFlg, saveDataLetterFlag, nameof(Letter));
+            CheckNewFlag(ref generalFlg, saveDataGeneralFlag, "General");
 
-            if (_unlockedLevels.Count > _levelIndex)
+            if (unlockedLevels.Count > levelIndex)
             {
-                Logger.LogWarning("New Level unlocked! " + _unlockedLevels[_levelIndex]);
-                _levelIndex++;
+                Logger.LogWarning("New Level unlocked! " + unlockedLevels[levelIndex]);
+                levelIndex++;
             }
 
-            if (_coinTotal <= _coinOld) return;
-            Logger.LogMessage("Total Coin Count = " + _coinTotal);
-            _coinOld++;
+            if (coinTotal <= coinOld) return;
+            Logger.LogMessage("Total Coin Count = " + coinTotal);
+            coinOld++;
         }
 
         private void CheckNewFlag(ref int flagIndex, List<string> flagList, string flagType)
@@ -334,10 +390,10 @@ namespace NikoArchipelago
                 }
             }
 
-            _goToLevel = Convert.ToInt32(GUI.TextField(new Rect(150, 170, 80, 20), _goToLevel.ToString()));
+            goToLevel = Convert.ToInt32(GUI.TextField(new Rect(150, 170, 80, 20), goToLevel.ToString()));
             if (GUI.Button(new Rect(16, 190, 100, 20), "TP to Level"))
             {
-                scrTrainManager.instance.UseTrain(_goToLevel, false);
+                scrTrainManager.instance.UseTrain(goToLevel, false);
             }
             
             if (GUI.Button(new Rect(16, 220, 100, 20), "Note"))

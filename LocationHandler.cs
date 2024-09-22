@@ -1,96 +1,92 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Archipelago.MultiClient.Net.Enums;
 using BepInEx.Logging;
 using NikoArchipelago.Archipelago;
+using UnityEngine;
+using Logger = BepInEx.Logging.Logger;
 
 namespace NikoArchipelago;
 
-public class LocationHandler
+public class LocationHandler : MonoBehaviour
 {
-    private long baseID = 598_145_444_000;
+    private static long baseID = 598_145_444_000;
     public static ManualLogSource BepinLogger;
-    public static Plugin Plugin;
+    private static int index = 0;
+    private static List<string> _saveDataCoinFlag;
+    private static bool _errored, _errored2;
     
-    private static scrWorldSaveDataContainer _worldSaveDataContainer;
-    private static ArchipelagoClient _archipelagoClient;
+    public static void CheckLocation(int level, long id = 0, string flag = "")
+    {
+        foreach (var locationEntry in Locations.CoinLocations)
+        {
+            if (!scrWorldSaveDataContainer.instance.coinFlags[level].Contains(flag)) return;
+            if (locationEntry.Value.Flag == flag && locationEntry.Value.Level == level)
+            {
+                ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                Plugin.BepinLogger.LogWarning($"Obtained {flag} at {locationEntry.Value.ID} in level {level} successfully!");
+            }
+        }
+    }
+
+    public static async void Update2()
+    {
+        try
+        {
+            _saveDataCoinFlag = scrWorldSaveDataContainer.instance.coinFlags;
+            var currentLevel = scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1;
+            var clel = Plugin.cLevel;
+            var cflg = Plugin.cFlags;
+            var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+            if (cflg.Count > index)
+            {
+                foreach (var locationEntry in Locations.CoinLocations.Where(locationEntry => 
+                             locationEntry.Value.Level == clel && 
+                             cflg[index] == locationEntry.Value.Flag))
+                {
+                    // Check the location if the flag matches
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                    index++;
+                    BepinLogger.LogMessage($"Index is at: {index}, List is '{_saveDataCoinFlag.Count}' long, current flag: {_saveDataCoinFlag[index]}, current level: {currentLevel}");
+                    //await ArchipelagoClient.SyncItemsFromDataStorage();
+                }
+            }
+            else if (index > cflg.Count)
+            {
+                index = 0;
+            }
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            if (!_errored)
+            {
+                // Log the error and reset the index to prevent further out-of-range issues
+                Plugin.BepinLogger.LogWarning($"Index out of range: {ex.Message}");
+                _errored = true;
+                index = 0;
+            }
+            index = 0;
+        }
+        catch (Exception ex)
+        {
+            if (!_errored2)
+            {
+                // Catch any other exceptions and log them
+                Plugin.BepinLogger.LogWarning($"An unexpected error occurred: {ex.Message}");
+                _errored2 = true;
+            }
+        }
+    }
     
-    // Initialization method to set up the required dependencies
-    public static void Initialize(scrWorldSaveDataContainer dataContainer, ArchipelagoClient client)
-    {
-        _worldSaveDataContainer = dataContainer;
-        _archipelagoClient = client;
-        Plugin.BepinLogger.LogInfo("LocationHandler Initialized");
-    }
-    public void CheckLocation(int level,long id, string flag)
-    {
-        Location locations = Locations.GetLocation(id);
-        if (!scrWorldSaveDataContainer.instance.coinFlags[level].Contains(flag)) return;
-        _archipelagoClient.OnLocationChecked(baseID + id);
-        Plugin.BepinLogger.LogWarning($"Obtained {flag} at {baseID+id} in level {level} successfully!");
-    }
-
-    private static HashSet<long> checkedLocations = new HashSet<long>(); // To track checked location IDs
-
-    public static void CheckLocationsForFlags(int level)
-    {
-        if (scrWorldSaveDataContainer.instance == null)
-        {
-            Plugin.BepinLogger.LogError("worldSaveDataContainer is null in CheckLocationsForFlags.");
-            return;
-        }
-
-        if (_archipelagoClient == null)
-        {
-            Plugin.BepinLogger.LogError("archipelagoClient is null in CheckLocationsForFlags.");
-            return;
-        }
-
-        // Get the flag string for the current level
-        var levelFlag = scrWorldSaveDataContainer.instance.coinFlags[level];
-        if (string.IsNullOrEmpty(levelFlag))
-        {
-            Plugin.BepinLogger.LogWarning($"No flag found for level {level}.");
-            return;
-        }
-
-        // Iterate through each Location object in the dictionary
-        foreach (var locationEntry in Locations.LocationNames)
-        {
-            var location = locationEntry.Value;
-            if (string.IsNullOrEmpty(location.Flag))
-            {
-                Plugin.BepinLogger.LogWarning($"Location {location.ID} has an empty flag.");
-                continue;
-            }
-            Plugin.BepinLogger.LogInfo($"Checking location: {location.ID} with flag {location.Flag}");
-
-            // Skip if this location has already been checked
-            if (checkedLocations.Contains(location.ID))
-            {
-                Plugin.BepinLogger.LogInfo($"Location {location.ID} has already been checked.");
-                continue;
-            }
-
-            // Check if the location's flag matches the flag for the current level
-            if (location.Level == level && location.Flag == levelFlag)
-            {
-                Plugin.BepinLogger.LogInfo($"Match found for flag {location.Flag} at location {location.ID}");
-
-                _archipelagoClient.OnLocationChecked(location.ID);
-                Plugin.BepinLogger.LogWarning($"Obtained {location.Flag} at {location.ID} in level {level} successfully!");
-
-                // Add this location to the checked list to avoid checking it again
-                checkedLocations.Add(location.ID);
-            }
-        }
-    }
-    public void WinCompletion()
+    public static void WinCompletion()
     {
         //TODO: Still not working
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 1 ||
             !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview")) return;
         BepinLogger.LogWarning("HEEEEEEEELEP PEPPER INTERVIEW!");
-        _archipelagoClient.SendCompletion();
+        ArchipelagoClient.SendCompletion();
     }
 }

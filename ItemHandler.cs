@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using BepInEx;
 using Newtonsoft.Json;
@@ -38,22 +39,12 @@ public static class ItemHandler
         string jsonData = JsonConvert.SerializeObject(coinData, Formatting.Indented);
         File.WriteAllText(jsonFilePath, jsonData);
     }
+
     public static void AddCoin(int amount = 1, string sender = "")
     {
-        // Load current coin data from JSON
-        CoinData coinData = LoadCoinData();
-
-        // Increment call count and update coin amount
-        coinData.AddCoinCallCount++;
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
-
-        // Send notification and save the game
         Plugin.APSendNote($"Received Coin from {sender}!", 4f);
         scrGameSaveManager.instance.SaveGame();
-
-        // Save the updated call count to JSON
-        SaveCoinData(coinData);
-        scrGameSaveManager.instance.gameData.generalGameData.coinAmount = coinData.AddCoinCallCount;
     }
 
     public static void AddCassette(int amount = 1, string sender = "")
