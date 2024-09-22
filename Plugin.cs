@@ -39,6 +39,12 @@ namespace NikoArchipelago
          * worldsData:
          * -> WorldsData.coinFlags geht von 0-6 coinFlags
          * -> WorldsData.cassetteFlags geht von 0-6 cassetteFlags, etc. Enthält alle welten/level| 7-15 existieren nicht bzw. cutscenes
+         * TODO: Für release: Optionen von SlotData bekommen,
+         * TODO: Cassette kosten ändern,
+         * TODO: Notification Queue fixen,
+         * TODO: Kiosk level check zu 8+ ändern (sonst temporär den Preis bei shuffled Tickets auf 99 setzen),
+         * TODO: Fehlende Locations implementieren,
+         * TODO: 
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
@@ -65,6 +71,8 @@ namespace NikoArchipelago
         public bool worldReady;
         public static int cLevel;
         public static List<string> cFlags;
+        private bool _debugMode;
+        private scrCursor cursor;
         
         private void Awake()
         {
@@ -91,7 +99,6 @@ namespace NikoArchipelago
             GameOptions.MusicVolume = mus;
             GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
-            //StartCoroutine(CheckWorldSaveManager());
         }
         
         private IEnumerator CheckGameSaveManager()
@@ -162,11 +169,17 @@ namespace NikoArchipelago
                 Flags();
                 if (worldReady && ArchipelagoClient.Authenticated)
                 {
-                    StartCoroutine(DelayInformation());
                     //_ = ArchipelagoClient.SyncItemsFromDataStorage();
+                    StartCoroutine(DelayInformation());
+                    //CassetteCost.Update();
                     LocationHandler.Update2();
                     LocationHandler.WinCompletion();
                     StartCoroutine(SyncState());
+                }
+
+                if (File.Exists(Path.Combine(Paths.PluginPath, "debug.txt")))
+                {
+                    _debugMode = true;
                 }
                 if (loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
@@ -187,10 +200,10 @@ namespace NikoArchipelago
             ArchipelagoClient.Disconnect();
             Application.Quit();
         }
-
+        
         private IEnumerator DelayInformation()
         {
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(1.0f);
             cLevel = gameSaveManager.gameData.generalGameData.currentLevel - 1;
             cFlags = scrWorldSaveDataContainer.instance.coinFlags;
         }
@@ -213,14 +226,14 @@ namespace NikoArchipelago
                 }
             }
             // Sync Coins, Cassettes, Keys
-            SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.coinAmount);
-            SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.coinAmount);
-            SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.cassetteAmount);
-            SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.keyAmount);
+            SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
+            SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
+            SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
+            SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount);
             // Sync Special Unlocks (Super Jump, Contact Lists)
-            SyncValue(ref generalGameData.secretMove, ArchipelagoClient.superJump);
-            SyncValue(ref generalGameData.wave1, ArchipelagoClient.contactList1);
-            SyncValue(ref generalGameData.wave2, ArchipelagoClient.contactList2);
+            SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
+            SyncValue(ref generalGameData.wave1, ArchipelagoClient.ContactList1);
+            SyncValue(ref generalGameData.wave2, ArchipelagoClient.ContactList2);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
             {
@@ -230,12 +243,12 @@ namespace NikoArchipelago
                 }
             }
             // Sync levels
-            SyncLevel(2, ArchipelagoClient.ticket1);
-            SyncLevel(3, ArchipelagoClient.ticket2);
-            SyncLevel(4, ArchipelagoClient.ticket3);
-            SyncLevel(5, ArchipelagoClient.ticket4);
-            SyncLevel(6, ArchipelagoClient.ticket5);
-            SyncLevel(7, ArchipelagoClient.ticket6);
+            SyncLevel(2, ArchipelagoClient.Ticket1);
+            SyncLevel(3, ArchipelagoClient.Ticket2);
+            SyncLevel(4, ArchipelagoClient.Ticket3);
+            SyncLevel(5, ArchipelagoClient.Ticket4);
+            SyncLevel(6, ArchipelagoClient.Ticket5);
+            SyncLevel(7, ArchipelagoClient.Ticket6);
         }
 
         private void LogFlags()
@@ -351,20 +364,24 @@ namespace NikoArchipelago
         
         private void OnGUI()
         {
-            GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
             ArchipelagoConsole.OnGUI();
-            
             string statusMessage;
             if (ArchipelagoClient.Authenticated)
             {
                 BackgroundForText(new Rect(10, 10, 280, 60));
                 statusMessage = " Status: Connected";
+                GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
                 GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
+                if (GUI.Button(new Rect(160, 16, 100, 20), "Disconnect") && ArchipelagoClient.Authenticated)
+                {
+                    ArchipelagoClient.Disconnect();
+                }
             }
             else
             {
                 BackgroundForText(new Rect(10, 14, 320, 136));
                 statusMessage = " Status: Disconnected";
+                GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
                 GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
                 GUI.Label(new Rect(16, 70, 150, 20), "Host: ");
                 GUI.Label(new Rect(16, 90, 150, 20), "Player Name: ");
@@ -380,6 +397,7 @@ namespace NikoArchipelago
                 }
             }
 
+            if (!_debugMode) return;
             if (GUI.Button(new Rect(16, 150, 100, 20), "All Flags"))
             {
                 var pls = gameSaveManager.gameData.worldsData;
@@ -389,13 +407,11 @@ namespace NikoArchipelago
                     pls[i].coinFlags.ForEach(Logger.LogInfo);
                 }
             }
-
             goToLevel = Convert.ToInt32(GUI.TextField(new Rect(150, 170, 80, 20), goToLevel.ToString()));
             if (GUI.Button(new Rect(16, 190, 100, 20), "TP to Level"))
             {
                 scrTrainManager.instance.UseTrain(goToLevel, false);
             }
-            
             if (GUI.Button(new Rect(16, 220, 100, 20), "Note"))
             {
                 SendNote("VERY LOOOONG text. Here goes nothing hihihihihihi", 2F);
@@ -404,13 +420,10 @@ namespace NikoArchipelago
             {
                 KillPlayer();
             }
+
             if (GUI.Button(new Rect(16, 280, 100, 20), "Cost-1"))
             {
                 levelData.levelPrices[scrTrainManager.instance.currentLevel + 1]--;
-            }
-            if (GUI.Button(new Rect(140, 220, 100, 20), "Disconnect"))
-            {
-                ArchipelagoClient.Disconnect();
             }
         }
 
@@ -420,21 +433,6 @@ namespace NikoArchipelago
             GUI.color = new Color(0f, 0f, 0f, 0.5F);
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
             GUI.color = startingColor;
-        }
-        [HarmonyPrefix, HarmonyPatch(typeof(levelData))]
-        public static void levelData_Prefix()
-        {
-            levelData.levelPrices[3] = 6;
-            levelData.levelPrices[4] = 11;
-            levelData.levelPrices[5] = 21;
-            levelData.levelPrices[6] = 26;
-            levelData.levelPrices[7] = 31;
-        }
-        [HarmonyPatch(typeof(scrKioskManager), nameof(Start), MethodType.Constructor)]
-        public static void KioskLevelFix()
-        {
-            _kioskManager = GameObject.Find("Kiosk").GetComponent<scrKioskManager>();
-            _kioskManager.buyableLevel += 8;
         }
     }
     

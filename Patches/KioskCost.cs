@@ -26,6 +26,7 @@ public class KioskCost
         levelData.levelPrices[5] = 21;
         levelData.levelPrices[6] = 26;
         levelData.levelPrices[7] = 31;
+        levelData.levelPrices[8] = 46;
         if (_changed) return;
         Plugin.BepinLogger.LogInfo("Changed LevelPrices");
         _changed = true;

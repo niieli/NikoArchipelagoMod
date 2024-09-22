@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
+using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 
 namespace NikoArchipelago.Archipelago;
@@ -19,10 +19,10 @@ public class ArchipelagoClient
     private bool attemptingConnection;
 
     public static ArchipelagoData ServerData = new();
-    private DeathLinkHandler DeathLinkHandler;
-    private static ArchipelagoSession session;
-    public int coinAmount, cassetteAmount, keyAmount;
-    public bool superJump, contactList1, contactList2, ticket1, ticket2, ticket3, ticket4, ticket5, ticket6;
+    private DeathLinkHandler deathLinkHandler;
+    private static ArchipelagoSession _session;
+    public int CoinAmount, CassetteAmount, KeyAmount;
+    public bool SuperJump, ContactList1, ContactList2, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6;
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -34,7 +34,7 @@ public class ArchipelagoClient
 
         try
         {
-            session = ArchipelagoSessionFactory.CreateSession(ServerData.Uri);
+            _session = ArchipelagoSessionFactory.CreateSession(ServerData.Uri);
             SetupSession();
         }
         catch (Exception e)
@@ -50,10 +50,10 @@ public class ArchipelagoClient
     /// </summary>
     private void SetupSession()
     {
-        session.MessageLog.OnMessageReceived += message => ArchipelagoConsole.LogMessage(message.ToString());
-        session.Items.ItemReceived += OnItemReceived;
-        session.Socket.ErrorReceived += OnSessionErrorReceived;
-        session.Socket.SocketClosed += OnSessionSocketClosed;
+        _session.MessageLog.OnMessageReceived += message => ArchipelagoConsole.LogMessage(message.ToString());
+        _session.Items.ItemReceived += OnItemReceived;
+        _session.Socket.ErrorReceived += OnSessionErrorReceived;
+        _session.Socket.SocketClosed += OnSessionSocketClosed;
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class ArchipelagoClient
             // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
             ThreadPool.QueueUserWorkItem(
                 _ => HandleConnectResult(
-                    session.TryConnectAndLogin(
+                    _session.TryConnectAndLogin(
                         Game,
                         ServerData.SlotName,
                         ItemsHandlingFlags.AllItems,
@@ -95,14 +95,14 @@ public class ArchipelagoClient
         {
             var success = (LoginSuccessful)result;
 
-            ServerData.SetupSession(success.SlotData, session.RoomState.Seed);
+            ServerData.SetupSession(success.SlotData, _session.RoomState.Seed);
             Authenticated = true;
 
-            DeathLinkHandler = new(session.CreateDeathLinkService(), ServerData.SlotName);
+            deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
 #if NET35
             session.Locations.CompleteLocationChecksAsync(null, ServerData.CheckedLocations.ToArray());
 #else
-            session.Locations.CompleteLocationChecksAsync(ServerData.CheckedLocations.ToArray());
+            _session.Locations.CompleteLocationChecksAsync(ServerData.CheckedLocations.ToArray());
 #endif
             outText = $"Successfully connected to {ServerData.Uri} as {ServerData.SlotName}!";
 
@@ -133,69 +133,25 @@ public class ArchipelagoClient
 #if NET35
         session?.Socket.Disconnect();
 #else
-        session?.Socket.DisconnectAsync();
+        _session?.Socket.DisconnectAsync();
 #endif
-        session = null;
+        _session = null;
         Authenticated = false;
     }
 
     public void SendMessage(string message)
     {
-        session.Socket.SendPacketAsync(new SayPacket { Text = message });
+        _session.Socket.SendPacketAsync(new SayPacket { Text = message });
     }
 
-    
-    /// <summary>
-    /// Synchronizes all item data from Archipelago's DataStorage when the player logs in.
-    /// </summary>
-    public static async Task SyncItemsFromDataStorage()
+    public static long SyncInventory()
     {
-        int coinAmount = await GetItemFromStorage("TotalCoins");
-        int cassetteAmount = await GetItemFromStorage("TotalCassettes");
-        int keyAmount = await GetItemFromStorage("TotalKeys");
-        int appleAmount = await GetItemFromStorage("TotalApples");
-        //int hasSuperJump = await GetItemFromStorage("SuperJump");
-        //int hasContactList1 = await GetItemFromStorage("ContactList1");
-        //int hasContactList2 = await GetItemFromStorage("ContactList2");
-
-        // Apply these values to your game data
-        if (scrGameSaveManager.instance.gameData.generalGameData.coinAmount > coinAmount)
+        foreach(ItemInfo item in _session.Items.AllItemsReceived)
         {
-            scrGameSaveManager.instance.gameData.generalGameData.coinAmount = coinAmount;
+            long itemId = item.ItemId;
+            return itemId;
         }
-        if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount > cassetteAmount)
-        {
-            scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount = cassetteAmount;
-        }
-        if (scrGameSaveManager.instance.gameData.generalGameData.keyAmount > keyAmount)
-        {
-            scrGameSaveManager.instance.gameData.generalGameData.keyAmount = keyAmount;
-        }
-        //scrGameSaveManager.instance.gameData.generalGameData.secretMove = scrGameSaveManager.instance.gameData.generalGameData.secretMove != 1.Equals(hasSuperJump) && hasSuperJump.Equals(1);
-        //scrGameSaveManager.instance.gameData.generalGameData.wave1 = scrGameSaveManager.instance.gameData.generalGameData.wave1 != 1.Equals(hasContactList1);
-        //scrGameSaveManager.instance.gameData.generalGameData.wave2 = scrGameSaveManager.instance.gameData.generalGameData.wave2 != 1.Equals(hasContactList2);
-        //scrGameSaveManager.instance.gameData.generalGameData.appleAmount += appleAmount;
-        Plugin.BepinLogger.LogInfo("Sync items from data storage finished.");
-    }
-
-    /// <summary>
-    /// Retrieves an item count from Archipelago's DataStorage.
-    /// </summary>
-    /// <param name="key">The key used to store the item count in DataStorage.</param>
-    /// <returns>The stored value, or 0 if no value exists.</returns>
-    private static async Task<int> GetItemFromStorage(string key)
-    {
-        var value = await session.DataStorage[key].GetAsync();
-        return value?.ToObject<int>() ?? 0;
-    }
-
-    /// <summary>
-    /// Stores an updated item count to Archipelago's DataStorage.
-    /// </summary>
-    private static Task StoreItemToStorage(string key, int value)
-    {
-        session.DataStorage[key].Initialize(value);
-        return Task.CompletedTask;
+        return 0;
     }
     
     /// <summary>
@@ -210,70 +166,63 @@ public class ArchipelagoClient
 
         ServerData.Index++;
         
-        var senderName = session.Players.GetPlayerName(receivedItem.Player);
+        var senderName = _session.Players.GetPlayerName(receivedItem.Player);
         
         switch (receivedItem.ItemId)
         {
             case 598_145_444_000:
                 ItemHandler.AddCoin(1, senderName);
-                coinAmount++;
-                await StoreItemToStorage("TotalCoins", scrGameSaveManager.instance.gameData.generalGameData.coinAmount);
+                CoinAmount++;
                 break;
             case 598_145_444_000 + 1: // Cassette
                 ItemHandler.AddCassette(1, senderName);
-                cassetteAmount++;
-                await StoreItemToStorage("TotalCassettes", scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount);
+                CassetteAmount++;
                 break;
             case 598_145_444_000 + 2: // Key
                 ItemHandler.AddKey(1, senderName);
-                keyAmount++;
-                await StoreItemToStorage("TotalKeys", scrGameSaveManager.instance.gameData.generalGameData.keyAmount);
+                KeyAmount++;
                 break;
             case 598_145_444_000 + 3: // Apples
                 ItemHandler.AddApples(25, senderName);
-                await StoreItemToStorage("TotalApples", scrGameSaveManager.instance.gameData.generalGameData.appleAmount);
                 break;
             case 598_145_444_000 + 4: // Contact List 1
                 ItemHandler.AddContactList1(senderName);
-                contactList1 = true;
-                await StoreItemToStorage("ContactList1", scrGameSaveManager.instance.gameData.generalGameData.wave1 ? 1 : 0);
+                ContactList1 = true;
                 break;
             case 598_145_444_000 + 5: // Contact List 2
                 ItemHandler.AddContactList2(senderName);
-                contactList2 = true;
-                await StoreItemToStorage("ContactList2", scrGameSaveManager.instance.gameData.generalGameData.wave2 ? 1 : 0);
+                ContactList2 = true;
                 break;
             case 598_145_444_000 + 6: // Super Jump
                 ItemHandler.AddSuperJump(senderName);
-                superJump = true;
-                await StoreItemToStorage("SuperJump", scrGameSaveManager.instance.gameData.generalGameData.secretMove ? 1 : 0);
+                SuperJump = true;
                 break;
             case 598_145_444_000+7:
                 ItemHandler.AddLetter(1, senderName);
                 break;
             case 598_145_444_000+8:
                 ItemHandler.AddTicket(2, senderName);
-                ticket1 = true;
+                Ticket1 = true;
                 break;
             case 598_145_444_000+9:
                 ItemHandler.AddTicket(3, senderName);
-                ticket2 = true;
+                Ticket2 = true;
                 break;
             case 598_145_444_000+10:
                 ItemHandler.AddTicket(4, senderName);
-                ticket3 = true;
+                Ticket3 = true;
                 break;
             case 598_145_444_000+11:
                 ItemHandler.AddTicket(5, senderName);
-                ticket4 = true;
+                Ticket4 = true;
                 break;
             case 598_145_444_000+12:
                 ItemHandler.AddTicket(6, senderName);
-                ticket5 = true;
+                Ticket5 = true;
                 break;
             case 598_145_444_000+13:
                 ItemHandler.AddTicket(7, senderName);
-                ticket6 = true;
+                Ticket6 = true;
                 break;
         }
         // if items can be received while in an invalid state for actually handling them, they can be placed in a local
@@ -282,14 +231,15 @@ public class ArchipelagoClient
 
     public static void SendCompletion()
     {
+        _session.SetGoalAchieved();
         var statusUpdatePacket = new StatusUpdatePacket();
         statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
-        session.Socket.SendPacket(statusUpdatePacket);
+        _session.Socket.SendPacket(statusUpdatePacket);
     }
 
     public static void OnLocationChecked(long locationId)
     {
-        session.Locations.CompleteLocationChecks(locationId);
+        _session.Locations.CompleteLocationChecks(locationId);
     }
 
     /// <summary>
