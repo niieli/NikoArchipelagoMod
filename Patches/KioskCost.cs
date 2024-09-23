@@ -4,19 +4,15 @@ using UnityEngine.Bindings;
 
 namespace NikoArchipelago.Patches;
 
-public class KioskCost
+public static class KioskCost
 {
     private static scrKioskManager _kioskManager;
     private static Plugin plugin;
-    private static bool _changed;
-    public KioskCost()
-    {
-        _kioskManager = GameObject.Find("Kiosk").GetComponent<scrKioskManager>();
-    }
+    private static bool _changed, _changed2;
     
     public static void Init()
     {
-        Harmony.CreateAndPatchAll(typeof(levelData));
+        
     }
     [HarmonyPrefix, HarmonyPatch(typeof(levelData))]
     public static void levelData_Prefix()
@@ -32,9 +28,31 @@ public class KioskCost
         _changed = true;
     }
 
-    [HarmonyPatch(typeof(scrKioskManager), "Start", MethodType.Constructor)]
-    public static void KioskLevelFix()
+    [HarmonyPatch(typeof(scrKioskManager), "Update")]  // Patch the "Start" method in scrKioskManager
+    public static class KioskLevelFixPatch
     {
-        _kioskManager.buyableLevel += 8;
+        private static scrKioskManager _kioskManager;
+        private static bool _changed2 = false;
+
+        [HarmonyPostfix]
+        public static void KioskLevelFix(scrKioskManager __instance)
+        {
+            if (_changed2) return;
+
+            // Access the instance of scrKioskManager
+            _kioskManager = __instance;
+
+            // Use reflection to access private field "buyableLevel" and modify it
+            var buyableLevelField = AccessTools.Field(typeof(scrKioskManager), "buyableLevel");
+            if (buyableLevelField != null)
+            {
+                int currentBuyableLevel = (int)buyableLevelField.GetValue(_kioskManager);  // Get current value
+                buyableLevelField.SetValue(_kioskManager, currentBuyableLevel + 8);  // Add 8 to the buyable level
+            }
+
+            // Log and mark as changed
+            Plugin.BepinLogger.LogInfo("Changed Kiosk");
+            _changed2 = true;
+        }
     }
 }

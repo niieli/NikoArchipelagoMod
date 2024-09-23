@@ -9,6 +9,7 @@ using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Patches;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago
 {
@@ -41,7 +42,6 @@ namespace NikoArchipelago
          * -> WorldsData.cassetteFlags geht von 0-6 cassetteFlags, etc. Enthält alle welten/level| 7-15 existieren nicht bzw. cutscenes
          * TODO: Für release: Optionen von SlotData bekommen,
          * TODO: Cassette kosten ändern,
-         * TODO: Notification Queue fixen,
          * TODO: Kiosk level check zu 8+ ändern (sonst temporär den Preis bei shuffled Tickets auf 99 setzen),
          * TODO: Fehlende Locations implementieren (Gary's Garden),
          */
@@ -56,6 +56,7 @@ namespace NikoArchipelago
         private string saveName;
         public scrGameSaveManager gameSaveManager;
         private bool loggedError, loggedSuccess, newFile, saveReady, waited;
+        private Harmony harmony;
 
         public static CustomButton AptestButton;
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
@@ -66,13 +67,14 @@ namespace NikoArchipelago
         public static scrNotificationDisplayer NoteDisplayer;
         Notification noteItem = ScriptableObject.CreateInstance<Notification>();
         private scrHopOnBump hopOnBump;
-        private static scrKioskManager _kioskManager;
+        public static scrKioskManager _kioskManager;
         public bool worldReady;
         public static int cLevel;
         public static List<string> cFlags;
-        private bool _debugMode;
+        private static bool _debugMode;
         private static readonly string archipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         public static string seed;
+        private static scrGameSaveManager gameSaveManagerStatic;
         
         private void Awake()
         {
@@ -104,6 +106,23 @@ namespace NikoArchipelago
             GameOptions.MusicVolume = mus;
             GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
+            
+            harmony = new Harmony(PluginGuid);
+            harmony.PatchAll();
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            Logger.LogInfo("Plugin loaded and Harmony patches applied initially!");
+        }
+        
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            Logger.LogInfo($"Scene '{scene.name}' loaded. Applying Harmony patches again.");
+            harmony.PatchAll();
+        }
+        
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            harmony.UnpatchSelf();
         }
         
         private IEnumerator CheckGameSaveManager()
@@ -115,6 +134,7 @@ namespace NikoArchipelago
             }
             Logger.LogInfo("GameSaveManager is not null.");
             gameSaveManager = scrGameSaveManager.instance;
+            gameSaveManagerStatic = scrGameSaveManager.instance;
             saveReady = true;
         }
 
@@ -181,11 +201,7 @@ namespace NikoArchipelago
                     LocationHandler.WinCompletion();
                     StartCoroutine(SyncState());
                 }
-
-                if (File.Exists(Path.Combine(Paths.PluginPath, "debug.txt")))
-                {
-                    _debugMode = true;
-                }
+                _debugMode = File.Exists(Path.Combine(Paths.PluginPath, "debug.txt"));
                 if (loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
                 loggedSuccess = true;
@@ -222,7 +238,9 @@ namespace NikoArchipelago
         private static IEnumerator SyncState()
         {
             yield return new WaitForSeconds(4f);
+            var level = gameSaveManagerStatic.gameData.generalGameData.currentLevel;
             var generalGameData = scrGameSaveManager.instance.gameData.generalGameData;
+            List<int> cutsceneLevels = new List<int> { 15, 25 };
             void SyncValue<T>(ref T gameDataValue, T clientValue)
             {
                 if (!EqualityComparer<T>.Default.Equals(gameDataValue, clientValue))
@@ -254,6 +272,19 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
+            switch (level)
+            {
+                case 2 when ArchipelagoClient.Ticket1 == false && _debugMode == false:
+                case 3 when ArchipelagoClient.Ticket2 == false && _debugMode == false:
+                case 4 when ArchipelagoClient.Ticket3 == false && _debugMode == false:
+                case 5 when ArchipelagoClient.Ticket4 == false && _debugMode == false:
+                case 6 when ArchipelagoClient.Ticket5 == false && _debugMode == false:
+                case 7 when ArchipelagoClient.Ticket6 == false && _debugMode == false:
+                    scrTrainManager.instance.UseTrain(1, false);
+                    BepinLogger.LogInfo($"You don't have the corresponding Ticket for Level: '{level}' !");
+                    APSendNote($"You don't have the corresponding Ticket for Level: '{level}' !", 10f);
+                    break;
+            }
         }
 
         private void LogFlags()
@@ -271,40 +302,23 @@ namespace NikoArchipelago
             var errorNote = noteItem;
             errorNote.key = "!!What's my line?!!";
             var tmp = noteItem;
-            //TODO: Find a more suitable fix for errorNote.key or fix the Note.key being set to null
-            if (NoteDisplayer.notificationQueue.Count > 0)
-            {
-                NoteDisplayer.notificationQueue.Clear();
-            }
             tmp.timed = true;
             tmp.avatar = scrSnail.instance.sprFoodFull;
             tmp.duration = time;
             tmp.key = note;
             NoteDisplayer.AddNotification(tmp);
-            NoteDisplayer.textMesh.text = tmp.key;
             Logger.LogMessage("Note: " + NoteDisplayer.textMesh.text);
         }
         
         public static void APSendNote(string note, float time)
         {
             var apNote = ScriptableObject.CreateInstance<Notification>();
-            //TODO: create a new apNote instead of using the same one and add it to the queue
-            if (NoteDisplayer.notificationQueue.Count > 0)
-            {
-                NoteDisplayer.notificationQueue.Clear();
-            }
             apNote.timed = true;
             apNote.avatar = scrSnail.instance.sprFoodFull;
             apNote.duration = time;
             apNote.key = note;
             NoteDisplayer.AddNotification(apNote);
-            NoteDisplayer.textMesh.text = note;
             BepinLogger.LogMessage("Note: " + NoteDisplayer.textMesh.text);
-            //var i = noteDisplayer.notificationQueue.Count;
-            // for (int j = 0; j < i; j++)
-            // {
-            //     noteDisplayer.notificationQueue[j].duration = 0.1f;
-            // }
         }
         public void KillPlayer(string cause)
         {
@@ -395,10 +409,16 @@ namespace NikoArchipelago
                 ArchipelagoClient.ServerData.Uri = GUI.TextField(new Rect(150, 70, 150, 20), ArchipelagoClient.ServerData.Uri);
                 ArchipelagoClient.ServerData.SlotName = GUI.TextField(new Rect(150, 90, 150, 20), ArchipelagoClient.ServerData.SlotName);
                 ArchipelagoClient.ServerData.Password = GUI.TextField(new Rect(150, 110, 150, 20), ArchipelagoClient.ServerData.Password);
-
-                if (GUI.Button(new Rect(16, 130, 100, 20), "Connect") && !ArchipelagoClient.ServerData.SlotName.IsNullOrWhiteSpace())
+                if (loggedSuccess)
                 {
-                    ArchipelagoClient.Connect();
+                    if (GUI.Button(new Rect(16, 130, 100, 20), "Connect") && !ArchipelagoClient.ServerData.SlotName.IsNullOrWhiteSpace())
+                    {
+                        ArchipelagoClient.Connect();
+                    }
+                }
+                else
+                {
+                    GUI.Label(new Rect(16, 124, 200, 24), "Initializing Data...");
                 }
             }
 
