@@ -243,17 +243,21 @@ public class Locations
         { BaseID + 195, new Location(BaseID + 195, "true", 3) },
         { BaseID + 196, new Location(BaseID + 196, "true", 4) },
         { BaseID + 197, new Location(BaseID + 197, "true", 5) },
+        //{ BaseID + 201, new Location(BaseID + 201, "true", 23) },
+
     };
     
-    public static Dictionary<long, Location> GaryGardenLocations = new()
+    //Gary's Garden
+    public static Dictionary<long, Location> GaryGardenCoinLocations = new()
     {
-        //Gary's Garden
-        
         //Coins
         { BaseID + 198, new Location(BaseID + 198, "main", 23) },
         { BaseID + 199, new Location(BaseID + 199, "cassetteCoin2", 23) },
         { BaseID + 200, new Location(BaseID + 200, "cassetteCoin", 23) },
-        
+    };
+    
+    public static Dictionary<long, Location> GaryGardenCassetteLocations = new()
+    {
         //Cassettes
         { BaseID + 183, new Location(BaseID + 183, "Cassette", 23) },
         { BaseID + 184, new Location(BaseID + 184, "Cassette (1)", 23) },
@@ -265,10 +269,8 @@ public class Locations
         { BaseID + 190, new Location(BaseID + 190, "Cassette (7)", 23) },
         { BaseID + 191, new Location(BaseID + 191, "Cassette (8)", 23) },
         { BaseID + 192, new Location(BaseID + 192, "Cassette (9)", 23) },
-        
-        //Handsome Frog
-        { BaseID + 201, new Location(BaseID + 201, "true", 23) },
     };
+    
     public static void AddLocation(long id, string flag, int level)
     {
         CoinLocations[id] = new Location(id, flag, level);

@@ -56,7 +56,7 @@ public class DeathLinkHandler
     private void DeathLinkReceived(DeathLink deathLink)
     {
         deathLinks.Enqueue(deathLink);
-
+        KillPlayer();
         Plugin.BepinLogger.LogDebug(deathLink.Cause.IsNullOrWhiteSpace()
             ? $"Received Death Link from: {deathLink.Source}"
             : deathLink.Cause);
@@ -76,7 +76,7 @@ public class DeathLinkHandler
             var cause = deathLink.Cause.IsNullOrWhiteSpace() ? GetDeathLinkCause(deathLink) : deathLink.Cause;
 
             //TODO kill the player
-            main.KillPlayer();
+            main.KillPlayer(cause);
             Plugin.BepinLogger.LogMessage(cause);
         }
         catch (Exception e)

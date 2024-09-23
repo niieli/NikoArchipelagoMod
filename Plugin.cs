@@ -43,8 +43,7 @@ namespace NikoArchipelago
          * TODO: Cassette kosten ändern,
          * TODO: Notification Queue fixen,
          * TODO: Kiosk level check zu 8+ ändern (sonst temporär den Preis bei shuffled Tickets auf 99 setzen),
-         * TODO: Fehlende Locations implementieren,
-         * TODO: 
+         * TODO: Fehlende Locations implementieren (Gary's Garden),
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
@@ -72,7 +71,8 @@ namespace NikoArchipelago
         public static int cLevel;
         public static List<string> cFlags;
         private bool _debugMode;
-        private scrCursor cursor;
+        private static readonly string archipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
+        public static string seed;
         
         private void Awake()
         {
@@ -86,6 +86,11 @@ namespace NikoArchipelago
             env = 0.4f;
             sfx = 0.4f;
             mus = 0.4f;
+            if (!Directory.Exists(archipelagoFolderPath))
+            {
+                Directory.CreateDirectory(archipelagoFolderPath);
+                Logger.LogInfo("Archipelago folder created.");
+            }
         }
 
         public void Load()
@@ -131,11 +136,11 @@ namespace NikoArchipelago
             {
                 NoteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
-                saveName = "APSave" + ArchipelagoClient.ServerData.SlotName + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
+                saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
                 if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
                 {
                     scrGameSaveManager.saveName = saveName;
-                    var savePath = Path.Combine(Application.persistentDataPath, saveName + ".json");
+                    var savePath = Path.Combine(archipelagoFolderPath, saveName + "_" + seed + ".json");
                     if (File.Exists(savePath))
                     {
                         scrGameSaveManager.dataPath = savePath;
@@ -301,11 +306,11 @@ namespace NikoArchipelago
             //     noteDisplayer.notificationQueue[j].duration = 0.1f;
             // }
         }
-        public void KillPlayer()
+        public void KillPlayer(string cause)
         {
-            ArchipelagoConsole.LogMessage("get deathlinked LMAO");
+            ArchipelagoConsole.LogMessage(cause);
             scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
-            StartCoroutine(SendNoteDelay("Deathlink LMAO", 8.2f, 5.0f, true));
+            StartCoroutine(SendNoteDelay(cause, 8.2f, 5.0f, true));
         }
         
         private IEnumerator SendNoteDelay(string text, float delay, float noteTime, bool isDeath = false)
@@ -418,7 +423,7 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 250, 100, 20), "Kill"))
             {
-                KillPlayer();
+                KillPlayer("GETTT DEATHLINKED HEEHEH");
             }
 
             if (GUI.Button(new Rect(16, 280, 100, 20), "Cost-1"))

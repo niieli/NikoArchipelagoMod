@@ -16,7 +16,7 @@ public class LocationHandler : MonoBehaviour
 {
     private static long baseID = 598_145_444_000;
     public static ManualLogSource BepinLogger;
-    private static int index, casIndex, miscIndex, letterIndex, genIndex, garyIndex;
+    private static int index, casIndex, miscIndex, letterIndex, genIndex, garyIndex, garyIndex2;
     private static bool _errored, _errored2, _sent;
     
     public static void CheckLocation(int level, long id = 0, string flag = "")
@@ -109,20 +109,32 @@ public class LocationHandler : MonoBehaviour
             {
                 genIndex = 0;
             }
-            // if (cflg.Count > garyIndex || casFlag.Count > garyIndex)
-            // {
-            //     foreach (var locationEntry in Locations.GaryGardenLocations.Where(locationEntry => 
-            //                  cflg[garyIndex] == locationEntry.Value.Flag && locationEntry.Value.Level == clel || 
-            //                  casFlag[garyIndex] == locationEntry.Value.Flag && locationEntry.Value.Level == clel))
-            //     {
-            //         ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
-            //     }
-            //     garyIndex++;
-            // }
-            // else if (garyIndex > cflg.Count || casFlag.Count > garyIndex)
-            // {
-            //     garyIndex = 0;
-            // }
+            if (cflg.Count > garyIndex)
+            {
+                foreach (var locationEntry in Locations.GaryGardenCoinLocations.Where(locationEntry => 
+                             cflg[garyIndex] == locationEntry.Value.Flag && locationEntry.Value.Level == clel)) 
+                {
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                }
+                garyIndex++;
+            }
+            else if (garyIndex > cflg.Count)
+            {
+                garyIndex = 0;
+            }
+            if (casFlag.Count > garyIndex2)
+            {
+                foreach (var locationEntry in Locations.GaryGardenCassetteLocations.Where(locationEntry => 
+                             casFlag[garyIndex2] == locationEntry.Value.Flag && locationEntry.Value.Level == clel))
+                {
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                }
+                garyIndex2++;
+            }
+            else if (casFlag.Count > garyIndex2)
+            {
+                garyIndex2 = 0;
+            }
         }
         catch (ArgumentOutOfRangeException ex)
         {
@@ -148,7 +160,6 @@ public class LocationHandler : MonoBehaviour
     
     public static void WinCompletion()
     {
-        //TODO: Still not working
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 1 ||
             !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview") || _sent) return;
         ArchipelagoClient.SendCompletion();
