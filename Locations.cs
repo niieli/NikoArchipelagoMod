@@ -217,11 +217,11 @@ public class Locations
         { BaseID + 99, new Location(BaseID + 99, "underfloorKey", 5) }, 
     };
     
-    public static Dictionary<long, Location> MiscLocations = new()
+    public static Dictionary<long, Location> GeneralLocations = new()
     {
-        { BaseID + 166, new Location(BaseID + 166, "true", 6) },
-        { BaseID + 167, new Location(BaseID + 167, "true", 3) },
-        { BaseID + 168, new Location(BaseID + 168, "true", 6) },
+        { BaseID + 166, new Location(BaseID + 166, "SecretMove Obtained", 6) },
+        { BaseID + 167, new Location(BaseID + 167, "CL1 Obtained", 3) },
+        { BaseID + 168, new Location(BaseID + 168, "CL2 Obtained", 6) },
     };
     
     public static Dictionary<long, Location> AchievementsLocations = new()
@@ -238,11 +238,11 @@ public class Locations
     
     public static Dictionary<long, Location> HandsomeLocations = new()
     {
-        { BaseID + 193, new Location(BaseID + 193, "true", 1) },
-        { BaseID + 194, new Location(BaseID + 194, "true", 2) },
-        { BaseID + 195, new Location(BaseID + 195, "true", 3) },
-        { BaseID + 196, new Location(BaseID + 196, "true", 4) },
-        { BaseID + 197, new Location(BaseID + 197, "true", 5) },
+        { BaseID + 193, new Location(BaseID + 193, "Froggy Hairball City", 1) },
+        { BaseID + 194, new Location(BaseID + 194, "Froggy Trash Kingdom", 2) },
+        { BaseID + 195, new Location(BaseID + 195, "Froggy Salmon Creek Forest", 3) }, 
+        { BaseID + 196, new Location(BaseID + 196, "Froggy Public Pool", 4) },
+        { BaseID + 197, new Location(BaseID + 197, "Froggy The Bathhouse", 5) },
         //{ BaseID + 201, new Location(BaseID + 201, "true", 23) },
 
     };
