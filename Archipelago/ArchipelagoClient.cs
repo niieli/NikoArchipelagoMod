@@ -224,6 +224,9 @@ public class ArchipelagoClient
                 ItemHandler.AddTicket(7, senderName);
                 Ticket6 = true;
                 break;
+            case 598_145_444_000+14:
+                ItemHandler.AddBugs(10, senderName);
+                break;
         }
         // if items can be received while in an invalid state for actually handling them, they can be placed in a local
         // queue to be handled later

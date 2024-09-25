@@ -1,66 +1,47 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Archipelago.MultiClient.Net.Enums;
 using BepInEx.Logging;
-using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
-using Logger = BepInEx.Logging.Logger;
 
 namespace NikoArchipelago;
 
 public class LocationHandler : MonoBehaviour
 {
     private static long baseID = 598_145_444_000;
-    public static ManualLogSource BepinLogger;
-    private static int index, casIndex, miscIndex, letterIndex, genIndex, garyIndex, garyIndex2;
+    private static int coinFlag, casIndex, miscIndex, letterIndex, genIndex, garyIndex, garyIndex2, fishIndex;
     private static bool _errored, _errored2, _sent;
-    
-    public static void CheckLocation(int level, long id = 0, string flag = "")
-    {
-        foreach (var locationEntry in Locations.CoinLocations)
-        {
-            if (!scrWorldSaveDataContainer.instance.coinFlags[level].Contains(flag)) return;
-            if (locationEntry.Value.Flag == flag && locationEntry.Value.Level == level)
-            {
-                ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
-                Plugin.BepinLogger.LogWarning($"Obtained {flag} at {locationEntry.Value.ID} in level {level} successfully!");
-            }
-        }
-    }
 
     public static async void Update2()
     {
         try
         {
-            var clel = Plugin.cLevel;
-            var cflg = Plugin.cFlags;
+            var currentLevel = scrGameSaveManager.instance.gameData.generalGameData.currentLevel - 1;
+            var coinsFlag = scrWorldSaveDataContainer.instance.coinFlags;
             var casFlag = scrWorldSaveDataContainer.instance.cassetteFlags;
             var miscFlag = scrWorldSaveDataContainer.instance.miscFlags;
             var letterFlag = scrWorldSaveDataContainer.instance.letterFlags;
             var genFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
-            if (cflg.Count > index)
+            var fishFlag = scrWorldSaveDataContainer.instance.fishFlags;
+            var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+            if (coinsFlag.Count > coinFlag)
             {
                 foreach (var locationEntry in Locations.CoinLocations.Where(locationEntry => 
-                             locationEntry.Value.Level == clel && cflg[index] == locationEntry.Value.Flag))
+                             locationEntry.Value.Level == currentLevel && coinsFlag[LocationHandler.coinFlag] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
-                    Plugin.BepinLogger.LogMessage($"Index is at: {index}, List is '{cflg.Count}' long, current flag: {cflg[index]}, current level: {clel}");
                     //await ArchipelagoClient.SyncItemsFromDataStorage();
                 }
-                index++;
+                coinFlag++;
             }
-            else if (index > cflg.Count)
+            else if (coinFlag > coinsFlag.Count)
             {
-                index = 0;
+                coinFlag = 0;
             }
             if (casFlag.Count > casIndex)
             {
                 foreach (var locationEntry in Locations.CassetteLocations.Where(locationEntry => 
-                             locationEntry.Value.Level == clel && casFlag[casIndex] == locationEntry.Value.Flag))
+                             locationEntry.Value.Level == currentLevel && casFlag[casIndex] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID); 
                 }
@@ -73,7 +54,7 @@ public class LocationHandler : MonoBehaviour
             if (miscFlag.Count > miscIndex)
             {
                 foreach (var locationEntry in Locations.KeyLocations.Where(locationEntry => 
-                             locationEntry.Value.Level == clel && miscFlag[miscIndex] == locationEntry.Value.Flag))
+                             locationEntry.Value.Level == currentLevel && miscFlag[miscIndex] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
                 }
@@ -86,7 +67,7 @@ public class LocationHandler : MonoBehaviour
             if (letterFlag.Count > letterIndex)
             {
                 foreach (var locationEntry in Locations.LetterLocations.Where(locationEntry => 
-                             locationEntry.Value.Level == clel && letterFlag[letterIndex] == locationEntry.Value.Flag))
+                             locationEntry.Value.Level == currentLevel && letterFlag[letterIndex] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
                 }
@@ -109,23 +90,36 @@ public class LocationHandler : MonoBehaviour
             {
                 genIndex = 0;
             }
-            if (cflg.Count > garyIndex)
+            if (fishFlag.Count > fishIndex)
+            {
+                foreach (var locationEntry in Locations.FishsanityLocations.Where(locationEntry => 
+                             fishFlag[fishIndex] == locationEntry.Value.Flag && locationEntry.Value.Level == currentLevel))
+                {
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                }
+                fishIndex++;
+            }
+            else if (fishIndex > fishFlag.Count)
+            {
+                fishIndex = 0;
+            }
+            if (coinsFlag.Count > garyIndex)
             {
                 foreach (var locationEntry in Locations.GaryGardenCoinLocations.Where(locationEntry => 
-                             cflg[garyIndex] == locationEntry.Value.Flag && locationEntry.Value.Level == clel)) 
+                             worldsData[7].coinFlags[garyIndex] == locationEntry.Value.Flag)) 
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
                 }
                 garyIndex++;
             }
-            else if (garyIndex > cflg.Count)
+            else if (garyIndex > coinsFlag.Count)
             {
                 garyIndex = 0;
             }
             if (casFlag.Count > garyIndex2)
             {
                 foreach (var locationEntry in Locations.GaryGardenCassetteLocations.Where(locationEntry => 
-                             casFlag[garyIndex2] == locationEntry.Value.Flag && locationEntry.Value.Level == clel))
+                             worldsData[7].cassetteFlags[garyIndex2] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
                 }
@@ -140,18 +134,14 @@ public class LocationHandler : MonoBehaviour
         {
             if (!_errored)
             {
-                // Log the error and reset the index to prevent further out-of-range issues
                 Plugin.BepinLogger.LogWarning($"Index out of range: {ex.Message}");
                 _errored = true;
-                index = 0;
             }
-            index = 0;
         }
         catch (Exception ex)
         {
             if (!_errored2)
             {
-                // Catch any other exceptions and log them
                 Plugin.BepinLogger.LogWarning($"An unexpected error occurred: {ex.Message}");
                 _errored2 = true;
             }

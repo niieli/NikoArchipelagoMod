@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using BepInEx;
-using Newtonsoft.Json;
-using NikoArchipelago.Archipelago;
-using UnityEngine;
-using ArchipelagoClient = NikoArchipelago.Archipelago.ArchipelagoClient;
+﻿using ArchipelagoClient = NikoArchipelago.Archipelago.ArchipelagoClient;
 
 namespace NikoArchipelago;
 
@@ -13,32 +6,6 @@ public static class ItemHandler
 {
     private static ArchipelagoClient archipelagoClient;
     private static Plugin plugin;
-    
-    private static string jsonFilePath = Path.Combine(Paths.PluginPath, "APTotalCount.json");
-
-    // Structure to hold the data in JSON
-    public class CoinData
-    {
-        public int AddCoinCallCount { get; set; } = 0;
-    }
-
-    // Method to load CoinData from JSON
-    public static CoinData LoadCoinData()
-    {
-        if (File.Exists(jsonFilePath))
-        {
-            string jsonData = File.ReadAllText(jsonFilePath);
-            return JsonConvert.DeserializeObject<CoinData>(jsonData);
-        }
-        return new CoinData();  // If no file exists, return a new CoinData object
-    }
-
-    // Method to save CoinData to JSON
-    public static void SaveCoinData(CoinData coinData)
-    {
-        string jsonData = JsonConvert.SerializeObject(coinData, Formatting.Indented);
-        File.WriteAllText(jsonFilePath, jsonData);
-    }
 
     public static void AddCoin(int amount = 1, string sender = "")
     {
@@ -81,6 +48,16 @@ public static class ItemHandler
         scrGameSaveManager.instance.gameData.generalGameData.appleAmount += amount;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Apples from {sender}!" : $"You found your {amount} Apples!",
+            1.75f);
+        scrGameSaveManager.instance.SaveGame();
+    }
+    
+    public static void AddBugs(int amount = 10, string sender = "")
+    {
+        var w = scrGameSaveManager.instance.gameData.worldsData;
+        w[scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1].bugAmount += amount;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Bugs from {sender}!" : $"You found your {amount} Bugs!",
             1.75f);
         scrGameSaveManager.instance.SaveGame();
     }
@@ -154,7 +131,7 @@ public static class ItemHandler
             case 7:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Ticket from {sender}!" : "You found your Tadpole HQ Ticket!",
-                    3f);
+                    4f);
                 break;
         }
         scrGameSaveManager.instance.SaveGame();

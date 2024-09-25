@@ -20,7 +20,6 @@ public class Location
 public class Locations
 {
     private const long BaseID = 598_145_444_000;
-    private static ArchipelagoData _archipelagoData;
 
     public static Dictionary<long, Location> CoinLocations = new()
     {
@@ -233,7 +232,8 @@ public class Locations
         { BaseID + 179, new Location(BaseID + 179, "SNAIL_FASHION_SHOW", 6) },
         { BaseID + 180, new Location(BaseID + 180, "VOLLEY_DREAMS", 6) },
         { BaseID + 181, new Location(BaseID + 181, "HOPELESS_ROMANTIC", 6) },
-        { BaseID + 182, new Location(BaseID + 182, "LOST_AT_SEA", 6) }
+        { BaseID + 182, new Location(BaseID + 182, "LOST_AT_SEA", 6) },
+        { BaseID + 202, new Location(BaseID + 202, "Dustan", 6) }
     };
     
     public static Dictionary<long, Location> HandsomeLocations = new()
@@ -251,7 +251,7 @@ public class Locations
     public static Dictionary<long, Location> GaryGardenCoinLocations = new()
     {
         //Coins
-        { BaseID + 198, new Location(BaseID + 198, "main", 23) },
+        { BaseID + 198, new Location(BaseID + 198, "Gary", 23) },
         { BaseID + 199, new Location(BaseID + 199, "cassetteCoin2", 23) },
         { BaseID + 200, new Location(BaseID + 200, "cassetteCoin", 23) },
     };
@@ -269,6 +269,41 @@ public class Locations
         { BaseID + 190, new Location(BaseID + 190, "Cassette (7)", 23) },
         { BaseID + 191, new Location(BaseID + 191, "Cassette (8)", 23) },
         { BaseID + 192, new Location(BaseID + 192, "Cassette (9)", 23) },
+    };
+    
+    public static Dictionary<long, Location> FishsanityLocations = new()
+    {
+        //FISH
+        { BaseID + 203, new Location(BaseID + 203, "fish0", 1) },
+        { BaseID + 204, new Location(BaseID + 204, "fish1", 1) },
+        { BaseID + 205, new Location(BaseID + 205, "fish2", 1) },
+        { BaseID + 206, new Location(BaseID + 206, "fish3", 1) },
+        { BaseID + 207, new Location(BaseID + 207, "fish4", 1) },
+        { BaseID + 208, new Location(BaseID + 208, "fish0", 2) },
+        { BaseID + 209, new Location(BaseID + 209, "fish1", 2) },
+        { BaseID + 210, new Location(BaseID + 210, "fish2", 2) },
+        { BaseID + 211, new Location(BaseID + 211, "fish3", 2) },
+        { BaseID + 212, new Location(BaseID + 212, "fish4", 2) },
+        { BaseID + 213, new Location(BaseID + 213, "fish0", 3) },
+        { BaseID + 214, new Location(BaseID + 214, "fish1", 3) },
+        { BaseID + 215, new Location(BaseID + 215, "fish2", 3) },
+        { BaseID + 216, new Location(BaseID + 216, "fish3", 3) },
+        { BaseID + 217, new Location(BaseID + 217, "fish4", 3) },
+        { BaseID + 218, new Location(BaseID + 218, "fish0", 4) },
+        { BaseID + 219, new Location(BaseID + 219, "fish1", 4) },
+        { BaseID + 220, new Location(BaseID + 220, "fish2", 4) },
+        { BaseID + 221, new Location(BaseID + 221, "fish3", 4) },
+        { BaseID + 222, new Location(BaseID + 222, "fish4", 4) },
+        { BaseID + 223, new Location(BaseID + 223, "fish0", 5) },
+        { BaseID + 224, new Location(BaseID + 224, "fish1", 5) },
+        { BaseID + 225, new Location(BaseID + 225, "fish2", 5) },
+        { BaseID + 226, new Location(BaseID + 226, "fish3", 5) },
+        { BaseID + 227, new Location(BaseID + 227, "fish4", 5) },
+        { BaseID + 228, new Location(BaseID + 228, "fish0", 6) },
+        { BaseID + 229, new Location(BaseID + 229, "fish1", 6) },
+        { BaseID + 230, new Location(BaseID + 230, "fish2", 6) },
+        { BaseID + 231, new Location(BaseID + 231, "fish3", 6) },
+        { BaseID + 232, new Location(BaseID + 232, "fish4", 6) },
     };
     
     public static void AddLocation(long id, string flag, int level)

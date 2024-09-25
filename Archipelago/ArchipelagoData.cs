@@ -18,7 +18,7 @@ public class ArchipelagoData
     /// </summary>
     private string seed;
 
-    public Dictionary<string, object> slotData;
+    public static Dictionary<string, object> slotData;
 
     public bool NeedSlotData => slotData == null;
 
