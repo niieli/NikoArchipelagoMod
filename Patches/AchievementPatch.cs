@@ -6,6 +6,7 @@ namespace NikoArchipelago.Patches;
 
 public class AchievementPatch
 {
+    private static bool _isClose = false;
     [HarmonyPatch(typeof(scrAchievementManager), "Update")]
     public static class PatchAchievementManager
     {
@@ -68,9 +69,8 @@ public class AchievementPatch
             CheckBottledUpAchievement(__instance);
             CheckVolleyDreamsAchievement(__instance);
             CheckSnailFashionShowAchievement(__instance);
-            __instance.LostAtSea();
-            __instance.EmployeeOfTheMonth();
-            
+            CheckEmployeeOfTheMonthAchievement(__instance);
+            CheckLostAtSeaAchievement(__instance);
         }
 
         private static void CheckFrogFanAchievement(scrAchievementManager instance)
@@ -112,6 +112,28 @@ public class AchievementPatch
             }
             Plugin.APSendNote("Achievement Bottled Up obtained!", 3.5f);
         }
+        private static void CheckEmployeeOfTheMonthAchievement(scrAchievementManager instance)
+        {
+            string flag = "EMLOYEE_OF_THE_MONTH";
+            if (scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal < 76) return;
+            if (instance.CheckForSavedAchievent(flag)) return;
+            if (_saveAchievementMethod != null)
+            {
+                _saveAchievementMethod.Invoke(instance, [flag]);
+            }
+            Plugin.APSendNote("Achievement Employee Of The Month obtained!", 3.5f);
+        }
+        private static void CheckLostAtSeaAchievement(scrAchievementManager instance)
+        {
+            string flag = "LOST_AT_SEA";
+            if (_isClose == false) return;
+            if (instance.CheckForSavedAchievent(flag)) return;
+            if (_saveAchievementMethod != null)
+            {
+                _saveAchievementMethod.Invoke(instance, [flag]);
+            }
+            Plugin.APSendNote("Achievement Lost At Sea obtained!", 3.5f);
+        }
         private static void CheckVolleyDreamsAchievement(scrAchievementManager instance)
         {
             string flag = "VOLLEY_DREAMS";
@@ -145,6 +167,21 @@ public class AchievementPatch
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
             Plugin.APSendNote("Achievement Snail Fashion Show obtained!", 3.5f);
+        }
+    }
+
+    [HarmonyPatch(typeof(scrCoastGaurd), "Update")]
+    public static class PatchCoastGaurd
+    {
+        [HarmonyPostfix]
+        private static void Postfix(scrCoastGaurd __instance)
+        {
+            var isCloseField = AccessTools.Field(typeof(scrCoastGaurd), "isClose");
+            bool isClose = (bool)isCloseField.GetValue(__instance);
+            if (isClose)
+            {
+                _isClose = true;
+            }
         }
     }
 }
