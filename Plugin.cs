@@ -10,6 +10,7 @@ using NikoArchipelago.Archipelago;
 using NikoArchipelago.Patches;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace NikoArchipelago
 {
@@ -60,8 +61,11 @@ namespace NikoArchipelago
         public bool worldReady;
         private static bool _debugMode;
         private static readonly string archipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
+        private static readonly string assetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
         public static string seed;
         private static scrGameSaveManager gameSaveManagerStatic;
+        public static AssetBundle assetBundle;
+        public static Sprite apSprite;
         
         private void Awake()
         {
@@ -93,7 +97,9 @@ namespace NikoArchipelago
             GameOptions.MusicVolume = mus;
             GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
-            
+            assetBundle = AssetBundle.LoadFromFile(Path.Combine(Paths.PluginPath, "apassets"));
+            apSprite = assetBundle.LoadAsset<Sprite>("apLogo");
+            assetBundle.Unload(false);
             harmony = new Harmony(PluginGuid);
             harmony.PatchAll();
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -277,7 +283,7 @@ namespace NikoArchipelago
         {
             var apNote = ScriptableObject.CreateInstance<Notification>();
             apNote.timed = true;
-            apNote.avatar = scrSnail.instance.sprFoodFull;
+            apNote.avatar = apSprite;
             apNote.duration = time;
             apNote.key = note;
             _noteDisplayer.AddNotification(apNote);
@@ -393,7 +399,7 @@ namespace NikoArchipelago
             {
                 scrTrainManager.instance.UseTrain(goToLevel, false);
             }
-            if (GUI.Button(new Rect(16, 220, 100, 20), "Note"))
+            if (GUI.Button(new Rect(16, 220, 100, 20), "Test Note"))
             {
                 APSendNote("VERY LOOOONG text. Here goes nothing hihihihihihi", 2F);
             }

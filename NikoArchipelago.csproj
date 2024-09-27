@@ -46,6 +46,12 @@
     <Reference Include="UnityEngine">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
