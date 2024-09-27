@@ -76,7 +76,7 @@ public class AchievementPatch
         private static void CheckFrogFanAchievement(scrAchievementManager instance)
         {
             string flag = "FROG_FAN";
-            if (scrGameSaveManager.instance.gameData.generalGameData.frogBumps < 5) return;
+            if (scrGameSaveManager.instance.gameData.generalGameData.frogBumps < 10) return;
             if (instance.CheckForSavedAchievent(flag)) return;
             if (_saveAchievementMethod != null)
             {

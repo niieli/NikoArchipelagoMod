@@ -10,7 +10,6 @@ using NikoArchipelago.Archipelago;
 using NikoArchipelago.Patches;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace NikoArchipelago
 {
@@ -20,24 +19,16 @@ namespace NikoArchipelago
     {
         /*
          * Goal for 0.1.0 - Have checks working (Sending & Receiving)
-         * --> Have the checks working
-         * --> Add the checks to the UI
-         * --> Create APWorld file
          *
          *  0.2.0 UI - Not sure how to make it look nice, preferably use the in-game ui
          * 
          *  1.0.0 - Release
          *  --> Refactor & clean up
          *  --> PR submission
-         *
-         * #Flags are documented on the spreadsheet + Handsome Frog checks are addable
          * 
          * TODO: Für release: Optionen von SlotData bekommen,
          * TODO: Cassette kosten Progressive?/Level basierend?/Option?,
          * TODO: Kiosk level check zu 8+ ändern (sonst temporär den Preis bei shuffled Tickets auf 99 setzen oder als Bought anzeigen),
-         * TODO: Fehlende Locations implementieren (Misc. & Achievements),
-         * TODO: APLogo via Assetbundles
-         * TODO: Main Menu?
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
@@ -293,7 +284,7 @@ namespace NikoArchipelago
         {
             ArchipelagoConsole.LogMessage(cause);
             scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
-            StartCoroutine(SendNoteDelay(cause, 8.2f, 5.0f, true));
+            StartCoroutine(SendNoteDelay(cause, 5.0f, 5.0f, true));
         }
         
         private IEnumerator SendNoteDelay(string text, float delay, float noteTime, bool isDeath = false)
@@ -347,14 +338,16 @@ namespace NikoArchipelago
             string statusMessage;
             if (ArchipelagoClient.Authenticated)
             {
-                BackgroundForText(new Rect(10, 10, 280, 60));
+                BackgroundForText(new Rect(10, 10, 280, 80));
                 statusMessage = " Status: Connected";
-                GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
-                GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
+                GUI.Label(new Rect(16, 16, 300, 22), ModDisplayInfo);
+                GUI.Label(new Rect(16, 50, 300, 22), APDisplayInfo + statusMessage);
                 if (GUI.Button(new Rect(160, 16, 100, 20), "Disconnect") && ArchipelagoClient.Authenticated)
                 {
                     ArchipelagoClient.Disconnect();
                 }
+                ContactList1Text();
+                ContactList2Text();
             }
             else
             {
@@ -431,6 +424,42 @@ namespace NikoArchipelago
             GUI.color = new Color(0f, 0f, 0f, 0.5F);
             GUI.DrawTexture(rect, Texture2D.whiteTexture);
             GUI.color = startingColor;
+        }
+
+        private void ContactList1Text()
+        {
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1"))
+            {
+                var startingColor = GUI.color;
+                GUI.color = Color.green;
+                GUI.Label(new Rect(16, 70, 300, 20), "Got Contact List 1!");
+                GUI.color = startingColor;
+            }
+            else
+            {
+                var startingColor = GUI.color;
+                GUI.color = Color.red;
+                GUI.Label(new Rect(16, 70, 300, 20), "No Contact List 1!");
+                GUI.color = startingColor;
+            }
+        }
+
+        private void ContactList2Text()
+        {
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2"))
+            {
+                var startingColor = GUI.color;
+                GUI.color = Color.green;
+                GUI.Label(new Rect(170, 70, 300, 20), "Got Contact List 2!");
+                GUI.color = startingColor;
+            }
+            else
+            {
+                var startingColor = GUI.color;
+                GUI.color = Color.red;
+                GUI.Label(new Rect(170, 70, 300, 20), "No Contact List 2!");
+                GUI.color = startingColor;
+            }
         }
     }
     
