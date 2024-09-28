@@ -46,6 +46,8 @@ but you can still talk to the Dispatcher and buy the item! The in-game "tracker"
   - If you get the ticket to the next area while you are in the level before that one (Home -> Hairball City etc.) you will need to reload the level to talk with the Dispatcher again
 - Gary's Garden *(Depending on settings)*
 - Achievements *(Depending on settings)*
+  - Frog Fan only needs 10 bumps
+  - Volley Dreams only needs a highscore of 5 in every level
 - Handsome Frog *(Depending on settings)*
 - Levels
   - Hairball City
