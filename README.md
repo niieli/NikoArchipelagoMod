@@ -11,7 +11,7 @@ Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archip
 
 ## Connecting
 
-After loading into the game you insert the server address and port, your slot name and a password if necessary in the top right of the game.
+After loading into the game you insert the server address and port, your slot name and a password if necessary in the top left of the game.
 
 ![image](https://github.com/user-attachments/assets/2112698d-d144-4873-9c31-9b457a69d0f1)
 
