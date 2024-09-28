@@ -1,5 +1,5 @@
 # Here Comes Niko! Archipelago WIP
-This mod integrates Archipelago into Here Comes Niko! and randomizes a bunch of different things
+This mod integrates [Archipelago](https://archipelago.gg/) into Here Comes Niko! and randomizes a bunch of different things
 
 Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archipelago/releases)
 
