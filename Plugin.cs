@@ -19,8 +19,6 @@ namespace NikoArchipelago
     {
         /*
          * Goal for 0.1.0 - Have checks working (Sending & Receiving)
-         *
-         *  0.2.0 UI - Not sure how to make it look nice, preferably use the in-game ui
          * 
          *  1.0.0 - Release
          *  --> Refactor & clean up
@@ -28,7 +26,6 @@ namespace NikoArchipelago
          * 
          * TODO: Für release: Optionen von SlotData bekommen,
          * TODO: Cassette kosten Progressive?/Level basierend?/Option?,
-         * TODO: Kiosk level check zu 8+ ändern (sonst temporär den Preis bei shuffled Tickets auf 99 setzen oder als Bought anzeigen),
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
@@ -44,19 +41,18 @@ namespace NikoArchipelago
         private Harmony harmony;
 
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
-        private int coinFlg, cassetteFlg, fishFlg, miscFlg, letterFlg, generalFlg, coinTotal, coinOld, levelIndex;
+        private int coinFlg, cassetteFlg, fishFlg, miscFlg, letterFlg, generalFlg, coinTotal, coinOld;
         private int goToLevel;
         private float env, mas, mus, sfx;
         private static scrNotificationDisplayer _noteDisplayer;
-        private scrHopOnBump hopOnBump;
         public bool worldReady;
         private static bool _debugMode;
-        private static readonly string archipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
-        private static readonly string assetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
-        public static string seed;
-        private static scrGameSaveManager gameSaveManagerStatic;
-        public static AssetBundle assetBundle;
-        public static Sprite apSprite;
+        private static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
+        private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
+        public static string Seed;
+        private static scrGameSaveManager _gameSaveManagerStatic;
+        public static AssetBundle AssetBundle;
+        public static Sprite APSprite;
         
         private void Awake()
         {
@@ -70,9 +66,9 @@ namespace NikoArchipelago
             env = 0.4f;
             sfx = 0.4f;
             mus = 0.4f;
-            if (!Directory.Exists(archipelagoFolderPath))
+            if (!Directory.Exists(ArchipelagoFolderPath))
             {
-                Directory.CreateDirectory(archipelagoFolderPath);
+                Directory.CreateDirectory(ArchipelagoFolderPath);
                 Logger.LogInfo("Archipelago folder created.");
             }
         }
@@ -88,9 +84,9 @@ namespace NikoArchipelago
             GameOptions.MusicVolume = mus;
             GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
-            assetBundle = AssetBundle.LoadFromFile(Path.Combine(Paths.PluginPath, "apassets"));
-            apSprite = assetBundle.LoadAsset<Sprite>("apLogo");
-            assetBundle.Unload(false);
+            AssetBundle = AssetBundle.LoadFromFile(Path.Combine(AssetsFolderPath, "apassets"));
+            APSprite = AssetBundle.LoadAsset<Sprite>("apLogo");
+            AssetBundle.Unload(false);
             harmony = new Harmony(PluginGuid);
             harmony.PatchAll();
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -118,7 +114,7 @@ namespace NikoArchipelago
             }
             Logger.LogInfo("GameSaveManager is not null.");
             gameSaveManager = scrGameSaveManager.instance;
-            gameSaveManagerStatic = scrGameSaveManager.instance;
+            _gameSaveManagerStatic = scrGameSaveManager.instance;
             saveReady = true;
         }
 
@@ -144,7 +140,7 @@ namespace NikoArchipelago
                 if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
                 {
                     scrGameSaveManager.saveName = saveName;
-                    var savePath = Path.Combine(archipelagoFolderPath, saveName + "_" + seed + ".json");
+                    var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
                     if (File.Exists(savePath))
                     {
                         scrGameSaveManager.dataPath = savePath;
@@ -212,8 +208,10 @@ namespace NikoArchipelago
         private static IEnumerator SyncState()
         {
             yield return new WaitForSeconds(4f);
-            var level = gameSaveManagerStatic.gameData.generalGameData.currentLevel;
+            var level = _gameSaveManagerStatic.gameData.generalGameData.currentLevel;
             var generalGameData = scrGameSaveManager.instance.gameData.generalGameData;
+            var currentScene = SceneManager.GetActiveScene().name;
+            bool skip = false;
             void SyncValue<T>(ref T gameDataValue, T clientValue)
             {
                 if (!EqualityComparer<T>.Default.Equals(gameDataValue, clientValue))
@@ -258,6 +256,13 @@ namespace NikoArchipelago
                     APSendNote($"You don't have the corresponding Ticket for Level: '{level}' !", 10f);
                     break;
             }
+
+            if (currentScene == "InsideTrain1" && !skip)
+            {
+                scrTrainManager.instance.UseTrain(1, false);
+                BepinLogger.LogInfo("Skipping Train 1 Cutscene...");
+                skip = true;
+            }
         }
 
         private void LogFlags()
@@ -274,7 +279,7 @@ namespace NikoArchipelago
         {
             var apNote = ScriptableObject.CreateInstance<Notification>();
             apNote.timed = true;
-            apNote.avatar = apSprite;
+            apNote.avatar = APSprite;
             apNote.duration = time;
             apNote.key = note;
             _noteDisplayer.AddNotification(apNote);
@@ -338,7 +343,7 @@ namespace NikoArchipelago
             string statusMessage;
             if (ArchipelagoClient.Authenticated)
             {
-                BackgroundForText(new Rect(10, 10, 280, 80));
+                BackgroundForText(new Rect(10, 10, 280, 120));
                 statusMessage = " Status: Connected";
                 GUI.Label(new Rect(16, 16, 300, 22), ModDisplayInfo);
                 GUI.Label(new Rect(16, 50, 300, 22), APDisplayInfo + statusMessage);
@@ -346,8 +351,7 @@ namespace NikoArchipelago
                 {
                     ArchipelagoClient.Disconnect();
                 }
-                ContactList1Text();
-                ContactList2Text();
+                Tracker();
             }
             else
             {
@@ -371,7 +375,7 @@ namespace NikoArchipelago
                 }
                 else
                 {
-                    GUI.Label(new Rect(16, 124, 200, 24), "Initializing Data...");
+                    GUI.Label(new Rect(16, 126, 200, 24), "Initializing Data...");
                 }
             }
 
@@ -426,41 +430,46 @@ namespace NikoArchipelago
             GUI.color = startingColor;
         }
 
-        private void ContactList1Text()
+        private void Tracker()
         {
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1"))
+            // Define the flag-label mappings and positions
+            var flagData = new (string flagKey, string successMsg, string failureMsg, int xPos, int yPos)[]
             {
-                var startingColor = GUI.color;
-                GUI.color = Color.green;
-                GUI.Label(new Rect(16, 70, 300, 20), "Got Contact List 1!");
-                GUI.color = startingColor;
-            }
-            else
+                ("APWave1", "Got Contact List 1!", "No Contact List 1!", 16, 70),
+                ("APWave2", "Got Contact List 2!", "No Contact List 2!", 170, 70),
+                ("KioskHome", "Kiosk Home", "Kiosk Home(1)", 16, 90),
+                ("KioskHairball City", "Kiosk HC", "Kiosk HC(6)", 115, 90),
+                ("KioskTrash Kingdom", "Kiosk TT", "Kiosk TT(11)", 200, 90),
+                ("KioskSalmon Creek Forest", "Kiosk SCF", "Kiosk SCF(21)", 16, 110),
+                ("KioskPublic Pool", "Kiosk PP", "Kiosk PP(26)", 115, 110),
+                ("KioskThe Bathhouse", "Kiosk Bath", "Kiosk Bath(31)", 200, 110)
+            };
+
+            // Loop through each flag and display status
+            foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)
             {
-                var startingColor = GUI.color;
-                GUI.color = Color.red;
-                GUI.Label(new Rect(16, 70, 300, 20), "No Contact List 1!");
-                GUI.color = startingColor;
+                DrawFlagStatus(flagKey, successMsg, failureMsg, xPos, yPos);
             }
         }
 
-        private void ContactList2Text()
+        // Method to display flag status based on game data
+        private void DrawFlagStatus(string flagKey, string successMsg, string failureMsg, int xPos, int yPos)
         {
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2"))
+            var startingColor = GUI.color;
+            var generalFlags = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
+
+            if (generalFlags.Contains(flagKey))
             {
-                var startingColor = GUI.color;
                 GUI.color = Color.green;
-                GUI.Label(new Rect(170, 70, 300, 20), "Got Contact List 2!");
-                GUI.color = startingColor;
+                GUI.Label(new Rect(xPos, yPos, 300, 20), successMsg);
             }
             else
             {
-                var startingColor = GUI.color;
                 GUI.color = Color.red;
-                GUI.Label(new Rect(170, 70, 300, 20), "No Contact List 2!");
-                GUI.color = startingColor;
+                GUI.Label(new Rect(xPos, yPos, 300, 20), failureMsg);
             }
+
+            GUI.color = startingColor;
         }
     }
-    
 }

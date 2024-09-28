@@ -15,6 +15,7 @@ public class CassetteCost
 
         private static void Postfix(scrCassetteBuyer __instance)
         {
+            //TODO: Get Option value and use the corresponding method
             int count = 0;
             for (int i = 0; i < scrWorldSaveDataContainer.instance.coinFlags.Count; i++)
             {

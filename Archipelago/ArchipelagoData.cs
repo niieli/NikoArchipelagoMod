@@ -46,7 +46,7 @@ public class ArchipelagoData
     {
         slotData = roomSlotData;
         seed = roomSeed;
-        Plugin.seed = seed;
+        Plugin.Seed = seed;
     }
 
     /// <summary>

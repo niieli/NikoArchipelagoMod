@@ -9,7 +9,7 @@ namespace NikoArchipelago;
 public class LocationHandler : MonoBehaviour
 {
     private static long baseID = 598_145_444_000;
-    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex;
+    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex, kioskIndex;
     private static bool _errored, _errored2, _sent;
 
     public static async void Update2()
@@ -116,6 +116,19 @@ public class LocationHandler : MonoBehaviour
             else if (frogIndex > genFlag.Count)
             {
                 frogIndex = 0;
+            }
+            if (genFlag.Count > kioskIndex)
+            {
+                foreach (var locationEntry in Locations.KioskLocations.Where(locationEntry => 
+                             genFlag[kioskIndex] == locationEntry.Value.Flag))
+                {
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                }
+                kioskIndex++;
+            }
+            else if (kioskIndex > genFlag.Count)
+            {
+                kioskIndex = 0;
             }
             if (fishFlag.Count > fishIndex)
             {

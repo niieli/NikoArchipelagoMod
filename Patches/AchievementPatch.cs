@@ -10,13 +10,13 @@ public class AchievementPatch
     [HarmonyPatch(typeof(scrAchievementManager), "Update")]
     public static class PatchAchievementManager
     {
-        private static bool _lostAtSea,
-            _frogFan,
-            _hopelessRomantic,
-            _employeeOfTheMonth,
-            _bottledUp,
-            _volleyDreams,
-            _snailFashionShow;
+        // private static bool _lostAtSea,
+        //     _frogFan,
+        //     _hopelessRomantic,
+        //     _employeeOfTheMonth,
+        //     _bottledUp,
+        //     _volleyDreams,
+        //     _snailFashionShow;
         private static MethodInfo _saveAchievementMethod;
         // [HarmonyPrefix]
         // public static bool Prefix(scrAchievementManager __instance)

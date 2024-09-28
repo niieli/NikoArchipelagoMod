@@ -306,6 +306,17 @@ public class Locations
         { BaseID + 232, new Location(BaseID + 232, "fish4", 6) },
     };
     
+    public static Dictionary<long, Location> KioskLocations = new()
+    {
+        //Coins
+        { BaseID + 170, new Location(BaseID + 170, "KioskHome", 0) },
+        { BaseID + 171, new Location(BaseID + 171, "KioskHairball City", 1) },
+        { BaseID + 172, new Location(BaseID + 172, "KioskTrash Kingdom", 2) },
+        { BaseID + 173, new Location(BaseID + 173, "KioskSalmon Creek Forest", 3) },
+        { BaseID + 174, new Location(BaseID + 174, "KioskPublic Pool", 4) },
+        { BaseID + 175, new Location(BaseID + 175, "KioskThe Bathhouse", 5) },
+    };
+    
     public static void AddLocation(long id, string flag, int level)
     {
         CoinLocations[id] = new Location(id, flag, level);
