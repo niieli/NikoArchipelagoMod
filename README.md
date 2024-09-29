@@ -43,8 +43,11 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 - Every Kiosk (except Tadpole HQ elevator)*(Depending on settings)*
   - *There is a problem with the Kiosk not showing the price, when you get access to the next level, 
 but you can still talk to the Dispatcher and buy the item! The in-game "tracker" will help you with that.*
+  - If you get the ticket to the next area while you are in the level before that one (Home -> Hairball City etc.) you will need to reload the level to talk with the Dispatcher again
 - Gary's Garden *(Depending on settings)*
 - Achievements *(Depending on settings)*
+  - Frog Fan only needs 10 bumps
+  - Volley Dreams only needs a highscore of 5 in every level
 - Handsome Frog *(Depending on settings)*
 - Levels
   - Hairball City
@@ -58,6 +61,7 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
 
+- Make Kiosk less scuffed
 - Progressive Contact List
 - Progressive Cassette Cost (Progressive Locations)
 - Different Goals (Employee of the Month) & change elevator repair cost based on a value set inside the yaml
