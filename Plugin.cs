@@ -51,6 +51,7 @@ namespace NikoArchipelago
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle;
         public static Sprite APSprite;
+        public static Dictionary<string, object> SlotData;
         
         private void Awake()
         {
@@ -255,11 +256,32 @@ namespace NikoArchipelago
                     break;
             }
 
-            if (currentScene == "InsideTrain1" && !skip)
+            switch (currentScene)
             {
-                scrTrainManager.instance.UseTrain(1, false);
-                BepinLogger.LogInfo("Skipping Train 1 Cutscene...");
-                skip = true;
+                case "InsideTrain1":
+                    scrTrainManager.instance.UseTrain(1, false);
+                    BepinLogger.LogInfo("Skipping Train 1 Cutscene...");
+                    break;
+                case "InsideTrain2":
+                    scrTrainManager.instance.UseTrain(2, false);
+                    BepinLogger.LogInfo("Skipping Train 2 Cutscene...");
+                    break;
+                case "InsideTrain3":
+                    scrTrainManager.instance.UseTrain(3, false);
+                    BepinLogger.LogInfo("Skipping Train 3 Cutscene...");
+                    break;
+                case "InsideTrain4":
+                    scrTrainManager.instance.UseTrain(4, false);
+                    BepinLogger.LogInfo("Skipping Train 4 Cutscene...");
+                    break;
+                case "InsideTrain5":
+                    scrTrainManager.instance.UseTrain(5, false);
+                    BepinLogger.LogInfo("Skipping Train 5 Cutscene...");
+                    break;
+                case "InsideTrain6":
+                    scrTrainManager.instance.UseTrain(6, false);
+                    BepinLogger.LogInfo("Skipping Train 6 Cutscene...");
+                    break;
             }
         }
 
@@ -412,11 +434,16 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 300, 100, 20), "SlotData"))
             {
-                Logger.LogWarning(ArchipelagoData.slotData.Keys.ToString());
+                Logger.LogWarning(ArchipelagoData.slotData.ContainsKey("start_with_ticket"));
             }
             if (GUI.Button(new Rect(16, 320, 100, 20), "Current Level"))
             {
                 Logger.LogInfo(scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1);
+            }
+            if (GUI.Button(new Rect(16, 340, 100, 20), "FixKiosk"))
+            {
+                var currentScene = SceneManager.GetActiveScene().name;
+                scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
             }
         }
 

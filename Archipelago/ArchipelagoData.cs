@@ -24,7 +24,7 @@ public class ArchipelagoData
 
     public ArchipelagoData()
     {
-        Uri = "localhost";
+        Uri = "archipelago.gg:";
         SlotName = "Player1";
         CheckedLocations = [];
     }
@@ -47,6 +47,7 @@ public class ArchipelagoData
         slotData = roomSlotData;
         seed = roomSeed;
         Plugin.Seed = seed;
+        Plugin.SlotData = slotData;
     }
 
     /// <summary>
