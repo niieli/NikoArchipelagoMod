@@ -24,12 +24,10 @@ namespace NikoArchipelago
          *  --> Refactor & clean up
          *  --> PR submission
          * 
-         * TODO: Für release: Optionen von SlotData bekommen,
-         * TODO: Cassette kosten Progressive?/Level basierend?/Option?,
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.0.1";
+        private const string PluginVersion = "0.1.0";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";

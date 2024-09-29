@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KinematicCharacterController.Core;
-using UnityEngine;
-using UnityEngine.Bindings;
 using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Patches;
@@ -57,6 +54,7 @@ public static class KioskCost
                         __instance.NPCbuy.SetActive(true);
                         __instance.NPCnomoney.SetActive(false);
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
+                        //TODO: Change to be universal and not dependent on en being selected
                         if (scrTextbox.instance.answerSelected == 0 && scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text.Contains("Dispatcher") && scrTextbox.instance.textMesh.text.Contains("That is fantastic."))
                         {
                             if (!bought)
