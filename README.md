@@ -58,7 +58,6 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
 
-- Make Kiosk less scuffed
 - Progressive Contact List
 - Progressive Cassette Cost (Progressive Locations)
 - Different Goals (Employee of the Month) & change elevator repair cost based on a value set inside the yaml
