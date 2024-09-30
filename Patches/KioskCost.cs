@@ -37,6 +37,8 @@ public static class KioskCost
             int levelPrice = (int)levelPriceField.GetValue(_kioskManager);
             var hasBoughtField = AccessTools.Field(typeof(scrKioskManager), "hasBought");
             var _hasBought = (bool)hasBoughtField.GetValue(__instance);
+            var sentNoteEnoughField = AccessTools.Field(typeof(scrKioskManager), "sentNoteEnough");
+            var _sentNoteEnough = (bool)sentNoteEnoughField.GetValue(__instance);
             var buyableLevelField = AccessTools.Field(typeof(scrKioskManager), "buyableLevel");
     
             if (buyableLevelField != null)
@@ -44,6 +46,9 @@ public static class KioskCost
                 int currentBuyableLevel = (int)buyableLevelField.GetValue(_kioskManager);
                 if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
                 {
+                    _hasBought = false;
+                    __instance.NPCbought.SetActive(false);
+                    __instance.textMesh.gameObject.SetActive(true);
                     if (scrGameSaveManager.instance.gameData.generalGameData.coinAmount >= levelPrice)
                     {
                         if (!avail)
@@ -53,7 +58,9 @@ public static class KioskCost
                         }
                         __instance.NPCbuy.SetActive(true);
                         __instance.NPCnomoney.SetActive(false);
+                        __instance.NPCbought.SetActive(false);
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
+                        __instance.textMesh.gameObject.SetActive(true);
                         //TODO: Change to be universal and not dependent on en being selected
                         if (scrTextbox.instance.answerSelected == 0 && scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text.Contains("Dispatcher") && scrTextbox.instance.textMesh.text.Contains("That is fantastic."))
                         {
@@ -67,29 +74,41 @@ public static class KioskCost
                             {
                                 scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
                             }
+                            _hasBought = true;
                             __instance.NPCbought.SetActive(true);
                             __instance.NPCbuy.SetActive(false);
                             __instance.textMesh.text = "Bought!";
+                            __instance.textMesh.gameObject.SetActive(true);
+                            scrTrainManager.instance.UseTrain(currentBuyableLevel-1, false);
                         }
                     }
                     else
                     {
+                        _hasBought = false;
                         __instance.NPCnomoney.SetActive(true);
                         __instance.NPCbuy.SetActive(false);
+                        __instance.NPCbought.SetActive(false);
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
+                        __instance.textMesh.gameObject.SetActive(true);
                     }
                 }
-                else if (scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[currentBuyableLevel])
+                else if (scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[currentBuyableLevel] && !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
                 {
+                    _hasBought = false;
                     __instance.NPCnomoney.SetActive(true);
                     __instance.NPCbuy.SetActive(false);
+                    __instance.NPCbought.SetActive(false);
                     __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
+                    __instance.textMesh.gameObject.SetActive(true);
                 }
                 else
                 {
-                    __instance.NPCbought.SetActive(true);
+                    _hasBought = true;
+                    __instance.NPCnomoney.SetActive(false);
                     __instance.NPCbuy.SetActive(false);
+                    __instance.NPCbought.SetActive(true);
                     __instance.textMesh.text = "";
+                    __instance.textMesh.gameObject.SetActive(false);
                 }
             }
     
@@ -121,68 +140,4 @@ public static class KioskCost
                 
         }
     }
-    //
-    // [HarmonyPatch(typeof(scrKioskManager), "Update")]
-    // public static class KioskLevelFixPatch
-    // {
-    //     private static scrKioskManager _kioskManager;
-    //     private static bool _changed2;
-    //
-    //     // Dictionary to track whether the kiosk in each scene has been bought
-    //     private static readonly Dictionary<string, bool> kioskPurchasedStatus = new()
-    //     {
-    //         { "Home", false },
-    //         { "Trash Kingdom", false },
-    //         { "Salmon Creek Forest", false },
-    //         { "Public Pool", false },
-    //         { "The Bathhouse", false }
-    //     };
-    //
-    //     [HarmonyPostfix]
-    //     public static void KioskLevelFix(scrKioskManager __instance)
-    //     {
-    //         _kioskManager = __instance;
-    //         var currentScene = SceneManager.GetActiveScene().name;
-    //         var buyableLevelField = AccessTools.Field(typeof(scrKioskManager), "buyableLevel");
-    //
-    //         if (buyableLevelField != null && currentScene != "Tadpole inc")
-    //         {
-    //             // Check if the kiosk in the current scene has already been bought
-    //             if (kioskPurchasedStatus.ContainsKey(currentScene) && kioskPurchasedStatus[currentScene])
-    //             {
-    //                 Plugin.BepinLogger.LogInfo($"Kiosk in {currentScene} has already been bought.");
-    //                 return; // If already bought, do nothing
-    //             }
-    //
-    //             switch (currentScene)
-    //             {
-    //                 case "Home":
-    //                     buyableLevelField.SetValue(_kioskManager, 8);
-    //                     break;
-    //                 case "Trash Kingdom":
-    //                     buyableLevelField.SetValue(_kioskManager, 9);
-    //                     break;
-    //                 case "Salmon Creek Forest":
-    //                     buyableLevelField.SetValue(_kioskManager, 10);
-    //                     break;
-    //                 case "Public Pool":
-    //                     buyableLevelField.SetValue(_kioskManager, 11);
-    //                     break;
-    //                 case "The Bathhouse":
-    //                     buyableLevelField.SetValue(_kioskManager, 12);
-    //                     break;
-    //             }
-    //
-    //             if (_kioskManager.SomePurchaseConditionMet()) // Replace with actual check
-    //             {
-    //                 Plugin.BepinLogger.LogInfo($"Kiosk in {currentScene} has been bought.");
-    //                 kioskPurchasedStatus[currentScene] = true; // Mark the kiosk as bought for this scene
-    //             }
-    //         }
-    //
-    //         if (_changed2) return;
-    //         Plugin.BepinLogger.LogInfo("Changed Kiosk");
-    //         _changed2 = true;
-    //     }
-    // }
 }

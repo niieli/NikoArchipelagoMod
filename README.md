@@ -1,13 +1,13 @@
 # Here Comes Niko! Archipelago WIP
 This mod integrates [Archipelago](https://archipelago.gg/) into Here Comes Niko! and randomizes a bunch of different things
 
-Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archipelago/releases)
+Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archipelago/releases/latest)
 
 ## Installation
 
 1. Download and install [BepInEx 5.4.x](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.22) in your Here Comes Niko root folder. 
 2. Start the game once so that BepInEx creates its stuff
-3. Download the latest zip from the [release page](https://github.com/niieli/NikoArchipelagoMod/releases) and extract its content into `BepInEx/plugins`
+3. Download the latest zip from the [release page](https://github.com/niieli/NikoArchipelagoMod/releases/latest) and extract its content into `BepInEx/plugins`
 
 ## Connecting
 
@@ -26,7 +26,6 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 - Reconnecting after disconnecting will sometimes give you a duplicate item (Desync)
   - This can be fixed by restarting the game and connecting again
 - Quitting crashes the game LOL!
-- Kiosk are a bit scuffed and if the tips down below don't work you can add a `debug.txt` file next to the DLL and fix it with the `FixKiosk` button
 
 ## What is randomized?
 - Coins
@@ -41,11 +40,7 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
   - Contact List 1 & 2 are seperate items, so you can have 2 without having the first one *Visible on the in-game "tracker"* 
 - Reward from Sensei (Super Jump)
 - Fish? Fishsanity? *(Depending on settings)*
-- Every Kiosk (except Tadpole HQ elevator)*(Depending on settings)*
-  - *There is a problem with the Kiosk not showing the price, when you get access to the next level, 
-but you can still talk to the Dispatcher and buy the item! The in-game "tracker" will help you with that.*
-  - If you get the ticket to the next area while you are in the level before that one (Home -> Hairball City etc.) you will need to reload the level to talk with the Dispatcher again
-  - Restarting the game also helps
+- Every Kiosk *(Depending on settings)*
 - Gary's Garden *(Depending on settings)*
 - Achievements *(Depending on settings)*
   - Frog Fan only needs 10 bumps

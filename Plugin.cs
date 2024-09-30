@@ -27,7 +27,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.1.0";
+        private const string PluginVersion = "0.1.1";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -207,10 +207,7 @@ namespace NikoArchipelago
         private static IEnumerator SyncState()
         {
             yield return new WaitForSeconds(4f);
-            var level = _gameSaveManagerStatic.gameData.generalGameData.currentLevel;
             var generalGameData = scrGameSaveManager.instance.gameData.generalGameData;
-            var currentScene = SceneManager.GetActiveScene().name;
-            bool skip = false;
             void SyncValue<T>(ref T gameDataValue, T clientValue)
             {
                 if (!EqualityComparer<T>.Default.Equals(gameDataValue, clientValue))
@@ -242,47 +239,6 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
-            switch (level)
-            {
-                case 2 when ArchipelagoClient.Ticket1 == false && _debugMode == false:
-                case 3 when ArchipelagoClient.Ticket2 == false && _debugMode == false:
-                case 4 when ArchipelagoClient.Ticket3 == false && _debugMode == false:
-                case 5 when ArchipelagoClient.Ticket4 == false && _debugMode == false:
-                case 6 when ArchipelagoClient.Ticket5 == false && _debugMode == false:
-                case 7 when ArchipelagoClient.Ticket6 == false && _debugMode == false:
-                    scrTrainManager.instance.UseTrain(1, false);
-                    BepinLogger.LogMessage($"You don't have the corresponding Ticket for Level: '{level}' !");
-                    APSendNote($"You don't have the corresponding Ticket for Level: '{level}' !", 10f);
-                    break;
-            }
-
-            switch (currentScene)
-            {
-                case "InsideTrain1":
-                    scrTrainManager.instance.UseTrain(1, false);
-                    BepinLogger.LogInfo("Skipping Train 1 Cutscene...");
-                    break;
-                case "InsideTrain2":
-                    scrTrainManager.instance.UseTrain(2, false);
-                    BepinLogger.LogInfo("Skipping Train 2 Cutscene...");
-                    break;
-                case "InsideTrain3":
-                    scrTrainManager.instance.UseTrain(3, false);
-                    BepinLogger.LogInfo("Skipping Train 3 Cutscene...");
-                    break;
-                case "InsideTrain4":
-                    scrTrainManager.instance.UseTrain(4, false);
-                    BepinLogger.LogInfo("Skipping Train 4 Cutscene...");
-                    break;
-                case "InsideTrain5":
-                    scrTrainManager.instance.UseTrain(5, false);
-                    BepinLogger.LogInfo("Skipping Train 5 Cutscene...");
-                    break;
-                case "InsideTrain6":
-                    scrTrainManager.instance.UseTrain(6, false);
-                    BepinLogger.LogInfo("Skipping Train 6 Cutscene...");
-                    break;
-            }
         }
 
         private void LogFlags()

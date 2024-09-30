@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Archipelago.MultiClient.Net;
@@ -7,6 +8,8 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -154,11 +157,14 @@ public class ArchipelagoClient
         return 0;
     }
     
+    public List<ItemInfo> queuedItems = [];
+    private readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
+    
     /// <summary>
     /// we received an item so reward it here
     /// </summary>
     /// <param name="helper">item helper which we can grab our item from</param>
-    private async void OnItemReceived(ReceivedItemsHelper helper)
+    private void OnItemReceived(ReceivedItemsHelper helper)
     {
         var receivedItem = helper.DequeueItem();
         
@@ -167,69 +173,86 @@ public class ArchipelagoClient
         ServerData.Index++;
         
         var senderName = _session.Players.GetPlayerName(receivedItem.Player);
-        
-        switch (receivedItem.ItemId)
+        if (IsValidScene())
         {
-            case 598_145_444_000:
-                ItemHandler.AddCoin(1, senderName);
-                CoinAmount++;
-                break;
-            case 598_145_444_000 + 1: // Cassette
-                ItemHandler.AddCassette(1, senderName);
-                CassetteAmount++;
-                break;
-            case 598_145_444_000 + 2: // Key
-                ItemHandler.AddKey(1, senderName);
-                KeyAmount++;
-                break;
-            case 598_145_444_000 + 3: // Apples
-                ItemHandler.AddApples(25, senderName);
-                break;
-            case 598_145_444_000 + 4: // Contact List 1
-                ItemHandler.AddContactList1(senderName);
-                ContactList1 = true;
-                break;
-            case 598_145_444_000 + 5: // Contact List 2
-                ItemHandler.AddContactList2(senderName);
-                ContactList2 = true;
-                break;
-            case 598_145_444_000 + 6: // Super Jump
-                ItemHandler.AddSuperJump(senderName);
-                SuperJump = true;
-                break;
-            case 598_145_444_000+7:
-                ItemHandler.AddLetter(1, senderName);
-                break;
-            case 598_145_444_000+8:
-                ItemHandler.AddTicket(2, senderName);
-                Ticket1 = true;
-                break;
-            case 598_145_444_000+9:
-                ItemHandler.AddTicket(3, senderName);
-                Ticket2 = true;
-                break;
-            case 598_145_444_000+10:
-                ItemHandler.AddTicket(4, senderName);
-                Ticket3 = true;
-                break;
-            case 598_145_444_000+11:
-                ItemHandler.AddTicket(5, senderName);
-                Ticket4 = true;
-                break;
-            case 598_145_444_000+12:
-                ItemHandler.AddTicket(6, senderName);
-                Ticket5 = true;
-                break;
-            case 598_145_444_000+13:
-                ItemHandler.AddTicket(7, senderName);
-                Ticket6 = true;
-                break;
-            case 598_145_444_000+14:
-                ItemHandler.AddBugs(10, senderName);
-                break;
+            switch (receivedItem.ItemId)
+            {
+                case 598_145_444_000:
+                    ItemHandler.AddCoin(1, senderName);
+                    CoinAmount++;
+                    break;
+                case 598_145_444_000 + 1: // Cassette
+                    ItemHandler.AddCassette(1, senderName);
+                    CassetteAmount++;
+                    break;
+                case 598_145_444_000 + 2: // Key
+                    ItemHandler.AddKey(1, senderName);
+                    KeyAmount++;
+                    break;
+                case 598_145_444_000 + 3: // Apples
+                    ItemHandler.AddApples(25, senderName);
+                    break;
+                case 598_145_444_000 + 4: // Contact List 1
+                    ItemHandler.AddContactList1(senderName);
+                    ContactList1 = true;
+                    break;
+                case 598_145_444_000 + 5: // Contact List 2
+                    ItemHandler.AddContactList2(senderName);
+                    ContactList2 = true;
+                    break;
+                case 598_145_444_000 + 6: // Super Jump
+                    ItemHandler.AddSuperJump(senderName);
+                    SuperJump = true;
+                    break;
+                case 598_145_444_000+7:
+                    ItemHandler.AddLetter(1, senderName);
+                    break;
+                case 598_145_444_000+8:
+                    ItemHandler.AddTicket(2, senderName);
+                    Ticket1 = true;
+                    break;
+                case 598_145_444_000+9:
+                    ItemHandler.AddTicket(3, senderName);
+                    Ticket2 = true;
+                    break;
+                case 598_145_444_000+10:
+                    ItemHandler.AddTicket(4, senderName);
+                    Ticket3 = true;
+                    break;
+                case 598_145_444_000+11:
+                    ItemHandler.AddTicket(5, senderName);
+                    Ticket4 = true;
+                    break;
+                case 598_145_444_000+12:
+                    ItemHandler.AddTicket(6, senderName);
+                    Ticket5 = true;
+                    break;
+                case 598_145_444_000+13:
+                    ItemHandler.AddTicket(7, senderName);
+                    Ticket6 = true;
+                    break;
+                case 598_145_444_000+14:
+                    ItemHandler.AddBugs(10, senderName);
+                    break;
+            }
         }
-        // if items can be received while in an invalid state for actually handling them, they can be placed in a local
-        // queue to be handled later
+        else
+        {
+            queuedItems.Add(receivedItem);
+        }
+    }
+    
+    private bool IsValidScene()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        foreach (var validScene in validScenes)
+        {
+            if (currentScene == validScene)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void SendCompletion()
