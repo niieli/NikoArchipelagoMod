@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using Archipelago.MultiClient.Net.Models;
 using BepInEx;
+using BepInEx.Bootstrap;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using KinematicCharacterController.Core;
@@ -29,7 +31,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.1.1";
+        private const string PluginVersion = "0.1.3";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -57,6 +59,7 @@ namespace NikoArchipelago
         
         private void Awake()
         {
+            Chainloader.ManagerObject.hideFlags = HideFlags.HideAndDontSave;
             BepinLogger = Logger;
             ArchipelagoClient = new ArchipelagoClient();
             ArchipelagoConsole.Awake();
