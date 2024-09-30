@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Archipelago.MultiClient.Net.Models;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -10,6 +11,7 @@ using NikoArchipelago.Archipelago;
 using NikoArchipelago.Patches;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Color = UnityEngine.Color;
 
 namespace NikoArchipelago
 {
@@ -208,6 +210,7 @@ namespace NikoArchipelago
         {
             yield return new WaitForSeconds(4f);
             var generalGameData = scrGameSaveManager.instance.gameData.generalGameData;
+            var currentScene = SceneManager.GetActiveScene().name;
             void SyncValue<T>(ref T gameDataValue, T clientValue)
             {
                 if (!EqualityComparer<T>.Default.Equals(gameDataValue, clientValue))
@@ -239,6 +242,72 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
+            if (ArchipelagoClient.queuedItems.Count <= 0 || currentScene == "OutsideTrainBetween") yield break;
+            foreach (var t in ArchipelagoClient.queuedItems)
+            {
+                var senderName = t.Player.Name;
+                switch (t.ItemId)
+                {
+                    case 598_145_444_000:
+                        ItemHandler.AddCoin(1, senderName);
+                        ArchipelagoClient.CoinAmount++;
+                        break;
+                    case 598_145_444_000 + 1: // Cassette
+                        ItemHandler.AddCassette(1, senderName);
+                        ArchipelagoClient.CassetteAmount++;
+                        break;
+                    case 598_145_444_000 + 2: // Key
+                        ItemHandler.AddKey(1, senderName);
+                        ArchipelagoClient.KeyAmount++;
+                        break;
+                    case 598_145_444_000 + 3: // Apples
+                        ItemHandler.AddApples(25, senderName);
+                        break;
+                    case 598_145_444_000 + 4: // Contact List 1
+                        ItemHandler.AddContactList1(senderName);
+                        ArchipelagoClient.ContactList1 = true;
+                        break;
+                    case 598_145_444_000 + 5: // Contact List 2
+                        ItemHandler.AddContactList2(senderName);
+                        ArchipelagoClient.ContactList2 = true;
+                        break;
+                    case 598_145_444_000 + 6: // Super Jump
+                        ItemHandler.AddSuperJump(senderName);
+                        ArchipelagoClient.SuperJump = true;
+                        break;
+                    case 598_145_444_000 + 7:
+                        ItemHandler.AddLetter(1, senderName);
+                        break;
+                    case 598_145_444_000 + 8:
+                        ItemHandler.AddTicket(2, senderName);
+                        ArchipelagoClient.Ticket1 = true;
+                        break;
+                    case 598_145_444_000 + 9:
+                        ItemHandler.AddTicket(3, senderName);
+                        ArchipelagoClient.Ticket2 = true;
+                        break;
+                    case 598_145_444_000 + 10:
+                        ItemHandler.AddTicket(4, senderName);
+                        ArchipelagoClient.Ticket3 = true;
+                        break;
+                    case 598_145_444_000 + 11:
+                        ItemHandler.AddTicket(5, senderName);
+                        ArchipelagoClient.Ticket4 = true;
+                        break;
+                    case 598_145_444_000 + 12:
+                        ItemHandler.AddTicket(6, senderName);
+                        ArchipelagoClient.Ticket5 = true;
+                        break;
+                    case 598_145_444_000 + 13:
+                        ItemHandler.AddTicket(7, senderName);
+                        ArchipelagoClient.Ticket6 = true;
+                        break;
+                    case 598_145_444_000 + 14:
+                        ItemHandler.AddBugs(10, senderName);
+                        break;
+                }
+            }
+            ArchipelagoClient.queuedItems.Clear();
         }
 
         private void LogFlags()

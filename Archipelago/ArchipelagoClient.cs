@@ -239,6 +239,7 @@ public class ArchipelagoClient
         else
         {
             queuedItems.Add(receivedItem);
+            Plugin.BepinLogger.LogInfo($"Added Item '{receivedItem.ItemName}' , ID:'{receivedItem.ItemId}' to queue");
         }
     }
     

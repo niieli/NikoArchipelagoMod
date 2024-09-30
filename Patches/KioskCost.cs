@@ -30,7 +30,6 @@ public static class KioskCost
         [HarmonyPostfix]
         public static void PostFix(scrKioskManager __instance)
         {
-            //TODO: Less scuffed
             _kioskManager = __instance;
             var currentScene = SceneManager.GetActiveScene().name;
             var levelPriceField = AccessTools.Field(typeof(scrKioskManager), "levelPrice");
