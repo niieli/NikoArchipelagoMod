@@ -6,7 +6,7 @@ public static class ItemHandler
 {
     private static ArchipelagoClient archipelagoClient;
     private static Plugin plugin;
-
+    private static bool prog;
     public static void AddCoin(int amount = 1, string sender = "")
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -94,6 +94,34 @@ public static class ItemHandler
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
             3f);
+        scrGameSaveManager.instance.SaveGame();
+    }
+
+    //Works but looks scuffed. Cleanup in future
+    public static void AddProgressiveContactList(string sender = "")
+    {
+        if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1"))
+        {
+            prog = true;
+            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave1");
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
+                3.5f);
+        } else if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2") && scrGameSaveManager.instance.gameData.generalGameData.wave1)
+        {
+            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave2");
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
+                3.5f);
+        }
+        if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2") && scrGameSaveManager.instance.gameData.generalGameData.wave1 && prog)
+        {
+            scrGameSaveManager.instance.gameData.generalGameData.wave2 = true;
+        }
+        if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1") && !scrGameSaveManager.instance.gameData.generalGameData.wave1)
+        {
+            scrGameSaveManager.instance.gameData.generalGameData.wave1 = true;
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 

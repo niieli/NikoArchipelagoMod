@@ -190,11 +190,25 @@ public class LocationHandler : MonoBehaviour
     
     public static void WinCompletion()
     {
-        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 1 ||
-            !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview") || _sent) return;
-        ArchipelagoClient.SendCompletion();
-        Plugin.APSendNote("YOU'RE HIRED! (Completed Goal)", 10f);
-        ArchipelagoConsole.LogMessage("YOU'RE HIRED! (Completed Goal)");
-        _sent = true;
+        if (int.Parse(ArchipelagoData.slotData["goal_completion"].ToString()) == 0)
+        {
+            if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 1 ||
+                !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview") || _sent) return;
+            ArchipelagoClient.SendCompletion();
+            Plugin.APSendNote("YOU'RE HIRED! (Completed Goal)", 10f);
+            ArchipelagoConsole.LogMessage("YOU'RE HIRED! (Completed Goal)");
+            _sent = true;
+        }
+        else
+        {
+            if (scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal != 76 || _sent) return;
+            {
+                ArchipelagoClient.SendCompletion();
+                Plugin.APSendNote("BEST EMPLOYEE! (Completed Goal)", 10f);
+                ArchipelagoConsole.LogMessage("BEST EMPLOYEE (Completed Goal)");
+                _sent = true;
+            }
+        }
+        
     }
 }

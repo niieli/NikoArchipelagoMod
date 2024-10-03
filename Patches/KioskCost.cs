@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using KinematicCharacterController.Core;
+using Newtonsoft.Json.Linq;
+using NikoArchipelago.Archipelago;
 using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Patches;
@@ -9,20 +11,25 @@ public static class KioskCost
     private static scrKioskManager _kioskManager;
     private static Plugin plugin;
     private static bool _changed, _changed2, bought, avail;
-    
+
     [HarmonyPrefix, HarmonyPatch(typeof(levelData))]
-    public static void levelData_Prefix()
+    public static void PreFix()
     {
-        levelData.levelPrices[3] = 6;
-        levelData.levelPrices[4] = 11;
-        levelData.levelPrices[5] = 21;
-        levelData.levelPrices[6] = 26;
-        levelData.levelPrices[7] = 31;
-        levelData.levelPrices[8] = 46;
+        var slotData = ArchipelagoData.slotData;
+        if (ArchipelagoData.slotData == null) return;
+        levelData.levelPrices[2] = int.Parse(slotData["kioskhome"].ToString());
+        levelData.levelPrices[3] = int.Parse(slotData["kioskhc"].ToString());
+        levelData.levelPrices[4] = int.Parse(slotData["kiosktt"].ToString());
+        levelData.levelPrices[5] = int.Parse(slotData["kiosksfc"].ToString());
+        levelData.levelPrices[6] = int.Parse(slotData["kioskpp"].ToString());
+        levelData.levelPrices[7] = int.Parse(slotData["kioskbath"].ToString());
+        levelData.levelPrices[8] = int.Parse(slotData["kioskhq"].ToString());
         if (_changed) return;
-        Plugin.BepinLogger.LogInfo("Changed LevelPrices");
+        Plugin.BepinLogger.LogInfo("Changed Kiosk Price");
         _changed = true;
     }
+    
+    
 
     [HarmonyPatch(typeof(scrKioskManager), "Update")]
     public static class KioskLevelFixPatch

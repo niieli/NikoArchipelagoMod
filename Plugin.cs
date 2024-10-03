@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Archipelago.MultiClient.Net.Models;
 using BepInEx;
 using BepInEx.Bootstrap;
@@ -31,7 +32,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.1.3";
+        private const string PluginVersion = "0.2.0";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -48,7 +49,7 @@ namespace NikoArchipelago
         private float env, mas, mus, sfx;
         private static scrNotificationDisplayer _noteDisplayer;
         public bool worldReady;
-        private static bool _debugMode;
+        private static bool _debugMode,_canLogin;
         private static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
         public static string Seed;
@@ -56,6 +57,7 @@ namespace NikoArchipelago
         public static AssetBundle AssetBundle;
         public static Sprite APSprite;
         public static Dictionary<string, object> SlotData;
+        private CancellationTokenSource _cancellationTokenSource = new();
         
         private void Awake()
         {
@@ -88,9 +90,12 @@ namespace NikoArchipelago
             GameOptions.MusicVolume = mus;
             GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
-            AssetBundle = AssetBundle.LoadFromFile(Path.Combine(AssetsFolderPath, "apassets"));
-            APSprite = AssetBundle.LoadAsset<Sprite>("apLogo");
-            AssetBundle.Unload(false);
+            AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets");
+            if (AssetBundle != null)
+            {
+                APSprite = AssetBundle.LoadAsset<Sprite>("apLogo");
+                _canLogin = true;
+            }
             harmony = new Harmony(PluginGuid);
             harmony.PatchAll();
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -173,7 +178,7 @@ namespace NikoArchipelago
                     StartCoroutine(CheckWorldSaveManager());
                     APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
-                KioskCost.levelData_Prefix();
+                KioskCost.PreFix();
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
                 if (worldReady && ArchipelagoClient.Authenticated)
@@ -200,9 +205,12 @@ namespace NikoArchipelago
 
         private void OnApplicationQuit()
         {
+            _cancellationTokenSource.Cancel();
             ArchipelagoClient.Disconnect();
+            StopAllCoroutines();
             Application.Quit();
         }
+        
         private IEnumerator FirstLoginFix()
         {
             yield return new WaitForSeconds(3.0f);
@@ -248,67 +256,7 @@ namespace NikoArchipelago
             if (ArchipelagoClient.queuedItems.Count <= 0 || currentScene == "OutsideTrainBetween") yield break;
             foreach (var t in ArchipelagoClient.queuedItems)
             {
-                var senderName = t.Player.Name;
-                switch (t.ItemId)
-                {
-                    case 598_145_444_000:
-                        ItemHandler.AddCoin(1, senderName);
-                        ArchipelagoClient.CoinAmount++;
-                        break;
-                    case 598_145_444_000 + 1: // Cassette
-                        ItemHandler.AddCassette(1, senderName);
-                        ArchipelagoClient.CassetteAmount++;
-                        break;
-                    case 598_145_444_000 + 2: // Key
-                        ItemHandler.AddKey(1, senderName);
-                        ArchipelagoClient.KeyAmount++;
-                        break;
-                    case 598_145_444_000 + 3: // Apples
-                        ItemHandler.AddApples(25, senderName);
-                        break;
-                    case 598_145_444_000 + 4: // Contact List 1
-                        ItemHandler.AddContactList1(senderName);
-                        ArchipelagoClient.ContactList1 = true;
-                        break;
-                    case 598_145_444_000 + 5: // Contact List 2
-                        ItemHandler.AddContactList2(senderName);
-                        ArchipelagoClient.ContactList2 = true;
-                        break;
-                    case 598_145_444_000 + 6: // Super Jump
-                        ItemHandler.AddSuperJump(senderName);
-                        ArchipelagoClient.SuperJump = true;
-                        break;
-                    case 598_145_444_000 + 7:
-                        ItemHandler.AddLetter(1, senderName);
-                        break;
-                    case 598_145_444_000 + 8:
-                        ItemHandler.AddTicket(2, senderName);
-                        ArchipelagoClient.Ticket1 = true;
-                        break;
-                    case 598_145_444_000 + 9:
-                        ItemHandler.AddTicket(3, senderName);
-                        ArchipelagoClient.Ticket2 = true;
-                        break;
-                    case 598_145_444_000 + 10:
-                        ItemHandler.AddTicket(4, senderName);
-                        ArchipelagoClient.Ticket3 = true;
-                        break;
-                    case 598_145_444_000 + 11:
-                        ItemHandler.AddTicket(5, senderName);
-                        ArchipelagoClient.Ticket4 = true;
-                        break;
-                    case 598_145_444_000 + 12:
-                        ItemHandler.AddTicket(6, senderName);
-                        ArchipelagoClient.Ticket5 = true;
-                        break;
-                    case 598_145_444_000 + 13:
-                        ItemHandler.AddTicket(7, senderName);
-                        ArchipelagoClient.Ticket6 = true;
-                        break;
-                    case 598_145_444_000 + 14:
-                        ItemHandler.AddBugs(10, senderName);
-                        break;
-                }
+                ArchipelagoClient.GiveItem(t);
             }
             ArchipelagoClient.queuedItems.Clear();
         }
@@ -391,7 +339,7 @@ namespace NikoArchipelago
             string statusMessage;
             if (ArchipelagoClient.Authenticated)
             {
-                BackgroundForText(new Rect(10, 10, 280, 120));
+                BackgroundForText(new Rect(10, 10, 280, 140));
                 statusMessage = " Status: Connected";
                 GUI.Label(new Rect(16, 16, 300, 22), ModDisplayInfo);
                 GUI.Label(new Rect(16, 50, 300, 22), APDisplayInfo + statusMessage);
@@ -414,7 +362,7 @@ namespace NikoArchipelago
                 ArchipelagoClient.ServerData.Uri = GUI.TextField(new Rect(150, 70, 150, 20), ArchipelagoClient.ServerData.Uri);
                 ArchipelagoClient.ServerData.SlotName = GUI.TextField(new Rect(150, 90, 150, 20), ArchipelagoClient.ServerData.SlotName);
                 ArchipelagoClient.ServerData.Password = GUI.TextField(new Rect(150, 110, 150, 20), ArchipelagoClient.ServerData.Password);
-                if (loggedSuccess)
+                if (loggedSuccess && _canLogin)
                 {
                     if (GUI.Button(new Rect(16, 130, 100, 20), "Connect") && !ArchipelagoClient.ServerData.SlotName.IsNullOrWhiteSpace())
                     {
@@ -462,7 +410,20 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 300, 100, 20), "SlotData"))
             {
-                Logger.LogWarning(ArchipelagoData.slotData.ContainsKey("start_with_ticket"));
+                Logger.LogWarning("Deathlink: "+ArchipelagoData.slotData["death_link"]);
+                Logger.LogWarning("MinKiosk: "+ArchipelagoData.slotData["min_kiosk_cost"]);
+                Logger.LogWarning("MaxKiosk: "+ArchipelagoData.slotData["max_kiosk_cost"]);
+                Logger.LogWarning("MinElevator: "+ArchipelagoData.slotData["min_elevator_cost"]);
+                Logger.LogWarning("MaxElevator: "+ArchipelagoData.slotData["max_elevator_cost"]);
+                Logger.LogWarning("Goal: "+ArchipelagoData.slotData["goal_completion"]);
+                Logger.LogWarning("Kiosk Home: "+ArchipelagoData.slotData["kioskhome"]);
+                Logger.LogFatal("Kiosk Home Int: "+ArchipelagoData.slotData["kioskhome"].ToString());
+                Logger.LogWarning("Kiosk Hairball City: "+ArchipelagoData.slotData["kioskhc"]);
+                Logger.LogWarning("Kiosk Turbine Town: "+ArchipelagoData.slotData["kiosktt"]);
+                Logger.LogWarning("Kiosk Salmon Creek Forest: "+ArchipelagoData.slotData["kiosksfc"]);
+                Logger.LogWarning("Kiosk Public Pool: "+ArchipelagoData.slotData["kioskpp"]);
+                Logger.LogWarning("Kiosk Bathhouse: "+ArchipelagoData.slotData["kioskbath"]);
+                Logger.LogWarning("Elevator Repair: "+ArchipelagoData.slotData["kioskhq"]);
             }
             if (GUI.Button(new Rect(16, 320, 100, 20), "Current Level"))
             {
@@ -486,19 +447,27 @@ namespace NikoArchipelago
         private void Tracker()
         {
             // Define the flag-label mappings and positions
+            var slotData = ArchipelagoData.slotData;
             var flagData = new (string flagKey, string successMsg, string failureMsg, int xPos, int yPos)[]
             {
                 ("APWave1", "Got Contact List 1!", "No Contact List 1!", 16, 70),
                 ("APWave2", "Got Contact List 2!", "No Contact List 2!", 170, 70),
-                ("KioskHome", "Kiosk Home", "Kiosk Home(1)", 16, 90),
-                ("KioskHairball City", "Kiosk HC", "Kiosk HC(6)", 115, 90),
-                ("KioskTrash Kingdom", "Kiosk TT", "Kiosk TT(11)", 200, 90),
-                ("KioskSalmon Creek Forest", "Kiosk SCF", "Kiosk SCF(21)", 16, 110),
-                ("KioskPublic Pool", "Kiosk PP", "Kiosk PP(26)", 115, 110),
-                ("KioskThe Bathhouse", "Kiosk Bath", "Kiosk Bath(31)", 200, 110)
+                ("KioskHome", "Kiosk Home", $"Kiosk Home({slotData["kioskhome"]})", 16, 90),
+                ("KioskHairball City", "Kiosk HC", $"Kiosk HC({slotData["kioskhc"]})", 115, 90),
+                ("KioskTrash Kingdom", "Kiosk TT", $"Kiosk TT({slotData["kiosktt"]})", 200, 90),
+                ("KioskSalmon Creek Forest", "Kiosk SCF", $"Kiosk SCF({slotData["kiosksfc"]})", 16, 110),
+                ("KioskPublic Pool", "Kiosk PP", $"Kiosk PP({slotData["kioskpp"]})", 115, 110),
+                ("KioskThe Bathhouse", "Kiosk Bath", $"Kiosk Bath({slotData["kioskbath"]})", 200, 110),
             };
+            if (int.Parse(slotData["goal_completion"].ToString()) == 0)
+            {
+                GUI.Label(new Rect(28, 130, 300, 20), $"Goal: Get Hired | Elevator Repair Cost({slotData["kioskhq"]})");
+            }
+            else
+            {
+                GUI.Label(new Rect(24, 130, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
+            }
 
-            // Loop through each flag and display status
             foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)
             {
                 DrawFlagStatus(flagKey, successMsg, failureMsg, xPos, yPos);

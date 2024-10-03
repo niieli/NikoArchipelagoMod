@@ -25,7 +25,7 @@ public class ArchipelagoClient
     private DeathLinkHandler deathLinkHandler;
     private static ArchipelagoSession _session;
     public int CoinAmount, CassetteAmount, KeyAmount;
-    public bool SuperJump, ContactList1, ContactList2, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6;
+    public bool SuperJump, ContactList1, ContactList2, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, isRunning;
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -66,6 +66,7 @@ public class ArchipelagoClient
     {
         try
         {
+            isRunning = true;
             // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
             ThreadPool.QueueUserWorkItem(
                 _ => HandleConnectResult(
@@ -140,6 +141,7 @@ public class ArchipelagoClient
 #endif
         _session = null;
         Authenticated = false;
+        isRunning = false;
     }
 
     public void SendMessage(string message)
@@ -147,14 +149,13 @@ public class ArchipelagoClient
         _session.Socket.SendPacketAsync(new SayPacket { Text = message });
     }
 
-    public static long SyncInventory()
+    public static ItemInfo SyncInventory()
     {
         foreach(ItemInfo item in _session.Items.AllItemsReceived)
         {
-            long itemId = item.ItemId;
-            return itemId;
+            return item;
         }
-        return 0;
+        return null;
     }
     
     public List<ItemInfo> queuedItems = [];
@@ -172,10 +173,21 @@ public class ArchipelagoClient
 
         ServerData.Index++;
         
-        var senderName = _session.Players.GetPlayerName(receivedItem.Player);
         if (IsValidScene())
         {
-            switch (receivedItem.ItemId)
+            GiveItem(receivedItem);
+        }
+        else
+        {
+            queuedItems.Add(receivedItem);
+            Plugin.BepinLogger.LogInfo($"Added Item '{receivedItem.ItemName}' , ID:'{receivedItem.ItemId}' to queue");
+        }
+    }
+
+    public void GiveItem(ItemInfo item)
+    {
+        var senderName = _session.Players.GetPlayerName(item.Player);
+        switch (item.ItemId)
             {
                 case 598_145_444_000:
                     ItemHandler.AddCoin(1, senderName);
@@ -234,13 +246,18 @@ public class ArchipelagoClient
                 case 598_145_444_000+14:
                     ItemHandler.AddBugs(10, senderName);
                     break;
+                case 598_145_444_000+15:
+                    ItemHandler.AddProgressiveContactList(senderName);
+                    if (!ContactList2 && ContactList1)
+                    {
+                        ContactList2 = true;
+                    }
+                    else
+                    {
+                        ContactList1 = true;
+                    }
+                    break;
             }
-        }
-        else
-        {
-            queuedItems.Add(receivedItem);
-            Plugin.BepinLogger.LogInfo($"Added Item '{receivedItem.ItemName}' , ID:'{receivedItem.ItemId}' to queue");
-        }
     }
     
     private bool IsValidScene()

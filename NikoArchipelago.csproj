@@ -59,4 +59,9 @@
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="apassets" />
+    <EmbeddedResource Include="apassets" />
+  </ItemGroup>
 </Project>

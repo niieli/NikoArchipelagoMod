@@ -33,11 +33,13 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
   - Including Mitch & Mai
   
     *they currently work on a levelbasis, so Hairball City they want 5/10 Cassettes, Turbine Town 15/20 etc.*
-    || *I am currently working on a progressive system*
+    
+  - *I am working on a progressive system*
 - Keys
 - Letters
 - Both Contact Lists
   - Contact List 1 & 2 are seperate items, so you can have 2 without having the first one *Visible on the in-game "tracker"* 
+  - Or change via the yaml to Progressive
 - Reward from Sensei (Super Jump)
 - Fish? Fishsanity? *(Depending on settings)*
 - Every Kiosk *(Depending on settings)*
@@ -46,7 +48,7 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
   - Frog Fan only needs 10 bumps
   - Volley Dreams only needs a highscore of 5 in every level
 - Handsome Frog *(Depending on settings)*
-- Levels
+- Levels & their Kiosk (with random costs based on yaml settings)
   - Hairball City
   - Turbine Town
   - Salmon Creek Forest
@@ -58,10 +60,7 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
 
-- Progressive Contact List
 - Progressive Cassette Cost (Progressive Locations)
-- Different Goals (Employee of the Month) & change elevator repair cost based on a value set inside the yaml
-- Make only the needed amount of Coins progressive and the rest useful
 - Dialogue and text reflecting the correct cost and item
 - MORE INSANITY?!?!
 - Better connect UI *not sure how*
