@@ -32,7 +32,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.2.0";
+        private const string PluginVersion = "0.2.1";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";

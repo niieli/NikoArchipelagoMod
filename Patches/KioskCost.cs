@@ -115,6 +115,8 @@ public static class KioskCost
                     __instance.NPCbought.SetActive(true);
                     __instance.textMesh.text = "";
                     __instance.textMesh.gameObject.SetActive(false);
+                    _sentNoteEnough = true;
+                    scrNotificationDisplayer.instance.RemoveNotification(__instance.noteEnough);
                 }
             }
     
