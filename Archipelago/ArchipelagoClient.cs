@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Archipelago;
@@ -23,9 +23,10 @@ public class ArchipelagoClient
 
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler deathLinkHandler;
-    private static ArchipelagoSession _session;
+    public static ArchipelagoSession _session;
     public int CoinAmount, CassetteAmount, KeyAmount;
     public bool SuperJump, ContactList1, ContactList2, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, isRunning;
+    public Task _disconnectTask;
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -137,7 +138,11 @@ public class ArchipelagoClient
 #if NET35
         session?.Socket.Disconnect();
 #else
-        _session?.Socket.DisconnectAsync();
+        if (_session != null && _session.Socket != null)
+        {
+            // Store the disconnect async task
+            _disconnectTask = _session.Socket.DisconnectAsync();
+        }
 #endif
         _session = null;
         Authenticated = false;
@@ -260,7 +265,7 @@ public class ArchipelagoClient
             }
     }
     
-    private bool IsValidScene()
+    public bool IsValidScene()
     {
         string currentScene = SceneManager.GetActiveScene().name;
         foreach (var validScene in validScenes)

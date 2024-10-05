@@ -203,12 +203,16 @@ namespace NikoArchipelago
             }
         }
 
-        private void OnApplicationQuit()
+        private async void OnApplicationQuit()
         {
+            if (ArchipelagoClient.Authenticated)
+            {
+                ArchipelagoClient.Disconnect();
+                ArchipelagoClient._disconnectTask.Wait();
+            }
             _cancellationTokenSource.Cancel();
-            ArchipelagoClient.Disconnect();
             StopAllCoroutines();
-            Application.Quit();
+            //Application.Quit();
         }
         
         private IEnumerator FirstLoginFix()
@@ -236,8 +240,8 @@ namespace NikoArchipelago
             SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount);
             // Sync Special Unlocks (Super Jump, Contact Lists)
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
-            SyncValue(ref generalGameData.wave1, ArchipelagoClient.ContactList1);
-            SyncValue(ref generalGameData.wave2, ArchipelagoClient.ContactList2);
+            //SyncValue(ref generalGameData.wave1, ArchipelagoClient.ContactList1); //TODO: Sync via ReceivedItems instead
+            //SyncValue(ref generalGameData.wave2, ArchipelagoClient.ContactList2);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
             {
@@ -253,7 +257,7 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
-            if (ArchipelagoClient.queuedItems.Count <= 0 || currentScene == "OutsideTrainBetween") yield break;
+            if (ArchipelagoClient.queuedItems.Count <= 0 || !ArchipelagoClient.IsValidScene()) yield break;
             foreach (var t in ArchipelagoClient.queuedItems)
             {
                 ArchipelagoClient.GiveItem(t);
@@ -429,10 +433,10 @@ namespace NikoArchipelago
             {
                 Logger.LogInfo(scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1);
             }
-            if (GUI.Button(new Rect(16, 340, 100, 20), "FixKiosk"))
+
+            if (GUI.Button(new Rect(16, 340, 100, 20), "Test Scout"))
             {
-                var currentScene = SceneManager.GetActiveScene().name;
-                scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
+                
             }
         }
 

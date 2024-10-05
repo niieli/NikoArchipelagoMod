@@ -74,7 +74,7 @@ public static class ItemHandler
 
     public static void AddContactList1(string sender = "")
     {
-        scrGameSaveManager.instance.gameData.generalGameData.wave1 = true;
+        //scrGameSaveManager.instance.gameData.generalGameData.wave1 = true;
         if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1"))
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave1");
@@ -86,7 +86,7 @@ public static class ItemHandler
 
     public static void AddContactList2(string sender = "")
     {
-        scrGameSaveManager.instance.gameData.generalGameData.wave2 = true;
+        //scrGameSaveManager.instance.gameData.generalGameData.wave2 = true;
         if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2"))
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave2");
@@ -107,20 +107,12 @@ public static class ItemHandler
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
                 3.5f);
-        } else if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2") && scrGameSaveManager.instance.gameData.generalGameData.wave1)
+        } else if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2") && prog)
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave2");
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
                 3.5f);
-        }
-        if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2") && scrGameSaveManager.instance.gameData.generalGameData.wave1 && prog)
-        {
-            scrGameSaveManager.instance.gameData.generalGameData.wave2 = true;
-        }
-        if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1") && !scrGameSaveManager.instance.gameData.generalGameData.wave1)
-        {
-            scrGameSaveManager.instance.gameData.generalGameData.wave1 = true;
         }
         scrGameSaveManager.instance.SaveGame();
     }

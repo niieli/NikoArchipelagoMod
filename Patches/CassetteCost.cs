@@ -12,65 +12,83 @@ public class CassetteCost
     public static class PatchCassetteBuyer
     {
         static bool _changed = false;
+        static bool _logged = false;
 
         private static void Postfix(scrCassetteBuyer __instance)
         {
-            //TODO: Get Option value and use the corresponding method
-            int count = 0;
-            for (int i = 0; i < scrWorldSaveDataContainer.instance.coinFlags.Count; i++)
+            if (ArchipelagoData.slotData == null) return;
+            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
             {
-                if (scrWorldSaveDataContainer.instance.coinFlags[i].Contains("cassetteCoin") || scrWorldSaveDataContainer.instance.coinFlags[i].Contains("cassetteCoin2"))
+                if (!_logged)
                 {
-                    count++;
+                    Plugin.BepinLogger.LogInfo("Found 'Level Based' Cassette Logic!");
+                    _logged = true;
+                }
+                
+                int count = 0;
+                for (int i = 0; i < scrWorldSaveDataContainer.instance.coinFlags.Count; i++)
+                {
+                    if (scrWorldSaveDataContainer.instance.coinFlags[i].Contains("cassetteCoin") || scrWorldSaveDataContainer.instance.coinFlags[i].Contains("cassetteCoin2"))
+                    {
+                        count++;
+                    }
+                }
+                string currentScene = SceneManager.GetActiveScene().name;
+            
+                switch (currentScene)
+                {
+                    case "Hairball City":
+                        __instance.price = 5 + (5*count);
+                        break;
+                    case "Trash Kingdom":
+                        __instance.price = 15 + (5*count); 
+                        break;
+                    case "Salmon Creek Forest":
+                        __instance.price = 25 + (5*count); 
+                        break;
+                    case "Public Pool":
+                        __instance.price = 35 + (5*count); 
+                        break;
+                    case "The Bathhouse":
+                        __instance.price = 45 + (5*count); 
+                        break;
+                    case "Tadpole inc":
+                        __instance.price = 55 + (5*count); 
+                        break;
+                    case "GarysGarden":
+                        __instance.price = 65 + (5*count); 
+                        break;
+                }
+                if (!_changed)
+                {
+                    Plugin.BepinLogger.LogInfo($"CassetteBuyer price updated to: {__instance.price} (Scene: {currentScene}, based on {count} cassette coins found).");
+                    _changed = true;
                 }
             }
-            string currentScene = SceneManager.GetActiveScene().name;
-            
-            switch (currentScene)
+            else
             {
-                case "Hairball City":
-                    __instance.price = 5 + (5*count);
-                    break;
-                case "Trash Kingdom":
-                    __instance.price = 15 + (5*count); 
-                    break;
-                case "Salmon Creek Forest":
-                    __instance.price = 25 + (5*count); 
-                    break;
-                case "Public Pool":
-                    __instance.price = 35 + (5*count); 
-                    break;
-                case "The Bathhouse":
-                    __instance.price = 45 + (5*count); 
-                    break;
-                case "Tadpole inc":
-                    __instance.price = 55 + (5*count); 
-                    break;
-                case "GarysGarden":
-                    __instance.price = 65 + (5*count); 
-                    break;
+                if (!_logged)
+                {
+                    Plugin.BepinLogger.LogInfo("Found 'Progressive' Cassette Logic!");
+                    _logged = true;
+                }
+                int count = 1;
+                var list = scrGameSaveManager.instance.gameData.worldsData;
+                for (int i = 0; i < list.Count ; i++)
+                {
+                    if (list[i].coinFlags.Contains("cassetteCoin") || list[i].coinFlags.Contains("cassetteCoin2"))
+                    {
+                        count++;
+                    }
+                }
+                __instance.price = 5 * count;
+                
+                if (!_changed)
+                {
+                    Plugin.BepinLogger.LogInfo($"CassetteBuyer price updated to: {__instance.price} (based on {count} cassette coins found).");
+                    _changed = true;
+                }
             }
-            if (!_changed)
-            {
-                Plugin.BepinLogger.LogInfo($"CassetteBuyer price updated to: {__instance.price} (Scene: {currentScene}, based on {count} cassette coins found).");
-                _changed = true;
-            }
-            // int count = 1;
-            // var list = scrGameSaveManager.instance.gameData.worldsData;
-            // for (int i = 0; i < list.Count ; i++)
-            // {
-            //     if (list[i].coinFlags.Contains("cassetteCoin") || list[i].coinFlags.Contains("cassetteCoin2"))
-            //     {
-            //         count++;
-            //     }
-            // }
-            // __instance.price = 5 * count;
-            //
-            // if (!_changed)
-            // {
-            //     Plugin.BepinLogger.LogInfo($"CassetteBuyer price updated to: {__instance.price} (based on {count} cassette coins found).");
-            //     _changed = true;
-            // }
         }
     }
 }
