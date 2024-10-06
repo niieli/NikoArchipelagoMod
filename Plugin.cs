@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using Archipelago.MultiClient.Net.Models;
 using BepInEx;
 using BepInEx.Bootstrap;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using KinematicCharacterController.Core;
@@ -32,7 +30,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.2.1";
+        private const string PluginVersion = "0.2.3";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";

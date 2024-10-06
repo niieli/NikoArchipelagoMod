@@ -17,7 +17,7 @@ public class WaveCheck
             {
                 saveManager.gameData.generalGameData.wave1 = false;
             }
-            else if (__instance.wave == scrTriggerWave.Waves.wave2 && !saveManager.gameData.generalGameData.generalFlags.Contains("CL2 Obtained"))
+            if (__instance.wave == scrTriggerWave.Waves.wave2 && !saveManager.gameData.generalGameData.generalFlags.Contains("CL2 Obtained"))
             {
                 saveManager.gameData.generalGameData.wave2 = false;
             }

@@ -68,6 +68,14 @@ public static class KioskCost
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                         __instance.textMesh.gameObject.SetActive(true);
                         //TODO: Change to be universal and not dependent on en being selected
+                        // if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text.Contains("Dispatcher"))
+                        // {
+                        //     scrTextbox.instance.textMesh.text = $"It will cost {levelPrice} Coins to purchase.";
+                        //     if (GameInput.GetButtonDown("Action"))
+                        //     {
+                        //         scrTextbox.instance.EndConversation();
+                        //     }
+                        // }
                         if (scrTextbox.instance.answerSelected == 0 && scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text.Contains("Dispatcher") && scrTextbox.instance.textMesh.text.Contains("That is fantastic."))
                         {
                             if (!bought)

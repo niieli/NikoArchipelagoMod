@@ -40,7 +40,7 @@ public class ContactCheck
             {
                 __instance.SetObjectsActive(__instance.turnsOn);
             }
-            else if (__instance.wave == scrWaveCheck.Waves.wave2 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+            if (__instance.wave == scrWaveCheck.Waves.wave2 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
             {
                 __instance.SetObjectsActive(__instance.turnsOn);
             }

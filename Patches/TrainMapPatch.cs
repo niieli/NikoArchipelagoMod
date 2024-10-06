@@ -26,7 +26,7 @@ public class TrainMapPatch
                 string str2 = count.ToString();
                 coinsTextmesh.text = str1 + " / " + str2;
             }
-            else if (saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+            if (saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
             {
                 TextMeshProUGUI coinsTextmesh = __instance.coinsTextmesh;
                 string str3 = saveManager.gameData.worldsData[__instance.levelSelected].coinFlags.Count.ToString();
