@@ -13,6 +13,8 @@ public class CassetteCost
     {
         static bool _changed = false;
         static bool _logged = false;
+        static bool _gaveCoin = false;
+        static bool _gaveCoin2 = false;
 
         private static void Postfix(scrCassetteBuyer __instance)
         {
@@ -58,6 +60,69 @@ public class CassetteCost
                     case "GarysGarden":
                         __instance.price = 65 + (5*count); 
                         break;
+                }
+                if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mitch" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
+                {
+                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
+                    {
+                        scrTextbox.instance.canWaklaway = false;
+                        scrTextbox.instance.textMesh.text = "It will Cost " + __instance.price + " Cassettes to get (ItemName) for (PlayerName).)";
+                        scrTextbox.instance.answerCount = 2;
+                        scrTextbox.instance.answerTextObjects[0].text = "Gimme!";
+                        scrTextbox.instance.answerTextObjects[1].text = "Nah...";
+                        if (scrTextbox.instance.isOn && scrTextbox.instance.answerSelected == 0 && GameInput.GetButtonDown("Action"))
+                        {
+                            if (!scrWorldSaveDataContainer.instance.coinFlags.Contains(__instance.myFlag))
+                            {
+                                __instance.buyCassette();
+                                //Object.Instantiate<GameObject>(__instance.coinObtainer).GetComponent<scrObtainCoin>().myFlag = __instance.myFlag; 
+                                _gaveCoin = true;
+                                //scrWorldSaveDataContainer.instance.coinFlags.Add(__instance.myFlag);
+                            }
+                            //scrTextbox.instance.EndConversation();
+                        }
+                        if (scrTextbox.instance.answerSelected == 1 && GameInput.GetButtonDown("Action"))
+                        {
+                            scrTextbox.instance.EndConversation();
+                        }
+                        //Plugin.BepinLogger.LogMessage("Answerselected: " + scrTextbox.instance.answerSelected);
+                    }
+                    else
+                    {
+                        scrTextbox.instance.canWaklaway = true;
+                        scrTextbox.instance.textMesh.text = "Come back when you have " + __instance.price + " Cassettes to get (ItemName) for (PlayerName).";
+                    }
+                }
+
+                if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mai")
+                {
+                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
+                    {
+                        scrTextbox.instance.canWaklaway = false;
+                        scrTextbox.instance.textMesh.text = "It will Cost " + __instance.price + " Cassettes to get (ItemName) for (PlayerName).";
+                        scrTextbox.instance.answerCount = 2;
+                        scrTextbox.instance.answerTextObjects[0].text = "Gimme!";
+                        scrTextbox.instance.answerTextObjects[1].text = "Nah...";
+                        if (scrTextbox.instance.answerSelected == 0 && GameInput.GetButtonDown("Action"))
+                        {
+                            if (!scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
+                            {
+                                Object.Instantiate<GameObject>(__instance.coinObtainer).GetComponent<scrObtainCoin>().myFlag = __instance.myFlag; 
+                                _gaveCoin2 = true;
+                                //scrWorldSaveDataContainer.instance.coinFlags.Add("cassetteCoin2");
+                            }
+                            scrTextbox.instance.EndConversation();
+                        }
+                        if (scrTextbox.instance.answerSelected == 1 && GameInput.GetButtonDown("Action"))
+                        {
+                            scrTextbox.instance.EndConversation();
+                        }
+                    }
+                    else
+                    {
+                        scrTextbox.instance.canWaklaway = true;
+                        scrTextbox.instance.textMesh.text = "Come back when you have " + __instance.price + " Cassettes to get (ItemName) for (PlayerName).";
+                    }
                 }
                 if (!_changed)
                 {
