@@ -1,7 +1,11 @@
-﻿using HarmonyLib;
+﻿using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Archipelago.MultiClient.Net.Models;
+using HarmonyLib;
 using KinematicCharacterController.Core;
 using Newtonsoft.Json.Linq;
 using NikoArchipelago.Archipelago;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Patches;
@@ -29,8 +33,6 @@ public static class KioskCost
         _changed = true;
     }
     
-    
-
     [HarmonyPatch(typeof(scrKioskManager), "Update")]
     public static class KioskLevelFixPatch
     {
@@ -68,32 +70,45 @@ public static class KioskCost
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                         __instance.textMesh.gameObject.SetActive(true);
                         //TODO: Change to be universal and not dependent on en being selected
-                        // if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text.Contains("Dispatcher"))
-                        // {
-                        //     scrTextbox.instance.textMesh.text = $"It will cost {levelPrice} Coins to purchase.";
-                        //     if (GameInput.GetButtonDown("Action"))
-                        //     {
-                        //         scrTextbox.instance.EndConversation();
-                        //     }
-                        // }
-                        if (scrTextbox.instance.answerSelected == 0 && scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text.Contains("Dispatcher") && scrTextbox.instance.textMesh.text.Contains("That is fantastic."))
+                        if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                         {
-                            if (!bought)
+                            if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
                             {
-                                Plugin.BepinLogger.LogInfo($"Kiosk in {currentScene} has been bought.");
-                                bought = true;
+                                scrTextbox.instance.textMesh.text = 
+                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
                             }
+                            // if (scrTextbox.instance.textMesh.text.Contains("It will"))
+                            // {
+                            //     scrTextbox.instance.textMesh.text = 
+                            //         $"It will cost {levelPrice} Coins to purchase.";
+                            // }
+                            if (scrTextbox.instance.textMesh.text.Contains("That is fantastic."))
+                            {
+                                if (!bought)
+                                {
+                                    Plugin.BepinLogger.LogInfo($"Kiosk in {currentScene} has been bought.");
+                                    bought = true;
+                                }
 
-                            if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
-                            {
-                                scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
+                                if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
+                                {
+                                    scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
+                                }
+                                _hasBought = true;
+                                __instance.NPCbought.SetActive(true);
+                                __instance.NPCbuy.SetActive(false);
+                                __instance.textMesh.text = "Bought!";
+                                __instance.textMesh.gameObject.SetActive(true);
+                                scrTrainManager.instance.UseTrain(currentBuyableLevel-1, false);
+                                if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
+                                {
+                                    if (scrTextbox.instance.textMesh.text.Contains("You are free"))
+                                    {
+                                        scrTextbox.instance.textMesh.text = 
+                                            $"You already bought '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}.";
+                                    }
+                                }
                             }
-                            _hasBought = true;
-                            __instance.NPCbought.SetActive(true);
-                            __instance.NPCbuy.SetActive(false);
-                            __instance.textMesh.text = "Bought!";
-                            __instance.textMesh.gameObject.SetActive(true);
-                            scrTrainManager.instance.UseTrain(currentBuyableLevel-1, false);
                         }
                     }
                     else
@@ -104,6 +119,23 @@ public static class KioskCost
                         __instance.NPCbought.SetActive(false);
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                         __instance.textMesh.gameObject.SetActive(true);
+                        if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
+                        {
+                            if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
+                            {
+                                scrTextbox.instance.textMesh.text = 
+                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
+                            }
+                            if (scrTextbox.instance.textMesh.text.Contains("It will cost"))
+                            {
+                                scrTextbox.instance.textMesh.text = 
+                                    $"It will cost {levelPrice} Coins to purchase.";
+                                if (GameInput.GetButtonDown("Action"))
+                                {
+                                    scrTextbox.instance.EndConversation();
+                                }
+                            }
+                        }
                     }
                 }
                 else if (scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[currentBuyableLevel] && !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
@@ -114,6 +146,19 @@ public static class KioskCost
                     __instance.NPCbought.SetActive(false);
                     __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                     __instance.textMesh.gameObject.SetActive(true);
+                    if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
+                    {
+                        if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
+                        {
+                            scrTextbox.instance.textMesh.text = 
+                                $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
+                        }
+                        if (scrTextbox.instance.textMesh.text.Contains("It will cost"))
+                        {
+                            scrTextbox.instance.textMesh.text = 
+                                $"It will cost {levelPrice} Coins to purchase.";
+                        }
+                    }
                 }
                 else
                 {
@@ -125,6 +170,18 @@ public static class KioskCost
                     __instance.textMesh.gameObject.SetActive(false);
                     _sentNoteEnough = true;
                     scrNotificationDisplayer.instance.RemoveNotification(__instance.noteEnough);
+                    if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
+                    {
+                        if (scrTextbox.instance.textMesh.text.Contains("You are free"))
+                        {
+                            scrTextbox.instance.textMesh.text = 
+                                $"You already bought '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}.";
+                            if (GameInput.GetButtonDown("Action"))
+                            {
+                                scrTextbox.instance.EndConversation();
+                            }
+                        }
+                    }
                 }
             }
     

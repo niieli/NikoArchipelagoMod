@@ -8,6 +8,7 @@ namespace NikoArchipelago.Patches;
 [HarmonyPatch("Update")]
 public class KeyRemover
 {
+    //TODO: Fix sound abomination
     // private static bool Prefix(scrKey __instance)
     // {
     //     var obtainingField = AccessTools.Field(typeof(scrKey), "obtaining");

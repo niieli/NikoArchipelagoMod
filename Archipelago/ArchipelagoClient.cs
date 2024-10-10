@@ -165,7 +165,8 @@ public class ArchipelagoClient
     
     public List<ItemInfo> queuedItems = [];
     private readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
-    
+    public static List<ItemInfo> ScoutedLocations = [];
+
     /// <summary>
     /// we received an item so reward it here
     /// </summary>
@@ -178,7 +179,7 @@ public class ArchipelagoClient
 
         ServerData.Index++;
         
-        if (IsValidScene())
+        if (IsValidScene() && Plugin.ScoutAvail)
         {
             GiveItem(receivedItem);
         }
@@ -278,6 +279,60 @@ public class ArchipelagoClient
         return false;
     }
 
+    public static async void Scout(long[] locationIds)
+    {
+        try
+        {
+            var scoutedLocationInfo = await _session.Locations.ScoutLocationsAsync(HintCreationPolicy.None ,locationIds);
+            foreach (var scoutedItem in scoutedLocationInfo.Values)
+            {
+                ScoutedLocations.Add(scoutedItem);
+            }
+        }
+        catch (Exception e)
+        {
+            Plugin.BepinLogger.LogError($"Error while scouting locations: {e.Message}");
+        }
+    }
+    
+    public static async void ScoutByScene(HintCreationPolicy hintCreationPolicy) //TODO: This but better 
+    {
+        var sceneToLocationIds = new Dictionary<string, List<long>>
+        {
+            { "Home", [Locations.ScoutIDs[14]] },
+            { "Hairball City", [Locations.ScoutIDs[15], Locations.ScoutIDs[0], Locations.ScoutIDs[1]] },
+            { "Trash Kingdom", [Locations.ScoutIDs[16], Locations.ScoutIDs[2], Locations.ScoutIDs[3]] },
+            { "Salmon Creek Forest", [Locations.ScoutIDs[17], Locations.ScoutIDs[4], Locations.ScoutIDs[5]] },
+            { "Public Pool", [Locations.ScoutIDs[18], Locations.ScoutIDs[6], Locations.ScoutIDs[7]] },
+            { "The Bathhouse", [Locations.ScoutIDs[19], Locations.ScoutIDs[8], Locations.ScoutIDs[9]] },
+            { "Tadpole inc", [Locations.ScoutIDs[10], Locations.ScoutIDs[11]] },
+            { "GarysGarden", [Locations.ScoutIDs[12], Locations.ScoutIDs[13]] },
+        };
+
+        try
+        {
+            var currentScene = SceneManager.GetActiveScene().name;
+            if (sceneToLocationIds.ContainsKey(currentScene))
+            {
+                var locationIdsToScout = sceneToLocationIds[currentScene];
+                var scoutedLocationInfo = await _session.Locations.ScoutLocationsAsync(hintCreationPolicy, locationIdsToScout.ToArray());
+                foreach (var scoutedItem in scoutedLocationInfo.Values)
+                {
+                    ScoutedLocations.Add(scoutedItem);
+                    Plugin.BepinLogger.LogInfo($"{currentScene}: {scoutedItem.ItemName}");
+                }
+            }
+            else
+            {
+                Plugin.BepinLogger.LogInfo($"No locations to scout for the scene: {currentScene}");
+            }
+        }
+        catch (Exception e)
+        {
+            Plugin.BepinLogger.LogError($"Error while scouting locations: {e.Message}");
+        }
+    }
+    
     public static void SendCompletion()
     {
         _session.SetGoalAchieved();

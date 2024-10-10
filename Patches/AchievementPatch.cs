@@ -10,6 +10,7 @@ public class AchievementPatch
     [HarmonyPatch(typeof(scrAchievementManager), "Update")]
     public static class PatchAchievementManager
     {
+        //TODO: Fix Achievement Object
         // private static bool _lostAtSea,
         //     _frogFan,
         //     _hopelessRomantic,

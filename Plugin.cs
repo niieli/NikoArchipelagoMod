@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -50,6 +51,7 @@ namespace NikoArchipelago
         private static bool _debugMode,_canLogin;
         private static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
+        public static bool ScoutAvail;
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle;
@@ -103,6 +105,8 @@ namespace NikoArchipelago
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             Logger.LogInfo($"Scene '{scene.name}' loaded. Applying Harmony patches again.");
+            ArchipelagoClient.Scout(Locations.ScoutIDs);
+            //ArchipelagoClient.ScoutByScene(HintCreationPolicy.CreateAndAnnounceOnce);
             harmony.PatchAll();
         }
         
@@ -172,6 +176,7 @@ namespace NikoArchipelago
                         ArchipelagoClient.Disconnect();
                         StartCoroutine(FirstLoginFix());
                     }
+                    //ArchipelagoClient.Scout(Locations.ScoutIDs);
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
@@ -218,6 +223,8 @@ namespace NikoArchipelago
         {
             yield return new WaitForSeconds(3.0f);
             ArchipelagoClient.Connect();
+            scrTrainManager.instance.UseTrain(1, false); // Fix ScoutedLocations
+            ScoutAvail = true;
         }
         
         private static IEnumerator SyncState()
@@ -435,7 +442,7 @@ namespace NikoArchipelago
 
             if (GUI.Button(new Rect(16, 340, 100, 20), "Test Scout"))
             {
-                
+                ArchipelagoClient.ScoutedLocations.ForEach(Logger.LogWarning);
             }
         }
 

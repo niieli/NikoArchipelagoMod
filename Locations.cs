@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HarmonyLib;
 using NikoArchipelago.Archipelago;
 
 namespace NikoArchipelago;
@@ -316,6 +317,35 @@ public class Locations
         { BaseID + 174, new Location(BaseID + 174, "KioskPublic Pool", 4) },
         { BaseID + 175, new Location(BaseID + 175, "KioskThe Bathhouse", 5) },
     };
+
+    private static readonly List<long> ScoutList = new()
+    {
+        //Mitch & Mai
+        { BaseID + 11}, // Mitch
+        { BaseID + 12}, // Mai
+        { BaseID + 23}, // Mitch
+        { BaseID + 24}, // Mai
+        { BaseID + 29}, // Mitch
+        { BaseID + 39}, // Mai
+        { BaseID + 45}, // Mai
+        { BaseID + 52}, // Mitch
+        { BaseID + 58}, // Mitch
+        { BaseID + 59}, // Mai
+        { BaseID + 68}, // Mai
+        { BaseID + 69}, // Mitch
+        { BaseID + 199}, // Mai
+        { BaseID + 200}, // Mitch
+        
+        //Kiosk
+        { BaseID + 170},
+        { BaseID + 171},
+        { BaseID + 172},
+        { BaseID + 173},
+        { BaseID + 174},
+        { BaseID + 175},
+    };
+    
+    public static readonly long[] ScoutIDs = ScoutList.ToArray();
     
     public static void AddLocation(long id, string flag, int level)
     {
