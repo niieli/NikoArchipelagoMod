@@ -25,16 +25,12 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 
 - Reconnecting after disconnecting will sometimes give you a duplicate item (Desync)
   - This can be fixed by restarting the game and connecting again
-- Quitting crashes the game LOL!
 
 ## What is randomized?
 - Coins
 - Cassettes
   - Including Mitch & Mai
-  
-    *they currently work on a levelbasis, so Hairball City they want 5/10 Cassettes, Turbine Town 15/20 etc.*
-    
-  - *I am working on a progressive system*
+    - Either LevelBased or Scattered *(Depending on settings)*
 - Keys
 - Letters
 - Both Contact Lists
@@ -60,7 +56,6 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
 
-- Progressive Cassette Cost (Progressive Locations)
-- Dialogue and text reflecting the correct cost and item
+- Snail Shop
 - MORE INSANITY?!?!
 - Better connect UI *not sure how*

@@ -211,7 +211,7 @@ namespace NikoArchipelago
             if (ArchipelagoClient.Authenticated)
             {
                 ArchipelagoClient.Disconnect();
-                Environment.FailFast("OnApplicationQuit");
+                Environment.FailFast("OnApplicationQuit"); //TODO: This but better
                 ArchipelagoClient._disconnectTask.Wait();
             }
             _cancellationTokenSource.Cancel();
