@@ -14,6 +14,7 @@ public class CassetteCost
     static bool _gaveCoin = false;
     static bool _gaveCoin2 = false;
     static bool _changed = false;
+    static int _maiPrice = 0;
     [HarmonyPatch(typeof(scrCassetteBuyer), "Update")]
     public static class PatchCassetteBuyer
     {
@@ -270,49 +271,56 @@ public class CassetteCost
                 switch (currentScene)
                 {
                     case "Hairball City":
-                        __instance.price = int.Parse(slotData["kioskhome"].ToString());
+                        __instance.price = int.Parse(slotData["chc1"].ToString());
+                        _maiPrice = int.Parse(slotData["chc2"].ToString());
                         _mitchIndex = 0;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Trash Kingdom":
-                        __instance.price = int.Parse(slotData["kioskhome"].ToString());
+                        __instance.price = int.Parse(slotData["ctt1"].ToString());
+                        _maiPrice = int.Parse(slotData["ctt2"].ToString());
                         _mitchIndex = 2;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Salmon Creek Forest":
-                        __instance.price = int.Parse(slotData["kioskhome"].ToString());
+                        __instance.price = int.Parse(slotData["csfc1"].ToString());
+                        _maiPrice = int.Parse(slotData["csfc2"].ToString());
                         _mitchIndex = 4;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Public Pool":
-                        __instance.price = int.Parse(slotData["kioskhome"].ToString());
+                        __instance.price = int.Parse(slotData["cpp1"].ToString());
+                        _maiPrice = int.Parse(slotData["cpp2"].ToString());
                         _mitchIndex = 7;
                         _maiIndex = _mitchIndex - 1;
                         break;
                     case "The Bathhouse":
-                        __instance.price = int.Parse(slotData["kioskhome"].ToString());
+                        __instance.price = int.Parse(slotData["cbath1"].ToString());
+                        _maiPrice = int.Parse(slotData["cbath2"].ToString());
                         _mitchIndex = 8;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Tadpole inc":
-                        __instance.price = int.Parse(slotData["kioskhome"].ToString());
+                        __instance.price = int.Parse(slotData["chq1"].ToString());
+                        _maiPrice = int.Parse(slotData["chq2"].ToString());
                         _mitchIndex = 11;
                         _maiIndex = _mitchIndex - 1;
                         break;
                     case "GarysGarden":
-                        __instance.price = int.Parse(slotData["kioskhome"].ToString());
+                        __instance.price = int.Parse(slotData["cgg1"].ToString());
+                        _maiPrice = int.Parse(slotData["cgg2"].ToString());
                         _mitchIndex = 13;
                         _maiIndex = _mitchIndex - 1;
                         break;
                 }
                 if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mitch" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
-                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
+                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price * 5)
                     {
                         if (scrTextbox.instance.textMesh.text.Contains("Wanna trade"))
                         {
                             scrTextbox.instance.textMesh.text = 
-                                $"It will Cost " + __instance.price + 
+                                $"It will Cost " + __instance.price * 5 + 
                                 $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}.";
                         }
                     }
@@ -320,19 +328,19 @@ public class CassetteCost
                     {
                         scrTextbox.instance.canWaklaway = true;
                         scrTextbox.instance.textMesh.text = 
-                            $"Come back when you have " + __instance.price + 
+                            $"Come back when you have " + __instance.price * 5 + 
                             $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}.";
                     }
                 }
 
                 if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                 {
-                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
+                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= _maiPrice * 5)
                     {
                         if (scrTextbox.instance.textMesh.text.Contains("Wanna trade"))
                         {
                             scrTextbox.instance.textMesh.text = 
-                                "It will Cost " + __instance.price + 
+                                "It will Cost " + _maiPrice * 5 + 
                                 $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'.";
                         }
                     }
@@ -340,7 +348,7 @@ public class CassetteCost
                     {
                         scrTextbox.instance.canWaklaway = true;
                         scrTextbox.instance.textMesh.text = 
-                            "Come back when you have " + __instance.price + 
+                            "Come back when you have " + _maiPrice * 5 + 
                             $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}.";
                     }
                 }
