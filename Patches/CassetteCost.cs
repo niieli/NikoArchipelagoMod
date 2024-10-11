@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
@@ -20,6 +21,7 @@ public class CassetteCost
     {
         static bool _logged = false;
         private static int _mitchIndex, _maiIndex;
+        private static MethodInfo _danceRoutineMethod;
 
         private static void Postfix(scrCassetteBuyer __instance)
         {
@@ -266,6 +268,11 @@ public class CassetteCost
                     Plugin.BepinLogger.LogInfo("Found 'Scattered' Cassette Logic!");
                     _logged = true;
                 }
+                if (_danceRoutineMethod == null)
+                {
+                    _danceRoutineMethod = AccessTools.Method(typeof(scrCassetteBuyer), "DanceRoutine");
+                }
+                var buyableLevelField = AccessTools.Field(typeof(scrKioskManager), "buyableLevel");
                 var currentScene = SceneManager.GetActiveScene().name;
                 var slotData = ArchipelagoData.slotData;
                 switch (currentScene)
@@ -313,44 +320,91 @@ public class CassetteCost
                         _maiIndex = _mitchIndex - 1;
                         break;
                 }
-                if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mitch" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
+
+                if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price * 5)
                 {
-                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price * 5)
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(true);
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(false);
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentBought.SetActive(false);
+                    if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mitch" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
                         if (scrTextbox.instance.textMesh.text.Contains("Wanna trade"))
-                        {
-                            scrTextbox.instance.textMesh.text = 
-                                $"It will Cost " + __instance.price * 5 + 
+                            scrTextbox.instance.textMesh.text =
+                                $"It will Cost " + __instance.price * 5 +
                                 $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}.";
+                        if (scrTextbox.instance.textMesh.text.Contains("Alright, you got it"))
+                        {
+                            GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().buyCassette();
                         }
                     }
-                    else
+                    else if (scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
+                    {
+                        GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(false);
+                        GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(false);
+                        GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentBought.SetActive(true);
+                    }
+                }
+                else
+                {
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(false);
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(true);
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentBought.SetActive(false);
+                    if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mitch")
                     {
                         scrTextbox.instance.canWaklaway = true;
-                        scrTextbox.instance.textMesh.text = 
-                            $"Come back when you have " + __instance.price * 5 + 
+                        scrTextbox.instance.textMesh.text =
+                            $"Come back when you have " + __instance.price * 5 +
                             $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}.";
                     }
                 }
-
-                if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
+                if (GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().isBought)
                 {
-                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= _maiPrice * 5)
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(false);
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(false);
+                    GameObject.Find("CassetteBuyer").GetComponent<scrCassetteBuyer>().parentBought.SetActive(true);
+                }
+                if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= _maiPrice * 5)
+                {
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(true);
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(false);
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentBought.SetActive(false);
+                    if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
                         if (scrTextbox.instance.textMesh.text.Contains("Wanna trade"))
                         {
                             scrTextbox.instance.textMesh.text = 
                                 "It will Cost " + _maiPrice * 5 + 
                                 $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'.";
+                            if (scrTextbox.instance.textMesh.text.Contains("Alright, you got it"))
+                            {
+                                GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().buyCassette();
+                            }
                         }
+                    } else if (scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
+                    {
+                        GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(false);
+                        GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(false);
+                        GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentBought.SetActive(true);
                     }
-                    else
+                } 
+                else
+                {
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(false);
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(true);
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentBought.SetActive(false);
+                    if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Mai")
                     {
                         scrTextbox.instance.canWaklaway = true;
                         scrTextbox.instance.textMesh.text = 
                             "Come back when you have " + _maiPrice * 5 + 
                             $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}.";
                     }
+                }
+                if (GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().isBought)
+                {
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentNotBought.SetActive(false);
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentCantBuy.SetActive(false);
+                    GameObject.Find("CassetteBuyer2").GetComponent<scrCassetteBuyer>().parentBought.SetActive(true);
                 }
             }
         }
