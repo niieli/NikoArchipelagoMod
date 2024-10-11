@@ -179,7 +179,7 @@ public class ArchipelagoClient
 
         ServerData.Index++;
         
-        if (IsValidScene() && Plugin.ScoutAvail)
+        if (IsValidScene())
         {
             GiveItem(receivedItem);
         }
