@@ -40,7 +40,7 @@ namespace NikoArchipelago
         private string saveName;
         public scrGameSaveManager gameSaveManager;
         private bool loggedError, loggedSuccess, newFile, saveReady;
-        private Harmony harmony;
+        private static Harmony harmony;
 
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
         private int coinFlg, cassetteFlg, fishFlg, miscFlg, letterFlg, generalFlg, coinTotal, coinOld;
@@ -101,13 +101,53 @@ namespace NikoArchipelago
             SceneManager.sceneLoaded += OnSceneLoaded;
             Logger.LogInfo("Plugin loaded and Harmony patches applied initially!");
         }
-        
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Logger.LogInfo($"Scene '{scene.name}' loaded. Applying Harmony patches again.");
+            BepinLogger.LogInfo($"Scene '{scene.name}' loaded. Applying Harmony patches again.");
             ArchipelagoClient.Scout(Locations.ScoutIDs);
             //ArchipelagoClient.ScoutByScene(HintCreationPolicy.CreateAndAnnounceOnce);
             harmony.PatchAll();
+            MitchAndMaiObject();
+        }
+
+        private static void MitchAndMaiObject()
+        {
+            try
+            {
+                var cassetteBuyer = GameObject.Find("CassetteBuyer");
+                if (cassetteBuyer != null && cassetteBuyer.GetComponent<scrCassetteBuyer>() != null)
+                {
+                    CassetteCost._mitchGameObject = cassetteBuyer.GetComponent<scrCassetteBuyer>();
+                    BepinLogger.LogInfo("Mitch GameObject found!");
+                }
+                else
+                {
+                    BepinLogger.LogInfo("Mitch GameObject does not exist!");
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                BepinLogger.LogError($"Error finding 'CassetteBuyer': {e.Message}");
+            }
+            
+            try
+            {
+                var cassetteBuyer2 = GameObject.Find("CassetteBuyer2");
+                if (cassetteBuyer2 != null && cassetteBuyer2.GetComponent<scrCassetteBuyer>() != null)
+                {
+                    CassetteCost._maiGameObject = cassetteBuyer2.GetComponent<scrCassetteBuyer>();
+                    BepinLogger.LogInfo("Mai GameObject found!");
+                }
+                else
+                {
+                    BepinLogger.LogInfo("Mai GameObject does not exist!");
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                BepinLogger.LogError($"Error finding 'CassetteBuyer2': {e.Message}");
+            }
         }
         
         private void OnDestroy()
