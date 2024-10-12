@@ -1,11 +1,6 @@
-﻿using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.MessageLog.Messages;
-using Archipelago.MultiClient.Net.Models;
-using HarmonyLib;
+﻿using HarmonyLib;
 using KinematicCharacterController.Core;
-using Newtonsoft.Json.Linq;
 using NikoArchipelago.Archipelago;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Patches;
@@ -76,6 +71,11 @@ public static class KioskCost
                             {
                                 scrTextbox.instance.textMesh.text = 
                                     $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
+                                if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                                {
+                                    ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
+                                    __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
+                                }
                             }
                             // if (scrTextbox.instance.textMesh.text.Contains("It will"))
                             // {
@@ -121,6 +121,11 @@ public static class KioskCost
                         __instance.textMesh.gameObject.SetActive(true);
                         if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                         {
+                            if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                            {
+                                ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
+                                __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
+                            }
                             if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
                             {
                                 scrTextbox.instance.textMesh.text = 
@@ -148,6 +153,11 @@ public static class KioskCost
                     __instance.textMesh.gameObject.SetActive(true);
                     if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                     {
+                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                        {
+                            ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
+                            __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
+                        }
                         if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
                         {
                             scrTextbox.instance.textMesh.text = 
@@ -172,6 +182,11 @@ public static class KioskCost
                     scrNotificationDisplayer.instance.RemoveNotification(__instance.noteEnough);
                     if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                     {
+                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                        {
+                            ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
+                            __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
+                        }
                         if (scrTextbox.instance.textMesh.text.Contains("You are free"))
                         {
                             scrTextbox.instance.textMesh.text = 

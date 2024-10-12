@@ -10,6 +10,7 @@ public class GameObjectChecker : MonoBehaviour
     public static bool FirstMeeting;
     private void Start()
     {
+        Plugin.BepinLogger.LogDebug("GameObjectChecker started!");
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     

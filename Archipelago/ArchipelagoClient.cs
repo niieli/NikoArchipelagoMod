@@ -67,7 +67,6 @@ public class ArchipelagoClient
     {
         try
         {
-            isRunning = true;
             // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
             ThreadPool.QueueUserWorkItem(
                 _ => HandleConnectResult(
@@ -102,12 +101,13 @@ public class ArchipelagoClient
 
             ServerData.SetupSession(success.SlotData, _session.RoomState.Seed);
             Authenticated = true;
-
+            isRunning = true;
             deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
 #if NET35
             session.Locations.CompleteLocationChecksAsync(null, ServerData.CheckedLocations.ToArray());
 #else
             _session.Locations.CompleteLocationChecksAsync(ServerData.CheckedLocations.ToArray());
+            Scout();
 #endif
             outText = $"Successfully connected to {ServerData.Uri} as {ServerData.SlotName}!";
 
@@ -135,19 +135,23 @@ public class ArchipelagoClient
     public void Disconnect()
     {
         Plugin.BepinLogger.LogDebug("disconnecting from server...");
+        try
+        {
 #if NET35
         session?.Socket.Disconnect();
 #else
-        if (_session != null && _session.Socket != null)
-        {
-            // Store the disconnect async task
-            _disconnectTask = _session.Socket.DisconnectAsync();
-        }
+            _session?.Socket.DisconnectAsync();
 #endif
-        _session = null;
-        Authenticated = false;
-        isRunning = false;
+            _session = null;
+            Authenticated = false;
+            isRunning = false;
+        }
+        catch (Exception e)
+        {
+            Plugin.BepinLogger.LogError($"Error during disconnection: {e.Message}");
+        }
     }
+
 
     public void SendMessage(string message)
     {
@@ -165,7 +169,6 @@ public class ArchipelagoClient
     
     public List<ItemInfo> queuedItems = [];
     private readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
-    public static List<ItemInfo> ScoutedLocations = [];
 
     /// <summary>
     /// we received an item so reward it here
@@ -278,59 +281,16 @@ public class ArchipelagoClient
         }
         return false;
     }
-
-    public static async void Scout(long[] locationIds)
-    {
-        try
-        {
-            var scoutedLocationInfo = await _session.Locations.ScoutLocationsAsync(HintCreationPolicy.None ,locationIds);
-            foreach (var scoutedItem in scoutedLocationInfo.Values)
-            {
-                ScoutedLocations.Add(scoutedItem);
-            }
-        }
-        catch (Exception e)
-        {
-            Plugin.BepinLogger.LogError($"Error while scouting locations: {e.Message}");
-        }
-    }
     
-    public static async void ScoutByScene(HintCreationPolicy hintCreationPolicy) //TODO: This but better 
+    public static readonly List<ScoutedItemInfo> ScoutedLocations = [];
+    private static void Scout()
     {
-        var sceneToLocationIds = new Dictionary<string, List<long>>
-        {
-            { "Home", [Locations.ScoutIDs[14]] },
-            { "Hairball City", [Locations.ScoutIDs[15], Locations.ScoutIDs[0], Locations.ScoutIDs[1]] },
-            { "Trash Kingdom", [Locations.ScoutIDs[16], Locations.ScoutIDs[2], Locations.ScoutIDs[3]] },
-            { "Salmon Creek Forest", [Locations.ScoutIDs[17], Locations.ScoutIDs[4], Locations.ScoutIDs[5]] },
-            { "Public Pool", [Locations.ScoutIDs[18], Locations.ScoutIDs[6], Locations.ScoutIDs[7]] },
-            { "The Bathhouse", [Locations.ScoutIDs[19], Locations.ScoutIDs[8], Locations.ScoutIDs[9]] },
-            { "Tadpole inc", [Locations.ScoutIDs[10], Locations.ScoutIDs[11]] },
-            { "GarysGarden", [Locations.ScoutIDs[12], Locations.ScoutIDs[13]] },
-        };
-
-        try
-        {
-            var currentScene = SceneManager.GetActiveScene().name;
-            if (sceneToLocationIds.ContainsKey(currentScene))
-            {
-                var locationIdsToScout = sceneToLocationIds[currentScene];
-                var scoutedLocationInfo = await _session.Locations.ScoutLocationsAsync(hintCreationPolicy, locationIdsToScout.ToArray());
-                foreach (var scoutedItem in scoutedLocationInfo.Values)
-                {
-                    ScoutedLocations.Add(scoutedItem);
-                    Plugin.BepinLogger.LogInfo($"{currentScene}: {scoutedItem.ItemName}");
-                }
+        _session.Locations.ScoutLocationsAsync(Locations.ScoutIDs).ContinueWith(locationInfoPacket => {
+            foreach (var itemInfo in locationInfoPacket.Result.Values) {
+                ScoutedLocations.Add(itemInfo);
             }
-            else
-            {
-                Plugin.BepinLogger.LogInfo($"No locations to scout for the scene: {currentScene}");
-            }
-        }
-        catch (Exception e)
-        {
-            Plugin.BepinLogger.LogError($"Error while scouting locations: {e.Message}");
-        }
+        });
+        Plugin.BepinLogger.LogInfo("Scouted locations.");
     }
     
     public static void SendCompletion()
@@ -361,7 +321,7 @@ public class ArchipelagoClient
     /// something went wrong closing our connection. disconnect and clean up
     /// </summary>
     /// <param name="reason"></param>
-    private void OnSessionSocketClosed(string reason)
+    private async void OnSessionSocketClosed(string reason)
     {
         Plugin.BepinLogger.LogError($"Connection to Archipelago lost: {reason}");
         Disconnect();

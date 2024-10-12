@@ -108,8 +108,6 @@ namespace NikoArchipelago
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             BepinLogger.LogInfo($"Scene '{scene.name}' loaded. Applying Harmony patches again.");
-            ArchipelagoClient.Scout(Locations.ScoutIDs);
-            //ArchipelagoClient.ScoutByScene(HintCreationPolicy.CreateAndAnnounceOnce);
             harmony.PatchAll();
         }
         
@@ -215,7 +213,6 @@ namespace NikoArchipelago
             {
                 ArchipelagoClient.Disconnect();
                 Environment.FailFast("OnApplicationQuit"); //TODO: This but better
-                ArchipelagoClient._disconnectTask.Wait();
             }
             _cancellationTokenSource.Cancel();
             StopAllCoroutines();
@@ -226,8 +223,6 @@ namespace NikoArchipelago
         {
             yield return new WaitForSeconds(3.0f);
             ArchipelagoClient.Connect();
-            scrTrainManager.instance.UseTrain(1, false); // Fix ScoutedLocations
-            ScoutAvail = true;
         }
         
         private static IEnumerator SyncState()
@@ -329,7 +324,7 @@ namespace NikoArchipelago
             CheckNewFlag(ref generalFlg, saveDataGeneralFlag, "General");
 
             if (coinTotal <= coinOld) return;
-            Logger.LogMessage("Total Coin Count = " + coinTotal);
+            Logger.LogInfo("Total Coin Count: " + coinTotal);
             coinOld++;
         }
 
@@ -445,7 +440,7 @@ namespace NikoArchipelago
 
             if (GUI.Button(new Rect(16, 340, 100, 20), "Test Scout"))
             {
-                ArchipelagoClient.ScoutedLocations.ForEach(Logger.LogWarning);
+                //ArchipelagoClient.ScoutedLocations.ForEach(Logger.LogWarning);
             }
         }
 
