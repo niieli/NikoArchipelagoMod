@@ -317,6 +317,27 @@ public class Locations
         { BaseID + 174, new Location(BaseID + 174, "KioskPublic Pool", 4) },
         { BaseID + 175, new Location(BaseID + 175, "KioskThe Bathhouse", 5) },
     };
+    
+    public static Dictionary<long, Location> SnailShopLocations = new()
+    {
+        //Shop
+        { BaseID + 233, new Location(BaseID + 233, "true", 0) },
+        { BaseID + 234, new Location(BaseID + 234, "true", 1) },
+        { BaseID + 235, new Location(BaseID + 235, "true", 2) },
+        { BaseID + 236, new Location(BaseID + 236, "true", 3) },
+        { BaseID + 237, new Location(BaseID + 237, "true", 4) },
+        { BaseID + 238, new Location(BaseID + 238, "true", 5) },
+        { BaseID + 239, new Location(BaseID + 239, "true", 6) },
+        { BaseID + 240, new Location(BaseID + 240, "true", 7) },
+        { BaseID + 241, new Location(BaseID + 241, "true", 8) },
+        { BaseID + 242, new Location(BaseID + 242, "true", 9) },
+        { BaseID + 243, new Location(BaseID + 243, "true", 10) },
+        { BaseID + 244, new Location(BaseID + 244, "true", 11) },
+        { BaseID + 245, new Location(BaseID + 245, "true", 12) },
+        { BaseID + 246, new Location(BaseID + 246, "true", 13) },
+        { BaseID + 247, new Location(BaseID + 247, "true", 14) },
+        { BaseID + 248, new Location(BaseID + 248, "true", 15) },
+    };
 
     private static readonly List<long> ScoutList = new()
     {

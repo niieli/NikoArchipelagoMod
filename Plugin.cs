@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -177,7 +176,6 @@ namespace NikoArchipelago
                         ArchipelagoClient.Disconnect();
                         StartCoroutine(FirstLoginFix());
                     }
-                    //ArchipelagoClient.Scout(Locations.ScoutIDs);
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
@@ -187,7 +185,7 @@ namespace NikoArchipelago
                 Flags();
                 if (worldReady && ArchipelagoClient.Authenticated)
                 {
-                    //_ = ArchipelagoClient.SyncItemsFromDataStorage();
+                    LocationHandler.SnailShop();
                     LocationHandler.Update2();
                     LocationHandler.WinCompletion();
                     StartCoroutine(SyncState());

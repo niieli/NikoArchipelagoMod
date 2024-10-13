@@ -31,7 +31,6 @@ public class CassetteCost
             {
                 _gameSaveManager = scrGameSaveManager.instance;
             }
-            //Plugin.BepinLogger.LogMessage("Answerselected: " + _textbox.answerSelected);
             if (ArchipelagoData.slotData == null) return;
             if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
             {
@@ -98,35 +97,10 @@ public class CassetteCost
                     }
                     if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
                     {
-                        //_textbox.canWaklaway = true;
-                        //_textbox.TurnOn("song0NotBought");
                         if (_textbox.textMesh.text.Contains("Wanna trade"))
                         {
-                            //ArchipelagoClient.ScoutByScene(HintCreationPolicy.CreateAndAnnounceOnce);
                             _textbox.textMesh.text = 
                                 $"It will Cost " + __instance.price + $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}.";
-                            //TODO: Turn into Prefix to make custom Icon obtainer and fix the status: 
-                            //TODO: this.parentBought.SetActive(true);
-                            //TODO: this.parentNotBought.SetActive(false);
-                            //TODO: this.parentCantBuy.SetActive(false);
-                            //TODO: this.isBought = true; 
-                            //_textbox.answerCount = 2;
-                            // _textbox.answerTextObjects[1].text = "Gimme!";
-                            // _textbox.answerTextObjects[0].text = "Nah...";
-                            // if (GameInput.GetButtonDown("Action"))
-                            // {
-                            //     if (_textbox.answerSelected == 1)
-                            //     {
-                            //         if (!scrWorldSaveDataContainer.instance.coinFlags.Contains(__instance.myFlag) && _textbox.textMesh.text.Contains("you got"))
-                            //             __instance.buyCassette();
-                            //         //Object.Instantiate<GameObject>(__instance.coinObtainer).GetComponent<scrObtainCoin>().myFlag = __instance.myFlag; 
-                            //         //scrWorldSaveDataContainer.instance.coinFlags.Add(__instance.myFlag);
-                            //     }
-                            //     else if (_textbox.answerSelected == 0)
-                            //     {
-                            //         _textbox.EndConversation();
-                            //     }
-                            // }
                         }
                     }
                     else
@@ -147,27 +121,11 @@ public class CassetteCost
                     }
                     if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
                     {
-                        //_textbox.canWaklaway = true;
-                        //_textbox.textMesh.text = "It will Cost " + __instance.price + $" Cassettes to get {ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}.";
-                        // _textbox.answerCount = 2;
-                        // _textbox.answerTextObjects[0].text = "Gimme!";
-                        // _textbox.answerTextObjects[1].text = "Nah...";
                         if (_textbox.textMesh.text.Contains("Wanna trade"))
                         {
                             _textbox.textMesh.text = 
                                 "It will Cost " + __instance.price + 
                                 $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'.";
-                            // if (_textbox.answerSelected == 0 && _textbox.isOn)
-                            // {
-                            //     if (!scrWorldSaveDataContainer.instance.coinFlags.Contains(__instance.myFlag))
-                            //         __instance.buyCassette();
-                            //     //Object.Instantiate<GameObject>(__instance.coinObtainer).GetComponent<scrObtainCoin>().myFlag = __instance.myFlag; 
-                            //     //scrWorldSaveDataContainer.instance.coinFlags.Add(__instance.myFlag);
-                            // }
-                            // else if (_textbox.answerSelected == 1)
-                            // {
-                            //     _textbox.EndConversation();
-                            // }
                         }
                     }
                     else

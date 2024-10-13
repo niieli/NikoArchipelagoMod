@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Logging;
+using NikoArchipelago;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
 
@@ -9,10 +11,11 @@ namespace NikoArchipelago;
 public class LocationHandler : MonoBehaviour
 {
     private static long baseID = 598_145_444_000;
-    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex, kioskIndex;
+    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex, kioskIndex, shopIndex;
     private static bool _errored, _errored2, _sent;
+    private static List<bool> shopFlagsList = [..new bool[16]];
 
-    public static async void Update2()
+    public static void Update2()
     {
         try
         {
@@ -23,7 +26,6 @@ public class LocationHandler : MonoBehaviour
             var letterFlag = scrWorldSaveDataContainer.instance.letterFlags;
             var genFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
             var fishFlag = scrWorldSaveDataContainer.instance.fishFlags;
-            var frogFlag = scrGameSaveManager.instance.gameData.generalGameData.handsomeFrogs;
             var worldsData = scrGameSaveManager.instance.gameData.worldsData;
             if (coinsFlag.Count > coinFlag)
             {
@@ -209,6 +211,25 @@ public class LocationHandler : MonoBehaviour
                 _sent = true;
             }
         }
-        
+    }
+
+    public static void SnailShop()
+    {
+        var shopFlag = scrGameSaveManager.instance.gameData.generalGameData.snailBoughtClothes;
+        for (shopIndex = 0; shopIndex < shopFlagsList.Count; shopIndex++)
+        {
+            if (shopFlag[shopIndex] && !shopFlagsList[shopIndex])
+            {
+                foreach (var locationEntry in Locations.SnailShopLocations.Where(locationEntry => 
+                             shopFlag[shopIndex] && shopIndex == locationEntry.Value.Level && !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Shop"+shopIndex)))
+                {
+                    scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("Shop"+shopIndex);
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                    Plugin.BepinLogger.LogInfo("Snail Shop Location: " + locationEntry.Value.ID + " | " + locationEntry.Value.Level);
+                }
+                shopFlagsList[shopIndex] = true;
+                shopIndex++;
+            }
+        }
     }
 }
