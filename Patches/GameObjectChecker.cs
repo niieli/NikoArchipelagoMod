@@ -19,6 +19,7 @@ public class GameObjectChecker : MonoBehaviour
         FirstMeeting = false;
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
+        TitleScreenObject();
     }
     
     private void OnDestroy()
@@ -90,6 +91,25 @@ public class GameObjectChecker : MonoBehaviour
             {
                 Plugin.BepinLogger.LogError($"Error finding 'Pepper Meeting Trigger': {e.Message}");
             }
+        }
+    }
+
+    private static void TitleScreenObject()
+    {
+        try
+        {
+            if (GameObject.Find("Title Screen") != null)
+            {
+                Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
+            }
+            else
+            {
+                Plugin.BepinLogger.LogInfo("Title Screen GameObject does not exist!");
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            Plugin.BepinLogger.LogError($"Error finding 'Title Screen': {e.Message}");
         }
     }
 }
