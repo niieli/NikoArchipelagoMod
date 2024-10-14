@@ -30,7 +30,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.3.1";
+        private const string PluginVersion = "0.4.0";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -54,7 +54,10 @@ namespace NikoArchipelago
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle;
-        public static Sprite APSprite;
+        public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
+            CatSprite, ClownSprite, FlowerSprite, 
+            GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
+            SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite;
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
         
@@ -93,6 +96,22 @@ namespace NikoArchipelago
             if (AssetBundle != null)
             {
                 APSprite = AssetBundle.LoadAsset<Sprite>("apLogo");
+                BandanaSprite = AssetBundle.LoadAsset<Sprite>("BandanaAP");
+                BowtieSprite = AssetBundle.LoadAsset<Sprite>("BowtieAP");
+                CapSprite = AssetBundle.LoadAsset<Sprite>("CapAP");
+                CatSprite = AssetBundle.LoadAsset<Sprite>("CatAP");
+                ClownSprite = AssetBundle.LoadAsset<Sprite>("ClownFaceAP");
+                FlowerSprite = AssetBundle.LoadAsset<Sprite>("FlowerAP");
+                GlassesSprite = AssetBundle.LoadAsset<Sprite>("GlassesAP");
+                KingSprite = AssetBundle.LoadAsset<Sprite>("KingStaffAP");
+                MahjongSprite = AssetBundle.LoadAsset<Sprite>("MahjongAP");
+                MotorSprite = AssetBundle.LoadAsset<Sprite>("MotorcycleAP");
+                MouseSprite = AssetBundle.LoadAsset<Sprite>("MouseAP");
+                SmallHatSprite = AssetBundle.LoadAsset<Sprite>("SmallHatAP");
+                StarsSprite = AssetBundle.LoadAsset<Sprite>("StarsAP");
+                SwordSprite = AssetBundle.LoadAsset<Sprite>("SwordAP");
+                TopHatSprite = AssetBundle.LoadAsset<Sprite>("TophatAP");
+                SunglassesSprite = AssetBundle.LoadAsset<Sprite>("SunglassesAP");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
