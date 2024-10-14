@@ -44,6 +44,7 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
   - Frog Fan only needs 10 bumps
   - Volley Dreams only needs a highscore of 5 in every level
 - Handsome Frog *(Depending on settings)*
+- Snail Shop *(Depending on settings)*
 - Levels & their Kiosk (with random costs based on yaml settings)
   - Hairball City
   - Turbine Town
@@ -56,6 +57,5 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
 
-- Snail Shop
 - MORE INSANITY?!?!
 - Better connect UI *not sure how*
