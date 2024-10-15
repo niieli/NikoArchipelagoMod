@@ -12,6 +12,7 @@ using NikoArchipelago.Archipelago;
 using NikoArchipelago.Patches;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Color = UnityEngine.Color;
 
 namespace NikoArchipelago
@@ -57,7 +58,9 @@ namespace NikoArchipelago
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
-            SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite;
+            SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite, APLogoSprite, APIconSprite;
+
+        public static Image APLogoImage; 
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
         
@@ -112,6 +115,9 @@ namespace NikoArchipelago
                 SwordSprite = AssetBundle.LoadAsset<Sprite>("SwordAP");
                 TopHatSprite = AssetBundle.LoadAsset<Sprite>("TophatAP");
                 SunglassesSprite = AssetBundle.LoadAsset<Sprite>("SunglassesAP");
+                APLogoSprite = AssetBundle.LoadAsset<Sprite>("HereComesNikoAPLogo");
+                APLogoImage = AssetBundle.LoadAsset<Image>("HereComesNikoAPLogo");
+                APIconSprite = AssetBundle.LoadAsset<Sprite>("nikoApLogo");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -224,7 +230,7 @@ namespace NikoArchipelago
             }
         }
 
-        private async void OnApplicationQuit()
+        private void OnApplicationQuit()
         {
             if (ArchipelagoClient.Authenticated)
             {

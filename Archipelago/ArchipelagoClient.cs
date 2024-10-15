@@ -321,7 +321,7 @@ public class ArchipelagoClient
     /// something went wrong closing our connection. disconnect and clean up
     /// </summary>
     /// <param name="reason"></param>
-    private async void OnSessionSocketClosed(string reason)
+    private void OnSessionSocketClosed(string reason)
     {
         Plugin.BepinLogger.LogError($"Connection to Archipelago lost: {reason}");
         Disconnect();

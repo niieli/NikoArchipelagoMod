@@ -364,6 +364,24 @@ public class Locations
         { BaseID + 173},
         { BaseID + 174},
         { BaseID + 175},
+        
+        //Snail Shop
+        { BaseID + 233},
+        { BaseID + 234},
+        { BaseID + 235},
+        { BaseID + 236},
+        { BaseID + 237},
+        { BaseID + 238},
+        { BaseID + 239},
+        { BaseID + 240},
+        { BaseID + 241},
+        { BaseID + 242},
+        { BaseID + 243},
+        { BaseID + 244},
+        { BaseID + 245},
+        { BaseID + 246},
+        { BaseID + 247},
+        { BaseID + 248},
     };
     
     public static readonly long[] ScoutIDs = ScoutList.ToArray();

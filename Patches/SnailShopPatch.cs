@@ -35,6 +35,21 @@ public class SnailShopPatch
                 __instance.clothes[13] = Plugin.GlassesSprite;
                 __instance.clothes[14] = Plugin.FlowerSprite;
                 __instance.clothes[15] = Plugin.SmallHatSprite;
+                if (shopIsOpen)
+                {
+                    for (var j = 0; j < __instance.clothes.Count; j++)
+                    {
+                        if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(
+                                "Hint" + (20 + j))) continue;
+                        ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[20 + j]);
+                        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("Hint" + (20 + j));
+                    }
+                    scrGameSaveManager.instance.SaveGame();
+                }
+                else
+                {
+                    __instance.shopImage.sprite = __instance.aniInvisible[0];
+                }
             }
             else if (__instance.state != scrSnail.States.shop)
             {

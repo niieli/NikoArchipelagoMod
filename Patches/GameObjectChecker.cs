@@ -2,6 +2,7 @@
 using KinematicCharacterController.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace NikoArchipelago.Patches;
 
@@ -20,6 +21,7 @@ public class GameObjectChecker : MonoBehaviour
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
+        MainMenuObject();
     }
     
     private void OnDestroy()
@@ -98,8 +100,13 @@ public class GameObjectChecker : MonoBehaviour
     {
         try
         {
-            if (GameObject.Find("Title Screen") != null)
+            var titleScreen = GameObject.Find("Title Screen");
+            if (titleScreen != null)
             {
+                titleScreen.GetComponent<Image>().sprite = Plugin.APLogoSprite;
+                var actionScreen = GameObject.Find("ActionButton Title Screen");
+                APMainMenu.TitleScreen = actionScreen;
+                APMainMenu.TitleScreenAPLogo();
                 Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
             }
             else
@@ -110,6 +117,26 @@ public class GameObjectChecker : MonoBehaviour
         catch (NullReferenceException e)
         {
             Plugin.BepinLogger.LogError($"Error finding 'Title Screen': {e.Message}");
+        }
+    }
+    private static void MainMenuObject()
+    {
+        try
+        {
+            var menuScreen = GameObject.Find("Main menu - Buttons");
+            if (menuScreen != null)
+            {
+                APMainMenu.MainMenuObject = menuScreen;
+                Plugin.BepinLogger.LogInfo("Main menu - Buttons GameObject found!");
+            }
+            else
+            {
+                Plugin.BepinLogger.LogInfo("Main menu - Buttons GameObject does not exist!");
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            Plugin.BepinLogger.LogError($"Error finding 'Main menu - Buttons': {e.Message}");
         }
     }
 }
