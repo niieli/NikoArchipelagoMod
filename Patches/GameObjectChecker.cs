@@ -107,6 +107,14 @@ public class GameObjectChecker : MonoBehaviour
                 var actionScreen = GameObject.Find("ActionButton Title Screen");
                 APMainMenu.TitleScreen = actionScreen;
                 APMainMenu.TitleScreenAPLogo();
+                Instantiate(Plugin.ApUIGameObject);
+                ArchipelagoMenu menuScript = Plugin.ApUIGameObject.GetComponent<ArchipelagoMenu>();
+                if (menuScript == null)
+                {
+                    var manager = GameObject.Find("APMenuManager");
+                    manager.AddComponent<ArchipelagoMenu>();
+                    Plugin.BepinLogger.LogInfo("Added Archipelago Menu!");
+                }
                 Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
             }
             else
@@ -123,7 +131,9 @@ public class GameObjectChecker : MonoBehaviour
     {
         try
         {
-            var menuScreen = GameObject.Find("Main menu - Buttons");
+            //var menuScreen = FindInActiveObjectByName("Main menu - Buttons");
+            var menuScreen = GameObject.Find("Menu system");
+            //var menuScreen = GameObject.Find("Main menu - Buttons");
             if (menuScreen != null)
             {
                 APMainMenu.MainMenuObject = menuScreen;
@@ -138,5 +148,21 @@ public class GameObjectChecker : MonoBehaviour
         {
             Plugin.BepinLogger.LogError($"Error finding 'Main menu - Buttons': {e.Message}");
         }
+    }
+    
+    private static GameObject FindInActiveObjectByName(string name)
+    {
+        Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
+        for (int i = 0; i < objs.Length; i++)
+        {
+            if (objs[i].hideFlags == HideFlags.None)
+            {
+                if (objs[i].name == name)
+                {
+                    return objs[i].gameObject;
+                }
+            }
+        }
+        return null;
     }
 }

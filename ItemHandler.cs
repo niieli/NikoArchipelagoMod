@@ -100,18 +100,19 @@ public static class ItemHandler
     //Works but looks scuffed. Cleanup in future
     public static void AddProgressiveContactList(string sender = "")
     {
-        if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1"))
-        {
-            prog = true;
-            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave1");
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
-                3.5f);
-        } else if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2") && prog)
+        if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1") && 
+            !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2"))
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave2");
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
+                3.5f);
+        }
+        else
+        {
+            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave1");
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
                 3.5f);
         }
         scrGameSaveManager.instance.SaveGame();

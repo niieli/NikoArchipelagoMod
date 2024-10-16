@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.Collections.Generic;
+using HarmonyLib;
 using KinematicCharacterController.Core;
 using TMPro;
 
@@ -10,6 +11,14 @@ public class TrainMapPatch
     [HarmonyPatch(typeof(scrTrainMap), "SetupStats")]
     public static class PatchSetupStats
     {
+        private static readonly List<int> coinsPerLevel = new()
+        { 1, 6, 6, 10, 6, 9, 10, 0 };
+
+        private static readonly List<int> coinsPerLevelWave1 = new()
+        { 0, 4, 3, 3, 0, 0, 0, 0 };
+
+        private static readonly List<int> coinsPerLevelWave2 = new()
+        { 0, 4, 2, 3, 4, 5, 0, 0 };
         static bool Prefix(scrTrainMap __instance)
         {
             var saveManager = scrGameSaveManager.instance;
@@ -18,22 +27,33 @@ public class TrainMapPatch
             var localizationManager = (LocalizationManager)localizationManagerField.GetValue(__instance);
 
             int count;
-            if (saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+            if (saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+            {
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                {
+                    TextMeshProUGUI coinsTextmesh = __instance.coinsTextmesh;
+                    string str3 = saveManager.gameData.worldsData[__instance.levelSelected].coinFlags.Count.ToString();
+                    count = coinsPerLevel[__instance.levelSelected]+coinsPerLevelWave1[__instance.levelSelected]+coinsPerLevelWave2[__instance.levelSelected];
+                    string str4 = count.ToString();
+                    coinsTextmesh.text = str3 + " / " + str4;
+                }
+                else
+                {
+                    TextMeshProUGUI coinsTextmesh = __instance.coinsTextmesh;
+                    string str3 = saveManager.gameData.worldsData[__instance.levelSelected].coinFlags.Count.ToString();
+                    count = coinsPerLevel[__instance.levelSelected]+coinsPerLevelWave2[__instance.levelSelected];
+                    string str4 = count.ToString();
+                    coinsTextmesh.text = str3 + " / " + str4;
+                }
+            } 
+            else if (saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
             {
                 TextMeshProUGUI coinsTextmesh = __instance.coinsTextmesh;
                 string str1 = saveManager.gameData.worldsData[__instance.levelSelected].coinFlags.Count.ToString();
-                count = levelData.coinsPerLevelWave1[__instance.levelSelected];
+                count = coinsPerLevel[__instance.levelSelected]+coinsPerLevelWave1[__instance.levelSelected];
                 string str2 = count.ToString();
                 coinsTextmesh.text = str1 + " / " + str2;
-            }
-            if (saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-            {
-                TextMeshProUGUI coinsTextmesh = __instance.coinsTextmesh;
-                string str3 = saveManager.gameData.worldsData[__instance.levelSelected].coinFlags.Count.ToString();
-                count = levelData.coinsPerLevelWave2[__instance.levelSelected];
-                string str4 = count.ToString();
-                coinsTextmesh.text = str3 + " / " + str4;
-            }
+            } 
             else
             {
                 TextMeshProUGUI coinsTextmesh = __instance.coinsTextmesh;

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using HarmonyLib;
 
 namespace NikoArchipelago.Patches;
@@ -8,6 +9,14 @@ public class PepperAdvicePatch
     [HarmonyPatch(typeof(scrPepperAdvice), "SetupStats")]
     public static class PatchPepperAdviceSetupStats
     {
+        private static readonly List<int> coinsPerLevel = new()
+            { 1, 6, 6, 10, 6, 9, 10, 0 };
+
+        private static readonly List<int> coinsPerLevelWave1 = new()
+            { 0, 4, 3, 3, 0, 0, 0, 0 };
+
+        private static readonly List<int> coinsPerLevelWave2 = new()
+            { 0, 4, 2, 3, 4, 5, 0, 0 };
         static bool Prefix(scrPepperAdvice __instance)
         {
             var saveManagerField = AccessTools.Field(typeof(scrPepperAdvice), "saveManager");
@@ -24,16 +33,25 @@ public class PepperAdvicePatch
             
             if (isWave2)
             {
-                coinsStringBuilder.Clear();
-                coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, levelData.coinsPerLevelWave2[worldData.worldIndex]);
-                __instance.coinsTextmesh.SetText(coinsStringBuilder);
+                if (isWave1)
+                {
+                    coinsStringBuilder.Clear();
+                    coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave1[worldData.worldIndex]+coinsPerLevelWave2[worldData.worldIndex]);
+                    __instance.coinsTextmesh.SetText(coinsStringBuilder);
+                }
+                else
+                {
+                    coinsStringBuilder.Clear();
+                    coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave2[worldData.worldIndex]);
+                    __instance.coinsTextmesh.SetText(coinsStringBuilder);
+                }
             }
             else if (isWave1)
             {
                 coinsStringBuilder.Clear();
-                coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, levelData.coinsPerLevelWave1[worldData.worldIndex]);
+                coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave1[worldData.worldIndex]);
                 __instance.coinsTextmesh.SetText(coinsStringBuilder);
-            }
+            } 
             else
             {
                 coinsStringBuilder.Clear();

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using BepInEx;
 using BepInEx.Bootstrap;
@@ -51,7 +52,7 @@ namespace NikoArchipelago
         private static bool _debugMode,_canLogin;
         private static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
-        public static bool ScoutAvail;
+        public static bool Found;
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle;
@@ -60,6 +61,7 @@ namespace NikoArchipelago
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
             SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite, APLogoSprite, APIconSprite;
 
+        public static GameObject ApUIGameObject;
         public static Image APLogoImage; 
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
@@ -118,6 +120,7 @@ namespace NikoArchipelago
                 APLogoSprite = AssetBundle.LoadAsset<Sprite>("HereComesNikoAPLogo");
                 APLogoImage = AssetBundle.LoadAsset<Image>("HereComesNikoAPLogo");
                 APIconSprite = AssetBundle.LoadAsset<Sprite>("nikoApLogo");
+                ApUIGameObject = AssetBundle.LoadAsset<GameObject>("APMenuObjectTest");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
