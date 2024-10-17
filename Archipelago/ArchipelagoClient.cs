@@ -46,7 +46,14 @@ public class ArchipelagoClient
             Plugin.BepinLogger.LogError(e);
         }
 
-        TryConnect();
+        if (Plugin.newFile)
+        {
+            TryConnectNoItems();
+        }
+        else
+        {
+            TryConnect();
+        }
     }
 
     /// <summary>
@@ -74,6 +81,31 @@ public class ArchipelagoClient
                         Game,
                         ServerData.SlotName,
                         ItemsHandlingFlags.AllItems,
+                        new Version(APVersion),
+                        uuid: null,
+                        password: ServerData.Password,
+                        requestSlotData: true // ServerData.NeedSlotData
+                    )));
+        }
+        catch (Exception e)
+        {
+            Plugin.BepinLogger.LogError(e);
+            HandleConnectResult(new LoginFailure(e.ToString()));
+            attemptingConnection = false;
+        }
+    }
+    
+    private void TryConnectNoItems()
+    {
+        try
+        {
+            // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
+            ThreadPool.QueueUserWorkItem(
+                _ => HandleConnectResult(
+                    _session.TryConnectAndLogin(
+                        Game,
+                        ServerData.SlotName,
+                        ItemsHandlingFlags.NoItems,
                         new Version(APVersion),
                         uuid: null,
                         password: ServerData.Password,
@@ -132,7 +164,7 @@ public class ArchipelagoClient
     /// <summary>
     /// something we wrong or we need to properly disconnect from the server. cleanup and re null our session
     /// </summary>
-    public void Disconnect()
+    public static void Disconnect()
     {
         Plugin.BepinLogger.LogDebug("disconnecting from server...");
         try
@@ -144,7 +176,6 @@ public class ArchipelagoClient
 #endif
             _session = null;
             Authenticated = false;
-            isRunning = false;
         }
         catch (Exception e)
         {
@@ -168,7 +199,7 @@ public class ArchipelagoClient
     }
     
     public List<ItemInfo> queuedItems = [];
-    private readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
+    private static readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
 
     /// <summary>
     /// we received an item so reward it here
@@ -269,7 +300,7 @@ public class ArchipelagoClient
             }
     }
     
-    public bool IsValidScene()
+    public static bool IsValidScene()
     {
         string currentScene = SceneManager.GetActiveScene().name;
         foreach (var validScene in validScenes)

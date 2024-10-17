@@ -38,9 +38,11 @@ namespace NikoArchipelago
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
         public static ManualLogSource BepinLogger;
         public static ArchipelagoClient ArchipelagoClient;
-        private string saveName;
+        public static string saveName;
         public scrGameSaveManager gameSaveManager;
-        private bool loggedError, loggedSuccess, newFile, saveReady;
+        private bool loggedError, loggedSuccess;
+        public static bool newFile;
+        private bool saveReady;
         private Harmony harmony;
 
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
@@ -50,7 +52,7 @@ namespace NikoArchipelago
         private static scrNotificationDisplayer _noteDisplayer;
         public bool worldReady;
         private static bool _debugMode,_canLogin;
-        private static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
+        public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
         public static bool Found;
         public static string Seed;
@@ -120,7 +122,6 @@ namespace NikoArchipelago
                 APLogoSprite = AssetBundle.LoadAsset<Sprite>("HereComesNikoAPLogo");
                 APLogoImage = AssetBundle.LoadAsset<Image>("HereComesNikoAPLogo");
                 APIconSprite = AssetBundle.LoadAsset<Sprite>("nikoApLogo");
-                ApUIGameObject = AssetBundle.LoadAsset<GameObject>("APMenuObjectTest");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -157,7 +158,7 @@ namespace NikoArchipelago
             saveReady = true;
         }
 
-        private IEnumerator CheckWorldSaveManager()
+        public IEnumerator CheckWorldSaveManager()
         {
             while (!scrWorldSaveDataContainer.instance)
             {
@@ -244,8 +245,8 @@ namespace NikoArchipelago
             StopAllCoroutines();
             //Application.Quit();
         }
-        
-        private IEnumerator FirstLoginFix()
+
+        public static IEnumerator FirstLoginFix()
         {
             yield return new WaitForSeconds(3.0f);
             ArchipelagoClient.Connect();
@@ -295,7 +296,7 @@ namespace NikoArchipelago
             ArchipelagoClient.queuedItems.Clear();
         }
 
-        private void LogFlags()
+        public void LogFlags()
         {
             saveDataCoinFlag.ForEach(Logger.LogInfo);
             saveDataCassetteFlag.ForEach(Logger.LogInfo);

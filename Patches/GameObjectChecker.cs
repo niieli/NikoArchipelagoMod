@@ -1,6 +1,8 @@
 ﻿using System;
 using KinematicCharacterController.Core;
+using NikoArchipelago.Archipelago;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -21,7 +23,8 @@ public class GameObjectChecker : MonoBehaviour
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
-        MainMenuObject();
+        InstatiateAPMenu();
+        GetEventSystem();
     }
     
     private void OnDestroy()
@@ -107,14 +110,7 @@ public class GameObjectChecker : MonoBehaviour
                 var actionScreen = GameObject.Find("ActionButton Title Screen");
                 APMainMenu.TitleScreen = actionScreen;
                 APMainMenu.TitleScreenAPLogo();
-                Instantiate(Plugin.ApUIGameObject);
-                ArchipelagoMenu menuScript = Plugin.ApUIGameObject.GetComponent<ArchipelagoMenu>();
-                if (menuScript == null)
-                {
-                    var manager = GameObject.Find("APMenuManager");
-                    manager.AddComponent<ArchipelagoMenu>();
-                    Plugin.BepinLogger.LogInfo("Added Archipelago Menu!");
-                }
+                Plugin.BepinLogger.LogInfo("Added Archipelago Menu!");
                 Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
             }
             else
@@ -127,26 +123,50 @@ public class GameObjectChecker : MonoBehaviour
             Plugin.BepinLogger.LogError($"Error finding 'Title Screen': {e.Message}");
         }
     }
-    private static void MainMenuObject()
+
+    private static void InstatiateAPMenu()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var ApUIGameObject = Plugin.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
+        var menuPrefab = Instantiate(ApUIGameObject, GameObject.Find("UI").transform, false);
+        if (menuPrefab == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to instantiate ApUIGameObject prefab.");
+            return;
+        }
+        menuPrefab.layer = LayerMask.NameToLayer("UI");
+        var manager = menuPrefab.transform.Find("APMenuManager")?.gameObject;
+        if (manager == null)
+        {
+            Plugin.BepinLogger.LogError("APMenuManager not found in the prefab.");
+            return;
+        }
+        var menu = manager.AddComponent<ArchipelagoMenu>();
+        if (menu == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add ArchipelagoMenu component to APMenuManager.");
+            return;
+        }
+        menu.enabled = true;
+    }
+
+    private static void GetEventSystem()
     {
         try
         {
-            //var menuScreen = FindInActiveObjectByName("Main menu - Buttons");
-            var menuScreen = GameObject.Find("Menu system");
-            //var menuScreen = GameObject.Find("Main menu - Buttons");
-            if (menuScreen != null)
+            var eventSystem = GameObject.Find("HCN Event system");
+            if (eventSystem != null)
             {
-                APMainMenu.MainMenuObject = menuScreen;
-                Plugin.BepinLogger.LogInfo("Main menu - Buttons GameObject found!");
+                var input  = eventSystem.GetComponent<UIInput>();
+                Plugin.BepinLogger.LogInfo("HCN Event system GameObject found!");
             }
             else
             {
-                Plugin.BepinLogger.LogInfo("Main menu - Buttons GameObject does not exist!");
+                Plugin.BepinLogger.LogInfo("HCN Event system GameObject does not exist!");
             }
-        }
-        catch (NullReferenceException e)
+        }catch (NullReferenceException e)
         {
-            Plugin.BepinLogger.LogError($"Error finding 'Main menu - Buttons': {e.Message}");
+            Plugin.BepinLogger.LogError($"Error finding 'HCN Event system': {e.Message}");
         }
     }
     
