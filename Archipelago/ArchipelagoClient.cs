@@ -45,15 +45,7 @@ public class ArchipelagoClient
         {
             Plugin.BepinLogger.LogError(e);
         }
-
-        if (Plugin.newFile)
-        {
-            TryConnectNoItems();
-        }
-        else
-        {
-            TryConnect();
-        }
+        TryConnect();
     }
 
     /// <summary>
@@ -81,31 +73,6 @@ public class ArchipelagoClient
                         Game,
                         ServerData.SlotName,
                         ItemsHandlingFlags.AllItems,
-                        new Version(APVersion),
-                        uuid: null,
-                        password: ServerData.Password,
-                        requestSlotData: true // ServerData.NeedSlotData
-                    )));
-        }
-        catch (Exception e)
-        {
-            Plugin.BepinLogger.LogError(e);
-            HandleConnectResult(new LoginFailure(e.ToString()));
-            attemptingConnection = false;
-        }
-    }
-    
-    private void TryConnectNoItems()
-    {
-        try
-        {
-            // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
-            ThreadPool.QueueUserWorkItem(
-                _ => HandleConnectResult(
-                    _session.TryConnectAndLogin(
-                        Game,
-                        ServerData.SlotName,
-                        ItemsHandlingFlags.NoItems,
                         new Version(APVersion),
                         uuid: null,
                         password: ServerData.Password,
@@ -213,7 +180,7 @@ public class ArchipelagoClient
 
         ServerData.Index++;
         
-        if (IsValidScene())
+        if (IsValidScene() && Plugin.loggedIn)
         {
             GiveItem(receivedItem);
         }
@@ -288,16 +255,23 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000+15:
                     ItemHandler.AddProgressiveContactList(senderName);
-                    if (!ContactList2 && ContactList1)
-                    {
-                        ContactList2 = true;
-                    }
-                    else
-                    {
-                        ContactList1 = true;
-                    }
                     break;
             }
+    }
+
+    public void CheckReceivedItems()
+    {
+        foreach (var item in _session.Items.AllItemsReceived)
+        {
+            if (IsValidScene())
+            {
+                GiveItem(item);
+            }
+            else
+            {
+                queuedItems.Add(item);
+            }
+        }
     }
     
     public static bool IsValidScene()

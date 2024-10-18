@@ -32,7 +32,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        private const string PluginVersion = "0.4.0";
+        public const string PluginVersion = "0.4.0";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -42,7 +42,7 @@ namespace NikoArchipelago
         public scrGameSaveManager gameSaveManager;
         private bool loggedError, loggedSuccess;
         public static bool newFile;
-        private bool saveReady;
+        public static bool saveReady;
         private Harmony harmony;
 
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
@@ -54,7 +54,7 @@ namespace NikoArchipelago
         private static bool _debugMode,_canLogin;
         public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
-        public static bool Found;
+        public static bool loggedIn;
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle;
@@ -177,42 +177,42 @@ namespace NikoArchipelago
                 _noteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
                 saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
-                if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
-                {
-                    scrGameSaveManager.saveName = saveName;
-                    var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
-                    if (File.Exists(savePath))
-                    {
-                        scrGameSaveManager.dataPath = savePath;
-                        Logger.LogInfo("Found a SaveFile with the current SlotName & Port!");
-                        ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
-                        gameSaveManager.LoadGame();
-                    }
-                    else
-                    {
-                        newFile = true;
-                        scrGameSaveManager.dataPath = savePath;
-                        Logger.LogWarning("No SaveFile found. Creating a new one!");
-                        ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
-                        gameSaveManager.SaveGame();
-                        gameSaveManager.LoadGame();
-                        gameSaveManager.ClearSaveData();
-                    }
-                    //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
-                    scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
-                    if (newFile)
-                    {
-                        ArchipelagoClient.Disconnect();
-                        StartCoroutine(FirstLoginFix());
-                    }
-                    LogFlags();
-                    StartCoroutine(CheckWorldSaveManager());
-                    APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
-                }
+                // if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
+                // {
+                //     // scrGameSaveManager.saveName = saveName;
+                //     // var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
+                //     // if (File.Exists(savePath))
+                //     // {
+                //     //     scrGameSaveManager.dataPath = savePath;
+                //     //     Logger.LogInfo("Found a SaveFile with the current SlotName & Port!");
+                //     //     ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
+                //     //     gameSaveManager.LoadGame();
+                //     // }
+                //     // else
+                //     // {
+                //     //     newFile = true;
+                //     //     scrGameSaveManager.dataPath = savePath;
+                //     //     Logger.LogWarning("No SaveFile found. Creating a new one!");
+                //     //     ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
+                //     //     gameSaveManager.SaveGame();
+                //     //     gameSaveManager.LoadGame();
+                //     //     gameSaveManager.ClearSaveData();
+                //     // }
+                //     // //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
+                //     // scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
+                //     // if (newFile)
+                //     // {
+                //     //     ArchipelagoClient.Disconnect();
+                //     //     StartCoroutine(FirstLoginFix());
+                //     // }
+                //     LogFlags();
+                //     StartCoroutine(CheckWorldSaveManager());
+                //     //APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
+                // }
                 KioskCost.PreFix();
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
-                if (worldReady && ArchipelagoClient.Authenticated)
+                if (loggedIn)
                 {
                     LocationHandler.SnailShop();
                     LocationHandler.Update2();
@@ -271,8 +271,6 @@ namespace NikoArchipelago
             SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount);
             // Sync Special Unlocks (Super Jump, Contact Lists)
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
-            //SyncValue(ref generalGameData.wave1, ArchipelagoClient.ContactList1); //TODO: Sync via ReceivedItems instead
-            //SyncValue(ref generalGameData.wave2, ArchipelagoClient.ContactList2);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
             {
@@ -384,31 +382,31 @@ namespace NikoArchipelago
                 }
                 Tracker();
             }
-            else
-            {
-                BackgroundForText(new Rect(10, 14, 320, 136));
-                statusMessage = " Status: Disconnected";
-                GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
-                GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
-                GUI.Label(new Rect(16, 70, 150, 20), "Host: ");
-                GUI.Label(new Rect(16, 90, 150, 20), "Player Name: ");
-                GUI.Label(new Rect(16, 110, 150, 20), "Password: ");
-
-                ArchipelagoClient.ServerData.Uri = GUI.TextField(new Rect(150, 70, 150, 20), ArchipelagoClient.ServerData.Uri);
-                ArchipelagoClient.ServerData.SlotName = GUI.TextField(new Rect(150, 90, 150, 20), ArchipelagoClient.ServerData.SlotName);
-                ArchipelagoClient.ServerData.Password = GUI.TextField(new Rect(150, 110, 150, 20), ArchipelagoClient.ServerData.Password);
-                if (loggedSuccess && _canLogin)
-                {
-                    if (GUI.Button(new Rect(16, 130, 100, 20), "Connect") && !ArchipelagoClient.ServerData.SlotName.IsNullOrWhiteSpace())
-                    {
-                        ArchipelagoClient.Connect();
-                    }
-                }
-                else
-                {
-                    GUI.Label(new Rect(16, 126, 200, 24), "Initializing Data...");
-                }
-            }
+            // else
+            // {
+            //     BackgroundForText(new Rect(10, 14, 320, 136));
+            //     statusMessage = " Status: Disconnected";
+            //     GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
+            //     GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
+            //     GUI.Label(new Rect(16, 70, 150, 20), "Host: ");
+            //     GUI.Label(new Rect(16, 90, 150, 20), "Player Name: ");
+            //     GUI.Label(new Rect(16, 110, 150, 20), "Password: ");
+            //
+            //     ArchipelagoClient.ServerData.Uri = GUI.TextField(new Rect(150, 70, 150, 20), ArchipelagoClient.ServerData.Uri);
+            //     ArchipelagoClient.ServerData.SlotName = GUI.TextField(new Rect(150, 90, 150, 20), ArchipelagoClient.ServerData.SlotName);
+            //     ArchipelagoClient.ServerData.Password = GUI.TextField(new Rect(150, 110, 150, 20), ArchipelagoClient.ServerData.Password);
+            //     if (loggedSuccess && _canLogin)
+            //     {
+            //         if (GUI.Button(new Rect(16, 130, 100, 20), "Connect") && !ArchipelagoClient.ServerData.SlotName.IsNullOrWhiteSpace())
+            //         {
+            //             ArchipelagoClient.Connect();
+            //         }
+            //     }
+            //     else
+            //     {
+            //         GUI.Label(new Rect(16, 126, 200, 24), "Initializing Data...");
+            //     }
+            // }
 
             if (!_debugMode) return;
             if (GUI.Button(new Rect(16, 150, 100, 20), "All Flags"))

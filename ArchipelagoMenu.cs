@@ -2,8 +2,11 @@ using System.Collections;
 using System.IO;
 using BepInEx;
 using KinematicCharacterController.Core;
+using Newtonsoft.Json;
 using NikoArchipelago.Archipelago;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Toggle = UnityEngine.UI.Toggle;
@@ -22,12 +25,23 @@ public class ArchipelagoMenu : MonoBehaviour
     public Toggle hintsToggle;
     public Toggle shopHintsToggle;
     public Button connectButton;
+    public TMP_Text versionText;
     private scrGameSaveManager gameSaveManager;
     private static ArchipelagoClient _archipelagoClient;
+    private static string _serverAddress;
+    private static string _slotName;
+    private string password;
+    private static bool _rememberMe;
+    private static bool _chat;
+    private static bool _hints;
+    private static bool _shopHints;
+    private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
 
     public void Start()
     {
+        _archipelagoClient = new ArchipelagoClient();
         gameSaveManager = scrGameSaveManager.instance;
+        
         formPanel = transform.Find("Panel")?.gameObject;
         openFormButton = transform.Find("APButton")?.gameObject.GetComponent<Button>();
         serverAddressField = transform.Find("Panel/ServerAdress")?.GetComponent<InputField>();
@@ -38,32 +52,41 @@ public class ArchipelagoMenu : MonoBehaviour
         hintsToggle = transform.Find("Panel/Hints")?.gameObject.GetComponent<Toggle>();
         shopHintsToggle = transform.Find("Panel/ShopHints")?.gameObject.GetComponent<Toggle>();
         connectButton = transform.Find("Panel/Button")?.gameObject.GetComponent<Button>();
+        versionText = transform.Find("Panel/Version")?.gameObject.GetComponent<TMP_Text>();
         
-        serverAddressField.text = "archipelago.gg:";
-        slotNameField.text = "Player1";
+        if (serverAddressField == null) Plugin.BepinLogger.LogError("Server Address Field is null!");
+        if (slotNameField == null) Plugin.BepinLogger.LogError("Slot Name Field is null!");
+        if (passwordField == null) Plugin.BepinLogger.LogError("Password Field is null!");
+        if (formPanel == null) Plugin.BepinLogger.LogError("Form Panel is null!");
+        if (openFormButton == null) Plugin.BepinLogger.LogError("APButton is null!");
+        if (rememberMeToggle == null) Plugin.BepinLogger.LogError("Remember is null!");
+        if (chatToggle == null) Plugin.BepinLogger.LogError("Chat is null!");
+        if (hintsToggle == null) Plugin.BepinLogger.LogError("Hints is null!");
+        if (shopHintsToggle == null) Plugin.BepinLogger.LogError("ShopHints is null!");
+        if (connectButton == null) Plugin.BepinLogger.LogError("ConnectButton is null!");
+        if (versionText == null) Plugin.BepinLogger.LogError("VersionText is null!");
+        
+        _serverAddress = serverAddressField.text;
+        _slotName = slotNameField.text;
+        password = passwordField.text;
+        _rememberMe = rememberMeToggle.isOn;
+        _chat = chatToggle.isOn;
+        _hints = hintsToggle.isOn;
+        _shopHints = shopHintsToggle.isOn;
+        
+        LoadData();
 
-        if (serverAddressField == null)
-            Plugin.BepinLogger.LogError("Server Address Field is null!");
-        if (slotNameField == null)
-            Plugin.BepinLogger.LogError("Slot Name Field is null!");
-        if (passwordField == null)
-            Plugin.BepinLogger.LogError("Password Field is null!");
-        if (formPanel == null)
-            Plugin.BepinLogger.LogError("Form Panel is null!");
-        if (openFormButton == null)
-            Plugin.BepinLogger.LogError("APButton is null!");
-        if (rememberMeToggle == null)
-            Plugin.BepinLogger.LogError("Remember is null!");
-        if (chatToggle == null)
-            Plugin.BepinLogger.LogError("Chat is null!");
-        if (hintsToggle == null)
-            Plugin.BepinLogger.LogError("Hints is null!");
-        if (shopHintsToggle == null)
-            Plugin.BepinLogger.LogError("ShopHints is null!");
-
+        versionText.text = "Version "+Plugin.PluginVersion;
         formPanel.SetActive(false);
         openFormButton.onClick.AddListener(ToggleFormVisibility);
         connectButton.onClick.AddListener(Connect);
+    }
+
+    private void Update()
+    {
+        if (!Plugin.loggedIn) return;
+        formPanel.SetActive(false);
+        openFormButton.enabled = false;
     }
 
     public void ToggleFormVisibility()
@@ -74,27 +97,45 @@ public class ArchipelagoMenu : MonoBehaviour
 
     public void Connect()
     {
-        string serverAddress = serverAddressField.text;
-        string slotName = slotNameField.text;
-        string password = passwordField.text;
-        bool rememberMe = rememberMeToggle.isOn;
-        bool chat = chatToggle.isOn;
-        bool hints = hintsToggle.isOn;
-        bool shopHints = shopHintsToggle.isOn;
+        _serverAddress = serverAddressField.text;
+        _slotName = slotNameField.text;
+        password = passwordField.text;
+        _rememberMe = rememberMeToggle.isOn;
+        _chat = chatToggle.isOn;
+        _hints = hintsToggle.isOn;
+        _shopHints = shopHintsToggle.isOn;
+        
+        ArchipelagoClient.ServerData.Uri = _serverAddress;
+        ArchipelagoClient.ServerData.SlotName = _slotName;
+        ArchipelagoClient.ServerData.Password = password;
 
-        Plugin.BepinLogger.LogInfo($"Server Address: {serverAddress}");
-        Plugin.BepinLogger.LogInfo($"Slot Name: {slotName}");
+        Plugin.BepinLogger.LogInfo($"Server Address: {_serverAddress}");
+        Plugin.BepinLogger.LogInfo($"Slot Name: {_slotName}");
         Plugin.BepinLogger.LogInfo($"Password: {password}");
-        Plugin.BepinLogger.LogInfo($"Remember Me: {rememberMe}");
-        Plugin.BepinLogger.LogInfo($"Chat: {chat}");
-        Plugin.BepinLogger.LogInfo($"Hints: {hints}");
-        Plugin.BepinLogger.LogInfo($"Shop Hints: {shopHints}");
-
-        if (!serverAddress.IsNullOrWhiteSpace() && !slotName.IsNullOrWhiteSpace())
+        Plugin.BepinLogger.LogInfo($"Remember Me: {_rememberMe}");
+        Plugin.BepinLogger.LogInfo($"Chat: {_chat}");
+        Plugin.BepinLogger.LogInfo($"Hints: {_hints}");
+        Plugin.BepinLogger.LogInfo($"Shop Hints: {_shopHints}");
+        
+        SavedData data = new SavedData
         {
-            Plugin.BepinLogger.LogMessage("Connecting...");
-            StartCoroutine(Connecting());
-            if (scrGameSaveManager.saveName != Plugin.saveName)
+            Host = _serverAddress,
+            SlotName = _slotName,
+            RememberMe = _rememberMe,
+            Chat = _chat,
+            Hint = _hints,
+            ShopHints = _shopHints
+        };
+        if (_rememberMe)
+        {
+            SaveSettings(data);
+        }
+
+        if (!_serverAddress.IsNullOrWhiteSpace() && !_slotName.IsNullOrWhiteSpace())
+        {
+            _archipelagoClient.Connect();
+            Plugin.BepinLogger.LogInfo("Checking Saves...");
+            if (scrGameSaveManager.saveName != Plugin.saveName && ArchipelagoClient.Authenticated)
             {
                 scrGameSaveManager.saveName = Plugin.saveName;
                 var savePath = Path.Combine(Plugin.ArchipelagoFolderPath, Plugin.saveName + "_" + Plugin.Seed + ".json");
@@ -116,19 +157,65 @@ public class ArchipelagoMenu : MonoBehaviour
                     gameSaveManager.ClearSaveData();
                 }
                 scrTrainManager.instance.UseTrain(!Plugin.newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
-                if (Plugin.newFile)
-                {
-                    ArchipelagoClient.Disconnect();
-                    StartCoroutine(Plugin.FirstLoginFix());
-                }
-                Plugin.APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
+                StartCoroutine(CheckLoggedIn());
             }
         }
     }
 
-    private IEnumerator Connecting()
+    private IEnumerator CheckLoggedIn()
     {
-        _archipelagoClient.Connect();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
+        if (!ArchipelagoClient.IsValidScene())
+        {
+            Plugin.BepinLogger.LogInfo("Checking if player is in a playable scene...");
+            yield return new WaitForSeconds(1f);
+        }
+        else
+        {
+            Plugin.APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
+            Plugin.loggedIn = true; 
+            _archipelagoClient.CheckReceivedItems();
+        }
+    }
+
+    private class SavedData
+    {
+        public string Host { get; set; } = _serverAddress;
+        public string SlotName { get; set; } = _slotName;
+        public bool RememberMe { get; set; } = _rememberMe;
+        public bool Chat { get; set; } = _chat;
+        public bool ShopHints { get; set; } = _shopHints;
+        public bool Hint { get; set; } = _hints;
+    }
+
+    private void LoadData()
+    {
+        if (File.Exists(jsonFilePath))
+        {
+            string json = File.ReadAllText(jsonFilePath);
+            SavedData savedData = JsonConvert.DeserializeObject<SavedData>(json);
+            serverAddressField.text = savedData.Host;
+            slotNameField.text = savedData.SlotName;
+            rememberMeToggle.isOn = savedData.RememberMe;
+            chatToggle.isOn = savedData.Chat;
+            hintsToggle.isOn = savedData.Hint;
+            shopHintsToggle.isOn = savedData.ShopHints;
+            Plugin.BepinLogger.LogInfo("Loaded saved settings.");
+        }
+        else
+        {
+            serverAddressField.text = "archipelago.gg:";
+            slotNameField.text = "Player1";
+            rememberMeToggle.isOn = true;
+            chatToggle.isOn = true;
+            hintsToggle.isOn = true;
+            shopHintsToggle.isOn = true;
+        }
+    }
+
+    private void SaveSettings(SavedData data)
+    {
+        string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
+        File.WriteAllText(jsonFilePath, jsonData);
     }
 }

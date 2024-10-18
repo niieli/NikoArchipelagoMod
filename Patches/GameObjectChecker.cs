@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
@@ -17,14 +18,16 @@ public class GameObjectChecker : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
-    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         FirstMeeting = false;
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
         InstatiateAPMenu();
-        GetEventSystem();
+        TrackerKiosk();
+        TrackerTicket();
+        StartCoroutine(CheckTrackers());
     }
     
     private void OnDestroy()
@@ -127,8 +130,8 @@ public class GameObjectChecker : MonoBehaviour
     private static void InstatiateAPMenu()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var ApUIGameObject = Plugin.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
-        var menuPrefab = Instantiate(ApUIGameObject, GameObject.Find("UI").transform, false);
+        var apUIGameObject = Plugin.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
+        var menuPrefab = Instantiate(apUIGameObject, GameObject.Find("UI").transform, false);
         if (menuPrefab == null)
         {
             Plugin.BepinLogger.LogError("Failed to instantiate ApUIGameObject prefab.");
@@ -149,25 +152,79 @@ public class GameObjectChecker : MonoBehaviour
         }
         menu.enabled = true;
     }
-
-    private static void GetEventSystem()
+    
+    private static void TrackerTicket()
     {
-        try
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var apTrackerUI = Plugin.AssetBundle.LoadAsset<GameObject>("APTrackerTicket");
+        var ticketPrefab = Instantiate(apTrackerUI, GameObject.Find("UI").transform, false);
+        if (ticketPrefab == null)
         {
-            var eventSystem = GameObject.Find("HCN Event system");
-            if (eventSystem != null)
-            {
-                var input  = eventSystem.GetComponent<UIInput>();
-                Plugin.BepinLogger.LogInfo("HCN Event system GameObject found!");
-            }
-            else
-            {
-                Plugin.BepinLogger.LogInfo("HCN Event system GameObject does not exist!");
-            }
-        }catch (NullReferenceException e)
-        {
-            Plugin.BepinLogger.LogError($"Error finding 'HCN Event system': {e.Message}");
+            Plugin.BepinLogger.LogError("Failed to instantiate apTrackerUI prefab.");
+            return;
         }
+        ticketPrefab.layer = LayerMask.NameToLayer("UI");
+        var manager = ticketPrefab.transform.Find("APTicketManager")?.gameObject;
+        if (manager == null)
+        {
+            Plugin.BepinLogger.LogError("APTicketManager not found in the prefab.");
+            return;
+        }
+        var tracker = manager.AddComponent<TrackerTicket>();
+        if (tracker == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrackerTicket component to APTicketManager.");
+            return;
+        }
+        tracker.enabled = true;
+    }
+    
+    private static void TrackerKiosk()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var apTrackerUI = Plugin.AssetBundle.LoadAsset<GameObject>("APTrackerKiosk");
+        var kioskPrefab = Instantiate(apTrackerUI, GameObject.Find("UI").transform, false);
+        if (kioskPrefab == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to instantiate apTrackerUI prefab.");
+            return;
+        }
+        kioskPrefab.layer = LayerMask.NameToLayer("UI");
+        var manager = kioskPrefab.transform.Find("APKioskManager")?.gameObject;
+        if (manager == null)
+        {
+            Plugin.BepinLogger.LogError("APKioskManager not found in the prefab.");
+            return;
+        }
+        var tracker = manager.AddComponent<TrackerKiosk>();
+        if (tracker == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrackerKiosk component to APKioskManager.");
+            return;
+        }
+        tracker.enabled = true;
+    }
+
+    private static void TrackerDisplayer()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var ticket = GameObject.Find("TrackerTicket");
+        var kiosk = GameObject.Find("TrackerKiosk");
+        if (ticket.GetComponent<CanvasGroup>() != null || kiosk.GetComponent<CanvasGroup>() != null)
+        {
+            //TrackerDisplayerPatch.Ticket = ticket.GetComponent<scrUIhider>();
+            //TrackerDisplayerPatch.Kiosk = kiosk.GetComponent<scrUIhider>();
+            TrackerDisplayerPatch.Ticket = ticket.GetComponent<CanvasGroup>();
+            TrackerDisplayerPatch.Kiosk = kiosk.GetComponent<CanvasGroup>();
+        }
+    }
+
+    private static IEnumerator CheckTrackers()
+    {
+        Plugin.BepinLogger.LogError("Looking for TrackerTicket & TrackerKiosk");
+        yield return new WaitUntil(() => GameObject.Find("TrackerTicket") || GameObject.Find("TrackerKiosk"));
+        Plugin.BepinLogger.LogInfo("Found TrackerTicket and TrackerKiosk");
+        TrackerDisplayer();
     }
     
     private static GameObject FindInActiveObjectByName(string name)
