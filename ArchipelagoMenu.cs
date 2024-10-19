@@ -24,6 +24,8 @@ public class ArchipelagoMenu : MonoBehaviour
     public Toggle chatToggle;
     public Toggle hintsToggle;
     public Toggle shopHintsToggle;
+    public Toggle ticketToggle;
+    public Toggle kioskToggle;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -35,13 +37,19 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _chat;
     private static bool _hints;
     private static bool _shopHints;
+    private static bool _ticket;
+    private static bool _kiosk;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject _apButtonGameObject;
     public static string Seed;
+    public static bool Hints;
+    public static bool ShopHints;
+    public static bool Chat;
+    public static bool Ticket;
+    public static bool Kiosk;
 
     public void Start()
     {
-        //ArchipelagoClient = new ArchipelagoClient();
         gameSaveManager = scrGameSaveManager.instance;
         
         formPanel = transform.Find("Panel")?.gameObject;
@@ -54,6 +62,8 @@ public class ArchipelagoMenu : MonoBehaviour
         chatToggle = transform.Find("Panel/Chat")?.gameObject.GetComponent<Toggle>();
         hintsToggle = transform.Find("Panel/Hints")?.gameObject.GetComponent<Toggle>();
         shopHintsToggle = transform.Find("Panel/ShopHints")?.gameObject.GetComponent<Toggle>();
+        ticketToggle = transform.Find("Panel/Ticket")?.gameObject.GetComponent<Toggle>();
+        kioskToggle = transform.Find("Panel/Kiosk")?.gameObject.GetComponent<Toggle>();
         connectButton = transform.Find("Panel/Button")?.gameObject.GetComponent<Button>();
         versionText = transform.Find("Panel/Version")?.gameObject.GetComponent<TMP_Text>();
         
@@ -76,7 +86,8 @@ public class ArchipelagoMenu : MonoBehaviour
         _chat = chatToggle.isOn;
         _hints = hintsToggle.isOn;
         _shopHints = shopHintsToggle.isOn;
-        
+        _ticket = ticketToggle.isOn;
+        _kiosk = kioskToggle.isOn;
         LoadData();
 
         versionText.text = "Version "+Plugin.PluginVersion;
@@ -97,7 +108,6 @@ public class ArchipelagoMenu : MonoBehaviour
         {
             _apButtonGameObject.SetActive(true);
         }
-        
     }
 
     public void ToggleFormVisibility()
@@ -115,6 +125,13 @@ public class ArchipelagoMenu : MonoBehaviour
         _chat = chatToggle.isOn;
         _hints = hintsToggle.isOn;
         _shopHints = shopHintsToggle.isOn;
+        _ticket = ticketToggle.isOn;
+        _kiosk = kioskToggle.isOn;
+        Hints = _hints;
+        Chat = _chat;
+        ShopHints = _shopHints;
+        Ticket = _ticket;
+        Kiosk = _kiosk;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -127,6 +144,8 @@ public class ArchipelagoMenu : MonoBehaviour
         Plugin.BepinLogger.LogInfo($"Chat: {_chat}");
         Plugin.BepinLogger.LogInfo($"Hints: {_hints}");
         Plugin.BepinLogger.LogInfo($"Shop Hints: {_shopHints}");
+        Plugin.BepinLogger.LogInfo($"Ticket Tracker: {_ticket}");
+        Plugin.BepinLogger.LogInfo($"Kiosk Tracker: {_kiosk}");
         
         SavedData data = new SavedData
         {
@@ -135,7 +154,9 @@ public class ArchipelagoMenu : MonoBehaviour
             RememberMe = _rememberMe,
             Chat = _chat,
             Hint = _hints,
-            ShopHints = _shopHints
+            ShopHints = _shopHints,
+            Ticket = _ticket,
+            Kiosk = _kiosk,
         };
         if (_rememberMe)
         {
@@ -192,6 +213,8 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool Chat { get; set; } = _chat;
         public bool ShopHints { get; set; } = _shopHints;
         public bool Hint { get; set; } = _hints;
+        public bool Ticket { get; set; } = _ticket;
+        public bool Kiosk { get; set; } = _kiosk;
     }
 
     private void LoadData()
@@ -206,6 +229,8 @@ public class ArchipelagoMenu : MonoBehaviour
             chatToggle.isOn = savedData.Chat;
             hintsToggle.isOn = savedData.Hint;
             shopHintsToggle.isOn = savedData.ShopHints;
+            kioskToggle.isOn = savedData.Kiosk;
+            ticketToggle.isOn = savedData.Ticket;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -216,6 +241,8 @@ public class ArchipelagoMenu : MonoBehaviour
             chatToggle.isOn = true;
             hintsToggle.isOn = true;
             shopHintsToggle.isOn = true;
+            kioskToggle.isOn = true;
+            ticketToggle.isOn = true;
         }
     }
 

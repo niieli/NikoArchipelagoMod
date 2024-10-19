@@ -14,8 +14,14 @@ public class TrackerDisplayerPatch
         [HarmonyPostfix]
         static void Postfix(bool visable)
         {
-            Ticket.alpha = visable ? 1 : 0;
-            Kiosk.alpha = visable ? 1 : 0;
+            if (ArchipelagoMenu.Ticket)
+            {
+                Ticket.alpha = visable ? 1 : 0;
+            }
+            if (ArchipelagoMenu.Kiosk)
+            {
+                Kiosk.alpha = visable ? 1 : 0;
+            }
         }
     }
 }

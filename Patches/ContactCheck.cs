@@ -29,8 +29,8 @@ public class ContactCheck
     [HarmonyPatch(typeof(scrWaveCheck), "Update")]
     public static class PatchListUpdate
     {
-        [HarmonyPostfix]
-        static void Postfix(scrWaveCheck __instance)
+        [HarmonyPrefix]
+        static void Prefix(scrWaveCheck __instance)
         {
             var didCheckField = AccessTools.Field(typeof(scrWaveCheck), "didCheck");
             var _didCheck = (bool)didCheckField.GetValue(__instance);

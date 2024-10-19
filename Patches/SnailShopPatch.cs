@@ -35,7 +35,7 @@ public class SnailShopPatch
                 __instance.clothes[13] = Plugin.GlassesSprite;
                 __instance.clothes[14] = Plugin.FlowerSprite;
                 __instance.clothes[15] = Plugin.SmallHatSprite;
-                if (shopIsOpen)
+                if (shopIsOpen && ArchipelagoMenu.ShopHints)
                 {
                     for (var j = 0; j < __instance.clothes.Count; j++)
                     {

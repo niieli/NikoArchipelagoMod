@@ -90,7 +90,7 @@ public class CassetteCost
                 }
                 if (_textbox.isOn && _textbox.nameMesh.text == "Mitch" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
-                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                     {
                         ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_mitchIndex]);
                         _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
@@ -114,7 +114,7 @@ public class CassetteCost
 
                 if (_textbox.isOn && _textbox.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                 {
-                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex))
+                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex) && ArchipelagoMenu.Hints)
                     {
                         ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_maiIndex]);
                         _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
@@ -193,7 +193,7 @@ public class CassetteCost
                 
                 if (_textbox.isOn && _textbox.nameMesh.text == "Mitch" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
-                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                     {
                         ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_mitchIndex]);
                         _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
@@ -218,7 +218,7 @@ public class CassetteCost
 
                 if (_textbox.isOn && _textbox.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                 {
-                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint" + _maiIndex))
+                    if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint" + _maiIndex) && ArchipelagoMenu.Hints)
                     {
                         ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_maiIndex]);
                         _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint" + _maiIndex);
@@ -308,7 +308,7 @@ public class CassetteCost
                     if (_textbox.isOn && _textbox.nameMesh.text == "Mitch" &&
                         !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_mitchIndex]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
@@ -333,7 +333,7 @@ public class CassetteCost
                     MitchGameObject.parentBought.SetActive(false);
                     if (_textbox.isOn && _textbox.nameMesh.text == "Mitch")
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_mitchIndex]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
@@ -357,7 +357,7 @@ public class CassetteCost
                     MaiGameObject.parentBought.SetActive(false);
                     if (_textbox.isOn && _textbox.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_maiIndex]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
@@ -386,7 +386,7 @@ public class CassetteCost
                     MaiGameObject.parentBought.SetActive(false);
                     if (_textbox.isOn && _textbox.nameMesh.text == "Mai")
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_maiIndex]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);

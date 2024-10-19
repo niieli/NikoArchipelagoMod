@@ -71,7 +71,7 @@ public static class KioskCost
                             {
                                 scrTextbox.instance.textMesh.text = 
                                     $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
-                                if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                                if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
                                 {
                                     ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                                     __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
@@ -121,7 +121,7 @@ public static class KioskCost
                         __instance.textMesh.gameObject.SetActive(true);
                         if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                         {
-                            if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                            if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
                             {
                                 ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                                 __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
@@ -153,7 +153,7 @@ public static class KioskCost
                     __instance.textMesh.gameObject.SetActive(true);
                     if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                     {
-                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                             __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
@@ -182,7 +182,7 @@ public static class KioskCost
                     scrNotificationDisplayer.instance.RemoveNotification(__instance.noteEnough);
                     if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                     {
-                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
+                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                             __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));

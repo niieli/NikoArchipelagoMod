@@ -107,19 +107,13 @@ public class GameObjectChecker : MonoBehaviour
         try
         {
             var titleScreen = GameObject.Find("Title Screen");
-            if (titleScreen != null)
-            {
-                titleScreen.GetComponent<Image>().sprite = Plugin.APLogoSprite;
-                var actionScreen = GameObject.Find("ActionButton Title Screen");
-                APMainMenu.TitleScreen = actionScreen;
-                APMainMenu.TitleScreenAPLogo();
-                Plugin.BepinLogger.LogInfo("Added Archipelago Menu!");
-                Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
-            }
-            else
-            {
-                Plugin.BepinLogger.LogInfo("Title Screen GameObject does not exist!");
-            }
+            if (titleScreen == null) return;
+            titleScreen.GetComponent<Image>().sprite = Plugin.APLogoSprite;
+            //var actionScreen = GameObject.Find("ActionButton Title Screen");
+            //APMainMenu.TitleScreen = actionScreen;
+            //APMainMenu.TitleScreenAPLogo();
+            Plugin.BepinLogger.LogInfo("Added Archipelago Menu!");
+            Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
         }
         catch (NullReferenceException e)
         {

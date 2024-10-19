@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using BepInEx;
 using BepInEx.Bootstrap;
@@ -175,44 +176,47 @@ namespace NikoArchipelago
             {
                 _noteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
-                saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
+                saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", ".");
                 if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
                 {
                     scrGameSaveManager.saveName = saveName;
                     var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
+
+                    // Check if the save file exists
                     if (File.Exists(savePath))
                     {
                         scrGameSaveManager.dataPath = savePath;
                         Logger.LogInfo("Found a SaveFile with the current SlotName & Port!");
                         ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
+
                         gameSaveManager.LoadGame();
                     }
                     else
                     {
+                        // If no save file is found, create a new one
                         newFile = true;
                         scrGameSaveManager.dataPath = savePath;
                         Logger.LogWarning("No SaveFile found. Creating a new one!");
                         ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
+                        
                         gameSaveManager.SaveGame();
                         gameSaveManager.LoadGame();
+                        
                         gameSaveManager.ClearSaveData();
                     }
-                    //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
                     scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
                     if (newFile)
-                    {
-                        ArchipelagoClient.Disconnect();
                         StartCoroutine(FirstLoginFix());
-                    }
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
-                    //APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                     loggedIn = true;
+                    // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
+
                 KioskCost.PreFix();
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
-                if (loggedIn)
+                if (worldReady & ArchipelagoClient.Authenticated)
                 {
                     LocationHandler.SnailShop();
                     LocationHandler.Update2();
@@ -249,10 +253,14 @@ namespace NikoArchipelago
         private static IEnumerator FirstLoginFix()
         {
             yield return new WaitUntil(ArchipelagoClient.IsValidScene);
-            ArchipelagoClient.Connect();
-            APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
-            loggedIn = true; 
+            if (!ArchipelagoClient.Authenticated)
+            {
+                ArchipelagoClient.Connect();
+                APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
+                loggedIn = true; 
+            }
             ArchipelagoClient.CheckReceivedItems();
+            // ArchipelagoClient._session.DataStorage["Apples"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.appleAmount);
         }
         
         private static IEnumerator SyncState()
@@ -288,6 +296,7 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
+            //ArchipelagoClient._session.DataStorage["Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
             if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
             {
                 foreach (var t in ArchipelagoClient.queuedItems2)

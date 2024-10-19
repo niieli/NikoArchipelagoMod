@@ -47,6 +47,7 @@ public class ArchipelagoConsole
 
     public static void OnGUI()
     {
+        if (!ArchipelagoMenu.Chat) return;
         if (logLines.Count == 0) return;
 
         if (!Hidden || Time.time - lastUpdateTime < HideTimeout)

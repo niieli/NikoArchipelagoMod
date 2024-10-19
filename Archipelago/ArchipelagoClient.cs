@@ -155,15 +155,6 @@ public class ArchipelagoClient
     {
         _session.Socket.SendPacketAsync(new SayPacket { Text = message });
     }
-
-    public static ItemInfo SyncInventory()
-    {
-        foreach(ItemInfo item in _session.Items.AllItemsReceived)
-        {
-            return item;
-        }
-        return null;
-    }
     
     public List<ItemInfo> queuedItems = [];
     public List<ItemInfo> queuedItems2 = [];
@@ -229,27 +220,27 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000+8:
                     ItemHandler.AddTicket(2, senderName, notify);
-                    Ticket1 = _session.Items.AllItemsReceived.Contains(item);
+                    Ticket1 = true;
                     break;
                 case 598_145_444_000+9:
                     ItemHandler.AddTicket(3, senderName, notify);
-                    Ticket2 = _session.Items.AllItemsReceived.Contains(item);
+                    Ticket2 = true;
                     break;
                 case 598_145_444_000+10:
                     ItemHandler.AddTicket(4, senderName, notify);
-                    Ticket3 = _session.Items.AllItemsReceived.Contains(item);
+                    Ticket3 = true;
                     break;
                 case 598_145_444_000+11:
                     ItemHandler.AddTicket(5, senderName, notify);
-                    Ticket4 = _session.Items.AllItemsReceived.Contains(item);
+                    Ticket4 = true;
                     break;
                 case 598_145_444_000+12:
                     ItemHandler.AddTicket(6, senderName, notify);
-                    Ticket5 = _session.Items.AllItemsReceived.Contains(item);
+                    Ticket5 = true;
                     break;
                 case 598_145_444_000+13:
                     ItemHandler.AddTicket(7, senderName, notify);
-                    Ticket6 = _session.Items.AllItemsReceived.Contains(item);
+                    Ticket6 = true;
                     break;
                 case 598_145_444_000+14:
                     ItemHandler.AddBugs(10, senderName, notify);

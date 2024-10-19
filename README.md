@@ -23,8 +23,7 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 
 ## Known issues
 
-- Reconnecting after disconnecting will sometimes give you a duplicate item (Desync)
-  - This can be fixed by restarting the game and connecting again
+- Apples (25 Apples Item) get duplicated after reconnecting
 
 ## What is randomized?
 - Coins
@@ -57,5 +56,5 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
 
+- Change access to Gary's Garden
 - MORE INSANITY?!?!
-- Better connect UI *not sure how*
