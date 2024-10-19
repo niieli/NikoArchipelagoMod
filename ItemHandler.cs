@@ -7,113 +7,118 @@ public static class ItemHandler
     private static ArchipelagoClient archipelagoClient;
     private static Plugin plugin;
     private static bool prog;
-    public static void AddCoin(int amount = 1, string sender = "")
+    public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Coin from {sender}!" : "You found your Coin!",
-            3f);
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Coin from {sender}!" : "You found your Coin!",
+                3f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 
-    public static void AddCassette(int amount = 1, string sender = "")
+    public static void AddCassette(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount += amount;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Cassette from {sender}!" : "You found your Cassette!",
-            3f);
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Cassette from {sender}!" : "You found your Cassette!",
+                3f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 
-    public static void AddKey(int amount = 1, string sender = "")
+    public static void AddKey(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.keyAmount += amount;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Key from {sender}!" : "You found your Key!",
-            3f);
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Key from {sender}!" : "You found your Key!",
+                3f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 
-    public static void AddLetter(int amount = 1, string sender = "")
+    public static void AddLetter(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.bottles += amount;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Letter from {sender}!" : "You found your Letter!",
-            1.75f);
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Letter from {sender}!" : "You found your Letter!",
+                1.75f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 
-    public static void AddApples(int amount = 25, string sender = "")
+    public static void AddApples(int amount = 25, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.appleAmount += amount;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Apples from {sender}!" : $"You found your {amount} Apples!",
-            1.75f);
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Apples from {sender}!" : $"You found your {amount} Apples!",
+                1.75f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
     
-    public static void AddBugs(int amount = 10, string sender = "")
+    public static void AddBugs(int amount = 10, string sender = "", bool notify = true)
     {
         var w = scrGameSaveManager.instance.gameData.worldsData;
         //w[scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1].bugAmount += amount;
         scrWorldSaveDataContainer.instance.bugAmount += amount;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Bugs from {sender}!" : $"You found your {amount} Bugs!",
-            1.75f);
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Bugs from {sender}!" : $"You found your {amount} Bugs!",
+                1.75f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 
-    public static void AddSuperJump(string sender = "")
+    public static void AddSuperJump(string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.secretMove = true;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Super Jump from {sender}!" : "You found your Super Jump!",
-            3f);
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Super Jump from {sender}!" : "You found your Super Jump!",
+                3f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 
-    public static void AddContactList1(string sender = "")
+    public static void AddContactList1(string sender = "", bool notify = true)
     {
-        //scrGameSaveManager.instance.gameData.generalGameData.wave1 = true;
         if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1"))
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave1");
-        }        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
-            3f);
+        }
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
+                3f);
+        }
         scrGameSaveManager.instance.SaveGame();
     }
 
-    public static void AddContactList2(string sender = "")
+    public static void AddContactList2(string sender = "", bool notify = true)
     {
-        //scrGameSaveManager.instance.gameData.generalGameData.wave2 = true;
         if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2"))
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave2");
         }
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
-            3f);
-        scrGameSaveManager.instance.SaveGame();
-    }
-
-    //Works but looks scuffed. Cleanup in future
-    public static void AddProgressiveContactList(string sender = "")
-    {
-        if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1") && 
-            !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2"))
+        if (notify)
         {
-            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave2");
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
-                3.5f);
-        }
-        else
-        {
-            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave1");
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
-                3.5f);
+                3f);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -123,13 +128,15 @@ public static class ItemHandler
     /// </summary>
     /// <param name="level">The level in question 1=Home etc.</param>
     /// <param name="sender">The Name of the sender</param>
-    public static void AddTicket(int level, string sender)
+    public static void AddTicket(int level, string sender, bool notify = true)
     {
         if (sender == "Server")
         {
             sender = "Starting Inventory";
         }
         scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[level] = true;
+        scrGameSaveManager.instance.SaveGame();
+        if (!notify) return;
         switch (level)
         {
             case 2:
@@ -163,6 +170,5 @@ public static class ItemHandler
                     4f);
                 break;
         }
-        scrGameSaveManager.instance.SaveGame();
     }
 }

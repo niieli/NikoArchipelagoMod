@@ -47,6 +47,7 @@ public class ArchipelagoData
         slotData = roomSlotData;
         seed = roomSeed;
         Plugin.Seed = seed;
+        ArchipelagoMenu.Seed = seed;
         Plugin.SlotData = slotData;
     }
 

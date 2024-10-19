@@ -26,8 +26,8 @@ public class ArchipelagoMenu : MonoBehaviour
     public Toggle shopHintsToggle;
     public Button connectButton;
     public TMP_Text versionText;
-    private scrGameSaveManager gameSaveManager;
-    private static ArchipelagoClient _archipelagoClient;
+    private static scrGameSaveManager gameSaveManager;
+    private static ArchipelagoClient ArchipelagoClient;
     private static string _serverAddress;
     private static string _slotName;
     private string password;
@@ -36,14 +36,17 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _hints;
     private static bool _shopHints;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
+    private GameObject _apButtonGameObject;
+    public static string Seed;
 
     public void Start()
     {
-        _archipelagoClient = new ArchipelagoClient();
+        //ArchipelagoClient = new ArchipelagoClient();
         gameSaveManager = scrGameSaveManager.instance;
         
         formPanel = transform.Find("Panel")?.gameObject;
         openFormButton = transform.Find("APButton")?.gameObject.GetComponent<Button>();
+        _apButtonGameObject = transform.Find("APButton")?.gameObject;
         serverAddressField = transform.Find("Panel/ServerAdress")?.GetComponent<InputField>();
         slotNameField = transform.Find("Panel/SlotName")?.GetComponent<InputField>();
         passwordField = transform.Find("Panel/Password")?.GetComponent<InputField>();
@@ -78,15 +81,23 @@ public class ArchipelagoMenu : MonoBehaviour
 
         versionText.text = "Version "+Plugin.PluginVersion;
         formPanel.SetActive(false);
+        _apButtonGameObject.SetActive(true);
         openFormButton.onClick.AddListener(ToggleFormVisibility);
         connectButton.onClick.AddListener(Connect);
     }
 
     private void Update()
     {
-        if (!Plugin.loggedIn) return;
-        formPanel.SetActive(false);
-        openFormButton.enabled = false;
+        if (Plugin.loggedIn)
+        {
+            formPanel.SetActive(false);
+            _apButtonGameObject.SetActive(false);
+        }
+        else
+        {
+            _apButtonGameObject.SetActive(true);
+        }
+        
     }
 
     public void ToggleFormVisibility()
@@ -131,51 +142,46 @@ public class ArchipelagoMenu : MonoBehaviour
             SaveSettings(data);
         }
 
-        if (!_serverAddress.IsNullOrWhiteSpace() && !_slotName.IsNullOrWhiteSpace())
-        {
-            _archipelagoClient.Connect();
-            Plugin.BepinLogger.LogInfo("Checking Saves...");
-            if (scrGameSaveManager.saveName != Plugin.saveName && ArchipelagoClient.Authenticated)
-            {
-                scrGameSaveManager.saveName = Plugin.saveName;
-                var savePath = Path.Combine(Plugin.ArchipelagoFolderPath, Plugin.saveName + "_" + Plugin.Seed + ".json");
-                if (File.Exists(savePath))
-                {
-                    scrGameSaveManager.dataPath = savePath;
-                    Plugin.BepinLogger.LogInfo("Found a SaveFile with the current SlotName & Port!");
-                    //ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
-                    gameSaveManager.LoadGame();
-                }
-                else
-                {
-                    Plugin.newFile = true;
-                    scrGameSaveManager.dataPath = savePath;
-                    Plugin.BepinLogger.LogWarning("No SaveFile found. Creating a new one!");
-                    //ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
-                    gameSaveManager.SaveGame();
-                    gameSaveManager.LoadGame();
-                    gameSaveManager.ClearSaveData();
-                }
-                scrTrainManager.instance.UseTrain(!Plugin.newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
-                StartCoroutine(CheckLoggedIn());
-            }
-        }
+        Plugin.ArchipelagoClient.Connect();
+        Plugin.BepinLogger.LogInfo("Checking Saves...");
+        // var saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", ".");
+        // if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
+        // {
+        //     scrGameSaveManager.saveName = saveName;
+        //     var savePath = Path.Combine(Plugin.ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
+        //     if (File.Exists(savePath))
+        //     {
+        //         scrGameSaveManager.dataPath = savePath;
+        //         Plugin.BepinLogger.LogInfo("Found a SaveFile with the current SlotName & Port!");
+        //         //ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
+        //         gameSaveManager.LoadGame();
+        //     }
+        //     else
+        //     {
+        //         Plugin.newFile = true;
+        //         scrGameSaveManager.dataPath = savePath;
+        //         Plugin.BepinLogger.LogWarning("No SaveFile found. Creating a new one!");
+        //         //ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
+        //         gameSaveManager.SaveGame();
+        //         gameSaveManager.LoadGame();
+        //         gameSaveManager.ClearSaveData();
+        //     }
+        //     scrTrainManager.instance.UseTrain(!Plugin.newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
+        //     if (Plugin.newFile)
+        //     {
+        //         ArchipelagoClient.Disconnect();
+        //         StartCoroutine(FirstLoginFix());
+        //     }
+        // }
     }
 
-    private IEnumerator CheckLoggedIn()
+    private static IEnumerator FirstLoginFix()
     {
-        yield return new WaitForSeconds(1f);
-        if (!ArchipelagoClient.IsValidScene())
-        {
-            Plugin.BepinLogger.LogInfo("Checking if player is in a playable scene...");
-            yield return new WaitForSeconds(1f);
-        }
-        else
-        {
-            Plugin.APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
-            Plugin.loggedIn = true; 
-            _archipelagoClient.CheckReceivedItems();
-        }
+        yield return new WaitUntil(ArchipelagoClient.IsValidScene);
+        //ArchipelagoClient.Connect();
+        Plugin.APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
+        Plugin.loggedIn = true; 
+        //ArchipelagoClient.CheckReceivedItems();
     }
 
     private class SavedData

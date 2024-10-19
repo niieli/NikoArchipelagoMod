@@ -15,6 +15,13 @@ public class TrackerKiosk : MonoBehaviour
     public Image kioskPpImage;
     public Image kioskBathImage;
     public Image kioskHqImage;
+    public Image kioskHomeCostImage;
+    public Image kioskHcCostImage;
+    public Image kioskTtCostImage;
+    public Image kioskSfcCostImage;
+    public Image kioskPpCostImage;
+    public Image kioskBathCostImage;
+    public Image kioskHqCostImage;
     public Image boughtHomeImage;
     public Image boughtHcImage;
     public Image boughtTtImage;
@@ -37,24 +44,31 @@ public class TrackerKiosk : MonoBehaviour
         kioskPanel = transform.Find("TrackerKiosk")?.gameObject;
         kioskHomeImage = transform.Find("TrackerKiosk/KioskHome")?.GetComponent<Image>();
         boughtHomeImage = transform.Find("TrackerKiosk/KioskHome/Bought")?.GetComponent<Image>();
+        kioskHomeCostImage = transform.Find("TrackerKiosk/KioskHome/CostHome")?.GetComponent<Image>();
         kioskHomeText = transform.Find("TrackerKiosk/KioskHome/CostHome/Cost")?.GetComponent<TextMeshProUGUI>();
         kioskHcImage = transform.Find("TrackerKiosk/KioskHairball")?.GetComponent<Image>();
         boughtHcImage = transform.Find("TrackerKiosk/KioskHairball/Bought")?.GetComponent<Image>();
+        kioskHcCostImage = transform.Find("TrackerKiosk/KioskHairball/CostHairball")?.GetComponent<Image>();
         kioskHcText = transform.Find("TrackerKiosk/KioskHairball/CostHairball/Cost").GetComponent<TextMeshProUGUI>();
         kioskTtImage = transform.Find("TrackerKiosk/KioskTurbine")?.GetComponent<Image>();
         boughtTtImage = transform.Find("TrackerKiosk/KioskTurbine/Bought")?.GetComponent<Image>();
+        kioskTtCostImage = transform.Find("TrackerKiosk/KioskTurbine/CostTurbine")?.GetComponent<Image>();
         kioskTtText = transform.Find("TrackerKiosk/KioskTurbine/CostTurbine/Cost")?.GetComponent<TextMeshProUGUI>();
         kioskSfcImage = transform.Find("TrackerKiosk/KioskSalmon")?.GetComponent<Image>();
         boughtSfcImage = transform.Find("TrackerKiosk/KioskSalmon/Bought")?.GetComponent<Image>();
+        kioskSfcCostImage = transform.Find("TrackerKiosk/KioskSalmon/CostSalmon")?.GetComponent<Image>();
         kioskSfcText = transform.Find("TrackerKiosk/KioskSalmon/CostSalmon/Cost")?.GetComponent<TextMeshProUGUI>();
         kioskPpImage = transform.Find("TrackerKiosk/KioskPool")?.GetComponent<Image>();
         boughtPpImage = transform.Find("TrackerKiosk/KioskPool/Bought")?.GetComponent<Image>();
+        kioskPpCostImage = transform.Find("TrackerKiosk/KioskPool/CostPool")?.GetComponent<Image>();
         kioskPpText = transform.Find("TrackerKiosk/KioskPool/CostPool/Cost")?.GetComponent<TextMeshProUGUI>();
         kioskBathImage = transform.Find("TrackerKiosk/KioskBath")?.GetComponent<Image>();
         boughtBathImage = transform.Find("TrackerKiosk/KioskBath/Bought")?.GetComponent<Image>();
+        kioskBathCostImage = transform.Find("TrackerKiosk/KioskBath/CostBath")?.GetComponent<Image>();
         kioskBathText = transform.Find("TrackerKiosk/KioskBath/CostBath/Cost")?.GetComponent<TextMeshProUGUI>();
         kioskHqImage = transform.Find("TrackerKiosk/KioskTadpole")?.GetComponent<Image>();
         boughtHqImage = transform.Find("TrackerKiosk/KioskTadpole/Bought")?.GetComponent<Image>();
+        kioskHqCostImage = transform.Find("TrackerKiosk/KioskTadpole/CostTadpole")?.GetComponent<Image>();
         kioskHqText = transform.Find("TrackerKiosk/KioskTadpole/CostTadpole/Cost")?.GetComponent<TextMeshProUGUI>();
         
         if (kioskPanel == null)
@@ -106,42 +120,49 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskHomeImage.color = new Color(1f, 1f, 1f, 1f);
             kioskHomeText.enabled = false;
+            kioskHomeCostImage.enabled = false;
             boughtHomeImage.enabled = true;
         }
         if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskHairball City"))
         {
             kioskHcImage.color = new Color(1f, 1f, 1f, 1f);
             kioskHcText.enabled = false;
+            kioskHcCostImage.enabled = false;
             boughtHcImage.enabled = true;
         }
         if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskTrash Kingdom"))
         {
             kioskTtImage.color = new Color(1f, 1f, 1f, 1f);
             kioskTtText.enabled = false;
+            kioskTtCostImage.enabled = false;
             boughtTtImage.enabled = true;
         }
         if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskSalmon Creek Forest"))
         {
             kioskSfcImage.color = new Color(1f, 1f, 1f, 1f);
             kioskSfcText.enabled = false;
+            kioskSfcCostImage.enabled = false;
             boughtSfcImage.enabled = true;
         }
         if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskPublic Pool"))
         {
             kioskPpImage.color = new Color(1f, 1f, 1f, 1f);
             kioskPpText.enabled = false;
+            kioskPpCostImage.enabled = false;
             boughtPpImage.enabled = true;
         }
         if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskThe Bathhouse"))
         {
             kioskBathImage.color = new Color(1f, 1f, 1f, 1f);
             kioskBathText.enabled = false;
+            kioskBathCostImage.enabled = false;
             boughtBathImage.enabled = true;
         }
         if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskTadpole inc"))
         {
             kioskHqImage.color = new Color(1f, 1f, 1f, 1f);
             kioskHqText.enabled = false;
+            kioskHqCostImage.enabled = false;
             boughtHqImage.enabled = true;
         }
     }

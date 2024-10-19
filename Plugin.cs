@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using BepInEx;
 using BepInEx.Bootstrap;
@@ -177,38 +176,39 @@ namespace NikoArchipelago
                 _noteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
                 saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", "."); 
-                // if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
-                // {
-                //     // scrGameSaveManager.saveName = saveName;
-                //     // var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
-                //     // if (File.Exists(savePath))
-                //     // {
-                //     //     scrGameSaveManager.dataPath = savePath;
-                //     //     Logger.LogInfo("Found a SaveFile with the current SlotName & Port!");
-                //     //     ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
-                //     //     gameSaveManager.LoadGame();
-                //     // }
-                //     // else
-                //     // {
-                //     //     newFile = true;
-                //     //     scrGameSaveManager.dataPath = savePath;
-                //     //     Logger.LogWarning("No SaveFile found. Creating a new one!");
-                //     //     ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
-                //     //     gameSaveManager.SaveGame();
-                //     //     gameSaveManager.LoadGame();
-                //     //     gameSaveManager.ClearSaveData();
-                //     // }
-                //     // //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
-                //     // scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
-                //     // if (newFile)
-                //     // {
-                //     //     ArchipelagoClient.Disconnect();
-                //     //     StartCoroutine(FirstLoginFix());
-                //     // }
-                //     LogFlags();
-                //     StartCoroutine(CheckWorldSaveManager());
-                //     //APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
-                // }
+                if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
+                {
+                    scrGameSaveManager.saveName = saveName;
+                    var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
+                    if (File.Exists(savePath))
+                    {
+                        scrGameSaveManager.dataPath = savePath;
+                        Logger.LogInfo("Found a SaveFile with the current SlotName & Port!");
+                        ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
+                        gameSaveManager.LoadGame();
+                    }
+                    else
+                    {
+                        newFile = true;
+                        scrGameSaveManager.dataPath = savePath;
+                        Logger.LogWarning("No SaveFile found. Creating a new one!");
+                        ArchipelagoConsole.LogMessage("No SaveFile found. Creating a new one!");
+                        gameSaveManager.SaveGame();
+                        gameSaveManager.LoadGame();
+                        gameSaveManager.ClearSaveData();
+                    }
+                    //Prevents the game from breaking the savefile when currentlevel = 0; Only if it's a new file load the currentlevel
+                    scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
+                    if (newFile)
+                    {
+                        ArchipelagoClient.Disconnect();
+                        StartCoroutine(FirstLoginFix());
+                    }
+                    LogFlags();
+                    StartCoroutine(CheckWorldSaveManager());
+                    //APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
+                    loggedIn = true;
+                }
                 KioskCost.PreFix();
                 //MyCharacterController.instance._diveConsumed = true;
                 Flags();
@@ -245,18 +245,20 @@ namespace NikoArchipelago
             StopAllCoroutines();
             //Application.Quit();
         }
-
-        public static IEnumerator FirstLoginFix()
+        
+        private static IEnumerator FirstLoginFix()
         {
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitUntil(ArchipelagoClient.IsValidScene);
             ArchipelagoClient.Connect();
+            APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
+            loggedIn = true; 
+            ArchipelagoClient.CheckReceivedItems();
         }
         
         private static IEnumerator SyncState()
         {
             yield return new WaitForSeconds(4f);
             var generalGameData = scrGameSaveManager.instance.gameData.generalGameData;
-            var currentScene = SceneManager.GetActiveScene().name;
             void SyncValue<T>(ref T gameDataValue, T clientValue)
             {
                 if (!EqualityComparer<T>.Default.Equals(gameDataValue, clientValue))
@@ -286,6 +288,14 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
+            if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
+            {
+                foreach (var t in ArchipelagoClient.queuedItems2)
+                {
+                    ArchipelagoClient.GiveItem(t, false);
+                }
+                ArchipelagoClient.queuedItems2.Clear();
+            }
             if (ArchipelagoClient.queuedItems.Count <= 0 || !ArchipelagoClient.IsValidScene()) yield break;
             foreach (var t in ArchipelagoClient.queuedItems)
             {
@@ -372,7 +382,7 @@ namespace NikoArchipelago
             string statusMessage;
             if (ArchipelagoClient.Authenticated)
             {
-                BackgroundForText(new Rect(10, 10, 280, 140));
+                BackgroundForText(new Rect(10, 10, 280, 110));
                 statusMessage = " Status: Connected";
                 GUI.Label(new Rect(16, 16, 300, 22), ModDisplayInfo);
                 GUI.Label(new Rect(16, 50, 300, 22), APDisplayInfo + statusMessage);
@@ -382,31 +392,13 @@ namespace NikoArchipelago
                 }
                 Tracker();
             }
-            // else
-            // {
-            //     BackgroundForText(new Rect(10, 14, 320, 136));
-            //     statusMessage = " Status: Disconnected";
-            //     GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
-            //     GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
-            //     GUI.Label(new Rect(16, 70, 150, 20), "Host: ");
-            //     GUI.Label(new Rect(16, 90, 150, 20), "Player Name: ");
-            //     GUI.Label(new Rect(16, 110, 150, 20), "Password: ");
-            //
-            //     ArchipelagoClient.ServerData.Uri = GUI.TextField(new Rect(150, 70, 150, 20), ArchipelagoClient.ServerData.Uri);
-            //     ArchipelagoClient.ServerData.SlotName = GUI.TextField(new Rect(150, 90, 150, 20), ArchipelagoClient.ServerData.SlotName);
-            //     ArchipelagoClient.ServerData.Password = GUI.TextField(new Rect(150, 110, 150, 20), ArchipelagoClient.ServerData.Password);
-            //     if (loggedSuccess && _canLogin)
-            //     {
-            //         if (GUI.Button(new Rect(16, 130, 100, 20), "Connect") && !ArchipelagoClient.ServerData.SlotName.IsNullOrWhiteSpace())
-            //         {
-            //             ArchipelagoClient.Connect();
-            //         }
-            //     }
-            //     else
-            //     {
-            //         GUI.Label(new Rect(16, 126, 200, 24), "Initializing Data...");
-            //     }
-            // }
+            else
+            {
+                // BackgroundForText(new Rect(10, 14, 280, 70));
+                // statusMessage = " Status: Disconnected";
+                // GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
+                // GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
+            }
 
             if (!_debugMode) return;
             if (GUI.Button(new Rect(16, 150, 100, 20), "All Flags"))
@@ -463,9 +455,9 @@ namespace NikoArchipelago
                 Logger.LogInfo(scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1);
             }
 
-            if (GUI.Button(new Rect(16, 340, 100, 20), "Test Scout"))
+            if (GUI.Button(new Rect(16, 340, 100, 20), "Resync"))
             {
-                //ArchipelagoClient.ScoutedLocations.ForEach(Logger.LogWarning);
+                ArchipelagoClient.CheckReceivedItems();
             }
         }
 
@@ -479,26 +471,25 @@ namespace NikoArchipelago
 
         private void Tracker()
         {
-            // Define the flag-label mappings and positions
             var slotData = ArchipelagoData.slotData;
-            var flagData = new (string flagKey, string successMsg, string failureMsg, int xPos, int yPos)[]
-            {
-                ("APWave1", "Got Contact List 1!", "No Contact List 1!", 16, 70),
-                ("APWave2", "Got Contact List 2!", "No Contact List 2!", 170, 70),
-                ("KioskHome", "Kiosk Home", $"Kiosk Home({slotData["kioskhome"]})", 16, 90),
-                ("KioskHairball City", "Kiosk HC", $"Kiosk HC({slotData["kioskhc"]})", 115, 90),
-                ("KioskTrash Kingdom", "Kiosk TT", $"Kiosk TT({slotData["kiosktt"]})", 200, 90),
-                ("KioskSalmon Creek Forest", "Kiosk SCF", $"Kiosk SCF({slotData["kiosksfc"]})", 16, 110),
-                ("KioskPublic Pool", "Kiosk PP", $"Kiosk PP({slotData["kioskpp"]})", 115, 110),
-                ("KioskThe Bathhouse", "Kiosk Bath", $"Kiosk Bath({slotData["kioskbath"]})", 200, 110),
-            };
+             var flagData = new (string flagKey, string successMsg, string failureMsg, int xPos, int yPos)[]
+             {
+                 ("APWave1", "Got Contact List 1!", "No Contact List 1!", 16, 70),
+                 ("APWave2", "Got Contact List 2!", "No Contact List 2!", 170, 70),
+            //     ("KioskHome", "Kiosk Home", $"Kiosk Home({slotData["kioskhome"]})", 16, 90),
+            //     ("KioskHairball City", "Kiosk HC", $"Kiosk HC({slotData["kioskhc"]})", 115, 90),
+            //     ("KioskTrash Kingdom", "Kiosk TT", $"Kiosk TT({slotData["kiosktt"]})", 200, 90),
+            //     ("KioskSalmon Creek Forest", "Kiosk SCF", $"Kiosk SCF({slotData["kiosksfc"]})", 16, 110),
+            //     ("KioskPublic Pool", "Kiosk PP", $"Kiosk PP({slotData["kioskpp"]})", 115, 110),
+            //     ("KioskThe Bathhouse", "Kiosk Bath", $"Kiosk Bath({slotData["kioskbath"]})", 200, 110),
+             };
             if (int.Parse(slotData["goal_completion"].ToString()) == 0)
             {
-                GUI.Label(new Rect(28, 130, 300, 20), $"Goal: Get Hired | Elevator Repair Cost({slotData["kioskhq"]})");
+                GUI.Label(new Rect(28, 90, 300, 20), $"Goal: Get Hired | Elevator Repair Cost({slotData["kioskhq"]})");
             }
             else
             {
-                GUI.Label(new Rect(24, 130, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
+                GUI.Label(new Rect(24, 90, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
             }
 
             foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)

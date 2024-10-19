@@ -166,6 +166,7 @@ public class ArchipelagoClient
     }
     
     public List<ItemInfo> queuedItems = [];
+    public List<ItemInfo> queuedItems2 = [];
     private static readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
 
     /// <summary>
@@ -191,70 +192,77 @@ public class ArchipelagoClient
         }
     }
 
-    public void GiveItem(ItemInfo item)
+    public void GiveItem(ItemInfo item, bool notify = true)
     {
         var senderName = _session.Players.GetPlayerName(item.Player);
         switch (item.ItemId)
             {
                 case 598_145_444_000:
-                    ItemHandler.AddCoin(1, senderName);
-                    CoinAmount++;
+                    ItemHandler.AddCoin(1, senderName, notify);
+                    CoinAmount += _session.Items.AllItemsReceived.Count(i => i == item);
                     break;
                 case 598_145_444_000 + 1: // Cassette
-                    ItemHandler.AddCassette(1, senderName);
-                    CassetteAmount++;
+                    ItemHandler.AddCassette(1, senderName, notify);
+                    CassetteAmount += _session.Items.AllItemsReceived.Count(i => i == item);
                     break;
                 case 598_145_444_000 + 2: // Key
-                    ItemHandler.AddKey(1, senderName);
-                    KeyAmount++;
+                    ItemHandler.AddKey(1, senderName, notify);
+                    KeyAmount += _session.Items.AllItemsReceived.Count(i => i == item);
                     break;
                 case 598_145_444_000 + 3: // Apples
-                    ItemHandler.AddApples(25, senderName);
+                    ItemHandler.AddApples(25, senderName, notify);
                     break;
                 case 598_145_444_000 + 4: // Contact List 1
-                    ItemHandler.AddContactList1(senderName);
-                    ContactList1 = true;
+                    ItemHandler.AddContactList1(senderName, notify);
+                    ContactList1 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000 + 5: // Contact List 2
-                    ItemHandler.AddContactList2(senderName);
-                    ContactList2 = true;
+                    ItemHandler.AddContactList2(senderName, notify);
+                    ContactList2 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000 + 6: // Super Jump
-                    ItemHandler.AddSuperJump(senderName);
-                    SuperJump = true;
+                    ItemHandler.AddSuperJump(senderName, notify);
+                    SuperJump = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000+7:
-                    ItemHandler.AddLetter(1, senderName);
+                    ItemHandler.AddLetter(1, senderName, notify);
                     break;
                 case 598_145_444_000+8:
-                    ItemHandler.AddTicket(2, senderName);
-                    Ticket1 = true;
+                    ItemHandler.AddTicket(2, senderName, notify);
+                    Ticket1 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000+9:
-                    ItemHandler.AddTicket(3, senderName);
-                    Ticket2 = true;
+                    ItemHandler.AddTicket(3, senderName, notify);
+                    Ticket2 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000+10:
-                    ItemHandler.AddTicket(4, senderName);
-                    Ticket3 = true;
+                    ItemHandler.AddTicket(4, senderName, notify);
+                    Ticket3 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000+11:
-                    ItemHandler.AddTicket(5, senderName);
-                    Ticket4 = true;
+                    ItemHandler.AddTicket(5, senderName, notify);
+                    Ticket4 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000+12:
-                    ItemHandler.AddTicket(6, senderName);
-                    Ticket5 = true;
+                    ItemHandler.AddTicket(6, senderName, notify);
+                    Ticket5 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000+13:
-                    ItemHandler.AddTicket(7, senderName);
-                    Ticket6 = true;
+                    ItemHandler.AddTicket(7, senderName, notify);
+                    Ticket6 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000+14:
-                    ItemHandler.AddBugs(10, senderName);
+                    ItemHandler.AddBugs(10, senderName, notify);
                     break;
                 case 598_145_444_000+15:
-                    ItemHandler.AddProgressiveContactList(senderName);
+                    if (_session.Items.AllItemsReceived.Count(i => i == item) == 2)
+                    {
+                        ItemHandler.AddContactList2(senderName, notify);
+                    }
+                    else
+                    {
+                        ItemHandler.AddContactList1(senderName, notify);
+                    }
                     break;
             }
     }
@@ -265,11 +273,11 @@ public class ArchipelagoClient
         {
             if (IsValidScene())
             {
-                GiveItem(item);
+                GiveItem(item, false);
             }
             else
             {
-                queuedItems.Add(item);
+                queuedItems2.Add(item);
             }
         }
     }
