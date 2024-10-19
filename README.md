@@ -11,9 +11,9 @@ Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archip
 
 ## Connecting
 
-After loading into the game you insert the server address and port, your slot name and a password if necessary in the top left of the game.
+After loading into the game press the Archipelago icon in the middle of the screen and adjust everything to your liking.
 
-![image](https://github.com/user-attachments/assets/2112698d-d144-4873-9c31-9b457a69d0f1)
+![image](https://github.com/user-attachments/assets/6aab53b6-a02a-4be6-aedd-32ee1722357a)
 
 Then click 'Connect' and you should load into Home with a blank save. 
 
