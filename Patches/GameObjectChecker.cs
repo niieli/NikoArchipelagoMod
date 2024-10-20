@@ -44,7 +44,8 @@ public class GameObjectChecker : MonoBehaviour
     {
         try
         {
-            var cassetteBuyer = GameObject.Find("CassetteBuyer");
+            GameObject cassetteBuyer;
+            cassetteBuyer = GameObject.Find(SceneManager.GetActiveScene().name == "GarysGarden" ? "CassetteBuyerMitch" : "CassetteBuyer");
             if (cassetteBuyer != null && cassetteBuyer.GetComponent<scrCassetteBuyer>() != null)
             {
                 CassetteCost.MitchGameObject = cassetteBuyer.GetComponent<scrCassetteBuyer>();
@@ -62,7 +63,8 @@ public class GameObjectChecker : MonoBehaviour
             
         try
         {
-            var cassetteBuyer2 = GameObject.Find("CassetteBuyer2");
+            GameObject cassetteBuyer2;
+            cassetteBuyer2 = GameObject.Find(SceneManager.GetActiveScene().name == "GarysGarden" ? "CassetteBuyerMai" : "CassetteBuyer2");
             if (cassetteBuyer2 != null && cassetteBuyer2.GetComponent<scrCassetteBuyer>() != null)
             {
                 CassetteCost.MaiGameObject = cassetteBuyer2.GetComponent<scrCassetteBuyer>();
