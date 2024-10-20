@@ -210,6 +210,8 @@ namespace NikoArchipelago
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     loggedIn = true;
+                    scrGameSaveManager.instance.gameData.generalGameData.snailSteps =
+                        ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
 
@@ -259,6 +261,9 @@ namespace NikoArchipelago
                 APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
                 loggedIn = true; 
             }
+
+            ArchipelagoClient._session.DataStorage["SnailMoney"]
+                .Initialize(scrGameSaveManager.instance.gameData.generalGameData.snailSteps);
             ArchipelagoClient.CheckReceivedItems();
             // ArchipelagoClient._session.DataStorage["Apples"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.appleAmount);
         }
@@ -297,6 +302,8 @@ namespace NikoArchipelago
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
             //ArchipelagoClient._session.DataStorage["Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
+            ArchipelagoClient._session.DataStorage["SnailMoney"] =
+                scrGameSaveManager.instance.gameData.generalGameData.snailSteps;
             if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
             {
                 foreach (var t in ArchipelagoClient.queuedItems2)

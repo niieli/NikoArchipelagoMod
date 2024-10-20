@@ -70,12 +70,24 @@ public static class ItemHandler
     public static void AddBugs(int amount = 10, string sender = "", bool notify = true)
     {
         var w = scrGameSaveManager.instance.gameData.worldsData;
-        //w[scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1].bugAmount += amount;
         scrWorldSaveDataContainer.instance.bugAmount += amount;
         if (notify)
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Bugs from {sender}!" : $"You found your {amount} Bugs!",
+                1.75f);
+        }
+        scrGameSaveManager.instance.SaveGame();
+    }
+    
+    public static void AddMoney(int amount = 500, string sender = "", bool notify = true)
+    {
+        var w = scrGameSaveManager.instance.gameData.worldsData;
+        scrGameSaveManager.instance.gameData.generalGameData.snailSteps += amount;
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Snail Money from {sender}!" : $"You found your {amount} Snail Money!",
                 1.75f);
         }
         scrGameSaveManager.instance.SaveGame();

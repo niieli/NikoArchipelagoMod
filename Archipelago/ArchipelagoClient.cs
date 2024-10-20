@@ -255,6 +255,9 @@ public class ArchipelagoClient
                         ItemHandler.AddContactList1(senderName, notify);
                     }
                     break;
+                case 598_145_444_000+16:
+                    ItemHandler.AddMoney(1000, senderName, notify);
+                    break;
             }
     }
 
