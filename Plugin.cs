@@ -61,7 +61,14 @@ namespace NikoArchipelago
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
-            SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite, APLogoSprite, APIconSprite;
+            SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite, 
+            APLogoSprite, APIconSprite, CoinSprite, CassetteSprite, FishSprite, 
+            ContactListSprite, KeySprite, 
+            BottledSprite, EmployeeSprite, FrogFanSprite, 
+            HandsomeSprite, LostSprite,
+            SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
+            HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
+            SnailMoneySprite, BugSprite;
 
         public static GameObject ApUIGameObject;
         public static Image APLogoImage; 
@@ -122,6 +129,27 @@ namespace NikoArchipelago
                 APLogoSprite = AssetBundle.LoadAsset<Sprite>("HereComesNikoAPLogo");
                 APLogoImage = AssetBundle.LoadAsset<Image>("HereComesNikoAPLogo");
                 APIconSprite = AssetBundle.LoadAsset<Sprite>("nikoApLogo");
+                CoinSprite = AssetBundle.LoadAsset<Sprite>("sprCoinLit");
+                CassetteSprite = AssetBundle.LoadAsset<Sprite>("txrCassette");
+                ContactListSprite = AssetBundle.LoadAsset<Sprite>("txrList");
+                BottledSprite = AssetBundle.LoadAsset<Sprite>("BOTTLED_UP");
+                EmployeeSprite = AssetBundle.LoadAsset<Sprite>("EMPLOYEE_OF_THE_MONTH");
+                FrogFanSprite = AssetBundle.LoadAsset<Sprite>("FROG_FAN");
+                HandsomeSprite = AssetBundle.LoadAsset<Sprite>("HOPELESS_ROMANTIC");
+                LostSprite = AssetBundle.LoadAsset<Sprite>("LOST_AT_SEA");
+                SnailFashionSprite = AssetBundle.LoadAsset<Sprite>("SNAIL_FASHION_SHOW");
+                VolleyDreamsSprite = AssetBundle.LoadAsset<Sprite>("VOLLEY_DREAMS");
+                LetterSprite = AssetBundle.LoadAsset<Sprite>("txrLetter");
+                ApplesSprite = AssetBundle.LoadAsset<Sprite>("txrApple");
+                KeySprite = AssetBundle.LoadAsset<Sprite>("txrKey");
+                HcSprite = AssetBundle.LoadAsset<Sprite>("TrainHairball");
+                TtSprite = AssetBundle.LoadAsset<Sprite>("TrainTurbine");
+                SfcSprite = AssetBundle.LoadAsset<Sprite>("TrainSalmon");
+                PpSprite = AssetBundle.LoadAsset<Sprite>("TrainPool");
+                BathSprite = AssetBundle.LoadAsset<Sprite>("TrainBath");
+                HqSprite = AssetBundle.LoadAsset<Sprite>("TrainTadpole");
+                SnailMoneySprite = AssetBundle.LoadAsset<Sprite>("SnailMoney");
+                BugSprite = AssetBundle.LoadAsset<Sprite>("Butterfly");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -210,8 +238,7 @@ namespace NikoArchipelago
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     loggedIn = true;
-                    scrGameSaveManager.instance.gameData.generalGameData.snailSteps =
-                        ArchipelagoClient._session.DataStorage["SnailMoney"];
+                    //scrGameSaveManager.instance.gameData.generalGameData.snailSteps = ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
 
@@ -262,8 +289,7 @@ namespace NikoArchipelago
                 loggedIn = true; 
             }
 
-            ArchipelagoClient._session.DataStorage["SnailMoney"]
-                .Initialize(scrGameSaveManager.instance.gameData.generalGameData.snailSteps);
+            //ArchipelagoClient._session.DataStorage["SnailMoney"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.snailSteps);
             ArchipelagoClient.CheckReceivedItems();
             // ArchipelagoClient._session.DataStorage["Apples"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.appleAmount);
         }
@@ -302,8 +328,7 @@ namespace NikoArchipelago
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
             //ArchipelagoClient._session.DataStorage["Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
-            ArchipelagoClient._session.DataStorage["SnailMoney"] =
-                scrGameSaveManager.instance.gameData.generalGameData.snailSteps;
+            //ArchipelagoClient._session.DataStorage["SnailMoney"] = scrGameSaveManager.instance.gameData.generalGameData.snailSteps;
             if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
             {
                 foreach (var t in ArchipelagoClient.queuedItems2)
@@ -330,11 +355,11 @@ namespace NikoArchipelago
             saveDataGeneralFlag.ForEach(Logger.LogInfo);
         }
         
-        public static void APSendNote(string note, float time)
+        public static void APSendNote(string note, float time, Sprite sprite = null)
         {
             var apNote = ScriptableObject.CreateInstance<Notification>();
             apNote.timed = true;
-            apNote.avatar = APSprite;
+            apNote.avatar = sprite ? sprite : APSprite;
             apNote.duration = time;
             apNote.key = note;
             _noteDisplayer.AddNotification(apNote);

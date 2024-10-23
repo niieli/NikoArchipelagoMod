@@ -10,53 +10,7 @@ public class AchievementPatch
     [HarmonyPatch(typeof(scrAchievementManager), "Update")]
     public static class PatchAchievementManager
     {
-        //TODO: Fix Achievement Object
-        // private static bool _lostAtSea,
-        //     _frogFan,
-        //     _hopelessRomantic,
-        //     _employeeOfTheMonth,
-        //     _bottledUp,
-        //     _volleyDreams,
-        //     _snailFashionShow;
         private static MethodInfo _saveAchievementMethod;
-        // [HarmonyPrefix]
-        // public static bool Prefix(scrAchievementManager __instance)
-        // {
-        //     var hasInitedField = AccessTools.Field(typeof(scrAchievementManager), "hasInited");
-        //     bool hasInited = (bool)hasInitedField.GetValue(__instance);
-        //     var lostAtSeaField = AccessTools.Field(typeof(scrAchievementManager), "lostAtSea");
-        //     _lostAtSea = (bool)lostAtSeaField.GetValue(__instance);
-        //     var frogFanField = AccessTools.Field(typeof(scrAchievementManager), "frogFan");
-        //     _frogFan = (bool)frogFanField.GetValue(__instance);
-        //     var hopelessRomanticField = AccessTools.Field(typeof(scrAchievementManager), "hopelessRomantic");
-        //     _hopelessRomantic = (bool)hopelessRomanticField.GetValue(__instance);
-        //     var employeeOfTheMonthField = AccessTools.Field(typeof(scrAchievementManager), "employeeOfTheMonth");
-        //     _employeeOfTheMonth = (bool)employeeOfTheMonthField.GetValue(__instance);
-        //     var bottledUpField = AccessTools.Field(typeof(scrAchievementManager), "bottledUp");
-        //     _bottledUp = (bool)bottledUpField.GetValue(__instance);
-        //     var volleyDreamsField = AccessTools.Field(typeof(scrAchievementManager), "volleyDreams");
-        //     _volleyDreams = (bool)volleyDreamsField.GetValue(__instance);
-        //     var snailFashionShowField = AccessTools.Field(typeof(scrAchievementManager), "snailFashionShow");
-        //     _snailFashionShow = (bool)snailFashionShowField.GetValue(__instance);
-        //     if (_saveAchievementMethod == null)
-        //     {
-        //         _saveAchievementMethod = AccessTools.Method(typeof(scrAchievementManager), "SaveAchievement");
-        //     }
-        //     if (hasInited)
-        //     {
-        //         SaveAchievementIfNotExists(__instance, _frogFan, __instance.obj_frogFan);
-        //         SaveAchievementIfNotExists(__instance, _lostAtSea, __instance.obj_lostAtSea);
-        //         SaveAchievementIfNotExists(__instance, _hopelessRomantic, __instance.obj_hopelessRomantic);
-        //         SaveAchievementIfNotExists(__instance, _employeeOfTheMonth, __instance.obj_employeeOfTheMonth);
-        //         SaveAchievementIfNotExists(__instance, _bottledUp, __instance.obj_bottledUp);
-        //         SaveAchievementIfNotExists(__instance, _volleyDreams, __instance.obj_volleyDreams);
-        //         SaveAchievementIfNotExists(__instance, _snailFashionShow, __instance.obj_snailFashionShow);
-        //         hasInited = true;
-        //     }
-        //     CheckFrogFanAchievement(__instance);
-        //
-        //     return false;
-        // }
         
         [HarmonyPostfix]
         public static void Postfix(scrAchievementManager __instance)
@@ -83,7 +37,12 @@ public class AchievementPatch
             {
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
-            Plugin.APSendNote("Achievement Frog Fan obtained!", 3.5f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "Frog Fan";
+            achievement.icon = Plugin.FrogFanSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            //Plugin.APSendNote("Achievement Frog Fan obtained!", 3.5f, Plugin.FrogFanSprite);
         }
         private static void CheckHopelessRomanticAchievement(scrAchievementManager instance)
         {
@@ -99,7 +58,12 @@ public class AchievementPatch
             {
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
-            Plugin.APSendNote("Achievement Hopeless Romantic obtained!", 3.5f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "Hopeless romantic";
+            achievement.icon = Plugin.HandsomeSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            //Plugin.APSendNote("Achievement Hopeless Romantic obtained!", 3.5f, Plugin.HandsomeSprite);
 
         }
         private static void CheckBottledUpAchievement(scrAchievementManager instance)
@@ -111,7 +75,12 @@ public class AchievementPatch
             {
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
-            Plugin.APSendNote("Achievement Bottled Up obtained!", 3.5f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "Bottled up";
+            achievement.icon = Plugin.BottledSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            //Plugin.APSendNote("Achievement Bottled Up obtained!", 3.5f, Plugin.BottledSprite);
         }
         private static void CheckEmployeeOfTheMonthAchievement(scrAchievementManager instance)
         {
@@ -122,7 +91,12 @@ public class AchievementPatch
             {
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
-            Plugin.APSendNote("Achievement Employee Of The Month obtained!", 3.5f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "Employee of the month!";
+            achievement.icon = Plugin.EmployeeSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            //Plugin.APSendNote("Achievement Employee Of The Month obtained!", 3.5f, Plugin.EmployeeSprite);
         }
         private static void CheckLostAtSeaAchievement(scrAchievementManager instance)
         {
@@ -133,7 +107,12 @@ public class AchievementPatch
             {
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
-            Plugin.APSendNote("Achievement Lost At Sea obtained!", 3.5f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "Lost at sea";
+            achievement.icon = Plugin.LostSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            //Plugin.APSendNote("Achievement Lost At Sea obtained!", 3.5f, Plugin.LostSprite);
         }
         private static void CheckVolleyDreamsAchievement(scrAchievementManager instance)
         {
@@ -150,7 +129,12 @@ public class AchievementPatch
             {
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
-            Plugin.APSendNote("Achievement Volley Dreams obtained!", 3.5f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "Volley dreams";
+            achievement.icon = Plugin.VolleyDreamsSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            //Plugin.APSendNote("Achievement Volley Dreams obtained!", 3.5f, Plugin.VolleyDreamsSprite);
         }
         private static void CheckSnailFashionShowAchievement(scrAchievementManager instance)
         {
@@ -167,7 +151,12 @@ public class AchievementPatch
             {
                 _saveAchievementMethod.Invoke(instance, [flag]);
             }
-            Plugin.APSendNote("Achievement Snail Fashion Show obtained!", 3.5f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "Snail fashion show";
+            achievement.icon = Plugin.SnailFashionSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            //Plugin.APSendNote("Achievement Snail Fashion Show obtained!", 3.5f, Plugin.SnailFashionSprite);
         }
     }
 

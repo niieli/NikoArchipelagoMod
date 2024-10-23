@@ -14,7 +14,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Coin from {sender}!" : "You found your Coin!",
-                3f);
+                3f, Plugin.CoinSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -26,7 +26,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Cassette from {sender}!" : "You found your Cassette!",
-                3f);
+                3f, Plugin.CassetteSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -38,7 +38,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Key from {sender}!" : "You found your Key!",
-                3f);
+                3f, Plugin.KeySprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -50,7 +50,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Letter from {sender}!" : "You found your Letter!",
-                1.75f);
+                1.75f, Plugin.LetterSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -62,7 +62,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Apples from {sender}!" : $"You found your {amount} Apples!",
-                1.75f);
+                1.75f, Plugin.ApplesSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -75,7 +75,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Bugs from {sender}!" : $"You found your {amount} Bugs!",
-                1.75f);
+                1.75f, Plugin.BugSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -88,7 +88,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Snail Money from {sender}!" : $"You found your {amount} Snail Money!",
-                1.75f);
+                1.75f, Plugin.SnailMoneySprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -115,7 +115,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
-                3f);
+                3f, Plugin.ContactListSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -130,7 +130,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
-                3f);
+                3f, Plugin.ContactListSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -154,32 +154,32 @@ public static class ItemHandler
             case 2:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Ticket from {sender}!" : "You found your Hairball City Ticket!",
-                    4f);
+                    4f, Plugin.HcSprite);
                 break;
             case 3:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Ticket from {sender}!" : "You found your Turbine Town Ticket!",
-                    4f);
+                    4f, Plugin.TtSprite);
                 break;
             case 4:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Ticket from {sender}!" : "You found your Salmon Creek Forest Ticket!",
-                    4f);
+                    4f, Plugin.SfcSprite);
                 break;
             case 5:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Ticket from {sender}!" : "You found your Public Pool Ticket!",
-                    4f);
+                    4f, Plugin.PpSprite);
                 break;
             case 6:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Ticket from {sender}!" : "You found your Bathhouse Ticket!",
-                    4f);
+                    4f, Plugin.BathSprite);
                 break;
             case 7:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Ticket from {sender}!" : "You found your Tadpole HQ Ticket!",
-                    4f);
+                    4f, Plugin.HqSprite);
                 break;
         }
     }
