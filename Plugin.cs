@@ -526,7 +526,7 @@ namespace NikoArchipelago
              };
             if (int.Parse(slotData["goal_completion"].ToString()) == 0)
             {
-                GUI.Label(new Rect(28, 90, 300, 20), $"Goal: Get Hired | Elevator Repair Cost({slotData["kioskhq"]})");
+                GUI.Label(new Rect(28, 90, 300, 20), $"Goal: Get Hired | Repair the elevator!");
             }
             else
             {

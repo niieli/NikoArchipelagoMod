@@ -109,13 +109,33 @@ public class TrackerKiosk : MonoBehaviour
     public void Update()
     {
         if (!Plugin.saveReady) return;
-        kioskHomeText.text = levelData.levelPrices[2].ToString();
-        kioskHcText.text = levelData.levelPrices[3].ToString();
-        kioskTtText.text = levelData.levelPrices[4].ToString();
-        kioskSfcText.text = levelData.levelPrices[5].ToString();
-        kioskPpText.text = levelData.levelPrices[6].ToString();
-        kioskBathText.text = levelData.levelPrices[7].ToString();
-        kioskHqText.text = levelData.levelPrices[8].ToString();
+        if (ArchipelagoMenu.KioskSpoiler)
+        {
+            kioskHomeText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[1] 
+                ? levelData.levelPrices[2].ToString() : "??";
+            kioskHcText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[2] 
+                ? levelData.levelPrices[3].ToString() : "??";
+            kioskTtText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[3] 
+                ? levelData.levelPrices[4].ToString() : "??";
+            kioskSfcText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[4] 
+                ? levelData.levelPrices[5].ToString() : "??";
+            kioskPpText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[5] 
+                ? levelData.levelPrices[6].ToString() : "??";
+            kioskBathText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[6] 
+                ? levelData.levelPrices[7].ToString() : "??";
+            kioskHqText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[7] 
+                ? levelData.levelPrices[8].ToString() : "??";
+        }
+        else
+        {
+            kioskHomeText.text = levelData.levelPrices[2].ToString();
+            kioskHcText.text = levelData.levelPrices[3].ToString();
+            kioskTtText.text = levelData.levelPrices[4].ToString();
+            kioskSfcText.text = levelData.levelPrices[5].ToString();
+            kioskPpText.text = levelData.levelPrices[6].ToString();
+            kioskBathText.text = levelData.levelPrices[7].ToString();
+            kioskHqText.text = levelData.levelPrices[8].ToString();
+        }
         if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskHome"))
         {
             kioskHomeImage.color = new Color(1f, 1f, 1f, 1f);

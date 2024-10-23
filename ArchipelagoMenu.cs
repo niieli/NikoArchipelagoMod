@@ -26,6 +26,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public Toggle shopHintsToggle;
     public Toggle ticketToggle;
     public Toggle kioskToggle;
+    public Toggle kioskSpoilerToggle;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -39,14 +40,16 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _shopHints;
     private static bool _ticket;
     private static bool _kiosk;
+    private static bool _kioskSpoiler;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
-    private GameObject _apButtonGameObject;
+    private GameObject apButtonGameObject;
     public static string Seed;
     public static bool Hints;
     public static bool ShopHints;
     public static bool Chat;
     public static bool Ticket;
     public static bool Kiosk;
+    public static bool KioskSpoiler;
 
     public void Start()
     {
@@ -54,7 +57,7 @@ public class ArchipelagoMenu : MonoBehaviour
         
         formPanel = transform.Find("Panel")?.gameObject;
         openFormButton = transform.Find("APButton")?.gameObject.GetComponent<Button>();
-        _apButtonGameObject = transform.Find("APButton")?.gameObject;
+        apButtonGameObject = transform.Find("APButton")?.gameObject;
         serverAddressField = transform.Find("Panel/ServerAdress")?.GetComponent<InputField>();
         slotNameField = transform.Find("Panel/SlotName")?.GetComponent<InputField>();
         passwordField = transform.Find("Panel/Password")?.GetComponent<InputField>();
@@ -64,6 +67,7 @@ public class ArchipelagoMenu : MonoBehaviour
         shopHintsToggle = transform.Find("Panel/ShopHints")?.gameObject.GetComponent<Toggle>();
         ticketToggle = transform.Find("Panel/Ticket")?.gameObject.GetComponent<Toggle>();
         kioskToggle = transform.Find("Panel/Kiosk")?.gameObject.GetComponent<Toggle>();
+        kioskSpoilerToggle = transform.Find("Panel/Spoiler")?.gameObject.GetComponent<Toggle>();
         connectButton = transform.Find("Panel/Button")?.gameObject.GetComponent<Button>();
         versionText = transform.Find("Panel/Version")?.gameObject.GetComponent<TMP_Text>();
         
@@ -88,11 +92,12 @@ public class ArchipelagoMenu : MonoBehaviour
         _shopHints = shopHintsToggle.isOn;
         _ticket = ticketToggle.isOn;
         _kiosk = kioskToggle.isOn;
+        _kioskSpoiler = kioskSpoilerToggle.isOn;
         LoadData();
 
         versionText.text = "Version "+Plugin.PluginVersion;
         formPanel.SetActive(false);
-        _apButtonGameObject.SetActive(true);
+        apButtonGameObject.SetActive(true);
         openFormButton.onClick.AddListener(ToggleFormVisibility);
         connectButton.onClick.AddListener(Connect);
     }
@@ -102,11 +107,11 @@ public class ArchipelagoMenu : MonoBehaviour
         if (Plugin.loggedIn)
         {
             formPanel.SetActive(false);
-            _apButtonGameObject.SetActive(false);
+            apButtonGameObject.SetActive(false);
         }
         else
         {
-            _apButtonGameObject.SetActive(true);
+            apButtonGameObject.SetActive(true);
         }
     }
 
@@ -127,11 +132,13 @@ public class ArchipelagoMenu : MonoBehaviour
         _shopHints = shopHintsToggle.isOn;
         _ticket = ticketToggle.isOn;
         _kiosk = kioskToggle.isOn;
+        _kioskSpoiler = kioskSpoilerToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
         Ticket = _ticket;
         Kiosk = _kiosk;
+        KioskSpoiler = _kioskSpoiler;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -157,6 +164,7 @@ public class ArchipelagoMenu : MonoBehaviour
             ShopHints = _shopHints,
             Ticket = _ticket,
             Kiosk = _kiosk,
+            KioskSpoiler = _kioskSpoiler,
         };
         if (_rememberMe)
         {
@@ -215,6 +223,7 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool Hint { get; set; } = _hints;
         public bool Ticket { get; set; } = _ticket;
         public bool Kiosk { get; set; } = _kiosk;
+        public bool KioskSpoiler { get; set; } = _kioskSpoiler;
     }
 
     private void LoadData()
@@ -231,6 +240,7 @@ public class ArchipelagoMenu : MonoBehaviour
             shopHintsToggle.isOn = savedData.ShopHints;
             kioskToggle.isOn = savedData.Kiosk;
             ticketToggle.isOn = savedData.Ticket;
+            kioskSpoilerToggle.isOn = savedData.KioskSpoiler;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -243,6 +253,7 @@ public class ArchipelagoMenu : MonoBehaviour
             shopHintsToggle.isOn = true;
             kioskToggle.isOn = true;
             ticketToggle.isOn = true;
+            kioskSpoilerToggle.isOn = true;
         }
     }
 
