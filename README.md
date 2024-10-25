@@ -24,7 +24,6 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 ## Known issues
 
 - Apples & Snail Money get duplicated after reconnecting (Not a big deal, but will try to find a fix)
-- Reconnecting (restarting the game) will bombard you with notifications for already received items (Visual issue, looking for a fix)
 
 ## What is randomized?
 - Coins

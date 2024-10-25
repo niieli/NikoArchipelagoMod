@@ -32,7 +32,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.4.0";
+        public const string PluginVersion = "0.4.1";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -72,6 +72,7 @@ namespace NikoArchipelago
             ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite;
 
         public static GameObject ApUIGameObject;
+        public static Texture2D CassetteTexture;
         public static Image APLogoImage; 
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
@@ -157,6 +158,7 @@ namespace NikoArchipelago
                 ApTrapSprite = AssetBundle.LoadAsset<Sprite>("ApTrap");
                 ApTrap2Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap2");
                 ApTrap3Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap3");
+                CassetteTexture = AssetBundle.LoadAsset<Texture2D>("ApProgression");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
