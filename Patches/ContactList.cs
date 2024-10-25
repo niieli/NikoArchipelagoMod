@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using KinematicCharacterController.Core;
 using UnityEngine;
 
 namespace NikoArchipelago.Patches;
@@ -32,8 +33,7 @@ public class ContactList
             if (saveManager == null || !saveManager.loaded) return;
 
             if (!__instance.trigger.foundPlayer()) return;
-            __instance.textbox.Initiate(); //Either have Itemname inside Textbox or NO Textbox..
-
+            Object.Destroy(__instance.textbox.gameObject);
             Object.Instantiate(__instance.particleEffect).transform.position = __instance.transform.position;
 
             if (__instance.wave == scrList.Waves.wave1)

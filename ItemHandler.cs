@@ -110,6 +110,9 @@ public static class ItemHandler
         if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1"))
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave1");
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[1] = true;
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[2] = true;
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[3] = true;
         }
         if (notify)
         {
@@ -117,6 +120,7 @@ public static class ItemHandler
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
                 3f, Plugin.ContactListSprite);
         }
+        scrWaveCheck.doCheck = true;
         scrGameSaveManager.instance.SaveGame();
     }
 
@@ -125,6 +129,11 @@ public static class ItemHandler
         if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2"))
         {
             scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("APWave2");
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[1] = true;
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[2] = true;
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[3] = true;
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[4] = true;
+            scrGameSaveManager.instance.gameData.generalGameData.newIconLevels[5] = true;
         }
         if (notify)
         {
@@ -132,6 +141,7 @@ public static class ItemHandler
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
                 3f, Plugin.ContactListSprite);
         }
+        scrWaveCheck.doCheck = true;
         scrGameSaveManager.instance.SaveGame();
     }
 

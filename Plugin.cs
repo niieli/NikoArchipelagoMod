@@ -68,7 +68,8 @@ namespace NikoArchipelago
             HandsomeSprite, LostSprite,
             SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
-            SnailMoneySprite, BugSprite;
+            SnailMoneySprite, BugSprite,
+            ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite;
 
         public static GameObject ApUIGameObject;
         public static Image APLogoImage; 
@@ -150,6 +151,12 @@ namespace NikoArchipelago
                 HqSprite = AssetBundle.LoadAsset<Sprite>("TrainTadpole");
                 SnailMoneySprite = AssetBundle.LoadAsset<Sprite>("SnailMoney");
                 BugSprite = AssetBundle.LoadAsset<Sprite>("Butterfly");
+                ApProgressionSprite = AssetBundle.LoadAsset<Sprite>("ApProgression");
+                ApUsefulSprite = AssetBundle.LoadAsset<Sprite>("ApUseful");
+                ApFillerSprite = AssetBundle.LoadAsset<Sprite>("ApFiller");
+                ApTrapSprite = AssetBundle.LoadAsset<Sprite>("ApTrap");
+                ApTrap2Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap2");
+                ApTrap3Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap3");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -186,7 +193,7 @@ namespace NikoArchipelago
             saveReady = true;
         }
 
-        public IEnumerator CheckWorldSaveManager()
+        private IEnumerator CheckWorldSaveManager()
         {
             while (!scrWorldSaveDataContainer.instance)
             {
@@ -195,6 +202,15 @@ namespace NikoArchipelago
             }
             Logger.LogInfo("WorldSaveDataContainer is not null.");
             worldReady = true;
+        }
+        
+        private IEnumerator BandaidNotificationFix()
+        {
+            yield return new WaitForSeconds(6.0f);
+            if (_noteDisplayer.notificationQueue.Count > 1)
+            {
+                _noteDisplayer.notificationQueue.Clear();
+            }
         }
         
         public void Update()
@@ -238,6 +254,7 @@ namespace NikoArchipelago
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     loggedIn = true;
+                    StartCoroutine(BandaidNotificationFix()); //TODO: Find real fix
                     //scrGameSaveManager.instance.gameData.generalGameData.snailSteps = ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }

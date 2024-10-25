@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using NikoArchipelago.Archipelago;
 
@@ -20,7 +21,7 @@ public class Location
 
 public class Locations
 {
-    private const long BaseID = 598_145_444_000;
+    public const long BaseID = 598_145_444_000;
 
     public static Dictionary<long, Location> CoinLocations = new()
     {
@@ -342,49 +343,464 @@ public class Locations
     private static readonly List<long> ScoutList = new()
     {
         //Mitch & Mai
-        { BaseID + 11}, // Mitch
-        { BaseID + 12}, // Mai
-        { BaseID + 23}, // Mitch
-        { BaseID + 24}, // Mai
-        { BaseID + 29}, // Mitch
-        { BaseID + 39}, // Mai
-        { BaseID + 45}, // Mai
-        { BaseID + 52}, // Mitch
-        { BaseID + 58}, // Mitch
-        { BaseID + 59}, // Mai
-        { BaseID + 68}, // Mai
-        { BaseID + 69}, // Mitch
-        { BaseID + 199}, // Mai
-        { BaseID + 200}, // Mitch
-        
+        BaseID + 11, // Mitch
+        BaseID + 12, // Mai
+        BaseID + 23, // Mitch
+        BaseID + 24, // Mai
+        BaseID + 29, // Mitch
+        BaseID + 39, // Mai
+        BaseID + 45, // Mai
+        BaseID + 52, // Mitch
+        BaseID + 58, // Mitch
+        BaseID + 59, // Mai
+        BaseID + 68, // Mai
+        BaseID + 69, // Mitch
+        BaseID + 199, // Mai
+        BaseID + 200, // Mitch
+
         //Kiosk
-        { BaseID + 170},
-        { BaseID + 171},
-        { BaseID + 172},
-        { BaseID + 173},
-        { BaseID + 174},
-        { BaseID + 175},
-        
+        BaseID + 170, //Home
+        BaseID + 171, //Hairball City
+        BaseID + 172, //Turbine Town
+        BaseID + 173, //Salmon Creek Forest
+        BaseID + 174, //Public Pool
+        BaseID + 175, //Bathhouse
+
         //Snail Shop
-        { BaseID + 233},
-        { BaseID + 234},
-        { BaseID + 235},
-        { BaseID + 236},
-        { BaseID + 237},
-        { BaseID + 238},
-        { BaseID + 239},
-        { BaseID + 240},
-        { BaseID + 241},
-        { BaseID + 242},
-        { BaseID + 243},
-        { BaseID + 244},
-        { BaseID + 245},
-        { BaseID + 246},
-        { BaseID + 247},
-        { BaseID + 248},
+        BaseID + 233,
+        BaseID + 234,
+        BaseID + 235,
+        BaseID + 236,
+        BaseID + 237,
+        BaseID + 238,
+        BaseID + 239,
+        BaseID + 240,
+        BaseID + 241,
+        BaseID + 242,
+        BaseID + 243,
+        BaseID + 244,
+        BaseID + 245,
+        BaseID + 246,
+        BaseID + 247,
+        BaseID + 248,
+
+        //All IDs
+        
+        //Coins
+        BaseID + 0, // Index: 36
+
+        //Hairball City
+        BaseID + 3,
+        BaseID + 4,
+        BaseID + 5,
+        BaseID + 6,
+        BaseID + 7,
+        BaseID + 8,
+        BaseID + 9,
+        BaseID + 10,
+        //BaseID + 11,
+        //BaseID + 12,
+        BaseID + 13,
+        BaseID + 14,
+        BaseID + 15,
+        BaseID + 16,
+
+        //Turbine Town
+        BaseID + 17, // Index: 49
+        BaseID + 18,
+        BaseID + 19,
+        BaseID + 20,
+        BaseID + 21,
+        BaseID + 22,
+        //BaseID + 23,
+        //BaseID + 24,
+        BaseID + 25,
+        BaseID + 26,
+        BaseID + 27,
+
+        //Salmon Creek Forest
+        BaseID + 28, // Index: 58
+        //BaseID + 29,
+        BaseID + 30,
+        BaseID + 31,
+        BaseID + 32,
+        BaseID + 33,
+        BaseID + 34,
+        BaseID + 35,
+        BaseID + 36,
+        BaseID + 37,
+        BaseID + 38,
+        //BaseID + 39,
+        BaseID + 40,
+        BaseID + 41,
+        BaseID + 42,
+        BaseID + 43,
+
+        // Public Pool
+        BaseID + 44, // Index: 72
+        //BaseID + 45,
+        BaseID + 46,
+        BaseID + 47,
+        BaseID + 48,
+        BaseID + 49,
+        BaseID + 50,
+        BaseID + 51,
+        //BaseID + 52,
+        BaseID + 53,
+        // Bathhouse
+        BaseID + 54, // Index: 80
+        BaseID + 55,
+        BaseID + 56,
+        BaseID + 57,
+        //BaseID + 58,
+        //BaseID + 59,
+        BaseID + 60,
+        BaseID + 61,
+        BaseID + 62,
+        BaseID + 63,
+        BaseID + 64,
+        BaseID + 65,
+        BaseID + 66,
+        BaseID + 67,
+
+        // Tadpole HQ
+        //BaseID + 68,
+        //BaseID + 69,
+        BaseID + 70, // Index: 93
+        BaseID + 71,
+        BaseID + 72,
+        BaseID + 73,
+        BaseID + 74,
+        BaseID + 75,
+        BaseID + 76,
+        BaseID + 77,
+        
+        //Gary's Garden
+        BaseID + 198,
+        //BaseID + 199,
+        //BaseID + 200,
+        
+        //Cassettes
+        // Hairball City
+        BaseID + 100, // Index: 101
+        BaseID + 101,
+        BaseID + 102,
+        BaseID + 103,
+        BaseID + 104,
+        BaseID + 105,
+        BaseID + 106,
+        BaseID + 107,
+        BaseID + 108,
+        BaseID + 109,
+
+        // Turbine Town
+        BaseID + 111, // Index: 111
+        BaseID + 112,
+        BaseID + 113,
+        BaseID + 114,
+        BaseID + 115,
+        BaseID + 116,
+        BaseID + 117,
+        BaseID + 118,
+        BaseID + 119,
+        BaseID + 120,
+
+        // Salmon Creek Forest
+        BaseID + 122, // Index: 121
+        BaseID + 123,
+        BaseID + 124,
+        BaseID + 125,
+        BaseID + 126,
+        BaseID + 127,
+        BaseID + 128,
+        BaseID + 129,
+        BaseID + 130,
+        BaseID + 131,
+        BaseID + 132,
+
+        // Public Pool
+        BaseID + 134, // Index: 132
+        BaseID + 135,
+        BaseID + 136,
+        BaseID + 137,
+        BaseID + 138,
+        BaseID + 139,
+        BaseID + 140,
+        BaseID + 141,
+        BaseID + 142,
+        BaseID + 143,
+
+        // Bathhouse
+        BaseID + 145, // Index: 142
+        BaseID + 146,
+        BaseID + 147,
+        BaseID + 148,
+        BaseID + 149,
+        BaseID + 150,
+        BaseID + 151,
+        BaseID + 152,
+        BaseID + 153,
+        BaseID + 154,
+
+        // Tadpole HQ
+        BaseID + 156, // Index: 152
+        BaseID + 157,
+        BaseID + 158,
+        BaseID + 159,
+        BaseID + 160,
+        BaseID + 161,
+        BaseID + 162,
+        BaseID + 163,
+        BaseID + 164,
+        BaseID + 165,
+        
+        // Gary's Garden
+        BaseID + 183, // Index: 162
+        BaseID + 184,
+        BaseID + 185,
+        BaseID + 186,
+        BaseID + 187,
+        BaseID + 188,
+        BaseID + 189,
+        BaseID + 190,
+        BaseID + 191,
+        BaseID + 192,
     };
     
     public static readonly long[] ScoutIDs = ScoutList.ToArray();
+    
+    public static readonly Dictionary<long, string> ScoutHCCoinList = new()
+    {
+        { BaseID + 0, "Fetch" },
+
+        // Hairball City
+        { BaseID + 3, "volley" },
+        { BaseID + 4, "Dustan" },
+        { BaseID + 5, "flowerPuzzle" },
+        { BaseID + 6, "main" },
+        { BaseID + 7, "fishing" },
+        { BaseID + 8, "bug" },
+        { BaseID + 9, "graffiti" },
+        { BaseID + 10, "hamsterball" },
+        { BaseID + 11, "cassetteCoin" },
+        { BaseID + 12, "cassetteCoin2" },
+        { BaseID + 13, "gamerQuest" },
+        { BaseID + 14, "arcadeBone" },
+        { BaseID + 15, "arcade" },
+        { BaseID + 16, "carrynojump" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutTTCoinList = new()
+    {
+        // Turbine Town
+        { BaseID + 17, "fishing" },
+        { BaseID + 18, "volley" },
+        { BaseID + 19, "flowerPuzzle" },
+        { BaseID + 20, "main" },
+        { BaseID + 21, "bug" },
+        { BaseID + 22, "Dustan" },
+        //{ BaseID + 23, "cassetteCoin" },
+        //{ BaseID + 24, "cassetteCoin2" },
+        { BaseID + 25, "arcadeBone" },
+        { BaseID + 26, "arcade" },
+        { BaseID + 27, "carrynojump" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutSFCCoinList = new()
+    {
+        // Salmon Creek Forest
+        { BaseID + 28, "main" },
+        //{ BaseID + 29, "cassetteCoin" },
+        { BaseID + 30, "Dustan" },
+        { BaseID + 31, "hamsterball" },
+        { BaseID + 32, "arcadeBone" },
+        { BaseID + 33, "tree" },
+        { BaseID + 34, "bug" },
+        { BaseID + 35, "behindWaterfall" },
+        { BaseID + 36, "volley" },
+        { BaseID + 37, "flowerPuzzle" },
+        { BaseID + 38, "graffiti" },
+        //{ BaseID + 39, "cassetteCoin2" },
+        { BaseID + 40, "fishing" },
+        { BaseID + 41, "gamerQuest" },
+        { BaseID + 42, "arcade" },
+        { BaseID + 43, "carrynojump" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutPPCoinList = new()
+    {
+        // Public Pool
+        { BaseID + 44, "2D" },
+        //{ BaseID + 45, "cassetteCoin2" },
+        { BaseID + 46, "arcadeBone" },
+        { BaseID + 47, "arcade" },
+        { BaseID + 48, "fishing" },
+        { BaseID + 49, "main" },
+        { BaseID + 50, "volley" },
+        { BaseID + 51, "bug" },
+        //{ BaseID + 52, "cassetteCoin" },
+        { BaseID + 53, "flowerPuzzle" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutBathCoinList = new()
+    {
+        // Bathhouse
+        { BaseID + 54, "carrynojump" },
+        { BaseID + 55, "hamsterball" },
+        { BaseID + 56, "main" },
+        { BaseID + 57, "graffiti" },
+        //{ BaseID + 58, "cassetteCoin" },
+        //{ BaseID + 59, "cassetteCoin2" },
+        { BaseID + 60, "Dustan" },
+        { BaseID + 61, "volley" },
+        { BaseID + 62, "gamerQuest" },
+        { BaseID + 63, "fishing" },
+        { BaseID + 64, "bug" },
+        { BaseID + 65, "flowerPuzzle" },
+        { BaseID + 66, "arcadeBone" },
+        { BaseID + 67, "arcade" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutHQCoinList = new()
+    {
+        // Tadpole HQ
+        //{ BaseID + 68, "cassetteCoin2" },
+        //{ BaseID + 69, "cassetteCoin" },
+        { BaseID + 70, "main" },
+        { BaseID + 71, "volley" },
+        { BaseID + 72, "fishing" },
+        { BaseID + 73, "flowerPuzzle" },
+        { BaseID + 74, "arcade" },
+        { BaseID + 75, "bug" },
+        { BaseID + 76, "carrynojump" },
+        { BaseID + 77, "arcadeBone" },
+        { BaseID + 198, "Gary" }
+    };
+    
+    public static readonly Dictionary<long, string> ScoutMiMaList = new()
+    {
+        //Mitch & Mai
+        { BaseID + 11, "cassetteCoin"}, // Mitch
+        { BaseID + 12, "cassetteCoin2"}, // Mai
+        { BaseID + 23, "cassetteCoin"}, // Mitch
+        { BaseID + 24, "cassetteCoin2"}, // Mai
+        { BaseID + 29, "cassetteCoin"}, // Mitch
+        { BaseID + 39, "cassetteCoin2"}, // Mai
+        { BaseID + 45, "cassetteCoin2"}, // Mai
+        { BaseID + 52, "cassetteCoin"}, // Mitch
+        { BaseID + 58, "cassetteCoin"}, // Mitch
+        { BaseID + 59, "cassetteCoin2"}, // Mai
+        { BaseID + 68, "cassetteCoin2"}, // Mai
+        { BaseID + 69, "cassetteCoin"}, // Mitch
+        { BaseID + 199, "cassetteCoin2"}, // Mai
+        { BaseID + 200, "cassetteCoin"}, // Mitch
+    };
+    
+    public static readonly Dictionary<long, string> ScoutHCCassetteList = new()
+    {
+        // Hairball City
+        { BaseID + 100, "casHairballCity0" },
+        { BaseID + 101, "casHairballCity1" },
+        { BaseID + 102, "casHairballCity2" },
+        { BaseID + 103, "casHairballCity3" },
+        { BaseID + 104, "casHairballCity4" },
+        { BaseID + 105, "casHairballCity5" },
+        { BaseID + 106, "casHairballCity6" },
+        { BaseID + 107, "casHairballCity7" },
+        { BaseID + 108, "casHairballCity8" },
+        { BaseID + 109, "casHairballCity9" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutTTCassetteList = new()
+    {
+        // Turbine Town
+        { BaseID + 111, "Cassette" },
+        { BaseID + 112, "Cassette (1)" },
+        { BaseID + 113, "Cassette (2)" },
+        { BaseID + 114, "Cassette (3)" },
+        { BaseID + 115, "Cassette (4)" },
+        { BaseID + 116, "Cassette (5)" },
+        { BaseID + 117, "Cassette (6)" },
+        { BaseID + 118, "Cassette (7)" },
+        { BaseID + 119, "Cassette (8)" },
+        { BaseID + 120, "Cassette (9)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutSFCCassetteList = new()
+    {
+        // Salmon Creek Forest
+        { BaseID + 122, "Cassette" },
+        { BaseID + 123, "Cassette (1)" },
+        { BaseID + 124, "Cassette (2)" },
+        { BaseID + 125, "Cassette (3)" },
+        { BaseID + 126, "Cassette (4)" },
+        { BaseID + 127, "Cassette (5)" },
+        { BaseID + 128, "Cassette (6)" },
+        { BaseID + 129, "Cassette (7)" },
+        { BaseID + 130, "Cassette (8)" },
+        { BaseID + 131, "Cassette (9)" },
+        { BaseID + 132, "Cassette (10)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutPPCassetteList = new()
+    {
+        // Public Pool
+        { BaseID + 134, "Cassette" },
+        { BaseID + 135, "Cassette (1)" },
+        { BaseID + 136, "Cassette (2)" },
+        { BaseID + 137, "Cassette (3)" },
+        { BaseID + 138, "Cassette (4)" },
+        { BaseID + 139, "Cassette (5)" },
+        { BaseID + 140, "Cassette (6)" },
+        { BaseID + 141, "Cassette (7)" },
+        { BaseID + 142, "Cassette (8)" },
+        { BaseID + 143, "Cassette (9)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutBathCassetteList = new()
+    {
+        // Bathhouse
+        { BaseID + 145, "Cassette" },
+        { BaseID + 146, "Cassette (1)" },
+        { BaseID + 147, "Cassette (2)" },
+        { BaseID + 148, "Cassette (3)" },
+        { BaseID + 149, "Cassette (4)" },
+        { BaseID + 150, "Cassette (5)" },
+        { BaseID + 151, "Cassette (6)" },
+        { BaseID + 152, "Cassette (7)" },
+        { BaseID + 153, "Cassette (8)" },
+        { BaseID + 154, "Cassette (9)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutHQCassetteList = new()
+    {
+        // Tadpole HQ
+        { BaseID + 156, "Cassette" },
+        { BaseID + 157, "Cassette (1)" },
+        { BaseID + 158, "Cassette (2)" },
+        { BaseID + 159, "Cassette (3)" },
+        { BaseID + 160, "Cassette (4)" },
+        { BaseID + 161, "Cassette (5)" },
+        { BaseID + 162, "Cassette (6)" },
+        { BaseID + 163, "Cassette (7)" },
+        { BaseID + 164, "Cassette (8)" },
+        { BaseID + 165, "Cassette (9)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutGardenCassetteList = new()
+    {
+        // Gary's Garden
+        { BaseID + 183, "Cassette" },
+        { BaseID + 184, "Cassette (1)" },
+        { BaseID + 185, "Cassette (2)" },
+        { BaseID + 186, "Cassette (3)" },
+        { BaseID + 187, "Cassette (4)" },
+        { BaseID + 188, "Cassette (5)" },
+        { BaseID + 189, "Cassette (6)" },
+        { BaseID + 190, "Cassette (7)" },
+        { BaseID + 191, "Cassette (8)" },
+        { BaseID + 192, "Cassette (9)" },
+    };
     
     public static void AddLocation(long id, string flag, int level)
     {
