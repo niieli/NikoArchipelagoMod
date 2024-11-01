@@ -9,15 +9,22 @@ public class SecretMove
     [HarmonyPatch(typeof(scrObtainSecretMove), "Start")]
     public static class PatchSecretMove
     {
-        private static void Postfix(scrObtainSecretMove __instance)
+        [HarmonyPrefix]
+        static bool Prefix(scrObtainSecretMove __instance)
         {
-            if (scrGameSaveManager.instance.gameData.generalGameData.appleAmount >= __instance.appleCost || scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("SecretMove Obtained"))
+            var appleCost = 250;
+            var saveManager = scrGameSaveManager.instance;
+            if (saveManager.gameData.generalGameData.appleAmount >= appleCost &&
+                !saveManager.gameData.generalGameData.generalFlags.Contains("SecretMove Obtained"))
             {
-                if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("SecretMove Obtained"))
+                if (!saveManager.gameData.generalGameData.generalFlags.Contains("SecretMove Obtained"))
                 {
-                    scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("SecretMove Obtained");
+                    saveManager.gameData.generalGameData.appleAmount -= appleCost;
+                    saveManager.gameData.generalGameData.generalFlags.Add("SecretMove Obtained");
                 }
             }
+            saveManager.SaveGame();
+            return false;
         }
     }
     [HarmonyPatch(typeof(scrAppleSwitch), "Update")]
@@ -36,7 +43,7 @@ public class SecretMove
             var _timer = (float)timerField.GetValue(__instance);
             if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("SecretMove Obtained"))
             {
-                if (_secretMoveSet)
+                if (!_secretMoveSet)
                 {
                     _secretMoveSet = true;
                     __instance.secretMovePost.SetActive(true);
@@ -54,7 +61,7 @@ public class SecretMove
             else
             {
                 __instance.secretMovePost.SetActive(false);
-                if (!__instance.constantCheck)
+                if (__instance.constantCheck)
                 {
                     _timer += Time.deltaTime;
                     if ((double) _timer <= (double)__instance.checkInterval)
