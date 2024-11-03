@@ -86,24 +86,22 @@ public class GameObjectChecker : MonoBehaviour
 
     private static void PepperFirstMeetingTrigger()
     {
-        if (SceneManager.GetActiveScene().name == "Home")
+        if (SceneManager.GetActiveScene().name != "Home") return;
+        try
         {
-            try
+            if (GameObject.Find("Pepper Meeting Trigger") != null)
             {
-                if (GameObject.Find("Pepper Meeting Trigger") != null)
-                {
-                    Plugin.BepinLogger.LogInfo("Pepper Meeting Trigger GameObject found!");
-                    FirstMeeting = true;
-                }
-                else
-                {
-                    Plugin.BepinLogger.LogInfo("Pepper Meeting Trigger GameObject does not exist!");
-                }
+                Plugin.BepinLogger.LogInfo("Pepper Meeting Trigger GameObject found!");
+                FirstMeeting = true;
             }
-            catch (NullReferenceException e)
+            else
             {
-                Plugin.BepinLogger.LogError($"Error finding 'Pepper Meeting Trigger': {e.Message}");
+                Plugin.BepinLogger.LogInfo("Pepper Meeting Trigger GameObject does not exist!");
             }
+        }
+        catch (NullReferenceException e)
+        {
+            Plugin.BepinLogger.LogError($"Error finding 'Pepper Meeting Trigger': {e.Message}");
         }
     }
 

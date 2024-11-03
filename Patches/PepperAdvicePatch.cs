@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
+using UnityEngine;
 
 namespace NikoArchipelago.Patches;
 
@@ -81,6 +83,15 @@ public class PepperAdvicePatch
             __instance.keyTextmesh.SetText(keyStringBuilder);
 
             return false; // Skip original method
+        }
+    }
+
+    [HarmonyPatch(typeof(scrPepperAdvice), "Start")]
+    public static class PatchPepperAdviceStart
+    {
+        static void Postfix(scrPepperAdvice __instance)
+        {
+            __instance.trigger.gameObject.SetActive(false);
         }
     }
 }
