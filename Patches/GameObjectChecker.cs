@@ -11,6 +11,8 @@ namespace NikoArchipelago.Patches;
 
 public class GameObjectChecker : MonoBehaviour
 {
+    private static GameObject PepperReal;
+    private static bool PepperRealCheck = false;
     public static bool FirstMeeting;
     private void Start()
     {
@@ -28,6 +30,7 @@ public class GameObjectChecker : MonoBehaviour
         TrackerKiosk();
         TrackerTicket();
         StartCoroutine(CheckTrackers());
+        HqWhiteboard();
     }
     
     private void OnDestroy()
@@ -221,6 +224,19 @@ public class GameObjectChecker : MonoBehaviour
         yield return new WaitUntil(() => GameObject.Find("TrackerTicket") || GameObject.Find("TrackerKiosk"));
         Plugin.BepinLogger.LogInfo("Found TrackerTicket and TrackerKiosk");
         TrackerDisplayer();
+    }
+
+    private static void HqWhiteboard()
+    {
+        if (SceneManager.GetActiveScene().name != "Tadpole inc") return;
+        var whiteboard = GameObject.Find("Pepper/Pepper/Whiteboard");
+        var pepper2 = GameObject.Find("Pepper/Pepper/Pepper");
+        pepper2.SetActive(false);
+        whiteboard.SetActive(true);
+        whiteboard.transform.position = new Vector3((float)-61.0821, (float)3.623, (float)-80.2564);
+        whiteboard.transform.localPosition = new Vector3((float)-58.2721, (float)-162.1998, (float)-157.5964);
+        whiteboard.transform.rotation = Quaternion.Euler(0, (float)31.9692, 0);
+        Plugin.BepinLogger.LogInfo("Added Whiteboard to Tadpole HQ");
     }
     
     private static GameObject FindInActiveObjectByName(string name)

@@ -33,7 +33,7 @@ public class ArchipelagoConsole
 
     public static void LogMessage(string message)
     {
-        if (message.IsNullOrWhiteSpace()) return;
+        if (message.IsNullOrWhiteSpace() || message.Contains("Index was out of range")) return;
 
         if (logLines.Count == MaxLogLines)
         {

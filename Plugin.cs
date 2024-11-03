@@ -247,7 +247,6 @@ namespace NikoArchipelago
                         
                         gameSaveManager.SaveGame();
                         gameSaveManager.LoadGame();
-                        
                         gameSaveManager.ClearSaveData();
                     }
                     scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
