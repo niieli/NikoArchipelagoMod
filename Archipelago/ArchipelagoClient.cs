@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,7 +10,10 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using KinematicCharacterController.Core;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using Logger = HarmonyLib.Tools.Logger;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -24,8 +28,9 @@ public class ArchipelagoClient
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler deathLinkHandler;
     public static ArchipelagoSession _session;
-    public int CoinAmount, CassetteAmount, KeyAmount;
+    public int CoinAmount, CassetteAmount, KeyAmount, List;
     public bool SuperJump, ContactList1, ContactList2, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, isRunning;
+    public static bool Fini;
     public Task _disconnectTask;
 
     /// <summary>
@@ -171,7 +176,6 @@ public class ArchipelagoClient
         if (helper.Index < ServerData.Index) return;
 
         ServerData.Index++;
-        
         if (IsValidScene() && Plugin.loggedIn)
         {
             GiveItem(receivedItem);
@@ -245,8 +249,12 @@ public class ArchipelagoClient
                 case 598_145_444_000+14:
                     ItemHandler.AddBugs(10, senderName, notify);
                     break;
+                case 598_145_444_000+16:
+                    ItemHandler.AddMoney(1000, senderName, notify);
+                    break;
                 case 598_145_444_000+15:
-                    if (_session.Items.AllItemsReceived.Count(i => i == item) == 2)
+                    var real = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Progressive Contact List");
+                    if (real == 2)
                     {
                         ItemHandler.AddContactList2(senderName, notify);
                     }
@@ -254,9 +262,7 @@ public class ArchipelagoClient
                     {
                         ItemHandler.AddContactList1(senderName, notify);
                     }
-                    break;
-                case 598_145_444_000+16:
-                    ItemHandler.AddMoney(1000, senderName, notify);
+                    Plugin.BepinLogger.LogInfo($"Counted: {_session.Items.AllItemsReceived.Count(i => i == item)}");
                     break;
             }
     }

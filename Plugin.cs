@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Archipelago.MultiClient.Net.Models;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -32,7 +33,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.4.1";
+        public const string PluginVersion = "0.4.3";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -324,12 +325,22 @@ namespace NikoArchipelago
                 }
             }
             // Sync Coins, Cassettes, Keys
+            var list = 0;
+            if (generalGameData.generalFlags.Contains("APWave2"))
+            {
+                list = 2;
+            }
+            else if (generalGameData.generalFlags.Contains("APWave1"))
+            {
+                list = 1;
+            }
             SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
             SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount);
             // Sync Special Unlocks (Super Jump, Contact Lists)
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
+            ArchipelagoClient.List = list;
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
             {
@@ -514,9 +525,13 @@ namespace NikoArchipelago
                 Logger.LogInfo(scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1);
             }
 
-            if (GUI.Button(new Rect(16, 340, 100, 20), "Resync"))
+            if (GUI.Button(new Rect(16, 340, 100, 20), "AllReceivedItems"))
             {
-                ArchipelagoClient.CheckReceivedItems();
+                //ArchipelagoClient.CheckReceivedItems();
+                foreach (var t in ArchipelagoClient._session.Items.AllItemsReceived)
+                {
+                    Logger.LogWarning("Counted Item: " + t.ItemName);
+                }
             }
         }
 
