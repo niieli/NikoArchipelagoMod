@@ -136,7 +136,7 @@ namespace NikoArchipelago
                 CassetteSprite = AssetBundle.LoadAsset<Sprite>("txrCassette");
                 ContactListSprite = AssetBundle.LoadAsset<Sprite>("txrList");
                 BottledSprite = AssetBundle.LoadAsset<Sprite>("BOTTLED_UP");
-                EmployeeSprite = AssetBundle.LoadAsset<Sprite>("EMPLOYEE_OF_THE_MONTH");
+                EmployeeSprite = AssetBundle.LoadAsset<Sprite>("EMLOYEE_OF_THE_MONTH");
                 FrogFanSprite = AssetBundle.LoadAsset<Sprite>("FROG_FAN");
                 HandsomeSprite = AssetBundle.LoadAsset<Sprite>("HOPELESS_ROMANTIC");
                 LostSprite = AssetBundle.LoadAsset<Sprite>("LOST_AT_SEA");

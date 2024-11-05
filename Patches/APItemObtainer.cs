@@ -506,7 +506,7 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => __instance.txrCassette,
+                                "Coin" => Plugin.CoinSprite.texture,
                                 "Cassette" => Plugin.CassetteSprite.texture,
                                 "Key" => Plugin.KeySprite.texture,
                                 "25 Apples" => Plugin.ApplesSprite.texture,

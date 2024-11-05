@@ -197,7 +197,12 @@ public class LocationHandler : MonoBehaviour
             if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 1 ||
                 !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview") || _sent) return;
             ArchipelagoClient.SendCompletion();
-            Plugin.APSendNote("YOU'RE HIRED! (Completed Goal)", 10f);
+            var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+            achievement.nameKey = "YOU'RE HIRED! (Completed Goal)";
+            achievement.icon = Plugin.ApProgressionSprite;
+            AchievementPopup.instance.PopupAchievement(achievement);
+            AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+            AchievementPopup.instance.UIhider.Show(10f);
             ArchipelagoConsole.LogMessage("YOU'RE HIRED! (Completed Goal)");
             _sent = true;
         }
@@ -206,7 +211,12 @@ public class LocationHandler : MonoBehaviour
             if (scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal != 76 || _sent) return;
             {
                 ArchipelagoClient.SendCompletion();
-                Plugin.APSendNote("BEST EMPLOYEE! (Completed Goal)", 10f);
+                var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+                achievement.nameKey = "BEST EMPLOYEE (Completed Goal)";
+                achievement.icon = Plugin.EmployeeSprite;
+                AchievementPopup.instance.PopupAchievement(achievement);
+                AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+                AchievementPopup.instance.UIhider.Show(10f);
                 ArchipelagoConsole.LogMessage("BEST EMPLOYEE (Completed Goal)");
                 _sent = true;
             }

@@ -194,15 +194,15 @@ public class ArchipelagoClient
             {
                 case 598_145_444_000:
                     ItemHandler.AddCoin(1, senderName, notify);
-                    CoinAmount += _session.Items.AllItemsReceived.Count(i => i == item);
+                    CoinAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Coin");
                     break;
                 case 598_145_444_000 + 1: // Cassette
                     ItemHandler.AddCassette(1, senderName, notify);
-                    CassetteAmount += _session.Items.AllItemsReceived.Count(i => i == item);
+                    CassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Cassette");
                     break;
                 case 598_145_444_000 + 2: // Key
                     ItemHandler.AddKey(1, senderName, notify);
-                    KeyAmount += _session.Items.AllItemsReceived.Count(i => i == item);
+                    KeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Key");
                     break;
                 case 598_145_444_000 + 3: // Apples
                     ItemHandler.AddApples(25, senderName, notify);
