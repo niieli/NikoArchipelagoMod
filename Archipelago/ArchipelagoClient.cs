@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,10 +9,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
-using KinematicCharacterController.Core;
-using UnityEngine;
 using UnityEngine.SceneManagement;
-using Logger = HarmonyLib.Tools.Logger;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -28,9 +24,8 @@ public class ArchipelagoClient
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler deathLinkHandler;
     public static ArchipelagoSession _session;
-    public int CoinAmount, CassetteAmount, KeyAmount, List;
-    public bool SuperJump, ContactList1, ContactList2, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, isRunning;
-    public static bool Fini;
+    public int CoinAmount, CassetteAmount, KeyAmount;
+    public bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
     public Task _disconnectTask;
 
     /// <summary>
@@ -105,7 +100,6 @@ public class ArchipelagoClient
 
             ServerData.SetupSession(success.SlotData, _session.RoomState.Seed);
             Authenticated = true;
-            isRunning = true;
             deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
 #if NET35
             session.Locations.CompleteLocationChecksAsync(null, ServerData.CheckedLocations.ToArray());
@@ -209,11 +203,9 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000 + 4: // Contact List 1
                     ItemHandler.AddContactList1(senderName, notify);
-                    ContactList1 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000 + 5: // Contact List 2
                     ItemHandler.AddContactList2(senderName, notify);
-                    ContactList2 = _session.Items.AllItemsReceived.Contains(item);
                     break;
                 case 598_145_444_000 + 6: // Super Jump
                     ItemHandler.AddSuperJump(senderName, notify);
@@ -245,6 +237,10 @@ public class ArchipelagoClient
                 case 598_145_444_000+13:
                     ItemHandler.AddTicket(7, senderName, notify);
                     Ticket6 = true;
+                    break;
+                case 598_145_444_000+17:
+                    ItemHandler.AddGarden(senderName, notify);
+                    TicketGary = true;
                     break;
                 case 598_145_444_000+14:
                     ItemHandler.AddBugs(10, senderName, notify);

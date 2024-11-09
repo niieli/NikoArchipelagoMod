@@ -8,10 +8,19 @@ namespace NikoArchipelago.Patches;
 public class PepperInterviewPatch
 {
     [HarmonyPatch(typeof(scrPepperInterview), "Start")]
-    public static class PatchPepperAdviceUpdate
+    public static class PatchPepperInterviewStart
     {
         static void Postfix(scrPepperInterview __instance)
         {
+            if (SceneManager.GetActiveScene().name == "Home" && scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(__instance.flag))
+            {
+                // Make Fetch Quest & Kiosk Check Unmissable
+                __instance.interview.SetActive(true); 
+                var questFrog = __instance.interview.transform.Find("FetchQuest/NPCs Quest/NPC Quest");
+                questFrog.transform.position = new Vector3((float)-138.1868, (float)25.2446, (float)45.4684);
+                questFrog.transform.localPosition = new Vector3((float)-131.9129, (float)25.032, (float)69.1832);
+                __instance.postInterview.transform.Find("Geusts/Kiosk")?.gameObject.SetActive(false);
+            }
             __instance.StartCoroutine(CheckElevator(__instance));
         }
 

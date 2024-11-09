@@ -3,7 +3,6 @@ using System.Collections;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,9 +10,9 @@ namespace NikoArchipelago.Patches;
 
 public class GameObjectChecker : MonoBehaviour
 {
-    private static GameObject PepperReal;
-    private static bool PepperRealCheck = false;
-    public static bool FirstMeeting;
+    private static GameObject GaryGhost;
+    private static bool FoundGhost;
+    public static bool FirstMeeting, CheckedGhost;
     private void Start()
     {
         Plugin.BepinLogger.LogDebug("GameObjectChecker started!");
@@ -23,6 +22,7 @@ public class GameObjectChecker : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         FirstMeeting = false;
+        CheckedGhost = false;
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
@@ -31,6 +31,7 @@ public class GameObjectChecker : MonoBehaviour
         TrackerTicket();
         StartCoroutine(CheckTrackers());
         HqWhiteboard();
+        HqGarden();
     }
     
     private void OnDestroy()
@@ -237,7 +238,32 @@ public class GameObjectChecker : MonoBehaviour
         Plugin.BepinLogger.LogInfo("Added Whiteboard to Tadpole HQ");
     }
     
-    private static GameObject FindInActiveObjectByName(string name)
+    private static void HqGarden()
+    {
+        if (ArchipelagoData.slotData == null) return;
+        if (SceneManager.GetActiveScene().name != "Tadpole inc" ||
+            int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0) return;
+        GaryGhost = GameObject.Find("GaryGhost");
+        GaryGhost.SetActive(ItemHandler.Garden);
+        Plugin.BepinLogger.LogInfo("Disabled GaryGhost");
+        FoundGhost = true;
+    }
+
+    public void Update()
+    {
+        if (ArchipelagoData.slotData == null) return;
+        if (!FoundGhost || !ItemHandler.Garden ||
+            int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) != 2 ||
+            SceneManager.GetActiveScene().name != "Tadpole inc" || !CheckedGhost) return;
+        GaryGhost.SetActive(ItemHandler.Garden);
+        Plugin.BepinLogger.LogInfo("Enabled GaryGhost");
+        if (SceneManager.GetActiveScene().name == "Tadpole inc")
+        {
+            //Instantiate(GaryGhost, GameObject.Find("UI").transform, false);
+        }
+    }
+
+    public static GameObject FindInActiveObjectByName(string name)
     {
         Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
         for (int i = 0; i < objs.Length; i++)

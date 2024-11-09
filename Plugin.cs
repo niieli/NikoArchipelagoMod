@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using Archipelago.MultiClient.Net.Models;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -338,9 +336,7 @@ namespace NikoArchipelago
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
             SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount);
-            // Sync Special Unlocks (Super Jump, Contact Lists)
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
-            ArchipelagoClient.List = list;
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
             {
@@ -356,6 +352,10 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
+            if (ArchipelagoClient.TicketGary)
+            {
+                
+            }
             //ArchipelagoClient._session.DataStorage["Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
             //ArchipelagoClient._session.DataStorage["SnailMoney"] = scrGameSaveManager.instance.gameData.generalGameData.snailSteps;
             if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
@@ -530,7 +530,7 @@ namespace NikoArchipelago
                 //ArchipelagoClient.CheckReceivedItems();
                 foreach (var t in ArchipelagoClient._session.Items.AllItemsReceived)
                 {
-                    Logger.LogWarning("Counted Item: " + t.ItemName);
+                    Logger.LogWarning("Counted Item: " + t.ItemName + " | ItemID: " + t.ItemId);
                 }
             }
         }
@@ -559,11 +559,11 @@ namespace NikoArchipelago
              };
             if (int.Parse(slotData["goal_completion"].ToString()) == 0)
             {
-                GUI.Label(new Rect(28, 90, 300, 20), $"Goal: Get Hired | Repair the elevator!");
+                GUI.Label(new Rect(30, 90, 300, 20), $"Goal: Get Hired | Repair the elevator!");
             }
             else
             {
-                GUI.Label(new Rect(24, 90, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
+                GUI.Label(new Rect(26, 90, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
             }
 
             foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)

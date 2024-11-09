@@ -1,12 +1,10 @@
 using System.Collections;
 using System.IO;
 using BepInEx;
-using KinematicCharacterController.Core;
 using Newtonsoft.Json;
 using NikoArchipelago.Archipelago;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Toggle = UnityEngine.UI.Toggle;

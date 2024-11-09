@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BepInEx.Logging;
-using NikoArchipelago;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
 

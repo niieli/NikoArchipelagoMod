@@ -7,6 +7,7 @@ public static class ItemHandler
     private static ArchipelagoClient archipelagoClient;
     private static Plugin plugin;
     private static bool prog;
+    public static bool Garden;
     public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -192,5 +193,14 @@ public static class ItemHandler
                     4f, Plugin.HqSprite);
                 break;
         }
+    }
+
+    public static void AddGarden(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gary's Garden Ticket from {sender}!" : "You found your Gary's Garden Ticket!",
+            4f, Plugin.ApProgressionSprite);
+        Garden = true;
     }
 }
