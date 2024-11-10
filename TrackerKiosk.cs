@@ -1,4 +1,5 @@
 ﻿using System;
+using NikoArchipelago.Patches;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,6 +38,7 @@ public class TrackerKiosk : MonoBehaviour
     public TextMeshProUGUI kioskBathText;
     public TextMeshProUGUI kioskHqText;
     private scrGameSaveManager gameSaveManager;
+    private static scrUIhider uiHider;
 
     public void Start()
     {
@@ -100,10 +102,21 @@ public class TrackerKiosk : MonoBehaviour
         boughtBathImage.enabled = false;
         boughtHqImage.enabled = false;
         //var uIhider = kioskPanel.AddComponent<scrUIhider>();
-        var cGroup = kioskPanel.AddComponent<CanvasGroup>();
-        cGroup.alpha = 0;
+        //var cGroup = kioskPanel.AddComponent<CanvasGroup>();
+        //cGroup.alpha = 0;
         //uIhider.visible = false;
         //uIhider.useAlphaCurve = true;
+        uiHider = transform.Find("TrackerKiosk")?.gameObject.AddComponent<scrUIhider>();
+        if (uiHider != null)
+        {
+            var reference = GameObject.Find("UI/Apple Displayer").GetComponent<scrUIhider>();
+            uiHider.useAlphaCurve = reference.useAlphaCurve;
+            uiHider.alphaCurve = reference.alphaCurve;
+            uiHider.animationCurve = reference.animationCurve;
+            uiHider.duration = 0.5f;
+            uiHider.hideOffset = new Vector3(0, -350, 0);
+            TrackerDisplayerPatch.KioskUI = uiHider;
+        }
     }
 
     public void Update()

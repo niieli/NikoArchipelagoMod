@@ -1,4 +1,5 @@
 ﻿using NikoArchipelago.Archipelago;
+using NikoArchipelago.Patches;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ public class TrackerTicket : MonoBehaviour
     public Image ticketHqImage;
     public Image ticketGgImage;
     private scrGameSaveManager gameSaveManager;
+    private static scrUIhider uiHider;
 
     private void Start()
     {
@@ -42,12 +44,22 @@ public class TrackerTicket : MonoBehaviour
         if (ticketGgImage == null) Plugin.BepinLogger.LogError("TicketGgImage is null");
         
         ticketPanel.SetActive(true);
-        //var uIhider = ticketPanel.AddComponent<scrUIhider>();
-        var cGroup = ticketPanel.AddComponent<CanvasGroup>();
-        cGroup.alpha = 0f;
-        //uIhider.visible = false;
-        //uIhider.useAlphaCurve = true;
-        
+        // //var uIhider = ticketPanel.AddComponent<scrUIhider>();
+        // var cGroup = ticketPanel.AddComponent<CanvasGroup>();
+        // cGroup.alpha = 0f;
+        // //uIhider.visible = false;
+        // //uIhider.useAlphaCurve = true;
+        uiHider = transform.Find("TrackerTicket")?.gameObject.AddComponent<scrUIhider>();
+        if (uiHider != null)
+        {
+            var reference = GameObject.Find("UI/Apple Displayer").GetComponent<scrUIhider>();
+            uiHider.useAlphaCurve = reference.useAlphaCurve;
+            uiHider.alphaCurve = reference.alphaCurve;
+            uiHider.animationCurve = reference.animationCurve;
+            uiHider.duration = 0.5f;
+            uiHider.hideOffset = new Vector3(-350, 0, 0);
+            TrackerDisplayerPatch.TicketUI = uiHider;
+        }
     }
 
     public void Update()
