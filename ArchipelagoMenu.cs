@@ -25,6 +25,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public Toggle ticketToggle;
     public Toggle kioskToggle;
     public Toggle kioskSpoilerToggle;
+    public Toggle cacmiToggle;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -39,6 +40,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _ticket;
     private static bool _kiosk;
     private static bool _kioskSpoiler;
+    private static bool _cacmi;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
@@ -48,6 +50,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool Ticket;
     public static bool Kiosk;
     public static bool KioskSpoiler;
+    public static bool CACMI;
 
     public void Start()
     {
@@ -66,6 +69,7 @@ public class ArchipelagoMenu : MonoBehaviour
         ticketToggle = transform.Find("Panel/Ticket")?.gameObject.GetComponent<Toggle>();
         kioskToggle = transform.Find("Panel/Kiosk")?.gameObject.GetComponent<Toggle>();
         kioskSpoilerToggle = transform.Find("Panel/Spoiler")?.gameObject.GetComponent<Toggle>();
+        cacmiToggle = transform.Find("Panel/CACMI")?.gameObject.GetComponent<Toggle>();
         connectButton = transform.Find("Panel/Button")?.gameObject.GetComponent<Button>();
         versionText = transform.Find("Panel/Version")?.gameObject.GetComponent<TMP_Text>();
         
@@ -91,6 +95,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _ticket = ticketToggle.isOn;
         _kiosk = kioskToggle.isOn;
         _kioskSpoiler = kioskSpoilerToggle.isOn;
+        _cacmi = cacmiToggle.isOn;
         LoadData();
 
         versionText.text = "Version "+Plugin.PluginVersion;
@@ -137,6 +142,7 @@ public class ArchipelagoMenu : MonoBehaviour
         Ticket = _ticket;
         Kiosk = _kiosk;
         KioskSpoiler = _kioskSpoiler;
+        CACMI = _cacmi;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -163,6 +169,7 @@ public class ArchipelagoMenu : MonoBehaviour
             Ticket = _ticket,
             Kiosk = _kiosk,
             KioskSpoiler = _kioskSpoiler,
+            CACMI = _cacmi,
         };
         if (_rememberMe)
         {
@@ -222,6 +229,7 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool Ticket { get; set; } = _ticket;
         public bool Kiosk { get; set; } = _kiosk;
         public bool KioskSpoiler { get; set; } = _kioskSpoiler;
+        public bool CACMI { get; set; } = _cacmi;
     }
 
     private void LoadData()
@@ -239,6 +247,7 @@ public class ArchipelagoMenu : MonoBehaviour
             kioskToggle.isOn = savedData.Kiosk;
             ticketToggle.isOn = savedData.Ticket;
             kioskSpoilerToggle.isOn = savedData.KioskSpoiler;
+            cacmiToggle.isOn = savedData.CACMI;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -252,6 +261,7 @@ public class ArchipelagoMenu : MonoBehaviour
             kioskToggle.isOn = true;
             ticketToggle.isOn = true;
             kioskSpoilerToggle.isOn = true;
+            cacmiToggle.isOn = true;
         }
     }
 
