@@ -50,7 +50,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool Ticket;
     public static bool Kiosk;
     public static bool KioskSpoiler;
-    public static bool CACMI;
+    public static bool cacmi;
 
     public void Start()
     {
@@ -136,13 +136,14 @@ public class ArchipelagoMenu : MonoBehaviour
         _ticket = ticketToggle.isOn;
         _kiosk = kioskToggle.isOn;
         _kioskSpoiler = kioskSpoilerToggle.isOn;
+        _cacmi = cacmiToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
         Ticket = _ticket;
         Kiosk = _kiosk;
         KioskSpoiler = _kioskSpoiler;
-        CACMI = _cacmi;
+        cacmi = _cacmi;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -157,6 +158,7 @@ public class ArchipelagoMenu : MonoBehaviour
         Plugin.BepinLogger.LogInfo($"Shop Hints: {_shopHints}");
         Plugin.BepinLogger.LogInfo($"Ticket Tracker: {_ticket}");
         Plugin.BepinLogger.LogInfo($"Kiosk Tracker: {_kiosk}");
+        Plugin.BepinLogger.LogInfo($"CACMI: {_cacmi}");
         
         SavedData data = new SavedData
         {

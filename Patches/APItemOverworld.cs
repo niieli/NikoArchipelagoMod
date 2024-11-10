@@ -266,7 +266,7 @@ public class APItemOverworld
         }
         private static void Postfix(scrCassette __instance)
         {
-            if (!ArchipelagoMenu.CACMI) return;
+            if (!ArchipelagoMenu.cacmi) return;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
 
@@ -961,7 +961,7 @@ public class APItemOverworld
         }
         private static void Postfix(scrCoin __instance)
         {
-            if (!ArchipelagoMenu.CACMI) return;
+            if (!ArchipelagoMenu.cacmi) return;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
 
