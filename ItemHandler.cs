@@ -101,7 +101,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Super Jump from {sender}!" : "You found your Super Jump!",
-                3f);
+                3f, Plugin.SuperJumpSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }

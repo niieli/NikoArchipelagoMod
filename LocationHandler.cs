@@ -197,7 +197,7 @@ public class LocationHandler : MonoBehaviour
             ArchipelagoClient.SendCompletion();
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "YOU'RE HIRED! (Completed Goal)";
-            achievement.icon = Plugin.ApProgressionSprite;
+            achievement.icon = Plugin.GoalBadSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             AchievementPopup.instance.UIhider.Show(10f);

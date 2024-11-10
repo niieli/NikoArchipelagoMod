@@ -36,6 +36,7 @@ public class APItemOverworld
         private static GameObject _bathhouseItemOverworld;
         private static GameObject _tadpoleHqItemOverworld;
         private static GameObject _garysGardenItemOverworld;
+        private static GameObject _superJumpItemOverworld;
 
         private static GameObject CreateItemOverworld(string itemName, scrCassette __instance)
         {
@@ -180,6 +181,16 @@ public class APItemOverworld
                     bugs.transform.SetParent(__instance.transform);
                     return bugs;
                 }
+                case "superJump":
+                {
+                    _superJumpItemOverworld = Object.Instantiate(Plugin.AssetBundle.LoadAsset<GameObject>("SuperJump"));
+                    var ogQuads = __instance.transform.Find("Quads").gameObject;
+                    var super = _superJumpItemOverworld.transform.Find("Quads").gameObject;
+                    super.transform.position = ogQuads.transform.position;
+                    super.AddComponent<ScuffedSpin>();
+                    super.transform.SetParent(__instance.transform);
+                    return super;
+                }
                 case "hairballCity":
                 {
                     _hairballCityItemOverworld = Object.Instantiate(Plugin.AssetBundle.LoadAsset<GameObject>("HairballCity"));
@@ -318,6 +329,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -383,6 +395,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -444,6 +457,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -505,6 +519,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -566,6 +581,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -627,6 +643,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -688,6 +705,7 @@ public class APItemOverworld
                                 "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -723,6 +741,7 @@ public class APItemOverworld
         private static GameObject _bathhouseItemOverworld;
         private static GameObject _tadpoleHqItemOverworld;
         private static GameObject _garysGardenItemOverworld;
+        private static GameObject _superJumpItemOverworld;
 
         private static GameObject CreateItemOverworld(string itemName, scrCoin __instance)
         {
@@ -867,6 +886,16 @@ public class APItemOverworld
                     bugs.transform.SetParent(__instance.transform);
                     return bugs;
                 }
+                case "superJump":
+                {
+                    _superJumpItemOverworld = Object.Instantiate(Plugin.AssetBundle.LoadAsset<GameObject>("SuperJump"));
+                    var ogQuads = __instance.transform.Find("Quads").gameObject;
+                    var super = _superJumpItemOverworld.transform.Find("Quads").gameObject;
+                    super.transform.position = ogQuads.transform.position;
+                    super.AddComponent<ScuffedSpin>();
+                    super.transform.SetParent(__instance.transform);
+                    return super;
+                }
                 case "hairballCity":
                 {
                     _hairballCityItemOverworld = Object.Instantiate(Plugin.AssetBundle.LoadAsset<GameObject>("HairballCity"));
@@ -992,6 +1021,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -1057,6 +1087,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -1118,6 +1149,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -1179,6 +1211,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -1240,6 +1273,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -1301,6 +1335,7 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                                "Super Jump" => CreateItemOverworld("superJump", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }

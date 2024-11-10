@@ -64,10 +64,10 @@ namespace NikoArchipelago
             APLogoSprite, APIconSprite, CoinSprite, CassetteSprite, FishSprite, 
             ContactListSprite, KeySprite, 
             BottledSprite, EmployeeSprite, FrogFanSprite, 
-            HandsomeSprite, LostSprite,
+            HandsomeSprite, LostSprite, SuperJumpSprite,
             SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
-            SnailMoneySprite, BugSprite, GgSprite,
+            SnailMoneySprite, BugSprite, GgSprite, GoalBadSprite,
             ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite;
 
         public static GameObject ApUIGameObject;
@@ -159,6 +159,8 @@ namespace NikoArchipelago
                 ApTrap2Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap2");
                 ApTrap3Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap3");
                 CassetteTexture = AssetBundle.LoadAsset<Texture2D>("ApProgression");
+                GoalBadSprite = AssetBundle.LoadAsset<Sprite>("goalBad");
+                SuperJumpSprite = AssetBundle.LoadAsset<Sprite>("SuperJump");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
