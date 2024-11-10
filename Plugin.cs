@@ -67,7 +67,7 @@ namespace NikoArchipelago
             HandsomeSprite, LostSprite,
             SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
-            SnailMoneySprite, BugSprite,
+            SnailMoneySprite, BugSprite, GgSprite,
             ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite;
 
         public static GameObject ApUIGameObject;
@@ -149,6 +149,7 @@ namespace NikoArchipelago
                 PpSprite = AssetBundle.LoadAsset<Sprite>("TrainPool");
                 BathSprite = AssetBundle.LoadAsset<Sprite>("TrainBath");
                 HqSprite = AssetBundle.LoadAsset<Sprite>("TrainTadpole");
+                GgSprite = AssetBundle.LoadAsset<Sprite>("GarysGarden");
                 SnailMoneySprite = AssetBundle.LoadAsset<Sprite>("SnailMoney");
                 BugSprite = AssetBundle.LoadAsset<Sprite>("Butterfly");
                 ApProgressionSprite = AssetBundle.LoadAsset<Sprite>("ApProgression");
@@ -559,11 +560,11 @@ namespace NikoArchipelago
              };
             if (int.Parse(slotData["goal_completion"].ToString()) == 0)
             {
-                GUI.Label(new Rect(30, 90, 300, 20), $"Goal: Get Hired | Repair the elevator!");
+                GUI.Label(new Rect(34, 90, 300, 20), $"Goal: Get Hired | Repair the elevator!");
             }
             else
             {
-                GUI.Label(new Rect(26, 90, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
+                GUI.Label(new Rect(30, 90, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
             }
 
             foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)

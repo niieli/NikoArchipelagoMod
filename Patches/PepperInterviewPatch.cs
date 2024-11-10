@@ -19,6 +19,18 @@ public class PepperInterviewPatch
                 var questFrog = __instance.interview.transform.Find("FetchQuest/NPCs Quest/NPC Quest");
                 questFrog.transform.position = new Vector3((float)-138.1868, (float)25.2446, (float)45.4684);
                 questFrog.transform.localPosition = new Vector3((float)-131.9129, (float)25.032, (float)69.1832);
+                var rewardFrog = __instance.interview.transform.Find("FetchQuest/NPCs Reward/NPCReward")?.gameObject;
+                if (rewardFrog != null)
+                {
+                    rewardFrog.transform.position = new Vector3((float)-138.1868, (float)25.2446, (float)45.4684);
+                    rewardFrog.transform.localPosition = new Vector3((float)-131.9129, (float)25.032, (float)69.1832);
+                }
+                var trigger = __instance.interview.transform.Find("FetchQuest/Trigger")?.gameObject;
+                if (trigger != null)
+                {
+                    trigger.transform.position = new Vector3((float)-137.3358, (float)25.3026, (float)45.2441);
+                    trigger.transform.localPosition = new Vector3((float)-131.1818, (float)25.09, (float)68.9589);
+                }
                 __instance.postInterview.transform.Find("Geusts/Kiosk")?.gameObject.SetActive(false);
             }
             __instance.StartCoroutine(CheckElevator(__instance));

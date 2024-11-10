@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NikoArchipelago.Archipelago;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace NikoArchipelago;
@@ -12,6 +13,7 @@ public class TrackerTicket : MonoBehaviour
     public Image ticketPpImage;
     public Image ticketBathImage;
     public Image ticketHqImage;
+    public Image ticketGgImage;
     private scrGameSaveManager gameSaveManager;
 
     private void Start()
@@ -24,7 +26,7 @@ public class TrackerTicket : MonoBehaviour
         ticketPpImage = transform.Find("TrackerTicket/TicketPool")?.GetComponent<Image>();
         ticketBathImage = transform.Find("TrackerTicket/TicketBath")?.GetComponent<Image>();
         ticketHqImage = transform.Find("TrackerTicket/TicketTadpole")?.GetComponent<Image>();
-
+        ticketGgImage = transform.Find("TrackerTicket/TicketGarden")?.GetComponent<Image>();
         if (ticketPanel == null)
         {
             Plugin.BepinLogger.LogError("TicketPanel is null");
@@ -37,6 +39,7 @@ public class TrackerTicket : MonoBehaviour
         if (ticketPpImage == null) Plugin.BepinLogger.LogError("TicketPpImage is null");
         if (ticketBathImage == null) Plugin.BepinLogger.LogError("TicketBathImage is null");
         if (ticketHqImage == null) Plugin.BepinLogger.LogError("TicketHqImage is null");
+        if (ticketGgImage == null) Plugin.BepinLogger.LogError("TicketGgImage is null");
         
         ticketPanel.SetActive(true);
         //var uIhider = ticketPanel.AddComponent<scrUIhider>();
@@ -56,5 +59,7 @@ public class TrackerTicket : MonoBehaviour
         if (gameSaveManager.gameData.generalGameData.unlockedLevels[5]) ticketPpImage.color = Color.white;
         if (gameSaveManager.gameData.generalGameData.unlockedLevels[6]) ticketBathImage.color = Color.white;
         if (gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketHqImage.color = Color.white;
+        if (ItemHandler.Garden || int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0 
+            && gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketGgImage.color = Color.white;
     }
 }

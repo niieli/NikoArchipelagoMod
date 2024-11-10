@@ -2,17 +2,22 @@
 using System.Collections;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace NikoArchipelago.Patches;
 
 public class GameObjectChecker : MonoBehaviour
 {
-    private static GameObject GaryGhost;
-    private static bool FoundGhost;
-    public static bool FirstMeeting, CheckedGhost;
+    private static GameObject _garyGhost, _garyGhostHome;
+    private static bool _foundGhost;
+    public static bool FirstMeeting;
+    private static bool _checkedGhost;
+    private static bool _spawned;
+
     private void Start()
     {
         Plugin.BepinLogger.LogDebug("GameObjectChecker started!");
@@ -22,7 +27,8 @@ public class GameObjectChecker : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         FirstMeeting = false;
-        CheckedGhost = false;
+        _checkedGhost = false;
+        _spawned = false;
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
@@ -32,6 +38,7 @@ public class GameObjectChecker : MonoBehaviour
         StartCoroutine(CheckTrackers());
         HqWhiteboard();
         HqGarden();
+        SpawnGaryHome();
     }
     
     private void OnDestroy()
@@ -243,23 +250,95 @@ public class GameObjectChecker : MonoBehaviour
         if (ArchipelagoData.slotData == null) return;
         if (SceneManager.GetActiveScene().name != "Tadpole inc" ||
             int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0) return;
-        GaryGhost = GameObject.Find("GaryGhost");
-        GaryGhost.SetActive(ItemHandler.Garden);
+        _garyGhost = GameObject.Find("GaryGhost").gameObject;
+        _garyGhost.SetActive(ItemHandler.Garden);
         Plugin.BepinLogger.LogInfo("Disabled GaryGhost");
-        FoundGhost = true;
+        _foundGhost = true;
+    }
+
+    private static void SpawnGaryHome()
+    {
+        if (ArchipelagoData.slotData == null) return;
+        if (SceneManager.GetActiveScene().name != "Home" || _spawned) return;
+        var gary = Plugin.AssetBundle.LoadAsset<GameObject>("Gary");
+        _garyGhostHome = Instantiate(gary, GameObject.Find("Pre Party").transform, false);
+        _garyGhostHome.transform.position = new Vector3((float)-7.9545, (float)2.0436, (float)-2.8);
+        _garyGhostHome.transform.localScale = new Vector3((float)0.3091, (float)0.34, (float)-1.6218);
+        _garyGhostHome.AddComponent<scrAnimateTextureStrip>();
+        var meshRenderer = _garyGhostHome.AddComponent<MeshRenderer>();
+        meshRenderer.material = GameObject.Find("BlastFrogTalk").GetComponent<MeshRenderer>().material;
+        var texArray = _garyGhostHome.AddComponent<scrAnimateTextureArray>();
+        texArray.Bank = GameObject.Find("BlastFrogTalk").GetComponent<scrAnimateTextureArray>().Bank;
+        texArray.AnimationStripName = "txrGhost";
+        texArray.FrameBegin = 330;
+        texArray.FrameDuration = 1;
+        texArray.FrameEnd = 332;
+        texArray.FrameOffset = 1;
+        texArray.FrameTimer = (float)0.787;
+        texArray.InitialFrameDuration = 1;
+        texArray.Mode = scrAnimateTextureArray.TextureArrayMode.Animate;
+        texArray.enabled = true;
+        var textboxGameObject = _garyGhostHome.transform.Find("TextboxTrigger")?.gameObject;
+        if (textboxGameObject != null)
+        {
+            var reference = GameObject.Find("BlastFrogTalk/TextboxTrigger").GetComponent<scrTextboxTrigger>();
+            var trigger = textboxGameObject.AddComponent<scrTextboxTrigger>();
+            trigger.conversation = "GarySender";
+            trigger.arrayAnimator = reference.arrayAnimator;
+            trigger.animator = reference.animator;
+            trigger.effects = reference.effects;
+            trigger.voices = reference.voices;
+            //trigger.camPoints = reference.camPoints;
+            trigger.objIcon = reference.objIcon;
+            trigger.eventEffectZero = reference.eventEffectZero;
+            trigger.myCameraFollowPoint = reference.myCameraFollowPoint;
+            trigger.strIcons = reference.strIcons;
+            var collider = textboxGameObject.AddComponent<BoxCollider>();
+            collider.isTrigger = true;
+            var iconParent  = textboxGameObject.transform.Find("IconParent").gameObject;
+            iconParent.AddComponent<scrLookAtCameraFull>();
+            var iconTalk = iconParent.transform.Find("sprIconTalk").gameObject;
+            iconTalk.AddComponent<scrNPCIcon>();
+            var iconTalk3D = iconTalk.transform.Find("sprIconTalk3D").gameObject;
+        }
+        _spawned = true;
+        _garyGhostHome.SetActive(false);
+        Plugin.BepinLogger.LogInfo("Spawned Gary");
+    }
+
+    private static void GardenLevelFix()
+    {
+        if (SceneManager.GetActiveScene().name != "GarysGarden") return;
+        var t = GameObject.Find("TrainMap").GetComponent<scrTrainMap>();
+        if (!t.mapIsActive && !scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[7])
+        {
+            t.levelSelected = 0;
+        }
     }
 
     public void Update()
     {
         if (ArchipelagoData.slotData == null) return;
-        if (!FoundGhost || !ItemHandler.Garden ||
-            int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) != 2 ||
-            SceneManager.GetActiveScene().name != "Tadpole inc" || !CheckedGhost) return;
-        GaryGhost.SetActive(ItemHandler.Garden);
-        Plugin.BepinLogger.LogInfo("Enabled GaryGhost");
-        if (SceneManager.GetActiveScene().name == "Tadpole inc")
+        if (!_foundGhost && !ItemHandler.Garden &&
+            int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) != 2 &
+            SceneManager.GetActiveScene().name != "Tadpole inc" && _checkedGhost)
         {
-            //Instantiate(GaryGhost, GameObject.Find("UI").transform, false);
+            _garyGhost.SetActive(ItemHandler.Garden);
+            Plugin.BepinLogger.LogInfo("Enabled GaryGhost");
+            _checkedGhost = true;
+        }
+        GardenLevelFix();
+        if (ItemHandler.Garden && !_checkedGhost && SceneManager.GetActiveScene().name == "Home" 
+            && int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 2)
+        {
+            _garyGhostHome.SetActive(ItemHandler.Garden);
+            _checkedGhost = true;
+            Plugin.BepinLogger.LogInfo("Enabled GaryGhost Home");
+        }
+        if (scrTextbox.instance == null || SceneManager.GetActiveScene().name != "Home") return;
+        if (scrTextbox.instance.nameMesh.text == "???")
+        {
+            scrTrainManager.instance.UseTrain(24, false);
         }
     }
 

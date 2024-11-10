@@ -200,7 +200,8 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gary's Garden Ticket from {sender}!" : "You found your Gary's Garden Ticket!",
-            4f, Plugin.ApProgressionSprite);
+            4f, Plugin.GgSprite);
         Garden = true;
+        scrGameSaveManager.instance.SaveGame();
     }
 }

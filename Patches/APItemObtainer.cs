@@ -74,6 +74,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -135,6 +136,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -196,6 +198,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -258,6 +261,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -319,6 +323,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -392,6 +397,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -459,6 +465,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -519,6 +526,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -575,6 +583,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -631,6 +640,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -687,6 +697,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -743,6 +754,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -799,6 +811,7 @@ public class APItemObtainer
                                 "Public Pool Ticket" => Plugin.PpSprite.texture,
                                 "Bathhouse Ticket" => Plugin.BathSprite.texture,
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
+                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
