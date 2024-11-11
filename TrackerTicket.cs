@@ -15,6 +15,8 @@ public class TrackerTicket : MonoBehaviour
     public Image ticketBathImage;
     public Image ticketHqImage;
     public Image ticketGgImage;
+    public Image ticketCl1Image;
+    public Image ticketCl2Image;
     private scrGameSaveManager gameSaveManager;
     private static scrUIhider uiHider;
 
@@ -29,6 +31,8 @@ public class TrackerTicket : MonoBehaviour
         ticketBathImage = transform.Find("TrackerTicket/TicketBath")?.GetComponent<Image>();
         ticketHqImage = transform.Find("TrackerTicket/TicketTadpole")?.GetComponent<Image>();
         ticketGgImage = transform.Find("TrackerTicket/TicketGarden")?.GetComponent<Image>();
+        ticketCl1Image = transform.Find("TrackerTicket/ContactList1")?.GetComponent<Image>();
+        ticketCl2Image = transform.Find("TrackerTicket/ContactList2")?.GetComponent<Image>();
         if (ticketPanel == null)
         {
             Plugin.BepinLogger.LogError("TicketPanel is null");
@@ -44,11 +48,7 @@ public class TrackerTicket : MonoBehaviour
         if (ticketGgImage == null) Plugin.BepinLogger.LogError("TicketGgImage is null");
         
         ticketPanel.SetActive(true);
-        // //var uIhider = ticketPanel.AddComponent<scrUIhider>();
-        // var cGroup = ticketPanel.AddComponent<CanvasGroup>();
-        // cGroup.alpha = 0f;
-        // //uIhider.visible = false;
-        // //uIhider.useAlphaCurve = true;
+        
         uiHider = transform.Find("TrackerTicket")?.gameObject.AddComponent<scrUIhider>();
         if (uiHider != null)
         {
