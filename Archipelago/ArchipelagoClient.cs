@@ -54,6 +54,7 @@ public class ArchipelagoClient
     private void SetupSession()
     {
         _session.MessageLog.OnMessageReceived += message => ArchipelagoConsole.LogMessage(message.ToString());
+        _session.MessageLog.OnMessageReceived += message => APItemSentNotification.SentItem(message);
         _session.Items.ItemReceived += OnItemReceived;
         _session.Socket.ErrorReceived += OnSessionErrorReceived;
         _session.Socket.SocketClosed += OnSessionSocketClosed;

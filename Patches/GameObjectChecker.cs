@@ -33,6 +33,7 @@ public class GameObjectChecker : MonoBehaviour
         PepperFirstMeetingTrigger();
         TitleScreenObject();
         InstatiateAPMenu();
+        APItemSent();
         TrackerKiosk();
         TrackerTicket();
         StartCoroutine(CheckTrackers());
@@ -156,6 +157,32 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
         menu.enabled = true;
+    }
+    
+    private static void APItemSent()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var apItemSentUI = Plugin.AssetBundle.LoadAsset<GameObject>("APItemSent");
+        var itemSentPrefab = Instantiate(apItemSentUI, GameObject.Find("UI").transform, false);
+        if (itemSentPrefab == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to instantiate apItemSentUI prefab.");
+            return;
+        }
+        itemSentPrefab.layer = LayerMask.NameToLayer("UI");
+        var manager = itemSentPrefab.transform.Find("APItemSentManager")?.gameObject;
+        if (manager == null)
+        {
+            Plugin.BepinLogger.LogError("APItemSentManager not found in the prefab.");
+            return;
+        }
+        var sentNotification = manager.AddComponent<APItemSentNotification>();
+        if (sentNotification == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add APItemSentNotification component to APItemSentManager.");
+            return;
+        }
+        sentNotification.enabled = true;
     }
     
     private static void TrackerTicket()

@@ -970,7 +970,7 @@ public class APItemOverworld
             {
                 case "Hairball City":
                 {
-                    var list = Locations.ScoutHCCassetteList.ToList();
+                    var list = Locations.ScoutHCCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                     const int offset = 36;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
@@ -1032,7 +1032,7 @@ public class APItemOverworld
                 }
                 case "Trash Kingdom":
                 {
-                    var list = Locations.ScoutTTCassetteList.ToList();
+                    var list = Locations.ScoutTTCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                     const int offset = 49;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
@@ -1098,7 +1098,7 @@ public class APItemOverworld
                 }
                 case "Salmon Creek Forest":
                 {
-                    var list = Locations.ScoutSFCCassetteList.ToList();
+                    var list = Locations.ScoutSFCCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                     const int offset = 58;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
@@ -1160,7 +1160,7 @@ public class APItemOverworld
                 }
                 case "Public Pool":
                 {
-                    var list = Locations.ScoutPPCassetteList.ToList();
+                    var list = Locations.ScoutPPCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                     const int offset = 72;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
@@ -1222,7 +1222,7 @@ public class APItemOverworld
                 }
                 case "The Bathhouse":
                 {
-                    var list = Locations.ScoutBathCassetteList.ToList();
+                    var list = Locations.ScoutBathCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                     const int offset = 80;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
@@ -1284,7 +1284,7 @@ public class APItemOverworld
                 }
                 case "Tadpole inc":
                 {
-                    var list = Locations.ScoutHQCassetteList.ToList();
+                    var list = Locations.ScoutHQCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                     const int offset = 93;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
