@@ -3,8 +3,10 @@ using System.IO;
 using BepInEx;
 using Newtonsoft.Json;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Toggle = UnityEngine.UI.Toggle;
@@ -19,13 +21,35 @@ public class ArchipelagoMenu : MonoBehaviour
     public InputField slotNameField;
     public InputField passwordField;
     public Toggle rememberMeToggle;
+    public Tooltip rememberMeTooltip;
+    public TooltipTrigger rememberMeTrigger;
     public Toggle chatToggle;
+    public Tooltip chatTooltip;
+    public TooltipTrigger chatTrigger;
     public Toggle hintsToggle;
+    public Tooltip hintsTooltip;
+    public TooltipTrigger hintsTrigger;
     public Toggle shopHintsToggle;
+    public Tooltip shopHintsTooltip;
+    public TooltipTrigger shopHintsTrigger;
     public Toggle ticketToggle;
+    public Tooltip ticketTooltip;
+    public TooltipTrigger ticketTrigger;
     public Toggle kioskToggle;
+    public Tooltip kioskTooltip;
+    public TooltipTrigger kioskTrigger;
     public Toggle kioskSpoilerToggle;
+    public Tooltip kioskSpoilerTooltip;
+    public TooltipTrigger kioskSpoilerTrigger;
+    public Toggle contactListToggle;
+    public Tooltip contactListTooltip;
+    public TooltipTrigger contactListTrigger;
     public Toggle cacmiToggle;
+    public Tooltip cacmiTooltip;
+    public TooltipTrigger cacmiTrigger;
+    public Toggle itemSentToggle;
+    public Tooltip itemSentTooltip;
+    public TooltipTrigger itemSentTrigger;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -41,6 +65,8 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _kiosk;
     private static bool _kioskSpoiler;
     private static bool _cacmi;
+    private static bool _itemSent;
+    private static bool _contactList;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
@@ -51,27 +77,103 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool Kiosk;
     public static bool KioskSpoiler;
     public static bool cacmi;
+    public static bool contactList;
+    public static bool itemSent;
+    
+    //New Menu stuff
+    public GameObject settingsPanel;
+    public Tooltip settingsTooltip;
+    public GameObject trackersPanel;
+    public Tooltip trackersTooltip;
+    public GameObject qolPanel;
+    public Tooltip qolTooltip;
+    public CanvasGroup settingsPanelCanvasGroup;
+    public CanvasGroup trackersPanelCanvasGroup;
+    public CanvasGroup qolPanelCanvasGroup;
+    public float fadeDuration = 0.5f;
+
+    private CanvasGroup _activePanel;    
+    public Button settingsButton;
+    public TooltipTrigger settingsTrigger;
+    public Button trackersButton;
+    public TooltipTrigger trackersTrigger;
+    public Button qolButton;
+    public TooltipTrigger qolTrigger;
 
     public void Start()
     {
         gameSaveManager = scrGameSaveManager.instance;
         
-        formPanel = transform.Find("Panel")?.gameObject;
-        openFormButton = transform.Find("APButton")?.gameObject.GetComponent<Button>();
-        apButtonGameObject = transform.Find("APButton")?.gameObject;
-        serverAddressField = transform.Find("Panel/ServerAdress")?.GetComponent<InputField>();
-        slotNameField = transform.Find("Panel/SlotName")?.GetComponent<InputField>();
-        passwordField = transform.Find("Panel/Password")?.GetComponent<InputField>();
-        rememberMeToggle = transform.Find("Panel/Remember")?.gameObject.GetComponent<Toggle>();
-        chatToggle = transform.Find("Panel/Chat")?.gameObject.GetComponent<Toggle>();
-        hintsToggle = transform.Find("Panel/Hints")?.gameObject.GetComponent<Toggle>();
-        shopHintsToggle = transform.Find("Panel/ShopHints")?.gameObject.GetComponent<Toggle>();
-        ticketToggle = transform.Find("Panel/Ticket")?.gameObject.GetComponent<Toggle>();
-        kioskToggle = transform.Find("Panel/Kiosk")?.gameObject.GetComponent<Toggle>();
-        kioskSpoilerToggle = transform.Find("Panel/Spoiler")?.gameObject.GetComponent<Toggle>();
-        cacmiToggle = transform.Find("Panel/CACMI")?.gameObject.GetComponent<Toggle>();
-        connectButton = transform.Find("Panel/Button")?.gameObject.GetComponent<Button>();
-        versionText = transform.Find("Panel/Version")?.gameObject.GetComponent<TMP_Text>();
+        formPanel = transform.Find("Panel").gameObject;
+        openFormButton = transform.Find("APButton").gameObject.GetComponent<Button>();
+        apButtonGameObject = transform.Find("APButton").gameObject;
+        serverAddressField = formPanel.transform.Find("ServerAdress").GetComponent<InputField>();
+        slotNameField = formPanel.transform.Find("SlotName").GetComponent<InputField>();
+        passwordField = formPanel.transform.Find("Password").GetComponent<InputField>();
+        rememberMeToggle = formPanel.transform.Find("Remember").gameObject.GetComponent<Toggle>();
+        rememberMeTrigger = rememberMeToggle.gameObject.AddComponent<TooltipTrigger>();
+        rememberMeTooltip = rememberMeToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        connectButton = formPanel.transform.Find("Button").gameObject.GetComponent<Button>();
+        versionText = formPanel.transform.Find("Version").gameObject.GetComponent<TMP_Text>();
+        
+        // Wowwwie
+        formPanel.transform.Find("Nya").gameObject.AddComponent<FloatingAnimation>();
+        formPanel.transform.Find("Flowers").gameObject.AddComponent<FloatingAnimation>().floatSpeed = -1f;
+        formPanel.transform.Find("Frog").gameObject.AddComponent<FloatingAnimation>().floatSpeed = 0.4f;
+        formPanel.transform.Find("ScrollingBackground/Image").gameObject.AddComponent<ScrollingEffect>();
+        
+        // Tabs
+        settingsPanel = formPanel.transform.Find("settingsPanel").gameObject;
+        settingsTooltip = formPanel.transform.Find("Tabs/TooltipSettings").gameObject.AddComponent<Tooltip>();
+        trackersPanel = formPanel.transform.Find("trackersPanel").gameObject;
+        trackersTooltip = formPanel.transform.Find("Tabs/TooltipTrackers").gameObject.AddComponent<Tooltip>();
+        qolPanel = formPanel.transform.Find("qolPanel").gameObject;
+        qolTooltip = formPanel.transform.Find("Tabs/TooltipQOL").gameObject.AddComponent<Tooltip>();
+        
+        // Settings
+        settingsButton = formPanel.transform.Find("Tabs/SettingsButton").gameObject.GetComponent<Button>();
+        settingsButton.gameObject.AddComponent<ButtonHoverEffect>();
+        settingsTrigger = settingsButton.gameObject.AddComponent<TooltipTrigger>();
+        
+        chatToggle = settingsPanel.transform.Find("Chat").gameObject.GetComponent<Toggle>();
+        chatTooltip = chatToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        chatTrigger = chatToggle.gameObject.AddComponent<TooltipTrigger>();
+        hintsToggle = settingsPanel.transform.Find("Hints").gameObject.GetComponent<Toggle>();
+        hintsTooltip = hintsToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        hintsTrigger = hintsToggle.gameObject.AddComponent<TooltipTrigger>();
+        shopHintsToggle = settingsPanel.transform.Find("ShopHints").gameObject.GetComponent<Toggle>();
+        shopHintsTooltip = shopHintsToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        shopHintsTrigger = shopHintsToggle.gameObject.AddComponent<TooltipTrigger>();
+        
+        // Trackers
+        trackersButton = formPanel.transform.Find("Tabs/TrackersButton").gameObject.GetComponent<Button>();
+        trackersButton.gameObject.AddComponent<ButtonHoverEffect>();
+        trackersTrigger = trackersButton.gameObject.AddComponent<TooltipTrigger>();
+        
+        ticketToggle = trackersPanel.transform.Find("Ticket").gameObject.GetComponent<Toggle>();
+        ticketTooltip = ticketToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        ticketTrigger = ticketToggle.gameObject.AddComponent<TooltipTrigger>();
+        kioskToggle = trackersPanel.transform.Find("Kiosk").gameObject.GetComponent<Toggle>();
+        kioskTooltip = kioskToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        kioskTrigger = kioskToggle.gameObject.AddComponent<TooltipTrigger>();
+        kioskSpoilerToggle = trackersPanel.transform.Find("Spoiler").gameObject.GetComponent<Toggle>();
+        kioskSpoilerTooltip = kioskSpoilerToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        kioskSpoilerTrigger = kioskSpoilerToggle.gameObject.AddComponent<TooltipTrigger>();
+        contactListToggle = trackersPanel.transform.Find("ContactList").gameObject.GetComponent<Toggle>();
+        contactListTooltip = contactListToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        contactListTrigger = contactListToggle.gameObject.AddComponent<TooltipTrigger>();
+        
+        // QOL
+        qolButton = formPanel.transform.Find("Tabs/QOLButton").gameObject.GetComponent<Button>();
+        qolButton.gameObject.AddComponent<ButtonHoverEffect>();
+        qolTrigger = qolButton.gameObject.AddComponent<TooltipTrigger>();
+        
+        cacmiToggle = qolPanel.transform.Find("CACMI").gameObject.GetComponent<Toggle>();
+        cacmiTooltip = cacmiToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        cacmiTrigger = cacmiToggle.gameObject.AddComponent<TooltipTrigger>();
+        itemSentToggle = qolPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
+        itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
         
         if (serverAddressField == null) Plugin.BepinLogger.LogError("Server Address Field is null!");
         if (slotNameField == null) Plugin.BepinLogger.LogError("Slot Name Field is null!");
@@ -84,7 +186,7 @@ public class ArchipelagoMenu : MonoBehaviour
         if (shopHintsToggle == null) Plugin.BepinLogger.LogError("ShopHints is null!");
         if (connectButton == null) Plugin.BepinLogger.LogError("ConnectButton is null!");
         if (versionText == null) Plugin.BepinLogger.LogError("VersionText is null!");
-        
+
         _serverAddress = serverAddressField.text;
         _slotName = slotNameField.text;
         password = passwordField.text;
@@ -96,6 +198,8 @@ public class ArchipelagoMenu : MonoBehaviour
         _kiosk = kioskToggle.isOn;
         _kioskSpoiler = kioskSpoilerToggle.isOn;
         _cacmi = cacmiToggle.isOn;
+        _itemSent = itemSentToggle.isOn;
+        _contactList = contactListToggle.isOn;
         LoadData();
 
         versionText.text = "Version "+Plugin.PluginVersion;
@@ -103,6 +207,108 @@ public class ArchipelagoMenu : MonoBehaviour
         apButtonGameObject.SetActive(true);
         openFormButton.onClick.AddListener(ToggleFormVisibility);
         connectButton.onClick.AddListener(Connect);
+        settingsButton.onClick.AddListener(ShowSettings);
+        trackersButton.onClick.AddListener(ShowTrackers);
+        qolButton.onClick.AddListener(ShowQOL);
+        
+        // Tooltips
+        settingsTrigger.tooltip = settingsTooltip;
+        trackersTrigger.tooltip = trackersTooltip;
+        qolTrigger.tooltip = qolTooltip;
+        rememberMeTrigger.tooltip = rememberMeTooltip;
+        chatTrigger.tooltip = chatTooltip;
+        hintsTrigger.tooltip = hintsTooltip;
+        shopHintsTrigger.tooltip = shopHintsTooltip;
+        ticketTrigger.tooltip = ticketTooltip;
+        kioskTrigger.tooltip = kioskTooltip;
+        kioskSpoilerTrigger.tooltip = kioskSpoilerTooltip;
+        cacmiTrigger.tooltip = cacmiTooltip;
+        itemSentTrigger.tooltip = itemSentTooltip;
+        contactListTrigger.tooltip = contactListTooltip;
+        
+        settingsPanelCanvasGroup = formPanel.transform.Find("settingsPanel").gameObject.GetComponent<CanvasGroup>();
+        trackersPanelCanvasGroup = formPanel.transform.Find("trackersPanel").gameObject.GetComponent<CanvasGroup>();
+        qolPanelCanvasGroup = formPanel.transform.Find("qolPanel").gameObject.GetComponent<CanvasGroup>();
+        _activePanel = settingsPanelCanvasGroup;
+        SetActivePanel(settingsPanelCanvasGroup);
+    }
+    
+    private void CheckNullReferences()
+    {
+        // General UI Elements
+        LogIfNull(serverAddressField, "ServerAddress Field");
+        LogIfNull(slotNameField, "SlotName Field");
+        LogIfNull(passwordField, "Password Field");
+        LogIfNull(formPanel, "Form Panel");
+        LogIfNull(openFormButton, "APButton");
+        LogIfNull(rememberMeToggle, "Remember Toggle");
+        LogIfNull(chatToggle, "Chat Toggle");
+        LogIfNull(hintsToggle, "Hints Toggle");
+        LogIfNull(shopHintsToggle, "ShopHints Toggle");
+        LogIfNull(connectButton, "Connect Button");
+        LogIfNull(versionText, "Version Text");
+
+        // Settings, Trackers, and QOL Panels
+        LogIfNull(settingsPanel, "Settings Panel");
+        LogIfNull(trackersPanel, "Trackers Panel");
+        LogIfNull(qolPanel, "QOL Panel");
+    }
+
+    private void LogIfNull(Object obj, string name)
+    {
+        if (obj == null)
+        {
+            Plugin.BepinLogger.LogError($"{name} is null!");
+        }
+    }
+
+    public void ShowSettings()
+    {
+        SetActivePanel(settingsPanelCanvasGroup);
+    }
+
+    public void ShowTrackers()
+    {
+        SetActivePanel(trackersPanelCanvasGroup);
+    }
+
+    public void ShowQOL()
+    {
+        SetActivePanel(qolPanelCanvasGroup);
+    }
+
+    private void SetActivePanel(CanvasGroup newPanel)
+    {
+        if (_activePanel == newPanel) return;
+        
+        StopAllCoroutines();
+        StartCoroutine(FadeOut(_activePanel));
+        StartCoroutine(FadeIn(newPanel));
+        _activePanel = newPanel;
+    }
+
+    private IEnumerator FadeIn(CanvasGroup panel)
+    {
+        panel.alpha = 0;
+        panel.gameObject.SetActive(true);
+        
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        {
+            panel.alpha = t / fadeDuration;
+            yield return null;
+        }
+        panel.alpha = 1;
+    }
+
+    private IEnumerator FadeOut(CanvasGroup panel)
+    {
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        {
+            panel.alpha = 1 - (t / fadeDuration);
+            yield return null;
+        }
+        panel.alpha = 0;
+        panel.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -137,6 +343,8 @@ public class ArchipelagoMenu : MonoBehaviour
         _kiosk = kioskToggle.isOn;
         _kioskSpoiler = kioskSpoilerToggle.isOn;
         _cacmi = cacmiToggle.isOn;
+        _itemSent = itemSentToggle.isOn;
+        _contactList = contactListToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -144,6 +352,8 @@ public class ArchipelagoMenu : MonoBehaviour
         Kiosk = _kiosk;
         KioskSpoiler = _kioskSpoiler;
         cacmi = _cacmi;
+        itemSent = _itemSent;
+        contactList = _contactList;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -158,7 +368,10 @@ public class ArchipelagoMenu : MonoBehaviour
         Plugin.BepinLogger.LogInfo($"Shop Hints: {_shopHints}");
         Plugin.BepinLogger.LogInfo($"Ticket Tracker: {_ticket}");
         Plugin.BepinLogger.LogInfo($"Kiosk Tracker: {_kiosk}");
+        Plugin.BepinLogger.LogInfo($"Hide Cost: {_kioskSpoiler}");
         Plugin.BepinLogger.LogInfo($"CACMI: {_cacmi}");
+        Plugin.BepinLogger.LogInfo($"Item Sent: {_itemSent}");
+        Plugin.BepinLogger.LogInfo($"Contact List: {_contactList}");
         
         SavedData data = new SavedData
         {
@@ -172,6 +385,8 @@ public class ArchipelagoMenu : MonoBehaviour
             Kiosk = _kiosk,
             KioskSpoiler = _kioskSpoiler,
             CACMI = _cacmi,
+            ItemSent = _itemSent,
+            ContactList = _contactList,
         };
         if (_rememberMe)
         {
@@ -232,6 +447,8 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool Kiosk { get; set; } = _kiosk;
         public bool KioskSpoiler { get; set; } = _kioskSpoiler;
         public bool CACMI { get; set; } = _cacmi;
+        public bool ItemSent { get; set; } = _itemSent;
+        public bool ContactList { get; set; } = _contactList;
     }
 
     private void LoadData()
@@ -250,6 +467,8 @@ public class ArchipelagoMenu : MonoBehaviour
             ticketToggle.isOn = savedData.Ticket;
             kioskSpoilerToggle.isOn = savedData.KioskSpoiler;
             cacmiToggle.isOn = savedData.CACMI;
+            itemSentToggle.isOn = savedData.ItemSent;
+            contactListToggle.isOn = savedData.ContactList;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -264,6 +483,8 @@ public class ArchipelagoMenu : MonoBehaviour
             ticketToggle.isOn = true;
             kioskSpoilerToggle.isOn = true;
             cacmiToggle.isOn = true;
+            itemSentToggle.isOn = true;
+            contactListToggle.isOn = true;
         }
     }
 
@@ -271,5 +492,38 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(jsonFilePath, jsonData);
+    }
+}
+
+public class Tooltip : MonoBehaviour
+{
+    void Start()
+    {
+        HideTooltip();
+    }
+
+    public void ShowTooltip()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void HideTooltip()
+    {
+        gameObject.SetActive(false);
+    }
+}
+
+public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+{
+    public Tooltip tooltip;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        tooltip.ShowTooltip();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        tooltip.HideTooltip();
     }
 }

@@ -455,7 +455,7 @@ namespace NikoArchipelago
             string statusMessage;
             if (ArchipelagoClient.Authenticated)
             {
-                BackgroundForText(new Rect(10, 10, 280, 110));
+                BackgroundForText(new Rect(10, 10, 260, 90));
                 statusMessage = " Status: Connected";
                 GUI.Label(new Rect(16, 16, 300, 22), ModDisplayInfo);
                 GUI.Label(new Rect(16, 50, 300, 22), APDisplayInfo + statusMessage);
@@ -551,8 +551,8 @@ namespace NikoArchipelago
             var slotData = ArchipelagoData.slotData;
              var flagData = new (string flagKey, string successMsg, string failureMsg, int xPos, int yPos)[]
              {
-                 ("APWave1", "Got Contact List 1!", "No Contact List 1!", 16, 70),
-                 ("APWave2", "Got Contact List 2!", "No Contact List 2!", 170, 70),
+            //   ("APWave1", "Got Contact List 1!", "No Contact List 1!", 16, 70),
+            //   ("APWave2", "Got Contact List 2!", "No Contact List 2!", 170, 70),
             //     ("KioskHome", "Kiosk Home", $"Kiosk Home({slotData["kioskhome"]})", 16, 90),
             //     ("KioskHairball City", "Kiosk HC", $"Kiosk HC({slotData["kioskhc"]})", 115, 90),
             //     ("KioskTrash Kingdom", "Kiosk TT", $"Kiosk TT({slotData["kiosktt"]})", 200, 90),
@@ -562,11 +562,11 @@ namespace NikoArchipelago
              };
             if (int.Parse(slotData["goal_completion"].ToString()) == 0)
             {
-                GUI.Label(new Rect(34, 90, 300, 20), $"Goal: Get Hired | Repair the elevator!");
+                GUI.Label(new Rect(34, 70, 300, 20), $"Goal: Get Hired | Repair the elevator!");
             }
             else
             {
-                GUI.Label(new Rect(30, 90, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
+                GUI.Label(new Rect(30, 70, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
             }
 
             foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)

@@ -56,7 +56,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -119,7 +121,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -182,7 +186,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -246,7 +252,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -309,7 +317,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -355,7 +365,7 @@ public class APItemObtainer
                     {
                         var list = Locations.ScoutHQCoinList.ToList();
                         index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                        offset = 93;
+                        offset = 92;
                     }
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
@@ -384,7 +394,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -453,7 +465,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -515,7 +529,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -573,7 +589,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -631,7 +649,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -689,7 +709,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -747,7 +769,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -805,7 +829,9 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch

@@ -139,6 +139,7 @@ public class APItemSentNotification : MonoBehaviour
 
     public static void SentItem(LogMessage message)
     {
+        if (!ArchipelagoMenu.itemSent) return;
         _noteCoinImage.gameObject.SetActive(false);
         _noteCassetteImage.gameObject.SetActive(false);
         _noteKeyImage.gameObject.SetActive(false);

@@ -23,16 +23,16 @@ public class TrackerTicket : MonoBehaviour
     private void Start()
     {
         gameSaveManager = scrGameSaveManager.instance;
-        ticketPanel = transform.Find("TrackerTicket")?.gameObject;
-        ticketHcImage = transform.Find("TrackerTicket/TicketHairball")?.GetComponent<Image>();
-        ticketTtImage = transform.Find("TrackerTicket/TicketTurbine")?.GetComponent<Image>();
-        ticketSfcImage = transform.Find("TrackerTicket/TicketSalmon")?.GetComponent<Image>();
-        ticketPpImage = transform.Find("TrackerTicket/TicketPool")?.GetComponent<Image>();
-        ticketBathImage = transform.Find("TrackerTicket/TicketBath")?.GetComponent<Image>();
-        ticketHqImage = transform.Find("TrackerTicket/TicketTadpole")?.GetComponent<Image>();
-        ticketGgImage = transform.Find("TrackerTicket/TicketGarden")?.GetComponent<Image>();
-        ticketCl1Image = transform.Find("TrackerTicket/ContactList1")?.GetComponent<Image>();
-        ticketCl2Image = transform.Find("TrackerTicket/ContactList2")?.GetComponent<Image>();
+        ticketPanel = transform.Find("TrackerTicket").gameObject;
+        ticketHcImage = ticketPanel.transform.Find("TicketHairball").GetComponent<Image>();
+        ticketTtImage = ticketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
+        ticketSfcImage = ticketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
+        ticketPpImage = ticketPanel.transform.Find("TicketPool").GetComponent<Image>();
+        ticketBathImage = ticketPanel.transform.Find("TicketBath").GetComponent<Image>();
+        ticketHqImage = ticketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
+        ticketGgImage = ticketPanel.transform.Find("TicketGarden").GetComponent<Image>();
+        ticketCl1Image = ticketPanel.transform.Find("ContactList1").GetComponent<Image>();
+        ticketCl2Image = ticketPanel.transform.Find("ContactList2").GetComponent<Image>();
         if (ticketPanel == null)
         {
             Plugin.BepinLogger.LogError("TicketPanel is null");
@@ -74,5 +74,12 @@ public class TrackerTicket : MonoBehaviour
         if (ArchipelagoData.slotData == null) return;
         if (ItemHandler.Garden || int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0 
             && gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketGgImage.color = Color.white;
+        if (!ArchipelagoMenu.contactList)
+        {
+            ticketCl1Image.gameObject.SetActive(false); 
+            ticketCl2Image.gameObject.SetActive(false);
+        }
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave1")) ticketCl1Image.color = Color.white;
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave2")) ticketCl2Image.color = Color.white;
     }
 }

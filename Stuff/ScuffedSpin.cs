@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NikoArchipelago.Patches;
+namespace NikoArchipelago.Stuff;
 
 public class ScuffedSpin : MonoBehaviour
 {

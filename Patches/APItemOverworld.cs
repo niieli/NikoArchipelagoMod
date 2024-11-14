@@ -3,6 +3,7 @@ using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Stuff;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
@@ -309,7 +310,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -375,7 +378,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -437,7 +442,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -499,7 +506,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -561,7 +570,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -623,7 +634,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -685,8 +698,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " +
-                                                       ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -1001,7 +1015,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -1067,7 +1083,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -1129,7 +1147,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -1191,7 +1211,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -1253,7 +1275,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -1286,7 +1310,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutHQCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    const int offset = 93;
+                    const int offset = 92;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -1315,7 +1339,9 @@ public class APItemOverworld
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
                 
-                            Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName);
+                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
