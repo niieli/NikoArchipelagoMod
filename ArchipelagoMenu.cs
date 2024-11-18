@@ -144,6 +144,9 @@ public class ArchipelagoMenu : MonoBehaviour
         shopHintsToggle = settingsPanel.transform.Find("ShopHints").gameObject.GetComponent<Toggle>();
         shopHintsTooltip = shopHintsToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         shopHintsTrigger = shopHintsToggle.gameObject.AddComponent<TooltipTrigger>();
+        itemSentToggle = settingsPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
+        itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
         
         // Trackers
         trackersButton = formPanel.transform.Find("Tabs/TrackersButton").gameObject.GetComponent<Button>();
@@ -171,9 +174,9 @@ public class ArchipelagoMenu : MonoBehaviour
         cacmiToggle = qolPanel.transform.Find("CACMI").gameObject.GetComponent<Toggle>();
         cacmiTooltip = cacmiToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         cacmiTrigger = cacmiToggle.gameObject.AddComponent<TooltipTrigger>();
-        itemSentToggle = qolPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
-        itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
-        itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
+        // itemSentToggle = qolPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
+        // itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        // itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
         
         if (serverAddressField == null) Plugin.BepinLogger.LogError("Server Address Field is null!");
         if (slotNameField == null) Plugin.BepinLogger.LogError("Slot Name Field is null!");

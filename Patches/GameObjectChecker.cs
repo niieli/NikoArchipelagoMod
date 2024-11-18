@@ -17,6 +17,7 @@ public class GameObjectChecker : MonoBehaviour
     public static bool FirstMeeting;
     private static bool _checkedGhost;
     private static bool _spawned;
+    public static GameObject APMenu;
 
     private void Start()
     {
@@ -32,7 +33,7 @@ public class GameObjectChecker : MonoBehaviour
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
-        InstatiateAPMenu();
+        InstantiateAPMenu();
         APItemSent();
         TrackerKiosk();
         TrackerTicket();
@@ -121,10 +122,11 @@ public class GameObjectChecker : MonoBehaviour
             var titleScreen = GameObject.Find("Title Screen");
             if (titleScreen == null) return;
             titleScreen.GetComponent<Image>().sprite = Plugin.APLogoSprite;
-            //var actionScreen = GameObject.Find("ActionButton Title Screen");
-            //APMainMenu.TitleScreen = actionScreen;
-            //APMainMenu.TitleScreenAPLogo();
-            Plugin.BepinLogger.LogInfo("Added Archipelago Menu!");
+            // var actionScreen = GameObject.Find("ActionButton Title Screen");
+            // SmallAPLogo.TitleScreen = actionScreen;
+            // var text = actionScreen.transform.Find("Settings Title Screen/text").GetComponent<TextMeshProUGUI>();
+            // text.text = "Settings &";
+            // SmallAPLogo.TitleScreenAPLogo();
             Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
         }
         catch (NullReferenceException e)
@@ -133,18 +135,18 @@ public class GameObjectChecker : MonoBehaviour
         }
     }
 
-    private static void InstatiateAPMenu()
+    private static void InstantiateAPMenu()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
         var apUIGameObject = Plugin.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
-        var menuPrefab = Instantiate(apUIGameObject, GameObject.Find("UI").transform, false);
-        if (menuPrefab == null)
+        APMenu = Instantiate(apUIGameObject, GameObject.Find("UI").transform, false);
+        if (APMenu == null)
         {
             Plugin.BepinLogger.LogError("Failed to instantiate ApUIGameObject prefab.");
             return;
         }
-        menuPrefab.layer = LayerMask.NameToLayer("UI");
-        var manager = menuPrefab.transform.Find("APMenuManager")?.gameObject;
+        APMenu.layer = LayerMask.NameToLayer("UI");
+        var manager = APMenu.transform.Find("APMenuManager")?.gameObject;
         if (manager == null)
         {
             Plugin.BepinLogger.LogError("APMenuManager not found in the prefab.");
@@ -156,6 +158,7 @@ public class GameObjectChecker : MonoBehaviour
             Plugin.BepinLogger.LogError("Failed to add ArchipelagoMenu component to APMenuManager.");
             return;
         }
+        APMenu.SetActive(false);
         menu.enabled = true;
     }
     
