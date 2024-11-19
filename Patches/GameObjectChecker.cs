@@ -278,6 +278,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void HqGarden()
     {
         if (ArchipelagoData.slotData == null) return;
+        if (Plugin.Compatibility) return;
         if (SceneManager.GetActiveScene().name != "Tadpole inc" ||
             int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0) return;
         _garyGhost = GameObject.Find("GaryGhost").gameObject;
@@ -289,6 +290,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void SpawnGaryHome()
     {
         if (ArchipelagoData.slotData == null) return;
+        if (Plugin.Compatibility) return;
         if (SceneManager.GetActiveScene().name != "Home" || _spawned) return;
         var gary = Plugin.AssetBundle.LoadAsset<GameObject>("Gary");
         _garyGhostHome = Instantiate(gary, GameObject.Find("Pre Party").transform, false);
@@ -349,6 +351,7 @@ public class GameObjectChecker : MonoBehaviour
     public void Update()
     {
         if (ArchipelagoData.slotData == null) return;
+        if (Plugin.Compatibility) return;
         if (!_foundGhost && !ItemHandler.Garden &&
             int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) != 2 &
             SceneManager.GetActiveScene().name != "Tadpole inc" && _checkedGhost)

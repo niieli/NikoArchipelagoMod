@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using HarmonyLib;
+﻿using HarmonyLib;
 using UnityEngine;
 
 namespace NikoArchipelago.Patches;
@@ -10,15 +9,9 @@ public class AchievementPatch
     [HarmonyPatch(typeof(scrAchievementManager), "Update")]
     public static class PatchAchievementManager
     {
-        private static MethodInfo _saveAchievementMethod;
-        
         [HarmonyPostfix]
         public static void Postfix(scrAchievementManager __instance)
         {
-            if (_saveAchievementMethod == null)
-            {
-                _saveAchievementMethod = AccessTools.Method(typeof(scrAchievementManager), "SaveAchievement");
-            }
             CheckFrogFanAchievement(__instance);
             CheckHopelessRomanticAchievement(__instance);
             CheckBottledUpAchievement(__instance);
@@ -32,11 +25,8 @@ public class AchievementPatch
         {
             string flag = "FROG_FAN";
             if (scrGameSaveManager.instance.gameData.generalGameData.frogBumps < 10) return;
-            if (instance.CheckForSavedAchievent(flag)) return;
-            if (_saveAchievementMethod != null)
-            {
-                _saveAchievementMethod.Invoke(instance, [flag]);
-            }
+            if (CheckForSavedAchievent(flag)) return;
+            SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Frog Fan";
             achievement.icon = Plugin.FrogFanSprite;
@@ -53,11 +43,8 @@ public class AchievementPatch
                 || !flags.Contains("Froggy Salmon Creek Forest")
                 || !flags.Contains("Froggy Public Pool")
                 || !flags.Contains("Froggy The Bathhouse")) return;
-            if (instance.CheckForSavedAchievent(flag)) return;
-            if (_saveAchievementMethod != null)
-            {
-                _saveAchievementMethod.Invoke(instance, [flag]);
-            }
+            if (CheckForSavedAchievent(flag)) return;
+            SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Hopeless romantic";
             achievement.icon = Plugin.HandsomeSprite;
@@ -70,11 +57,8 @@ public class AchievementPatch
         {
             string flag = "BOTTLED_UP";
             if (scrGameSaveManager.instance.gameData.generalGameData.bottles < 12) return;
-            if (instance.CheckForSavedAchievent(flag)) return;
-            if (_saveAchievementMethod != null)
-            {
-                _saveAchievementMethod.Invoke(instance, [flag]);
-            }
+            if (CheckForSavedAchievent(flag)) return;
+            SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Bottled up";
             achievement.icon = Plugin.BottledSprite;
@@ -86,11 +70,8 @@ public class AchievementPatch
         {
             string flag = "EMLOYEE_OF_THE_MONTH";
             if (scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal < 76) return;
-            if (instance.CheckForSavedAchievent(flag)) return;
-            if (_saveAchievementMethod != null)
-            {
-                _saveAchievementMethod.Invoke(instance, [flag]);
-            }
+            if (CheckForSavedAchievent(flag)) return;
+            SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Employee of the month!";
             achievement.icon = Plugin.EmployeeSprite;
@@ -102,11 +83,8 @@ public class AchievementPatch
         {
             string flag = "LOST_AT_SEA";
             if (_isClose == false) return;
-            if (instance.CheckForSavedAchievent(flag)) return;
-            if (_saveAchievementMethod != null)
-            {
-                _saveAchievementMethod.Invoke(instance, [flag]);
-            }
+            if (CheckForSavedAchievent(flag)) return;
+            SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Lost at sea";
             achievement.icon = Plugin.LostSprite;
@@ -124,11 +102,8 @@ public class AchievementPatch
                     num++;
             }
             if (num < 6) return;
-            if (instance.CheckForSavedAchievent(flag)) return;
-            if (_saveAchievementMethod != null)
-            {
-                _saveAchievementMethod.Invoke(instance, [flag]);
-            }
+            if (CheckForSavedAchievent(flag)) return;
+            SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Volley dreams";
             achievement.icon = Plugin.VolleyDreamsSprite;
@@ -146,17 +121,31 @@ public class AchievementPatch
                     num++;
             }
             if (num < 16) return;
-            if (instance.CheckForSavedAchievent(flag)) return;
-            if (_saveAchievementMethod != null)
-            {
-                _saveAchievementMethod.Invoke(instance, [flag]);
-            }
+            if (CheckForSavedAchievent(flag)) return;
+            SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Snail fashion show";
             achievement.icon = Plugin.SnailFashionSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Snail Fashion Show obtained!", 3.5f, Plugin.SnailFashionSprite);
+        }
+        
+        private static void SaveAchievement(string newAchievement)
+        {
+            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add(newAchievement);
+            scrGameSaveManager.instance.SaveGame();
+        }
+        private static bool CheckForSavedAchievent(string newAchievement)
+        {
+            for (int i = 0; i < scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Count; i++)
+            {
+                if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags[i] == newAchievement)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

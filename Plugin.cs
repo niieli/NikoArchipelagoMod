@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using BepInEx;
 using BepInEx.Bootstrap;
@@ -53,7 +54,7 @@ namespace NikoArchipelago
         private static bool _debugMode,_canLogin;
         public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
-        public static bool loggedIn;
+        public static bool loggedIn, Compatibility;
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle;
@@ -107,7 +108,17 @@ namespace NikoArchipelago
             GameOptions.MusicVolume = mus;
             GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
-            AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets");
+            if (Application.unityVersion.StartsWith("2020.2.4f1"))
+            {
+                Logger.LogInfo($"Found Pre-DLC version {Application.unityVersion} ! - Using compatibility...");
+                Compatibility = true;
+                AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets2");
+            }
+            else
+            {
+                Logger.LogInfo($"Found DLC version {Application.unityVersion} !");
+                AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets");
+            }
             if (AssetBundle != null)
             {
                 APSprite = AssetBundle.LoadAsset<Sprite>("apLogo");
@@ -174,7 +185,7 @@ namespace NikoArchipelago
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            BepinLogger.LogInfo($"Scene '{scene.name}' loaded. Applying Harmony patches again.");
+            Logger.LogInfo($"Scene '{scene.name}' loaded. Applying Harmony patches again.");
             harmony.PatchAll();
         }
         
@@ -251,7 +262,15 @@ namespace NikoArchipelago
                         gameSaveManager.LoadGame();
                         gameSaveManager.ClearSaveData();
                     }
-                    scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
+
+                    if (Compatibility)
+                    {
+                        scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1);
+                    }
+                    else
+                    {
+                        scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1, false);
+                    }
                     if (newFile)
                         StartCoroutine(FirstLoginFix());
                     LogFlags();
@@ -400,7 +419,14 @@ namespace NikoArchipelago
         public void KillPlayer(string cause)
         {
             ArchipelagoConsole.LogMessage(cause);
-            scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
+            if (Compatibility)
+            {
+                scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel);
+            }
+            else
+            {
+                scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
+            }
             StartCoroutine(SendNoteDelay(cause, 5.0f, 5.0f, true));
         }
         
@@ -488,7 +514,14 @@ namespace NikoArchipelago
             goToLevel = Convert.ToInt32(GUI.TextField(new Rect(150, 170, 80, 20), goToLevel.ToString()));
             if (GUI.Button(new Rect(16, 190, 100, 20), "TP to Level"))
             {
-                scrTrainManager.instance.UseTrain(goToLevel, false);
+                if (Compatibility)
+                {
+                    scrTrainManager.instance.UseTrain(goToLevel);
+                }
+                else
+                {
+                    scrTrainManager.instance.UseTrain(goToLevel, false);
+                }
             }
             if (GUI.Button(new Rect(16, 220, 100, 20), "Test Note"))
             {

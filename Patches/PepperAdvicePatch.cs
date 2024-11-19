@@ -19,6 +19,10 @@ public class PepperAdvicePatch
 
         private static readonly List<int> coinsPerLevelWave2 = new()
             { 0, 4, 2, 3, 4, 5, 0, 0 };
+        private static StringBuilder _coinsStringBuilder = new(16);
+        private static StringBuilder _cassettesStringBuilder = new(16);
+        private static StringBuilder _lettersStringBuilder = new(16);
+        private static StringBuilder _keyStringBuilder = new(16);
         static bool Prefix(scrPepperAdvice __instance)
         {
             var saveManagerField = AccessTools.Field(typeof(scrPepperAdvice), "saveManager");
@@ -27,8 +31,8 @@ public class PepperAdvicePatch
             var worldDataField = AccessTools.Field(typeof(scrPepperAdvice), "worldData");
             var worldData = (scrWorldSaveDataContainer)worldDataField.GetValue(__instance);
 
-            var coinsStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "coinsStringBuilder");
-            var coinsStringBuilder = (StringBuilder)coinsStringBuilderField.GetValue(__instance);
+            // var coinsStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "coinsStringBuilder");
+            // var coinsStringBuilder = (StringBuilder)coinsStringBuilderField.GetValue(__instance);
             
             bool isWave1 = saveManager.gameData.generalGameData.generalFlags.Contains("APWave1");
             bool isWave2 = saveManager.gameData.generalGameData.generalFlags.Contains("APWave2");
@@ -37,50 +41,50 @@ public class PepperAdvicePatch
             {
                 if (isWave1)
                 {
-                    coinsStringBuilder.Clear();
-                    coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave1[worldData.worldIndex]+coinsPerLevelWave2[worldData.worldIndex]);
-                    __instance.coinsTextmesh.SetText(coinsStringBuilder);
+                    _coinsStringBuilder.Clear();
+                    _coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave1[worldData.worldIndex]+coinsPerLevelWave2[worldData.worldIndex]);
+                    __instance.coinsTextmesh.SetText(_coinsStringBuilder);
                 }
                 else
                 {
-                    coinsStringBuilder.Clear();
-                    coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave2[worldData.worldIndex]);
-                    __instance.coinsTextmesh.SetText(coinsStringBuilder);
+                    _coinsStringBuilder.Clear();
+                    _coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave2[worldData.worldIndex]);
+                    __instance.coinsTextmesh.SetText(_coinsStringBuilder);
                 }
             }
             else if (isWave1)
             {
-                coinsStringBuilder.Clear();
-                coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave1[worldData.worldIndex]);
-                __instance.coinsTextmesh.SetText(coinsStringBuilder);
+                _coinsStringBuilder.Clear();
+                _coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, coinsPerLevel[worldData.worldIndex]+coinsPerLevelWave1[worldData.worldIndex]);
+                __instance.coinsTextmesh.SetText(_coinsStringBuilder);
             } 
             else
             {
-                coinsStringBuilder.Clear();
-                coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, levelData.coinsPerLevel[worldData.worldIndex]);
-                __instance.coinsTextmesh.SetText(coinsStringBuilder);
+                _coinsStringBuilder.Clear();
+                _coinsStringBuilder.AppendFormat("{0} / {1}", worldData.coinFlags.Count, levelData.coinsPerLevel[worldData.worldIndex]);
+                __instance.coinsTextmesh.SetText(_coinsStringBuilder);
             }
             
-            var cassettesStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "cassettesStringBuilder");
-            var cassettesStringBuilder = (StringBuilder)cassettesStringBuilderField.GetValue(__instance);
+            // var cassettesStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "cassettesStringBuilder");
+            // var cassettesStringBuilder = (StringBuilder)cassettesStringBuilderField.GetValue(__instance);
 
-            var lettersStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "lettersStringBuilder");
-            var lettersStringBuilder = (StringBuilder)lettersStringBuilderField.GetValue(__instance);
+            // var lettersStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "lettersStringBuilder");
+            // var lettersStringBuilder = (StringBuilder)lettersStringBuilderField.GetValue(__instance);
 
-            var keyStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "keyStringBuilder");
-            var keyStringBuilder = (StringBuilder)keyStringBuilderField.GetValue(__instance);
+            // var keyStringBuilderField = AccessTools.Field(typeof(scrPepperAdvice), "keyStringBuilder");
+            // var keyStringBuilder = (StringBuilder)keyStringBuilderField.GetValue(__instance);
             
-            cassettesStringBuilder.Clear();
-            cassettesStringBuilder.AppendFormat("{0} / {1}", worldData.cassetteFlags.Count, levelData.cassettesPerLevel[worldData.worldIndex]);
-            __instance.cassetesTextmesh.SetText(cassettesStringBuilder);
+            _cassettesStringBuilder.Clear();
+            _cassettesStringBuilder.AppendFormat("{0} / {1}", worldData.cassetteFlags.Count, levelData.cassettesPerLevel[worldData.worldIndex]);
+            __instance.cassetesTextmesh.SetText(_cassettesStringBuilder);
             
-            lettersStringBuilder.Clear();
-            lettersStringBuilder.AppendFormat("{0} / {1}", worldData.letterFlags.Count, levelData.lettersPerLevel[worldData.worldIndex]);
-            __instance.lettersTextmesh.SetText(lettersStringBuilder);
+            _lettersStringBuilder.Clear();
+            _lettersStringBuilder.AppendFormat("{0} / {1}", worldData.letterFlags.Count, levelData.lettersPerLevel[worldData.worldIndex]);
+            __instance.lettersTextmesh.SetText(_lettersStringBuilder);
             
-            keyStringBuilder.Clear();
-            keyStringBuilder.AppendFormat("{0} / {1}", worldData.keyAmount, levelData.keysPerLevel[worldData.worldIndex]);
-            __instance.keyTextmesh.SetText(keyStringBuilder);
+            _keyStringBuilder.Clear();
+            _keyStringBuilder.AppendFormat("{0} / {1}", worldData.keyAmount, levelData.keysPerLevel[worldData.worldIndex]);
+            __instance.keyTextmesh.SetText(_keyStringBuilder);
 
             return false; // Skip original method
         }

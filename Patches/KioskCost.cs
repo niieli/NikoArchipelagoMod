@@ -99,7 +99,14 @@ public static class KioskCost
                                 __instance.NPCbuy.SetActive(false);
                                 __instance.textMesh.text = "Bought!";
                                 __instance.textMesh.gameObject.SetActive(true);
-                                scrTrainManager.instance.UseTrain(currentBuyableLevel-1, false);
+                                if (Plugin.Compatibility)
+                                {
+                                    scrTrainManager.instance.UseTrain(currentBuyableLevel-1);
+                                }
+                                else
+                                {
+                                    scrTrainManager.instance.UseTrain(currentBuyableLevel-1, false);
+                                }
                                 if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                                 {
                                     if (scrTextbox.instance.textMesh.text.Contains("You are free"))
