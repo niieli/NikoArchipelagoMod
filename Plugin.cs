@@ -357,7 +357,7 @@ namespace NikoArchipelago
             SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
-            SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount);
+            SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)

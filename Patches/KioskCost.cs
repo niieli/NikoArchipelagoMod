@@ -70,7 +70,7 @@ public static class KioskCost
                             if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
                             {
                                 scrTextbox.instance.textMesh.text = 
-                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
+                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?\nIt will cost {levelPrice} Coins to purchase.";
                                 if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
                                 {
                                     ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
@@ -99,14 +99,15 @@ public static class KioskCost
                                 __instance.NPCbuy.SetActive(false);
                                 __instance.textMesh.text = "Bought!";
                                 __instance.textMesh.gameObject.SetActive(true);
-                                if (Plugin.Compatibility)
-                                {
-                                    scrTrainManager.instance.UseTrain(currentBuyableLevel-1);
-                                }
-                                else
-                                {
-                                    scrTrainManager.instance.UseTrain(currentBuyableLevel-1, false);
-                                }
+                                // if (Plugin.Compatibility)
+                                // {
+                                //     scrTrainManager.instance.UseTrain(currentBuyableLevel-1);
+                                // }
+                                // else
+                                // {
+                                //     scrTrainManager.instance.UseTrain(currentBuyableLevel-1, false);
+                                // }
+                                scrTextbox.instance.EndConversation();
                                 if (scrTextbox.instance.isOn && scrTextbox.instance.nameMesh.text == "Dispatcher")
                                 {
                                     if (scrTextbox.instance.textMesh.text.Contains("You are free"))

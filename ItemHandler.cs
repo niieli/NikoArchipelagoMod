@@ -1,4 +1,6 @@
-﻿using ArchipelagoClient = NikoArchipelago.Archipelago.ArchipelagoClient;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ArchipelagoClient = NikoArchipelago.Archipelago.ArchipelagoClient;
 
 namespace NikoArchipelago;
 
@@ -193,6 +195,21 @@ public static class ItemHandler
                     4f, Plugin.HqSprite);
                 break;
         }
+    }
+
+    public static int UsedKeys()
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var keyFlags = new List<string>
+        {
+            "lock1",
+            "mahjonglock",
+            "Officelock",
+            "lock2",
+            "TurbineLock",
+            "1"
+        };
+        return worldsData.Sum(world => world.miscFlags.Count(flag => keyFlags.Any(flag.Contains)));
     }
 
     public static void AddGarden(string sender, bool notify = true)

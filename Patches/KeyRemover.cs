@@ -4,42 +4,27 @@ using UnityEngine;
 
 namespace NikoArchipelago.Patches;
 
-[HarmonyPatch(typeof(scrKey))]
-[HarmonyPatch("Update")]
 public class KeyRemover
 {
-    //TODO: Fix sound abomination
-    // private static bool Prefix(scrKey __instance)
-    // {
-    //     var obtainingField = AccessTools.Field(typeof(scrKey), "obtaining");
-    //     var _obtaining = (bool)obtainingField.GetValue(__instance);
-    //     if (_obtaining || !__instance.trigger.foundPlayer())
-    //         return false;
-    //     
-    //     __instance.StartCoroutine(ObtainKeyModified(__instance));
-    //     return false;
-    // }
-    //
-    // private static IEnumerator ObtainKeyModified(scrKey instance)
-    // {
-    //     var animationDurationField = AccessTools.Field(typeof(scrKey), "animationDuration");
-    //     var _animationDuration = (float)animationDurationField.GetValue(instance);
-    //     var obtainingField = AccessTools.Field(typeof(scrKey), "obtaining");
-    //     var _obtaining = (bool)obtainingField.GetValue(instance);
-    //     var obtainTimer = _animationDuration;
-    //     instance.trigger.enabled = false;
-    //     Object.Destroy(instance.quads);
-    //     _obtaining = true;
-    //
-    //     while (obtainTimer > 0.0f)
-    //     {
-    //         obtainTimer -= Time.deltaTime;
-    //         yield return null;
-    //     }
-    //     scrWorldSaveDataContainer.instance.keyAmount++;
-    //     scrWorldSaveDataContainer.instance.miscFlags.Add(instance.flag);
-    //     scrWorldSaveDataContainer.instance.SaveWorld();
-    //     Object.Destroy(instance.gameObject);
-    // }
-    
+    [HarmonyPatch(typeof(scrKey), "Update")]
+    public static class KeyUpdatePatch
+    {
+        private static bool _obtaining;
+        [HarmonyPrefix]
+        static void Prefix(scrKey __instance)
+        {
+            if (_obtaining || !__instance.trigger.foundPlayer()) return;
+            __instance.StartCoroutine(ObtainKeyModified(__instance));
+        }
+        private static IEnumerator ObtainKeyModified(scrKey instance)
+        {
+            _obtaining = true;
+            if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(instance.flag) || !scrWorldSaveDataContainer.instance.miscFlags.Contains(instance.flag))
+            {
+                scrGameSaveManager.instance.gameData.generalGameData.keyAmount--;
+                scrWorldSaveDataContainer.instance.SaveWorld();
+            }
+            yield return null;
+        }
+    }
 }
