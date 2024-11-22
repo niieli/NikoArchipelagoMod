@@ -42,7 +42,7 @@ namespace NikoArchipelago
         public scrGameSaveManager gameSaveManager;
         private bool loggedError, loggedSuccess;
         public static bool newFile;
-        public static bool saveReady;
+        public static bool saveReady, DebugMode;
         private Harmony harmony;
 
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
@@ -51,7 +51,7 @@ namespace NikoArchipelago
         private float env, mas, mus, sfx;
         private static scrNotificationDisplayer _noteDisplayer;
         public bool worldReady;
-        private static bool _debugMode,_canLogin;
+        private static bool _canLogin;
         public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
         public static bool loggedIn, Compatibility;
@@ -291,7 +291,7 @@ namespace NikoArchipelago
                     LocationHandler.WinCompletion();
                     StartCoroutine(SyncState());
                 }
-                _debugMode = File.Exists(Path.Combine(Paths.PluginPath, "debug.txt"));
+                DebugMode = File.Exists(Path.Combine(Paths.PluginPath, "debug.txt")) || ArchipelagoMenu.forceDebug;
                 if (loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
                 loggedSuccess = true;
@@ -345,15 +345,6 @@ namespace NikoArchipelago
                 }
             }
             // Sync Coins, Cassettes, Keys
-            var list = 0;
-            if (generalGameData.generalFlags.Contains("APWave2"))
-            {
-                list = 2;
-            }
-            else if (generalGameData.generalFlags.Contains("APWave1"))
-            {
-                list = 1;
-            }
             SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
@@ -374,10 +365,6 @@ namespace NikoArchipelago
             SyncLevel(5, ArchipelagoClient.Ticket4);
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
-            if (ArchipelagoClient.TicketGary)
-            {
-                
-            }
             //ArchipelagoClient._session.DataStorage["Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
             //ArchipelagoClient._session.DataStorage["SnailMoney"] = scrGameSaveManager.instance.gameData.generalGameData.snailSteps;
             if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
@@ -479,7 +466,7 @@ namespace NikoArchipelago
         {
             ArchipelagoConsole.OnGUI();
             string statusMessage;
-            if (ArchipelagoClient.Authenticated)
+            if (ArchipelagoClient.Authenticated && ArchipelagoMenu.status)
             {
                 BackgroundForText(new Rect(10, 10, 260, 90));
                 statusMessage = " Status: Connected";
@@ -499,7 +486,7 @@ namespace NikoArchipelago
                 // GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
             }
 
-            if (!_debugMode) return;
+            if (!DebugMode) return;
             if (GUI.Button(new Rect(16, 150, 100, 20), "All Flags"))
             {
                 var pls = gameSaveManager.gameData.worldsData;
