@@ -386,7 +386,7 @@ public static class ItemHandler
     {
         if (!notify) return;
         Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Fish from {sender}!" : "You found your Turbine Fish!",
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Fish from {sender}!" : "You found your Turbine Town Fish!",
             3f, Plugin.FishSprite);
     }
     

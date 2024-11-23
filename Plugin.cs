@@ -172,6 +172,7 @@ namespace NikoArchipelago
                 CassetteTexture = AssetBundle.LoadAsset<Texture2D>("ApProgression");
                 GoalBadSprite = AssetBundle.LoadAsset<Sprite>("goalBad");
                 SuperJumpSprite = AssetBundle.LoadAsset<Sprite>("SuperJump");
+                FishSprite = AssetBundle.LoadAsset<Sprite>("imgMapfish");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -361,6 +362,15 @@ namespace NikoArchipelago
             else
             {
                 SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
+            }
+            if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+            {
+                SyncValue(ref ItemHandler.HairballFishAmount, ArchipelagoClient.HcFishAmount);
+                SyncValue(ref ItemHandler.TurbineFishAmount, ArchipelagoClient.TtFishAmount);
+                SyncValue(ref ItemHandler.SalmonFishAmount, ArchipelagoClient.SfcFishAmount);
+                SyncValue(ref ItemHandler.PoolFishAmount, ArchipelagoClient.PpFishAmount);
+                SyncValue(ref ItemHandler.BathFishAmount, ArchipelagoClient.BathFishAmount);
+                SyncValue(ref ItemHandler.TadpoleFishAmount, ArchipelagoClient.HqFishAmount);
             }
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
