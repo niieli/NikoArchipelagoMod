@@ -1,12 +1,14 @@
 using System.Collections;
 using System.IO;
 using BepInEx;
+using KinematicCharacterController.Core;
 using Newtonsoft.Json;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Toggle = UnityEngine.UI.Toggle;
@@ -64,6 +66,10 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip itemSentTooltip;
     public TooltipTrigger itemSentTrigger;
     public GameObject itemSentHighlight;
+    public Toggle trackerKeyToggle;
+    public Tooltip trackerKeyTooltip;
+    public TooltipTrigger trackerKeyTrigger;
+    public GameObject trackerKeyHighlight;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -82,6 +88,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _itemSent;
     private static bool _contactList;
     private static bool _status;
+    private static bool _trackerKey;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
@@ -95,6 +102,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool contactList;
     public static bool itemSent;
     public static bool status;
+    public static bool TrackerKey;
     
     // New Menu stuff
     public GameObject settingsPanel;
@@ -118,9 +126,15 @@ public class ArchipelagoMenu : MonoBehaviour
     
     // Information stuff
     public GameObject informationPanel;
+    public GameObject kioskAndTicketPanel;
+    public GameObject keysPanel;
+    public GameObject fishPanel;
     public Button debugButton;
     public TooltipTrigger debugTrigger;
     public Tooltip debugTooltip;
+    public Button reloadButton;
+    public TooltipTrigger reloadTrigger;
+    public Tooltip reloadTooltip;
     public Image ticketHcImage;
     public Image ticketTtImage;
     public Image ticketSfcImage;
@@ -179,18 +193,44 @@ public class ArchipelagoMenu : MonoBehaviour
     public TextMeshProUGUI coinCountFrontText;
     public TextMeshProUGUI cassetteCountBackText;
     public TextMeshProUGUI cassetteCountFrontText;
-    public TextMeshProUGUI keyHCCountBackText;
-    public TextMeshProUGUI keyHCCountFrontText;
-    public TextMeshProUGUI keyTTCountBackText;
-    public TextMeshProUGUI keyTTCountFrontText;
-    public TextMeshProUGUI keySFCCountBackText;
-    public TextMeshProUGUI keySFCCountFrontText;
-    public TextMeshProUGUI keyPPCountBackText;
-    public TextMeshProUGUI keyPPCountFrontText;
-    public TextMeshProUGUI keyBATHCountBackText;
-    public TextMeshProUGUI keyBATHCountFrontText;
-    public TextMeshProUGUI keyHQCountBackText;
-    public TextMeshProUGUI keyHQCountFrontText;
+    public TextMeshProUGUI keyHcCountBackText;
+    public TextMeshProUGUI keyHcCountFrontText;
+    public TextMeshProUGUI keyTtCountBackText;
+    public TextMeshProUGUI keyTtCountFrontText;
+    public TextMeshProUGUI keySfcCountBackText;
+    public TextMeshProUGUI keySfcCountFrontText;
+    public TextMeshProUGUI keyPpCountBackText;
+    public TextMeshProUGUI keyPpCountFrontText;
+    public TextMeshProUGUI keyBathCountBackText;
+    public TextMeshProUGUI keyBathCountFrontText;
+    public TextMeshProUGUI keyHqCountBackText;
+    public TextMeshProUGUI keyHqCountFrontText;
+    public TextMeshProUGUI fishHcCountBackText;
+    public TextMeshProUGUI fishHcCountFrontText;
+    public TextMeshProUGUI fishTtCountBackText;
+    public TextMeshProUGUI fishTtCountFrontText;
+    public TextMeshProUGUI fishSfcCountBackText;
+    public TextMeshProUGUI fishSfcCountFrontText;
+    public TextMeshProUGUI fishPpCountBackText;
+    public TextMeshProUGUI fishPpCountFrontText;
+    public TextMeshProUGUI fishBathCountBackText;
+    public TextMeshProUGUI fishBathCountFrontText;
+    public TextMeshProUGUI fishHqCountBackText;
+    public TextMeshProUGUI fishHqCountFrontText;
+    public Image keysDisabledImage;
+    public Image fishDisabledImage;
+    public TextMeshProUGUI goalText;
+    public TooltipTrigger goalTrigger;
+    public Tooltip goalTooltip;
+    public TextMeshProUGUI goalTooltipText;
+    public TooltipTrigger keysDisabledTrigger;
+    public Tooltip keysDisabledTooltip;
+    public TooltipTrigger fishDisabledTrigger;
+    public Tooltip fishDisabledTooltip;
+    public TooltipTrigger keysTrigger;
+    public Tooltip keysTooltip;
+    public TooltipTrigger fishTrigger;
+    public Tooltip fishTooltip;
     public static bool forceDebug;
     
     public void Start()
@@ -212,88 +252,120 @@ public class ArchipelagoMenu : MonoBehaviour
         
         // Information, when logged in
         informationPanel = formPanel.transform.Find("InformationScreen").gameObject;
+        kioskAndTicketPanel = informationPanel.transform.Find("KioskAndTicketScreen").gameObject;
+        keysPanel = informationPanel.transform.Find("KeysScreen").gameObject;
+        fishPanel = informationPanel.transform.Find("FishScreen").gameObject;
         debugButton = informationPanel.transform.Find("DEBUG").gameObject.GetComponent<Button>();
         debugTooltip = debugButton.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         debugTrigger = debugButton.gameObject.AddComponent<TooltipTrigger>();
+        reloadButton = informationPanel.transform.Find("ReloadButton").gameObject.GetComponent<Button>();
+        reloadTooltip = informationPanel.transform.Find("TooltipReload").gameObject.AddComponent<Tooltip>();
+        reloadTrigger = reloadButton.gameObject.AddComponent<TooltipTrigger>();
+        keysDisabledImage = informationPanel.transform.Find("KeysDisabled").gameObject.GetComponent<Image>();
+        keysDisabledTrigger = keysDisabledImage.gameObject.AddComponent<TooltipTrigger>();
+        keysDisabledTooltip = keysDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        fishDisabledImage = informationPanel.transform.Find("FishDisabled").gameObject.GetComponent<Image>();
+        fishDisabledTrigger = fishDisabledImage.gameObject.AddComponent<TooltipTrigger>();
+        fishDisabledTooltip = fishDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        goalText = informationPanel.transform.Find("Goal/Text").GetComponent<TextMeshProUGUI>();
+        goalTrigger = informationPanel.transform.Find("Goal").gameObject.AddComponent<TooltipTrigger>();
+        goalTooltip = informationPanel.transform.Find("TooltipGoal").gameObject.AddComponent<Tooltip>();
+        goalTooltipText = goalTooltip.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        keysTrigger = keysPanel.gameObject.AddComponent<TooltipTrigger>();
+        keysTooltip = keysPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        fishTrigger = fishPanel.gameObject.AddComponent<TooltipTrigger>();
+        fishTooltip = fishPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         // Home
-        kioskHomeImage = informationPanel.transform.Find("KioskHome").GetComponent<Image>();
+        kioskHomeImage = kioskAndTicketPanel.transform.Find("KioskHome").GetComponent<Image>();
         boughtHomeImage = kioskHomeImage.transform.Find("Bought").GetComponent<Image>();
         kioskHomeCostImage = kioskHomeImage.transform.Find("CostHome").GetComponent<Image>();
         kioskHomeText = kioskHomeCostImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
-        boughtHomeBackImage = informationPanel.transform.Find("KioskHomeBack/Bought").GetComponent<Image>();
-        kioskHomeCostBackImage = informationPanel.transform.Find("KioskHomeBack/CostHome").GetComponent<Image>();
-        kioskHomeBackText = informationPanel.transform.Find("KioskHomeBack/CostHome/Cost").GetComponent<TextMeshProUGUI>();
+        boughtHomeBackImage = kioskAndTicketPanel.transform.Find("KioskHomeBack/Bought").GetComponent<Image>();
+        kioskHomeCostBackImage = kioskAndTicketPanel.transform.Find("KioskHomeBack/CostHome").GetComponent<Image>();
+        kioskHomeBackText = kioskAndTicketPanel.transform.Find("KioskHomeBack/CostHome/Cost").GetComponent<TextMeshProUGUI>();
         // Hairball
-        ticketHcImage = informationPanel.transform.Find("TicketHairball").GetComponent<Image>();
+        ticketHcImage = kioskAndTicketPanel.transform.Find("TicketHairball").GetComponent<Image>();
         boughtHcImage = ticketHcImage.transform.Find("Bought").GetComponent<Image>();
         kioskHcCostImage = ticketHcImage.transform.Find("CostHairball").GetComponent<Image>();
         kioskHcText = kioskHcCostImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
-        boughtHcBackImage = informationPanel.transform.Find("TicketHairballBack/Bought").GetComponent<Image>();
-        kioskHcCostBackImage = informationPanel.transform.Find("TicketHairballBack/CostHairball").GetComponent<Image>();
-        kioskHcBackText = informationPanel.transform.Find("TicketHairballBack/CostHairball/Cost").GetComponent<TextMeshProUGUI>();
+        boughtHcBackImage = kioskAndTicketPanel.transform.Find("TicketHairballBack/Bought").GetComponent<Image>();
+        kioskHcCostBackImage = kioskAndTicketPanel.transform.Find("TicketHairballBack/CostHairball").GetComponent<Image>();
+        kioskHcBackText = kioskAndTicketPanel.transform.Find("TicketHairballBack/CostHairball/Cost").GetComponent<TextMeshProUGUI>();
+        keyHcCountBackText = keysPanel.transform.Find("HCKeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keyHcCountFrontText = keysPanel.transform.Find("HCKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        fishHcCountBackText = fishPanel.transform.Find("HCFishCount/Back").GetComponent<TextMeshProUGUI>();
+        fishHcCountFrontText = fishPanel.transform.Find("HCFishCount/Front").GetComponent<TextMeshProUGUI>();
         // Turbine
-        ticketTtImage = informationPanel.transform.Find("TicketTurbine").GetComponent<Image>();
+        ticketTtImage = kioskAndTicketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
         boughtTtImage = ticketTtImage.transform.Find("Bought").GetComponent<Image>();
         kioskTtCostImage = ticketTtImage.transform.Find("CostTurbine").GetComponent<Image>();
         kioskTtText = kioskTtCostImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
-        boughtTtBackImage = informationPanel.transform.Find("TicketTurbineBack/Bought").GetComponent<Image>();
-        kioskTtCostBackImage = informationPanel.transform.Find("TicketTurbineBack/CostTurbine").GetComponent<Image>();
-        kioskTtBackText = informationPanel.transform.Find("TicketTurbineBack/CostTurbine/Cost").GetComponent<TextMeshProUGUI>();
+        boughtTtBackImage = kioskAndTicketPanel.transform.Find("TicketTurbineBack/Bought").GetComponent<Image>();
+        kioskTtCostBackImage = kioskAndTicketPanel.transform.Find("TicketTurbineBack/CostTurbine").GetComponent<Image>();
+        kioskTtBackText = kioskAndTicketPanel.transform.Find("TicketTurbineBack/CostTurbine/Cost").GetComponent<TextMeshProUGUI>();
+        keyTtCountBackText = keysPanel.transform.Find("TTKeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keyTtCountFrontText = keysPanel.transform.Find("TTKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        fishTtCountBackText = fishPanel.transform.Find("TTFishCount/Back").GetComponent<TextMeshProUGUI>();
+        fishTtCountFrontText = fishPanel.transform.Find("TTFishCount/Front").GetComponent<TextMeshProUGUI>();
         // Salmon
-        ticketSfcImage = informationPanel.transform.Find("TicketSalmon").GetComponent<Image>();
+        ticketSfcImage = kioskAndTicketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
         boughtSfcImage = ticketSfcImage.transform.Find("Bought").GetComponent<Image>();
         kioskSfcCostImage = ticketSfcImage.transform.Find("CostSalmon").GetComponent<Image>();
         kioskSfcText = kioskSfcCostImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
-        boughtSfcBackImage = informationPanel.transform.Find("TicketSalmonBack/Bought").GetComponent<Image>();
-        kioskSfcCostBackImage = informationPanel.transform.Find("TicketSalmonBack/CostSalmon").GetComponent<Image>();
-        kioskSfcBackText = informationPanel.transform.Find("TicketSalmonBack/CostSalmon/Cost").GetComponent<TextMeshProUGUI>();
+        boughtSfcBackImage = kioskAndTicketPanel.transform.Find("TicketSalmonBack/Bought").GetComponent<Image>();
+        kioskSfcCostBackImage = kioskAndTicketPanel.transform.Find("TicketSalmonBack/CostSalmon").GetComponent<Image>();
+        kioskSfcBackText = kioskAndTicketPanel.transform.Find("TicketSalmonBack/CostSalmon/Cost").GetComponent<TextMeshProUGUI>();
+        keySfcCountBackText = keysPanel.transform.Find("SFCKeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keySfcCountFrontText = keysPanel.transform.Find("SFCKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        fishSfcCountBackText = fishPanel.transform.Find("SFCFishCount/Back").GetComponent<TextMeshProUGUI>();
+        fishSfcCountFrontText = fishPanel.transform.Find("SFCFishCount/Front").GetComponent<TextMeshProUGUI>();
         // Pool
-        ticketPpImage = informationPanel.transform.Find("TicketPool").GetComponent<Image>();
+        ticketPpImage = kioskAndTicketPanel.transform.Find("TicketPool").GetComponent<Image>();
         boughtPpImage = ticketPpImage.transform.Find("Bought").GetComponent<Image>();
         kioskPpCostImage = ticketPpImage.transform.Find("CostPool").GetComponent<Image>();
         kioskPpText = kioskPpCostImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
-        boughtPpBackImage = informationPanel.transform.Find("TicketPoolBack/Bought").GetComponent<Image>();
-        kioskPpCostBackImage = informationPanel.transform.Find("TicketPoolBack/CostPool").GetComponent<Image>();
-        kioskPpBackText = informationPanel.transform.Find("TicketPoolBack/CostPool/Cost").GetComponent<TextMeshProUGUI>();
+        boughtPpBackImage = kioskAndTicketPanel.transform.Find("TicketPoolBack/Bought").GetComponent<Image>();
+        kioskPpCostBackImage = kioskAndTicketPanel.transform.Find("TicketPoolBack/CostPool").GetComponent<Image>();
+        kioskPpBackText = kioskAndTicketPanel.transform.Find("TicketPoolBack/CostPool/Cost").GetComponent<TextMeshProUGUI>();
+        keyPpCountBackText = keysPanel.transform.Find("PPKeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keyPpCountFrontText = keysPanel.transform.Find("PPKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        fishPpCountBackText = fishPanel.transform.Find("PPFishCount/Back").GetComponent<TextMeshProUGUI>();
+        fishPpCountFrontText = fishPanel.transform.Find("PPFishCount/Front").GetComponent<TextMeshProUGUI>();
         // Bath
-        ticketBathImage = informationPanel.transform.Find("TicketBath").GetComponent<Image>();
+        ticketBathImage = kioskAndTicketPanel.transform.Find("TicketBath").GetComponent<Image>();
         boughtBathImage = ticketBathImage.transform.Find("Bought").GetComponent<Image>();
         kioskBathCostImage = ticketBathImage.transform.Find("CostBath").GetComponent<Image>();
         kioskBathText = kioskBathCostImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
-        boughtBathBackImage = informationPanel.transform.Find("TicketBathBack/Bought").GetComponent<Image>();
-        kioskBathCostBackImage = informationPanel.transform.Find("TicketBathBack/CostBath").GetComponent<Image>();
-        kioskBathBackText = informationPanel.transform.Find("TicketBathBack/CostBath/Cost").GetComponent<TextMeshProUGUI>();
+        boughtBathBackImage = kioskAndTicketPanel.transform.Find("TicketBathBack/Bought").GetComponent<Image>();
+        kioskBathCostBackImage = kioskAndTicketPanel.transform.Find("TicketBathBack/CostBath").GetComponent<Image>();
+        kioskBathBackText = kioskAndTicketPanel.transform.Find("TicketBathBack/CostBath/Cost").GetComponent<TextMeshProUGUI>();
+        keyBathCountBackText = keysPanel.transform.Find("BATHKeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keyBathCountFrontText = keysPanel.transform.Find("BATHKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        fishBathCountBackText = fishPanel.transform.Find("BATHFishCount/Back").GetComponent<TextMeshProUGUI>();
+        fishBathCountFrontText = fishPanel.transform.Find("BATHFishCount/Front").GetComponent<TextMeshProUGUI>();
         // Tadpole
-        ticketHqImage = informationPanel.transform.Find("TicketTadpole").GetComponent<Image>();
+        ticketHqImage = kioskAndTicketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
         boughtHqImage = ticketHqImage.transform.Find("Bought").GetComponent<Image>();
         kioskHqCostImage = ticketHqImage.transform.Find("CostTadpole").GetComponent<Image>();
         kioskHqText = kioskHqCostImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
-        boughtHqBackImage = informationPanel.transform.Find("TicketTadpoleBack/Bought").GetComponent<Image>();
-        kioskHqCostBackImage = informationPanel.transform.Find("TicketTadpoleBack/CostTadpole").GetComponent<Image>();
-        kioskHqBackText = informationPanel.transform.Find("TicketTadpoleBack/CostTadpole/Cost").GetComponent<TextMeshProUGUI>();
+        boughtHqBackImage = kioskAndTicketPanel.transform.Find("TicketTadpoleBack/Bought").GetComponent<Image>();
+        kioskHqCostBackImage = kioskAndTicketPanel.transform.Find("TicketTadpoleBack/CostTadpole").GetComponent<Image>();
+        kioskHqBackText = kioskAndTicketPanel.transform.Find("TicketTadpoleBack/CostTadpole/Cost").GetComponent<TextMeshProUGUI>();
+        keyHqCountBackText = keysPanel.transform.Find("HQKeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keyHqCountFrontText = keysPanel.transform.Find("HQKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        fishHqCountBackText = fishPanel.transform.Find("HQFishCount/Back").GetComponent<TextMeshProUGUI>();
+        fishHqCountFrontText = fishPanel.transform.Find("HQFishCount/Front").GetComponent<TextMeshProUGUI>();
         // Misc
-        ticketGgImage = informationPanel.transform.Find("TicketGarden").GetComponent<Image>();
+        ticketGgImage = kioskAndTicketPanel.transform.Find("TicketGarden").GetComponent<Image>();
         ticketCl1Image = informationPanel.transform.Find("ContactList1").GetComponent<Image>();
         ticketCl2Image = informationPanel.transform.Find("ContactList2").GetComponent<Image>();
         
-        keyCountBackText = informationPanel.transform.Find("KeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keyCountFrontText = informationPanel.transform.Find("KeyCount/Front").GetComponent<TextMeshProUGUI>();
+        keyCountBackText = keysPanel.transform.Find("KeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keyCountFrontText = keysPanel.transform.Find("KeyCount/Front").GetComponent<TextMeshProUGUI>();
         coinCountBackText = informationPanel.transform.Find("CoinCount/Back").GetComponent<TextMeshProUGUI>();
         coinCountFrontText = informationPanel.transform.Find("CoinCount/Front").GetComponent<TextMeshProUGUI>();
         cassetteCountBackText = informationPanel.transform.Find("CassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassetteCountFrontText = informationPanel.transform.Find("CassetteCount/Front").GetComponent<TextMeshProUGUI>();
-        keyHCCountBackText = informationPanel.transform.Find("HCKeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keyHCCountFrontText = informationPanel.transform.Find("HCKeyCount/Front").GetComponent<TextMeshProUGUI>();
-        keyTTCountBackText = informationPanel.transform.Find("TTKeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keyTTCountFrontText = informationPanel.transform.Find("TTKeyCount/Front").GetComponent<TextMeshProUGUI>();
-        keySFCCountBackText = informationPanel.transform.Find("SFCKeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keySFCCountFrontText = informationPanel.transform.Find("SFCKeyCount/Front").GetComponent<TextMeshProUGUI>();
-        keyPPCountBackText = informationPanel.transform.Find("PPKeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keyPPCountFrontText = informationPanel.transform.Find("PPKeyCount/Front").GetComponent<TextMeshProUGUI>();
-        keyBATHCountBackText = informationPanel.transform.Find("BATHKeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keyBATHCountFrontText = informationPanel.transform.Find("BATHKeyCount/Front").GetComponent<TextMeshProUGUI>();
-        keyHQCountBackText = informationPanel.transform.Find("HQKeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keyHQCountFrontText = informationPanel.transform.Find("HQKeyCount/Front").GetComponent<TextMeshProUGUI>();
         
         // Wowwwie
         formPanel.transform.Find("Nya").gameObject.AddComponent<FloatingAnimation>();
@@ -356,6 +428,10 @@ public class ArchipelagoMenu : MonoBehaviour
         contactListTooltip = contactListToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         contactListTrigger = contactListToggle.gameObject.AddComponent<TooltipTrigger>();
         contactListHighlight = contactListToggle.transform.Find("Highlight").gameObject;
+        trackerKeyToggle = trackersPanel.transform.Find("Key").gameObject.GetComponent<Toggle>();
+        trackerKeyTooltip = trackerKeyToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        trackerKeyTrigger = trackerKeyToggle.gameObject.AddComponent<TooltipTrigger>();
+        trackerKeyHighlight = trackerKeyToggle.transform.Find("Highlight").gameObject;
         
         // QOL
         qolButton = formPanel.transform.Find("Tabs/QOLButton").gameObject.GetComponent<Button>();
@@ -396,6 +472,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _itemSent = itemSentToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
+        _trackerKey = trackerKeyToggle.isOn;
         LoadData();
 
         versionText.text = "Version "+Plugin.PluginVersion;
@@ -407,6 +484,7 @@ public class ArchipelagoMenu : MonoBehaviour
         trackersButton.onClick.AddListener(ShowTrackers);
         qolButton.onClick.AddListener(ShowQOL);
         debugButton.onClick.AddListener(ToggleDebugMode);
+        reloadButton.onClick.AddListener(ReloadSettings);
         
         // Tooltips
         settingsTrigger.tooltip = settingsTooltip;
@@ -424,6 +502,13 @@ public class ArchipelagoMenu : MonoBehaviour
         contactListTrigger.tooltip = contactListTooltip;
         statusTrigger.tooltip = statusTooltip;
         debugTrigger.tooltip = debugTooltip;
+        reloadTrigger.tooltip = reloadTooltip;
+        goalTrigger.tooltip = goalTooltip;
+        keysDisabledTrigger.tooltip = keysDisabledTooltip;
+        fishDisabledTrigger.tooltip = fishDisabledTooltip;
+        keysTrigger.tooltip = keysTooltip;
+        fishTrigger.tooltip = fishTooltip;
+        trackerKeyTrigger.tooltip = trackerKeyTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -436,6 +521,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskSpoilerToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kioskSpoilerHighlight;
         contactListToggle.gameObject.AddComponent<Highlighter>().highlightPanel = contactListHighlight;
         cacmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cacmiHighlight;
+        trackerKeyToggle.gameObject.AddComponent<Highlighter>().highlightPanel = trackerKeyHighlight;
         
         // Information Tracker stuff
         boughtHomeImage.enabled = false;
@@ -544,14 +630,92 @@ public class ArchipelagoMenu : MonoBehaviour
         {
             informationPanel.SetActive(true);
             connectionPanel.SetActive(false);
-            trackersButton.interactable = false;
-            qolButton.interactable = false;
-            keyCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.keyAmount.ToString();
-            keyCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.keyAmount.ToString();
-            coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString();
-            coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString();
-            cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount.ToString();
-            cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount.ToString();
+            //trackersButton.interactable = false;
+            //qolButton.interactable = false;
+            if (int.Parse(ArchipelagoData.slotData["goal_completion"].ToString()) == 0)
+            {
+                goalText.text = "Goal: Get Hired";
+                goalTooltipText.text = "Repair the elevator in Tadpole HQ to reach Pepper and get hired!";
+            }
+            else
+            {
+                goalText.text = "Goal: Employee Of The Month!";
+                goalTooltipText.text = "Get 76 Coins to be considered the 'Employee Of The Month'!";
+            }
+            
+            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+            {
+                keysDisabledImage.gameObject.SetActive(false);
+                keyCountBackText.text = "NO";
+                keyCountFrontText.text = "NO";
+                keyHcCountBackText.text = ArchipelagoClient.HcKeyAmount + "/1";
+                keyHcCountFrontText.text = ArchipelagoClient.HcKeyAmount + "/1";
+                keyTtCountBackText.text = ArchipelagoClient.TtKeyAmount + "/1";
+                keyTtCountFrontText.text = ArchipelagoClient.TtKeyAmount + "/1";
+                keySfcCountBackText.text = ArchipelagoClient.SfcKeyAmount + "/1";
+                keySfcCountFrontText.text = ArchipelagoClient.SfcKeyAmount + "/1";
+                keyPpCountBackText.text = ArchipelagoClient.PpKeyAmount + "/1";
+                keyPpCountFrontText.text = ArchipelagoClient.PpKeyAmount + "/1";
+                keyBathCountBackText.text = ArchipelagoClient.BathKeyAmount + "/2";
+                keyBathCountFrontText.text = ArchipelagoClient.BathKeyAmount + "/2";
+                keyHqCountBackText.text = ArchipelagoClient.HqKeyAmount + "/1";
+                keyHqCountFrontText.text = ArchipelagoClient.HqKeyAmount + "/1";
+            }
+            else
+            {
+                keysDisabledImage.gameObject.SetActive(true);
+                keyCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.keyAmount + "/9";
+                keyCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.keyAmount + "/9";
+                keyHcCountBackText.text = "X";
+                keyHcCountFrontText.text = "X";
+                keyTtCountBackText.text = "X";
+                keyTtCountFrontText.text = "X";
+                keySfcCountBackText.text = "X";
+                keySfcCountFrontText.text = "X";
+                keyPpCountBackText.text = "X";
+                keyPpCountFrontText.text = "X";
+                keyBathCountBackText.text = "X";
+                keyBathCountFrontText.text = "X";
+                keyHqCountBackText.text = "X";
+                keyHqCountFrontText.text = "X";
+            }
+
+            if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+            {
+                fishDisabledImage.gameObject.SetActive(false);
+                fishHcCountBackText.text = ItemHandler.HairballFishAmount + "/5";
+                fishHcCountFrontText.text = ItemHandler.HairballFishAmount + "/5";
+                fishTtCountBackText.text = ItemHandler.TurbineFishAmount + "/5";
+                fishTtCountFrontText.text = ItemHandler.TurbineFishAmount + "/5";
+                fishSfcCountBackText.text = ItemHandler.SalmonFishAmount + "/5";
+                fishSfcCountFrontText.text = ItemHandler.SalmonFishAmount + "/5";
+                fishPpCountBackText.text = ItemHandler.PoolFishAmount + "/5";
+                fishPpCountFrontText.text = ItemHandler.PoolFishAmount + "/5";
+                fishBathCountBackText.text = ItemHandler.BathFishAmount + "/5";
+                fishBathCountFrontText.text = ItemHandler.BathFishAmount + "/5";
+                fishHqCountBackText.text = ItemHandler.TadpoleFishAmount + "/5";
+                fishHqCountFrontText.text = ItemHandler.TadpoleFishAmount + "/5";
+            }
+            else
+            {
+                fishDisabledImage.gameObject.SetActive(true);
+                fishHcCountBackText.text = "X";
+                fishHcCountFrontText.text = "X";
+                fishTtCountBackText.text = "X";
+                fishTtCountFrontText.text = "X";
+                fishSfcCountBackText.text = "X";
+                fishSfcCountFrontText.text = "X";
+                fishPpCountBackText.text = "X";
+                fishPpCountFrontText.text = "X";
+                fishBathCountBackText.text = "X";
+                fishBathCountFrontText.text = "X";
+                fishHqCountBackText.text = "X";
+                fishHqCountFrontText.text = "X";
+            }
+            coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
+            coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
+            cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+            cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
             if (KioskSpoiler)
             {
                 kioskHomeText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[1] 
@@ -685,6 +849,56 @@ public class ArchipelagoMenu : MonoBehaviour
         forceDebug = !forceDebug;
     }
 
+    public void ReloadSettings()
+    {
+        _rememberMe = rememberMeToggle.isOn;
+        _chat = chatToggle.isOn;
+        _hints = hintsToggle.isOn;
+        _shopHints = shopHintsToggle.isOn;
+        _ticket = ticketToggle.isOn;
+        _kiosk = kioskToggle.isOn;
+        _kioskSpoiler = kioskSpoilerToggle.isOn;
+        _cacmi = cacmiToggle.isOn;
+        _itemSent = itemSentToggle.isOn;
+        _contactList = contactListToggle.isOn;
+        _status = statusToggle.isOn;
+        _trackerKey = trackerKeyToggle.isOn;
+        Hints = _hints;
+        Chat = _chat;
+        ShopHints = _shopHints;
+        Ticket = _ticket;
+        Kiosk = _kiosk;
+        KioskSpoiler = _kioskSpoiler;
+        cacmi = _cacmi;
+        itemSent = _itemSent;
+        contactList = _contactList;
+        status = _status;
+        TrackerKey = _trackerKey;
+        
+        SavedData data = new SavedData
+        {
+            Host = ArchipelagoClient.ServerData.Uri,
+            SlotName = ArchipelagoClient.ServerData.SlotName,
+            RememberMe = _rememberMe,
+            Chat = _chat,
+            Hint = _hints,
+            ShopHints = _shopHints,
+            Ticket = _ticket,
+            Kiosk = _kiosk,
+            KioskSpoiler = _kioskSpoiler,
+            CACMI = _cacmi,
+            ItemSent = _itemSent,
+            ContactList = _contactList,
+            Status = _status,
+            Key = _trackerKey,
+        };
+        if (_rememberMe)
+        {
+            SaveSettings(data);
+        }
+        scrTrainManager.instance.UseTrain(scrGameSaveManager.instance.gameData.generalGameData.currentLevel, false);
+    }
+
     public void Connect()
     {
         _serverAddress = serverAddressField.text;
@@ -701,6 +915,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _itemSent = itemSentToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
+        _trackerKey = trackerKeyToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -711,6 +926,7 @@ public class ArchipelagoMenu : MonoBehaviour
         itemSent = _itemSent;
         contactList = _contactList;
         status = _status;
+        TrackerKey = _trackerKey;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -746,6 +962,7 @@ public class ArchipelagoMenu : MonoBehaviour
             ItemSent = _itemSent,
             ContactList = _contactList,
             Status = _status,
+            Key = _trackerKey,
         };
         if (_rememberMe)
         {
@@ -809,6 +1026,7 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool ItemSent { get; set; } = _itemSent;
         public bool ContactList { get; set; } = _contactList;
         public bool Status { get; set; } = _status;
+        public bool Key { get; set; } = _trackerKey;
     }
 
     private void LoadData()
@@ -830,6 +1048,7 @@ public class ArchipelagoMenu : MonoBehaviour
             itemSentToggle.isOn = savedData.ItemSent;
             contactListToggle.isOn = savedData.ContactList;
             statusToggle.isOn = savedData.Status;
+            trackerKeyToggle.isOn = savedData.Key;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -847,6 +1066,7 @@ public class ArchipelagoMenu : MonoBehaviour
             itemSentToggle.isOn = true;
             contactListToggle.isOn = true;
             statusToggle.isOn = true;
+            trackerKeyToggle.isOn = true;
         }
     }
 

@@ -348,7 +348,20 @@ namespace NikoArchipelago
             SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
-            SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
+            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+            {
+                SyncValue(ref ItemHandler.HairballKeyAmount, ArchipelagoClient.HcKeyAmount - ItemHandler.UsedKeysHairball());
+                SyncValue(ref ItemHandler.TurbineKeyAmount, ArchipelagoClient.TtKeyAmount - ItemHandler.UsedKeysTurbine());
+                SyncValue(ref ItemHandler.SalmonKeyAmount, ArchipelagoClient.SfcKeyAmount - ItemHandler.UsedKeysSalmon());
+                SyncValue(ref ItemHandler.PoolKeyAmount, ArchipelagoClient.PpKeyAmount - ItemHandler.UsedKeysPool());
+                SyncValue(ref ItemHandler.BathKeyAmount, ArchipelagoClient.BathKeyAmount - ItemHandler.UsedKeysBath());
+                SyncValue(ref ItemHandler.TadpoleKeyAmount, ArchipelagoClient.HqKeyAmount - ItemHandler.UsedKeysTadpole());
+                FakeLevelSpecificKeyAmount();
+            }
+            else
+            {
+                SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
+            }
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
@@ -381,6 +394,20 @@ namespace NikoArchipelago
                 ArchipelagoClient.GiveItem(t);
             }
             ArchipelagoClient.queuedItems.Clear();
+        }
+
+        public static void FakeLevelSpecificKeyAmount()
+        {
+            scrGameSaveManager.instance.gameData.generalGameData.keyAmount = SceneManager.GetActiveScene().name switch
+            {
+                "Hairball City" => ItemHandler.HairballKeyAmount,
+                "Trash Kingdom" => ItemHandler.TurbineKeyAmount,
+                "Salmon Creek Forest" => ItemHandler.SalmonKeyAmount,
+                "Public Pool" => ItemHandler.PoolKeyAmount,
+                "The Bathhouse" => ItemHandler.BathKeyAmount,
+                "Tadpole inc" => ItemHandler.TadpoleKeyAmount,
+                _ => 0
+            };
         }
 
         public void LogFlags()

@@ -24,7 +24,8 @@ public class ArchipelagoClient
     public static ArchipelagoData ServerData = new();
     private DeathLinkHandler deathLinkHandler;
     public static ArchipelagoSession _session;
-    public int CoinAmount, CassetteAmount, KeyAmount;
+    public int CoinAmount, CassetteAmount, KeyAmount, HcKeyAmount, TtKeyAmount, SfcKeyAmount, PpKeyAmount, BathKeyAmount, HqKeyAmount,
+        HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount;
     public bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
     public Task _disconnectTask;
 
@@ -259,7 +260,54 @@ public class ArchipelagoClient
                     {
                         ItemHandler.AddContactList1(senderName, notify);
                     }
-                    Plugin.BepinLogger.LogInfo($"Counted: {_session.Items.AllItemsReceived.Count(i => i == item)}");
+                    break;
+                case 598_145_444_000+20: // HCFish
+                    ItemHandler.AddHcFish(senderName, notify);
+                    HcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Fish");
+                    break;
+                case 598_145_444_000+21: // TTFish
+                    ItemHandler.AddTtFish(senderName, notify);
+                    TtFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Fish");
+                    break;
+                case 598_145_444_000+22: // SFCFish
+                    ItemHandler.AddSfcFish(senderName, notify);
+                    SfcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Fish");
+                    break;
+                case 598_145_444_000+23: // PPFish
+                    ItemHandler.AddPpFish(senderName, notify);
+                    PpFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Fish");
+                    break;
+                case 598_145_444_000+24: // BathFish
+                    ItemHandler.AddBathFish(senderName, notify);
+                    BathFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Fish");
+                    break;
+                case 598_145_444_000+25: // HQFish
+                    ItemHandler.AddHqFish(senderName, notify);
+                    HqFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Fish");
+                    break;
+                case 598_145_444_000+30: // HCKey
+                    ItemHandler.AddHCKey(senderName, notify);
+                    HcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Key");
+                    break;
+                case 598_145_444_000+31: // TTKey
+                    ItemHandler.AddTTKey(senderName, notify);
+                    TtKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Key");
+                    break;
+                case 598_145_444_000+32: // SFCKey
+                    ItemHandler.AddSFCKey(senderName, notify);
+                    SfcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Key");
+                    break;
+                case 598_145_444_000+33: // PPKey
+                    ItemHandler.AddPPKey(senderName, notify);
+                    PpKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Key");
+                    break;
+                case 598_145_444_000+34: // BathKey
+                    ItemHandler.AddBathKey(senderName, notify);
+                    BathKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Key");
+                    break;
+                case 598_145_444_000+35: // HQKey
+                    ItemHandler.AddHQKey(senderName, notify);
+                    HqKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Key");
                     break;
             }
     }

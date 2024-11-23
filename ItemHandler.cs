@@ -10,6 +10,8 @@ public static class ItemHandler
     private static Plugin plugin;
     private static bool prog;
     public static bool Garden;
+    public static int HairballKeyAmount, TurbineKeyAmount, SalmonKeyAmount, PoolKeyAmount, BathKeyAmount, TadpoleKeyAmount,
+        HairballFishAmount, TurbineFishAmount, SalmonFishAmount, PoolFishAmount, BathFishAmount, TadpoleFishAmount;
     public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -44,6 +46,66 @@ public static class ItemHandler
                 3f, Plugin.KeySprite);
         }
         scrGameSaveManager.instance.SaveGame();
+    }
+    
+    public static void AddHCKey(string sender = "", bool notify = true)
+    {
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Key from {sender}!" : "You found your Hairball City Key!",
+                3f, Plugin.KeySprite);
+        }
+    }
+    
+    public static void AddTTKey(string sender = "", bool notify = true)
+    {
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Key from {sender}!" : "You found your Turbine Town Key!",
+                3f, Plugin.KeySprite);
+        }
+    }
+    
+    public static void AddSFCKey(string sender = "", bool notify = true)
+    {
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Key from {sender}!" : "You found your Salmon Creek Forest Key!",
+                3f, Plugin.KeySprite);
+        }
+    }
+    
+    public static void AddPPKey(string sender = "", bool notify = true)
+    {
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Key from {sender}!" : "You found your Public Pool Key!",
+                3f, Plugin.KeySprite);
+        }
+    }
+    
+    public static void AddBathKey(string sender = "", bool notify = true)
+    {
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Key from {sender}!" : "You found your Bathhouse Key!",
+                3f, Plugin.KeySprite);
+        }
+    }
+    
+    public static void AddHQKey(string sender = "", bool notify = true)
+    {
+        if (notify)
+        {
+            Plugin.APSendNote(
+                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Key from {sender}!" : "You found your Tadpole HQ Key!",
+                3f, Plugin.KeySprite);
+        }
     }
 
     public static void AddLetter(int amount = 1, string sender = "", bool notify = true)
@@ -211,6 +273,96 @@ public static class ItemHandler
         };
         return worldsData.Sum(world => world.miscFlags.Count(flag => keyFlags.Any(flag.Contains)));
     }
+    
+    public static int UsedKeysHairball()
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var keyFlags = new List<string>
+        {
+            "lock1",
+            "mahjonglock",
+            "Officelock",
+            "lock2",
+            "TurbineLock",
+            "1"
+        };
+        return worldsData[1].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+    }
+    
+    public static int UsedKeysTurbine()
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var keyFlags = new List<string>
+        {
+            "lock1",
+            "mahjonglock",
+            "Officelock",
+            "lock2",
+            "TurbineLock",
+            "1"
+        };
+        return worldsData[2].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+    }
+    
+    public static int UsedKeysSalmon()
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var keyFlags = new List<string>
+        {
+            "lock1",
+            "mahjonglock",
+            "Officelock",
+            "lock2",
+            "TurbineLock",
+            "1"
+        };
+        return worldsData[3].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+    }
+    
+    public static int UsedKeysPool()
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var keyFlags = new List<string>
+        {
+            "lock1",
+            "mahjonglock",
+            "Officelock",
+            "lock2",
+            "TurbineLock",
+            "1"
+        };
+        return worldsData[4].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+    }
+    
+    public static int UsedKeysBath()
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var keyFlags = new List<string>
+        {
+            "lock1",
+            "mahjonglock",
+            "Officelock",
+            "lock2",
+            "TurbineLock",
+            "1"
+        };
+        return worldsData[5].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+    }
+    
+    public static int UsedKeysTadpole()
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var keyFlags = new List<string>
+        {
+            "lock1",
+            "mahjonglock",
+            "Officelock",
+            "lock2",
+            "TurbineLock",
+            "1"
+        };
+        return worldsData[6].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+    }
 
     public static void AddGarden(string sender, bool notify = true)
     {
@@ -220,5 +372,53 @@ public static class ItemHandler
             4f, Plugin.GgSprite);
         Garden = true;
         scrGameSaveManager.instance.SaveGame();
+    }
+    
+    public static void AddHcFish(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Fish from {sender}!" : "You found your Hairball City Fish!",
+            3f, Plugin.FishSprite);
+    }
+    
+    public static void AddTtFish(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Fish from {sender}!" : "You found your Turbine Fish!",
+            3f, Plugin.FishSprite);
+    }
+    
+    public static void AddSfcFish(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Fish from {sender}!" : "You found your Salmon Creek Forest Fish!",
+            3f, Plugin.FishSprite);
+    }
+    
+    public static void AddPpFish(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Fish from {sender}!" : "You found your Public Pool Fish!",
+            3f, Plugin.FishSprite);
+    }
+    
+    public static void AddBathFish(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Fish from {sender}!" : "You found your Bathhouse Fish!",
+            3f, Plugin.FishSprite);
+    }
+    
+    public static void AddHqFish(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Fish from {sender}!" : "You found your Tadpole HQ Fish!",
+            3f, Plugin.FishSprite);
     }
 }

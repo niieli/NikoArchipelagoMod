@@ -1,30 +1,21 @@
 ﻿using HarmonyLib;
 using KinematicCharacterController.Core;
+using NikoArchipelago.Archipelago;
 using UnityEngine;
 
 namespace NikoArchipelago.Patches;
 
 public class TrackerDisplayerPatch
 {
-    public static CanvasGroup Ticket;
-    public static CanvasGroup Kiosk;
     public static scrUIhider TicketUI;
     public static scrUIhider KioskUI;
+    public static scrUIhider KeyUI;
     [HarmonyPatch(typeof(scrDisplayerSwitch), "SetDisplayerVisiability")]
     public static class PatchDisplayerSwitch
     {
         [HarmonyPostfix]
         static void Postfix(bool visable)
         {
-            // if (Ticket == null || Kiosk == null) return;
-            // if (ArchipelagoMenu.Ticket)
-            // {
-            //     Ticket.alpha = visable ? 1 : 0;
-            // }
-            // if (ArchipelagoMenu.Kiosk)
-            // {
-            //     Kiosk.alpha = visable ? 1 : 0;
-            // }
             if (TicketUI == null || KioskUI == null) return;
             if (ArchipelagoMenu.Ticket)
             {
@@ -33,6 +24,11 @@ public class TrackerDisplayerPatch
             if (ArchipelagoMenu.Kiosk)
             {
                 KioskUI.visible = visable;
+            }
+            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) != 1) return;
+            if (ArchipelagoMenu.TrackerKey)
+            {
+                KeyUI.visible = visable;
             }
         }
     }

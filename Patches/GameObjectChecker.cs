@@ -37,7 +37,7 @@ public class GameObjectChecker : MonoBehaviour
         APItemSent();
         TrackerKiosk();
         TrackerTicket();
-        StartCoroutine(CheckTrackers());
+        TrackerKey();
         HqWhiteboard();
         HqGarden();
         SpawnGaryHome();
@@ -240,26 +240,30 @@ public class GameObjectChecker : MonoBehaviour
         tracker.enabled = true;
     }
 
-    private static void TrackerDisplayer()
+    private static void TrackerKey()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var ticket = GameObject.Find("TrackerTicket");
-        var kiosk = GameObject.Find("TrackerKiosk");
-        if (ticket.GetComponent<CanvasGroup>() != null || kiosk.GetComponent<CanvasGroup>() != null)
+        var apTrackerUI = Plugin.AssetBundle.LoadAsset<GameObject>("APTrackerKey");
+        var ticketPrefab = Instantiate(apTrackerUI, GameObject.Find("UI").transform, false);
+        if (ticketPrefab == null)
         {
-            //TrackerDisplayerPatch.Ticket = ticket.GetComponent<scrUIhider>();
-            //TrackerDisplayerPatch.Kiosk = kiosk.GetComponent<scrUIhider>();
-            TrackerDisplayerPatch.Ticket = ticket.GetComponent<CanvasGroup>();
-            TrackerDisplayerPatch.Kiosk = kiosk.GetComponent<CanvasGroup>();
+            Plugin.BepinLogger.LogError("Failed to instantiate apTrackerUI prefab.");
+            return;
         }
-    }
-
-    private static IEnumerator CheckTrackers()
-    {
-        Plugin.BepinLogger.LogError("Looking for TrackerTicket & TrackerKiosk");
-        yield return new WaitUntil(() => GameObject.Find("TrackerTicket") || GameObject.Find("TrackerKiosk"));
-        Plugin.BepinLogger.LogInfo("Found TrackerTicket and TrackerKiosk");
-        TrackerDisplayer();
+        ticketPrefab.layer = LayerMask.NameToLayer("UI");
+        var manager = ticketPrefab.transform.Find("APKeyManager")?.gameObject;
+        if (manager == null)
+        {
+            Plugin.BepinLogger.LogError("APKeyManager not found in the prefab.");
+            return;
+        }
+        var tracker = manager.AddComponent<TrackerKeys>();
+        if (tracker == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrackerKeys component to APKeyManager.");
+            return;
+        }
+        tracker.enabled = true;
     }
 
     private static void HqWhiteboard()
