@@ -206,7 +206,7 @@ public class LocationHandler : MonoBehaviour
         }
         else
         {
-            if (scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal != 76 || _sent) return;
+            if (scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal < 76 || _sent) return;
             {
                 ArchipelagoClient.SendCompletion();
                 var achievement = ScriptableObject.CreateInstance<AchievementObject>();

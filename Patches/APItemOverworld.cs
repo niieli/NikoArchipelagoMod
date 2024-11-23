@@ -55,6 +55,7 @@ public class APItemOverworld
                 }
                 case "apUseful":
                 {
+                    _apUsefulItemOverworld = Object.Instantiate(Plugin.AssetBundle.LoadAsset<GameObject>("APUseful"));
                     var ogQuads = __instance.transform.Find("Quads").gameObject;
                     var apUseful = _apUsefulItemOverworld.transform.Find("Quads").gameObject;
                     apUseful.transform.position = ogQuads.transform.position;
@@ -773,6 +774,7 @@ public class APItemOverworld
                 }
                 case "apUseful":
                 {
+                    _apUsefulItemOverworld = Object.Instantiate(Plugin.AssetBundle.LoadAsset<GameObject>("APUseful"));
                     var ogQuads = __instance.transform.Find("Quads").gameObject;
                     var apUseful = _apUsefulItemOverworld.transform.Find("Quads").gameObject;
                     apUseful.transform.position = ogQuads.transform.position;
@@ -969,6 +971,16 @@ public class APItemOverworld
                     tadpoleHQ.AddComponent<ScuffedSpin>();
                     tadpoleHQ.transform.SetParent(__instance.transform);
                     return tadpoleHQ;
+                }
+                case "garysGarden":
+                {
+                    _garysGardenItemOverworld = Object.Instantiate(Plugin.AssetBundle.LoadAsset<GameObject>("GarysGarden"));
+                    var ogQuads = __instance.transform.Find("Quads").gameObject;
+                    var garysGarden = _garysGardenItemOverworld.transform.Find("Quads").gameObject;
+                    garysGarden.transform.position = ogQuads.transform.position;
+                    garysGarden.AddComponent<ScuffedSpin>();
+                    garysGarden.transform.SetParent(__instance.transform);
+                    return garysGarden;
                 }
             }
             return null;

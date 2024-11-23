@@ -639,33 +639,54 @@ public class ArchipelagoMenu : MonoBehaviour
             }
             else
             {
-                goalText.text = "Goal: Employee Of The Month!";
+                goalText.text = "Goal: Employee Of The Month";
                 goalTooltipText.text = "Get 76 Coins to be considered the 'Employee Of The Month'!";
             }
-            
-            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+
+            if (ArchipelagoData.slotData.ContainsKey("key_level"))
             {
-                keysDisabledImage.gameObject.SetActive(false);
-                keyCountBackText.text = "NO";
-                keyCountFrontText.text = "NO";
-                keyHcCountBackText.text = ArchipelagoClient.HcKeyAmount + "/1";
-                keyHcCountFrontText.text = ArchipelagoClient.HcKeyAmount + "/1";
-                keyTtCountBackText.text = ArchipelagoClient.TtKeyAmount + "/1";
-                keyTtCountFrontText.text = ArchipelagoClient.TtKeyAmount + "/1";
-                keySfcCountBackText.text = ArchipelagoClient.SfcKeyAmount + "/1";
-                keySfcCountFrontText.text = ArchipelagoClient.SfcKeyAmount + "/1";
-                keyPpCountBackText.text = ArchipelagoClient.PpKeyAmount + "/1";
-                keyPpCountFrontText.text = ArchipelagoClient.PpKeyAmount + "/1";
-                keyBathCountBackText.text = ArchipelagoClient.BathKeyAmount + "/2";
-                keyBathCountFrontText.text = ArchipelagoClient.BathKeyAmount + "/2";
-                keyHqCountBackText.text = ArchipelagoClient.HqKeyAmount + "/1";
-                keyHqCountFrontText.text = ArchipelagoClient.HqKeyAmount + "/1";
+                if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+                {
+                    keysDisabledImage.gameObject.SetActive(false);
+                    keyCountBackText.text = "NO";
+                    keyCountFrontText.text = "NO";
+                    keyHcCountBackText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
+                    keyHcCountFrontText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
+                    keyTtCountBackText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
+                    keyTtCountFrontText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
+                    keySfcCountBackText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
+                    keySfcCountFrontText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
+                    keyPpCountBackText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
+                    keyPpCountFrontText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
+                    keyBathCountBackText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
+                    keyBathCountFrontText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
+                    keyHqCountBackText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
+                    keyHqCountFrontText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
+                }
+                else
+                {
+                    keysDisabledImage.gameObject.SetActive(true);
+                    keyCountBackText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
+                    keyCountFrontText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
+                    keyHcCountBackText.text = "X";
+                    keyHcCountFrontText.text = "X";
+                    keyTtCountBackText.text = "X";
+                    keyTtCountFrontText.text = "X";
+                    keySfcCountBackText.text = "X";
+                    keySfcCountFrontText.text = "X";
+                    keyPpCountBackText.text = "X";
+                    keyPpCountFrontText.text = "X";
+                    keyBathCountBackText.text = "X";
+                    keyBathCountFrontText.text = "X";
+                    keyHqCountBackText.text = "X";
+                    keyHqCountFrontText.text = "X";
+                }
             }
             else
             {
                 keysDisabledImage.gameObject.SetActive(true);
-                keyCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.keyAmount + "/9";
-                keyCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.keyAmount + "/9";
+                keyCountBackText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
+                keyCountFrontText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
                 keyHcCountBackText.text = "X";
                 keyHcCountFrontText.text = "X";
                 keyTtCountBackText.text = "X";
@@ -679,6 +700,7 @@ public class ArchipelagoMenu : MonoBehaviour
                 keyHqCountBackText.text = "X";
                 keyHqCountFrontText.text = "X";
             }
+            
 
             if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
             {
@@ -712,10 +734,32 @@ public class ArchipelagoMenu : MonoBehaviour
                 fishHqCountBackText.text = "X";
                 fishHqCountFrontText.text = "X";
             }
-            coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
-            coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
-            cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
-            cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 1)
+                {
+                    coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
+                    coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
+                    cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                    cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                }
+                else
+                {
+                    coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/76";
+                    coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/76";
+                    cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
+                    cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
+                }
+            }
+            else
+            {
+                coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
+                coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
+                cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+            }
+            
             if (KioskSpoiler)
             {
                 kioskHomeText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[1] 
@@ -826,8 +870,15 @@ public class ArchipelagoMenu : MonoBehaviour
             if (gameSaveManager.gameData.generalGameData.unlockedLevels[5]) ticketPpImage.color = Color.white;
             if (gameSaveManager.gameData.generalGameData.unlockedLevels[6]) ticketBathImage.color = Color.white;
             if (gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketHqImage.color = Color.white;
-            if (ItemHandler.Garden || int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0 
-                && gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketGgImage.color = Color.white;
+            if (ArchipelagoData.slotData.ContainsKey("garden_access"))
+            {
+                if (ItemHandler.Garden || int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0 
+                    && gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketGgImage.color = Color.white;
+            }
+            else if (gameSaveManager.gameData.generalGameData.unlockedLevels[7])
+            {
+                ticketGgImage.color = Color.white;
+            }
             if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave1")) ticketCl1Image.color = Color.white;
             if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave2")) ticketCl2Image.color = Color.white;
         }
