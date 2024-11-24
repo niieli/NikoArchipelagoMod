@@ -78,6 +78,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -143,6 +149,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -208,6 +220,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -274,6 +292,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -339,6 +363,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -416,6 +446,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -487,6 +523,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -551,6 +593,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -611,6 +659,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -671,6 +725,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -731,6 +791,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -791,6 +857,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -851,6 +923,12 @@ public class APItemObtainer
                                 "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
                                 "Gary's Garden Ticket" => Plugin.GgSprite.texture,
                                 "Super Jump" => Plugin.SuperJumpSprite.texture,
+                                "Hairball City Fish" => Plugin.FishSprite.texture,
+                                "Turbine Town Fish" => Plugin.FishSprite.texture,
+                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
+                                "Public Pool Fish" => Plugin.FishSprite.texture,
+                                "Bathhouse Fish" => Plugin.FishSprite.texture,
+                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
                                 _ => Plugin.APIconSprite.texture
                             };
                     }

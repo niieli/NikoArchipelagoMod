@@ -231,6 +231,12 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip keysTooltip;
     public TooltipTrigger fishTrigger;
     public Tooltip fishTooltip;
+    public Image boughtHcFishImage;
+    public Image boughtTtFishImage;
+    public Image boughtScfFishImage;
+    public Image boughtPpFishImage;
+    public Image boughtBathFishImage;
+    public Image boughtHqFishImage;
     public static bool forceDebug;
     
     public void Start()
@@ -295,6 +301,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keyHcCountFrontText = keysPanel.transform.Find("HCKeyCount/Front").GetComponent<TextMeshProUGUI>();
         fishHcCountBackText = fishPanel.transform.Find("HCFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishHcCountFrontText = fishPanel.transform.Find("HCFishCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtHcFishImage = fishPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
         // Turbine
         ticketTtImage = kioskAndTicketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
         boughtTtImage = ticketTtImage.transform.Find("Bought").GetComponent<Image>();
@@ -307,6 +314,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keyTtCountFrontText = keysPanel.transform.Find("TTKeyCount/Front").GetComponent<TextMeshProUGUI>();
         fishTtCountBackText = fishPanel.transform.Find("TTFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishTtCountFrontText = fishPanel.transform.Find("TTFishCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtTtFishImage = fishPanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
         // Salmon
         ticketSfcImage = kioskAndTicketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
         boughtSfcImage = ticketSfcImage.transform.Find("Bought").GetComponent<Image>();
@@ -319,6 +327,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keySfcCountFrontText = keysPanel.transform.Find("SFCKeyCount/Front").GetComponent<TextMeshProUGUI>();
         fishSfcCountBackText = fishPanel.transform.Find("SFCFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishSfcCountFrontText = fishPanel.transform.Find("SFCFishCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtScfFishImage = fishPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
         // Pool
         ticketPpImage = kioskAndTicketPanel.transform.Find("TicketPool").GetComponent<Image>();
         boughtPpImage = ticketPpImage.transform.Find("Bought").GetComponent<Image>();
@@ -331,6 +340,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keyPpCountFrontText = keysPanel.transform.Find("PPKeyCount/Front").GetComponent<TextMeshProUGUI>();
         fishPpCountBackText = fishPanel.transform.Find("PPFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishPpCountFrontText = fishPanel.transform.Find("PPFishCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtPpFishImage = fishPanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
         // Bath
         ticketBathImage = kioskAndTicketPanel.transform.Find("TicketBath").GetComponent<Image>();
         boughtBathImage = ticketBathImage.transform.Find("Bought").GetComponent<Image>();
@@ -343,6 +353,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keyBathCountFrontText = keysPanel.transform.Find("BATHKeyCount/Front").GetComponent<TextMeshProUGUI>();
         fishBathCountBackText = fishPanel.transform.Find("BATHFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishBathCountFrontText = fishPanel.transform.Find("BATHFishCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtBathFishImage = fishPanel.transform.Find("BATHComplete").gameObject.GetComponent<Image>();
         // Tadpole
         ticketHqImage = kioskAndTicketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
         boughtHqImage = ticketHqImage.transform.Find("Bought").GetComponent<Image>();
@@ -355,6 +366,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keyHqCountFrontText = keysPanel.transform.Find("HQKeyCount/Front").GetComponent<TextMeshProUGUI>();
         fishHqCountBackText = fishPanel.transform.Find("HQFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishHqCountFrontText = fishPanel.transform.Find("HQFishCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtHqFishImage = fishPanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
         // Misc
         ticketGgImage = kioskAndTicketPanel.transform.Find("TicketGarden").GetComponent<Image>();
         ticketCl1Image = informationPanel.transform.Find("ContactList1").GetComponent<Image>();
@@ -539,6 +551,13 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHqImage.enabled = false;
         boughtHqBackImage.enabled = false;
         
+        boughtHcFishImage.enabled = false;
+        boughtTtFishImage.enabled = false;
+        boughtScfFishImage.enabled = false;
+        boughtPpFishImage.enabled = false;
+        boughtBathFishImage.enabled = false;
+        boughtHqFishImage.enabled = false;
+        
         settingsPanelCanvasGroup = formPanel.transform.Find("settingsPanel").gameObject.GetComponent<CanvasGroup>();
         trackersPanelCanvasGroup = formPanel.transform.Find("trackersPanel").gameObject.GetComponent<CanvasGroup>();
         qolPanelCanvasGroup = formPanel.transform.Find("qolPanel").gameObject.GetComponent<CanvasGroup>();
@@ -700,23 +719,53 @@ public class ArchipelagoMenu : MonoBehaviour
                 keyHqCountBackText.text = "X";
                 keyHqCountFrontText.text = "X";
             }
-            
 
-            if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+            if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
             {
-                fishDisabledImage.gameObject.SetActive(false);
-                fishHcCountBackText.text = ItemHandler.HairballFishAmount + "/5";
-                fishHcCountFrontText.text = ItemHandler.HairballFishAmount + "/5";
-                fishTtCountBackText.text = ItemHandler.TurbineFishAmount + "/5";
-                fishTtCountFrontText.text = ItemHandler.TurbineFishAmount + "/5";
-                fishSfcCountBackText.text = ItemHandler.SalmonFishAmount + "/5";
-                fishSfcCountFrontText.text = ItemHandler.SalmonFishAmount + "/5";
-                fishPpCountBackText.text = ItemHandler.PoolFishAmount + "/5";
-                fishPpCountFrontText.text = ItemHandler.PoolFishAmount + "/5";
-                fishBathCountBackText.text = ItemHandler.BathFishAmount + "/5";
-                fishBathCountFrontText.text = ItemHandler.BathFishAmount + "/5";
-                fishHqCountBackText.text = ItemHandler.TadpoleFishAmount + "/5";
-                fishHqCountFrontText.text = ItemHandler.TadpoleFishAmount + "/5";
+                if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+                {
+                    fishDisabledImage.gameObject.SetActive(false);
+                    fishHcCountBackText.text = ItemHandler.HairballFishAmount + "/5";
+                    fishHcCountFrontText.text = ItemHandler.HairballFishAmount + "/5";
+                    if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("fishing"))
+                        boughtHcFishImage.enabled = true;
+                    fishTtCountBackText.text = ItemHandler.TurbineFishAmount + "/5";
+                    fishTtCountFrontText.text = ItemHandler.TurbineFishAmount + "/5";
+                    if (scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("fishing"))
+                        boughtTtFishImage.enabled = true;
+                    fishSfcCountBackText.text = ItemHandler.SalmonFishAmount + "/5";
+                    fishSfcCountFrontText.text = ItemHandler.SalmonFishAmount + "/5";
+                    if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("fishing"))
+                        boughtScfFishImage.enabled = true;
+                    fishPpCountBackText.text = ItemHandler.PoolFishAmount + "/5";
+                    fishPpCountFrontText.text = ItemHandler.PoolFishAmount + "/5";
+                    if (scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("fishing"))
+                        boughtPpFishImage.enabled = true;
+                    fishBathCountBackText.text = ItemHandler.BathFishAmount + "/5";
+                    fishBathCountFrontText.text = ItemHandler.BathFishAmount + "/5";
+                    if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("fishing"))
+                        boughtBathFishImage.enabled = true;
+                    fishHqCountBackText.text = ItemHandler.TadpoleFishAmount + "/5";
+                    fishHqCountFrontText.text = ItemHandler.TadpoleFishAmount + "/5";
+                    if (scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("fishing"))
+                        boughtHqFishImage.enabled = true;
+                }
+                else
+                {
+                    fishDisabledImage.gameObject.SetActive(true);
+                    fishHcCountBackText.text = "X";
+                    fishHcCountFrontText.text = "X";
+                    fishTtCountBackText.text = "X";
+                    fishTtCountFrontText.text = "X";
+                    fishSfcCountBackText.text = "X";
+                    fishSfcCountFrontText.text = "X";
+                    fishPpCountBackText.text = "X";
+                    fishPpCountFrontText.text = "X";
+                    fishBathCountBackText.text = "X";
+                    fishBathCountFrontText.text = "X";
+                    fishHqCountBackText.text = "X";
+                    fishHqCountFrontText.text = "X";
+                }
             }
             else
             {

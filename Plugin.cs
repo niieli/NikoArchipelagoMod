@@ -349,28 +349,38 @@ namespace NikoArchipelago
             SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
-            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+            if (ArchipelagoData.slotData.ContainsKey("key_level"))
             {
-                SyncValue(ref ItemHandler.HairballKeyAmount, ArchipelagoClient.HcKeyAmount - ItemHandler.UsedKeysHairball());
-                SyncValue(ref ItemHandler.TurbineKeyAmount, ArchipelagoClient.TtKeyAmount - ItemHandler.UsedKeysTurbine());
-                SyncValue(ref ItemHandler.SalmonKeyAmount, ArchipelagoClient.SfcKeyAmount - ItemHandler.UsedKeysSalmon());
-                SyncValue(ref ItemHandler.PoolKeyAmount, ArchipelagoClient.PpKeyAmount - ItemHandler.UsedKeysPool());
-                SyncValue(ref ItemHandler.BathKeyAmount, ArchipelagoClient.BathKeyAmount - ItemHandler.UsedKeysBath());
-                SyncValue(ref ItemHandler.TadpoleKeyAmount, ArchipelagoClient.HqKeyAmount - ItemHandler.UsedKeysTadpole());
-                FakeLevelSpecificKeyAmount();
-            }
-            else
+                if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+                {
+                    SyncValue(ref ItemHandler.HairballKeyAmount, ArchipelagoClient.HcKeyAmount - ItemHandler.UsedKeysHairball());
+                    SyncValue(ref ItemHandler.TurbineKeyAmount, ArchipelagoClient.TtKeyAmount - ItemHandler.UsedKeysTurbine());
+                    SyncValue(ref ItemHandler.SalmonKeyAmount, ArchipelagoClient.SfcKeyAmount - ItemHandler.UsedKeysSalmon());
+                    SyncValue(ref ItemHandler.PoolKeyAmount, ArchipelagoClient.PpKeyAmount - ItemHandler.UsedKeysPool());
+                    SyncValue(ref ItemHandler.BathKeyAmount, ArchipelagoClient.BathKeyAmount - ItemHandler.UsedKeysBath());
+                    SyncValue(ref ItemHandler.TadpoleKeyAmount, ArchipelagoClient.HqKeyAmount - ItemHandler.UsedKeysTadpole());
+                    FakeLevelSpecificKeyAmount();
+                }
+                else
+                {
+                    SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
+                }
+            } else
             {
                 SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
             }
-            if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+
+            if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
             {
-                SyncValue(ref ItemHandler.HairballFishAmount, ArchipelagoClient.HcFishAmount);
-                SyncValue(ref ItemHandler.TurbineFishAmount, ArchipelagoClient.TtFishAmount);
-                SyncValue(ref ItemHandler.SalmonFishAmount, ArchipelagoClient.SfcFishAmount);
-                SyncValue(ref ItemHandler.PoolFishAmount, ArchipelagoClient.PpFishAmount);
-                SyncValue(ref ItemHandler.BathFishAmount, ArchipelagoClient.BathFishAmount);
-                SyncValue(ref ItemHandler.TadpoleFishAmount, ArchipelagoClient.HqFishAmount);
+                if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+                {
+                    SyncValue(ref ItemHandler.HairballFishAmount, ArchipelagoClient.HcFishAmount);
+                    SyncValue(ref ItemHandler.TurbineFishAmount, ArchipelagoClient.TtFishAmount);
+                    SyncValue(ref ItemHandler.SalmonFishAmount, ArchipelagoClient.SfcFishAmount);
+                    SyncValue(ref ItemHandler.PoolFishAmount, ArchipelagoClient.PpFishAmount);
+                    SyncValue(ref ItemHandler.BathFishAmount, ArchipelagoClient.BathFishAmount);
+                    SyncValue(ref ItemHandler.TadpoleFishAmount, ArchipelagoClient.HqFishAmount);
+                }
             }
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
@@ -407,7 +417,7 @@ namespace NikoArchipelago
             ArchipelagoClient.queuedItems.Clear();
         }
 
-        public static void FakeLevelSpecificKeyAmount()
+        private static void FakeLevelSpecificKeyAmount()
         {
             scrGameSaveManager.instance.gameData.generalGameData.keyAmount = SceneManager.GetActiveScene().name switch
             {

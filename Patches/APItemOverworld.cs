@@ -146,6 +146,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -214,6 +220,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -278,6 +290,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -342,6 +360,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -406,6 +430,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -470,6 +500,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -533,6 +569,12 @@ public class APItemOverworld
                                 "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -673,6 +715,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -741,6 +789,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -805,6 +859,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -869,6 +929,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -933,6 +999,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -997,6 +1069,12 @@ public class APItemOverworld
                                 "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
                                 "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
                                 "Super Jump" => CreateItemOverworld("superJump", __instance),
+                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }

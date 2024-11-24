@@ -55,6 +55,7 @@ public class TrackerKeys : MonoBehaviour
     public void Update()
     {
         if (ArchipelagoData.slotData == null) return;
+        if (!ArchipelagoData.slotData.ContainsKey("key_level")) return;
         hairballAmountText.text = ItemHandler.HairballKeyAmount.ToString();
         turbineAmountText.text = ItemHandler.TurbineKeyAmount.ToString();
         salmonAmountText.text = ItemHandler.SalmonKeyAmount.ToString();
