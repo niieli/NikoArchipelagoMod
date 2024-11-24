@@ -20,8 +20,8 @@ public class APItemObtainer
             {
                 case "Home" or "Hairball City":
                 {
-                    var index = 0;
                     var list = Locations.ScoutHCCoinList.ToList();
+                    var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                     var offset = 36;
                     if (Locations.ScoutMiMaList.ContainsValue(__instance.myFlag))
                     { 
@@ -87,6 +87,7 @@ public class APItemObtainer
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
+                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
                     break;
                 }
                 case "Trash Kingdom":
@@ -158,6 +159,7 @@ public class APItemObtainer
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
+                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
                     break;
                 }
                 case "Salmon Creek Forest":
@@ -229,6 +231,7 @@ public class APItemObtainer
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
+                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
                     break;
                 }
                 case "Public Pool":
@@ -301,6 +304,7 @@ public class APItemObtainer
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
+                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
                     break;
                 }
                 case "The Bathhouse":
@@ -372,6 +376,7 @@ public class APItemObtainer
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
+                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
                     break;
                 }
                 case "Tadpole inc" or "GarysGarden":
@@ -455,6 +460,7 @@ public class APItemObtainer
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
+                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
                     break;
                 }
             }

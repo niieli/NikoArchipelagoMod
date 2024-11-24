@@ -271,7 +271,7 @@ public static class ItemHandler
             "TurbineLock",
             "1"
         };
-        return worldsData.Sum(world => world.miscFlags.Count(flag => keyFlags.Any(flag.Contains)));
+        return worldsData.Sum(world => world.miscFlags.Count(flag => keyFlags.Any(flag.Equals)));
     }
     
     public static int UsedKeysHairball()
@@ -286,7 +286,7 @@ public static class ItemHandler
             "TurbineLock",
             "1"
         };
-        return worldsData[1].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+        return worldsData[1].miscFlags.Count(flag => keyFlags.Any(flag.Equals));
     }
     
     public static int UsedKeysTurbine()
@@ -301,7 +301,7 @@ public static class ItemHandler
             "TurbineLock",
             "1"
         };
-        return worldsData[2].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+        return worldsData[2].miscFlags.Count(flag => keyFlags.Any(flag.Equals));
     }
     
     public static int UsedKeysSalmon()
@@ -316,7 +316,7 @@ public static class ItemHandler
             "TurbineLock",
             "1"
         };
-        return worldsData[3].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+        return worldsData[3].miscFlags.Count(flag => keyFlags.Any(flag.Equals));
     }
     
     public static int UsedKeysPool()
@@ -331,7 +331,7 @@ public static class ItemHandler
             "TurbineLock",
             "1"
         };
-        return worldsData[4].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+        return worldsData[4].miscFlags.Count(flag => keyFlags.Any(flag.Equals));
     }
     
     public static int UsedKeysBath()
@@ -346,7 +346,7 @@ public static class ItemHandler
             "TurbineLock",
             "1"
         };
-        return worldsData[5].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+        return worldsData[5].miscFlags.Count(flag => keyFlags.Any(flag.Equals));
     }
     
     public static int UsedKeysTadpole()
@@ -361,7 +361,7 @@ public static class ItemHandler
             "TurbineLock",
             "1"
         };
-        return worldsData[6].miscFlags.Count(flag => keyFlags.Any(flag.Contains));
+        return worldsData[6].miscFlags.Count(flag => keyFlags.Any(flag.Equals));
     }
 
     public static void AddGarden(string sender, bool notify = true)

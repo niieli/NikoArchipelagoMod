@@ -572,7 +572,6 @@ public class Locations
     public static readonly Dictionary<long, string> ScoutHCCoinList = new()
     {
         { BaseID + 0, "Fetch" },
-
         // Hairball City
         { BaseID + 3, "volley" },
         { BaseID + 4, "Dustan" },
