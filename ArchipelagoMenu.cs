@@ -89,6 +89,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _contactList;
     private static bool _status;
     private static bool _trackerKey;
+    private static bool _tooltips;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
@@ -103,6 +104,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool itemSent;
     public static bool status;
     public static bool TrackerKey;
+    public static bool Tooltips;
     
     // New Menu stuff
     public GameObject settingsPanel;
@@ -237,7 +239,11 @@ public class ArchipelagoMenu : MonoBehaviour
     public Image boughtPpFishImage;
     public Image boughtBathFishImage;
     public Image boughtHqFishImage;
+    public Toggle tooltipsToggle;
+    public Tooltip tooltipsTooltip;
+    public TooltipTrigger tooltipsTrigger;
     public static bool forceDebug;
+    public static bool hideOnce;
     
     public void Start()
     {
@@ -255,6 +261,9 @@ public class ArchipelagoMenu : MonoBehaviour
         rememberMeTooltip = rememberMeToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         connectButton = connectionPanel.transform.Find("Button").gameObject.GetComponent<Button>();
         versionText = formPanel.transform.Find("Version").gameObject.GetComponent<TMP_Text>();
+        tooltipsToggle = formPanel.transform.Find("Tooltips").gameObject.GetComponent<Toggle>();
+        tooltipsTrigger = tooltipsToggle.gameObject.AddComponent<TooltipTrigger>();
+        tooltipsTooltip = tooltipsToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         
         // Information, when logged in
         informationPanel = formPanel.transform.Find("InformationScreen").gameObject;
@@ -485,6 +494,8 @@ public class ArchipelagoMenu : MonoBehaviour
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
         _trackerKey = trackerKeyToggle.isOn;
+        _tooltips = tooltipsToggle.isOn;
+        hideOnce = false;
         LoadData();
 
         versionText.text = "Version "+Plugin.PluginVersion;
@@ -521,6 +532,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keysTrigger.tooltip = keysTooltip;
         fishTrigger.tooltip = fishTooltip;
         trackerKeyTrigger.tooltip = trackerKeyTooltip;
+        tooltipsTrigger.tooltip = tooltipsTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -609,6 +621,30 @@ public class ArchipelagoMenu : MonoBehaviour
         SetActivePanel(qolPanelCanvasGroup);
     }
 
+    public void ToggleTooltips()
+    {
+        if (tooltipsToggle.isOn && hideOnce) return;
+        settingsTooltip.gameObject.SetActive(false);
+        trackersTooltip.gameObject.SetActive(false);
+        qolTooltip.gameObject.SetActive(false);
+        rememberMeTooltip.gameObject.SetActive(false);
+        chatTooltip.gameObject.SetActive(false);
+        hintsTooltip.gameObject.SetActive(false);
+        shopHintsTooltip.gameObject.SetActive(false);
+        ticketTooltip.gameObject.SetActive(false);
+        kioskTooltip.gameObject.SetActive(false);
+        kioskSpoilerTooltip.gameObject.SetActive(false);
+        cacmiTooltip.gameObject.SetActive(false);
+        itemSentTooltip.gameObject.SetActive(false);
+        contactListTooltip.gameObject.SetActive(false);
+        statusTooltip.gameObject.SetActive(false);
+        reloadTooltip.gameObject.SetActive(false);
+        keysDisabledTooltip.gameObject.SetActive(false);
+        fishDisabledTooltip.gameObject.SetActive(false);
+        trackerKeyTooltip.gameObject.SetActive(false);
+        tooltipsTooltip.gameObject.SetActive(false);
+    }
+
     private void SetActivePanel(CanvasGroup newPanel)
     {
         if (_activePanel == newPanel) return;
@@ -645,6 +681,7 @@ public class ArchipelagoMenu : MonoBehaviour
 
     private void Update()
     {
+        ToggleTooltips();
         if (Plugin.loggedIn)
         {
             informationPanel.SetActive(true);
@@ -963,6 +1000,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
         _trackerKey = trackerKeyToggle.isOn;
+        _tooltips = tooltipsToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -974,6 +1012,8 @@ public class ArchipelagoMenu : MonoBehaviour
         contactList = _contactList;
         status = _status;
         TrackerKey = _trackerKey;
+        Tooltips = _tooltips;
+        hideOnce = _tooltips;
         
         SavedData data = new SavedData
         {
@@ -991,6 +1031,7 @@ public class ArchipelagoMenu : MonoBehaviour
             ContactList = _contactList,
             Status = _status,
             Key = _trackerKey,
+            Tooltips = _tooltips,
         };
         if (_rememberMe)
         {
@@ -1016,6 +1057,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
         _trackerKey = trackerKeyToggle.isOn;
+        _tooltips = tooltipsToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1027,6 +1069,7 @@ public class ArchipelagoMenu : MonoBehaviour
         contactList = _contactList;
         status = _status;
         TrackerKey = _trackerKey;
+        Tooltips = _tooltips;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -1063,6 +1106,7 @@ public class ArchipelagoMenu : MonoBehaviour
             ContactList = _contactList,
             Status = _status,
             Key = _trackerKey,
+            Tooltips = _tooltips,
         };
         if (_rememberMe)
         {
@@ -1127,6 +1171,7 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool ContactList { get; set; } = _contactList;
         public bool Status { get; set; } = _status;
         public bool Key { get; set; } = _trackerKey;
+        public bool Tooltips { get; set; } = _tooltips;
     }
 
     private void LoadData()
@@ -1149,6 +1194,8 @@ public class ArchipelagoMenu : MonoBehaviour
             contactListToggle.isOn = savedData.ContactList;
             statusToggle.isOn = savedData.Status;
             trackerKeyToggle.isOn = savedData.Key;
+            tooltipsToggle.isOn = savedData.Tooltips;
+            hideOnce = savedData.Tooltips;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -1167,6 +1214,8 @@ public class ArchipelagoMenu : MonoBehaviour
             contactListToggle.isOn = true;
             statusToggle.isOn = true;
             trackerKeyToggle.isOn = true;
+            tooltipsToggle.isOn = false;
+            hideOnce = false;
         }
     }
 

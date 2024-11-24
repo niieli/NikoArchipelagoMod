@@ -228,6 +228,10 @@ public class APItemSentNotification : MonoBehaviour
                             case "Tadpole HQ Ticket":
                                 _noteTadpoleImage.gameObject.SetActive(true);
                                 break;
+                            case "Hairball City Fish" or "Turbine Town Fish" or "Salmon Creek Forest Fish" 
+                                or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
+                                _noteFishImage.gameObject.SetActive(true);
+                                break;
                         }
                     }
                     else
@@ -260,7 +264,9 @@ public class APItemSentNotification : MonoBehaviour
                             _noteImage.gameObject.SetActive(true);
                         }
                     }
-                    _noteText.text = $"[Hint]: {receiverHint.Name}'s {networkItem.ItemName} is at {networkItem.LocationName}.\n({found})";
+                    
+                    var obtained = found ? "Found" : "Not Found";
+                    _noteText.text = $"[Hint]: {receiverHint.Name}'s {networkItem.ItemName} is at {networkItem.LocationName}.\n({obtained})";
                     _uiHider.Show(3.25f);
                     _uiHiderShadow.Show(3.25f);
                 }
@@ -325,6 +331,10 @@ public class APItemSentNotification : MonoBehaviour
                                 break;
                             case "Tadpole HQ Ticket":
                                 _noteTadpoleImage.gameObject.SetActive(true);
+                                break;
+                            case "Hairball City Fish" or "Turbine Town Fish" or "Salmon Creek Forest Fish" 
+                                or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
+                                _noteFishImage.gameObject.SetActive(true);
                                 break;
                         }
                     }
