@@ -565,6 +565,27 @@ public class Locations
         BaseID + 190,
         BaseID + 191,
         BaseID + 192,
+        
+        // Keys
+        BaseID + 91, // Index: 172
+        BaseID + 92,
+        BaseID + 93,
+        BaseID + 94,
+        BaseID + 95,
+        BaseID + 96,
+        BaseID + 97,
+        BaseID + 98,
+        BaseID + 99,
+        // Letters
+        BaseID + 80, // Index: 181
+        BaseID + 81,
+        BaseID + 82,
+        BaseID + 83,
+        BaseID + 84,
+        BaseID + 85,
+        BaseID + 86,
+        BaseID + 87,
+        BaseID + 88,
     };
     
     public static readonly long[] ScoutIDs = ScoutList.ToArray();
@@ -799,6 +820,34 @@ public class Locations
         { BaseID + 190, "Cassette (7)" },
         { BaseID + 191, "Cassette (8)" },
         { BaseID + 192, "Cassette (9)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutKeyList = new()
+    {
+        // Keys
+        { BaseID + 91, "containerKey" },
+        { BaseID + 92, "parasolKey" },
+        { BaseID + 93, "1Key" },
+        { BaseID + 94, "2Key" },
+        { BaseID + 95, "3Key" },
+        { BaseID + 96, "testKey" },
+        { BaseID + 97, "ontoriiKey" },
+        { BaseID + 98, "inpuzzleKey" },
+        { BaseID + 99, "underfloorKey" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutLetterList = new()
+    {
+        // Keys
+        { BaseID + 80, "letter12" },
+        { BaseID + 81, "letter7" },
+        { BaseID + 82, "letter1" },
+        { BaseID + 83, "letter2" },
+        { BaseID + 84, "letter8" },
+        { BaseID + 85, "letter9" },
+        { BaseID + 86, "letter3" },
+        { BaseID + 87, "letter10" },
+        { BaseID + 88, "letter4" },
     };
     
     public static void AddLocation(long id, string flag, int level)

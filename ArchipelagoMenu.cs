@@ -62,6 +62,10 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip cacmiTooltip;
     public TooltipTrigger cacmiTrigger;
     public GameObject cacmiHighlight;
+    public Toggle kalmiToggle;
+    public Tooltip kalmiTooltip;
+    public TooltipTrigger kalmiTrigger;
+    public GameObject kalmiHighlight;
     public Toggle itemSentToggle;
     public Tooltip itemSentTooltip;
     public TooltipTrigger itemSentTrigger;
@@ -85,6 +89,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _kiosk;
     private static bool _kioskSpoiler;
     private static bool _cacmi;
+    private static bool _kalmi;
     private static bool _itemSent;
     private static bool _contactList;
     private static bool _status;
@@ -100,6 +105,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool Kiosk;
     public static bool KioskSpoiler;
     public static bool cacmi;
+    public static bool kalmi;
     public static bool contactList;
     public static bool itemSent;
     public static bool status;
@@ -463,6 +469,10 @@ public class ArchipelagoMenu : MonoBehaviour
         cacmiTooltip = cacmiToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         cacmiTrigger = cacmiToggle.gameObject.AddComponent<TooltipTrigger>();
         cacmiHighlight = cacmiToggle.transform.Find("Highlight").gameObject;
+        kalmiToggle = qolPanel.transform.Find("KALMI").gameObject.GetComponent<Toggle>();
+        kalmiTooltip = kalmiToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        kalmiTrigger = kalmiToggle.gameObject.AddComponent<TooltipTrigger>();
+        kalmiHighlight = kalmiToggle.transform.Find("Highlight").gameObject;
         // itemSentToggle = qolPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
         // itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         // itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
@@ -521,6 +531,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskTrigger.tooltip = kioskTooltip;
         kioskSpoilerTrigger.tooltip = kioskSpoilerTooltip;
         cacmiTrigger.tooltip = cacmiTooltip;
+        kalmiTrigger.tooltip = kalmiTooltip;
         itemSentTrigger.tooltip = itemSentTooltip;
         contactListTrigger.tooltip = contactListTooltip;
         statusTrigger.tooltip = statusTooltip;
@@ -545,6 +556,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskSpoilerToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kioskSpoilerHighlight;
         contactListToggle.gameObject.AddComponent<Highlighter>().highlightPanel = contactListHighlight;
         cacmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cacmiHighlight;
+        kalmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kalmiHighlight;
         trackerKeyToggle.gameObject.AddComponent<Highlighter>().highlightPanel = trackerKeyHighlight;
         
         // Information Tracker stuff
@@ -635,6 +647,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskTooltip.gameObject.SetActive(false);
         kioskSpoilerTooltip.gameObject.SetActive(false);
         cacmiTooltip.gameObject.SetActive(false);
+        kalmiTooltip.gameObject.SetActive(false);
         itemSentTooltip.gameObject.SetActive(false);
         contactListTooltip.gameObject.SetActive(false);
         statusTooltip.gameObject.SetActive(false);
@@ -996,6 +1009,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _kiosk = kioskToggle.isOn;
         _kioskSpoiler = kioskSpoilerToggle.isOn;
         _cacmi = cacmiToggle.isOn;
+        _kalmi = kalmiToggle.isOn;
         _itemSent = itemSentToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
@@ -1008,6 +1022,7 @@ public class ArchipelagoMenu : MonoBehaviour
         Kiosk = _kiosk;
         KioskSpoiler = _kioskSpoiler;
         cacmi = _cacmi;
+        kalmi = _kalmi;
         itemSent = _itemSent;
         contactList = _contactList;
         status = _status;
@@ -1027,6 +1042,7 @@ public class ArchipelagoMenu : MonoBehaviour
             Kiosk = _kiosk,
             KioskSpoiler = _kioskSpoiler,
             CACMI = _cacmi,
+            KALMI = _kalmi,
             ItemSent = _itemSent,
             ContactList = _contactList,
             Status = _status,
@@ -1053,6 +1069,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _kiosk = kioskToggle.isOn;
         _kioskSpoiler = kioskSpoilerToggle.isOn;
         _cacmi = cacmiToggle.isOn;
+        _kalmi = kalmiToggle.isOn;
         _itemSent = itemSentToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
@@ -1065,6 +1082,7 @@ public class ArchipelagoMenu : MonoBehaviour
         Kiosk = _kiosk;
         KioskSpoiler = _kioskSpoiler;
         cacmi = _cacmi;
+        kalmi = _kalmi;
         itemSent = _itemSent;
         contactList = _contactList;
         status = _status;
@@ -1102,6 +1120,7 @@ public class ArchipelagoMenu : MonoBehaviour
             Kiosk = _kiosk,
             KioskSpoiler = _kioskSpoiler,
             CACMI = _cacmi,
+            KALMI = _kalmi,
             ItemSent = _itemSent,
             ContactList = _contactList,
             Status = _status,
@@ -1172,6 +1191,7 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool Status { get; set; } = _status;
         public bool Key { get; set; } = _trackerKey;
         public bool Tooltips { get; set; } = _tooltips;
+        public bool KALMI { get; set; } = _kalmi;
     }
 
     private void LoadData()
@@ -1190,6 +1210,7 @@ public class ArchipelagoMenu : MonoBehaviour
             ticketToggle.isOn = savedData.Ticket;
             kioskSpoilerToggle.isOn = savedData.KioskSpoiler;
             cacmiToggle.isOn = savedData.CACMI;
+            kalmiToggle.isOn = savedData.KALMI;
             itemSentToggle.isOn = savedData.ItemSent;
             contactListToggle.isOn = savedData.ContactList;
             statusToggle.isOn = savedData.Status;
@@ -1216,6 +1237,7 @@ public class ArchipelagoMenu : MonoBehaviour
             trackerKeyToggle.isOn = true;
             tooltipsToggle.isOn = false;
             hideOnce = false;
+            kalmiToggle.isOn = true;
         }
     }
 
