@@ -112,7 +112,7 @@ namespace NikoArchipelago
             {
                 Logger.LogInfo($"Found Pre-DLC version {Application.unityVersion} ! - Using compatibility...");
                 Compatibility = true;
-                AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets2");
+                //AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets2");
             }
             else
             {

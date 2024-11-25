@@ -17,29 +17,67 @@ public class APItemOverworld
     [HarmonyPatch(typeof(scrCassette), "Start")]
     public static class CassetteTexturePatch
     {
+        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
+        private static readonly Dictionary<scrCassette, Dictionary<string, GameObject>> InstanceItemsCache = new();
+
         private static GameObject CreateItemPrefab(string prefabName, scrCassette instance)
         {
-            // Load prefab
-            GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
-            if (prefab == null)
+            // Ensure per-instance cache exists
+            if (!InstanceItemsCache.ContainsKey(instance))
             {
-                Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
-                return null;
+                InstanceItemsCache[instance] = new Dictionary<string, GameObject>();
             }
-            GameObject itemOverworld = Object.Instantiate(prefab);
+
+            // Check if the instance-specific item already exists
+            var instanceCache = InstanceItemsCache[instance];
+            if (instanceCache.TryGetValue(prefabName, out var cachedItem))
+            {
+                Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                return cachedItem;
+            }
+
+            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            {
+                GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
+                if (prefab == null)
+                {
+                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    return null;
+                }
+
+                CreatedItemsCache[prefabName] = prefab;
+                blueprintPrefab = prefab;
+                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+            }
+            
+            GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
+            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
 
+            itemOverworld.transform.localPosition = Vector3.zero;
             itemQuads.transform.position = ogQuads.transform.position;
-            itemQuads.AddComponent<ScuffedSpin>();
-            itemQuads.transform.SetParent(instance.transform);
+            
+            if (itemQuads.GetComponent<ScuffedSpin>() == null)
+            {
+                itemQuads.AddComponent<ScuffedSpin>();
+            }
+            if (itemQuads.GetComponent<scrUIwobble>() == null)
+            {
+                var wobble = itemQuads.AddComponent<scrUIwobble>();
+                wobble.wobbleSpeed = 6f;
+                wobble.wobbleAngle = 5f;
+            }
 
-            return itemQuads;
+            // Cache the created item for the specific instance
+            instanceCache[prefabName] = itemOverworld;
+
+            return itemOverworld;
         }
 
         private static GameObject CreateItemOverworld(string itemName, scrCassette instance)
         {
-            // Map item names to prefab names.
             var prefabMap = new Dictionary<string, string>
             {
                 { "apProg", "APProgressive" },
@@ -62,6 +100,12 @@ public class APItemOverworld
                 { "ppfish", "PoolFish" },
                 { "bathfish", "BathFish" },
                 { "hqfish", "TadpoleFish" },
+                { "hckey", "HairballKey" },
+                { "ttkey", "TurbineKey" },
+                { "scfkey", "SalmonKey" },
+                { "ppkey", "PoolKey" },
+                { "bathkey", "BathKey" },
+                { "hqkey", "TadpoleKey" },
                 { "superJump", "SuperJump" },
                 { "hairballCity", "HairballCity" },
                 { "turbineTown", "TurbineTown" },
@@ -71,18 +115,20 @@ public class APItemOverworld
                 { "tadpoleHQ", "TadpoleHQ" },
                 { "garysGarden", "GarysGarden" },
             };
-            if (prefabMap.TryGetValue(itemName, out string prefabName))
+
+            if (!prefabMap.TryGetValue(itemName, out string prefabName))
             {
-                return CreateItemPrefab(prefabName, instance);
+                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                return null;
             }
-            Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
-            return null;
+            
+            return CreateItemPrefab(prefabName, instance);
         }
         private static void Postfix(scrCassette __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
-            ogQuads.SetActive(false);
+            Object.Destroy(ogQuads.gameObject);
 
             var flagField = AccessTools.Field(typeof(scrCassette), "flag");
             var flag = (string)flagField.GetValue(__instance);
@@ -122,10 +168,6 @@ public class APItemOverworld
                             {
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
-
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -152,12 +194,21 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
                     }
-
+                    
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Trash Kingdom":
@@ -196,10 +247,6 @@ public class APItemOverworld
                             {
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
-                
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -226,12 +273,21 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
                     }
                 
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Salmon Creek Forest":
@@ -266,10 +322,6 @@ public class APItemOverworld
                             {
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
-                
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -296,12 +348,21 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
                     }
                 
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Public Pool":
@@ -336,10 +397,6 @@ public class APItemOverworld
                             {
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
-                
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -366,12 +423,21 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
                     }
                 
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "The Bathhouse":
@@ -406,10 +472,6 @@ public class APItemOverworld
                             {
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
-                
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -436,12 +498,21 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
                     }
                 
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Tadpole inc":
@@ -476,10 +547,6 @@ public class APItemOverworld
                             {
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
-                
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -506,12 +573,21 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
                     }
                 
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "GarysGarden":
@@ -546,10 +622,6 @@ public class APItemOverworld
                             {
                                 __instance.quads = CreateItemOverworld("apFiller", __instance);
                             }
-                
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                         {
@@ -575,11 +647,20 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
             }
@@ -589,29 +670,67 @@ public class APItemOverworld
     [HarmonyPatch(typeof(scrCoin), "Start")]
     public static class CoinTexturePatch
     {
-         private static GameObject CreateItemPrefab(string prefabName, scrCoin instance)
+        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
+        private static readonly Dictionary<scrCoin, Dictionary<string, GameObject>> InstanceItemsCache = new();
+
+        private static GameObject CreateItemPrefab(string prefabName, scrCoin instance)
         {
-            // Load prefab
-            GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
-            if (prefab == null)
+            // Ensure per-instance cache exists
+            if (!InstanceItemsCache.ContainsKey(instance))
             {
-                Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
-                return null;
+                InstanceItemsCache[instance] = new Dictionary<string, GameObject>();
             }
-            GameObject itemOverworld = Object.Instantiate(prefab);
+
+            // Check if the instance-specific item already exists
+            var instanceCache = InstanceItemsCache[instance];
+            if (instanceCache.TryGetValue(prefabName, out var cachedItem))
+            {
+                Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                return cachedItem;
+            }
+
+            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            {
+                GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
+                if (prefab == null)
+                {
+                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    return null;
+                }
+
+                CreatedItemsCache[prefabName] = prefab;
+                blueprintPrefab = prefab;
+                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+            }
+            
+            GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
+            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
 
+            itemOverworld.transform.localPosition = Vector3.zero;
             itemQuads.transform.position = ogQuads.transform.position;
-            itemQuads.AddComponent<ScuffedSpin>();
-            itemQuads.transform.SetParent(instance.transform);
+            
+            if (itemQuads.GetComponent<ScuffedSpin>() == null)
+            {
+                itemQuads.AddComponent<ScuffedSpin>();
+            }
+            if (itemQuads.GetComponent<scrUIwobble>() == null)
+            {
+                var wobble = itemQuads.AddComponent<scrUIwobble>();
+                wobble.wobbleSpeed = 6f;
+                wobble.wobbleAngle = 5f;
+            }
 
-            return itemQuads;
+            // Cache the created item for the specific instance
+            instanceCache[prefabName] = itemOverworld;
+
+            return itemOverworld;
         }
 
         private static GameObject CreateItemOverworld(string itemName, scrCoin instance)
         {
-            // Map item names to prefab names.
             var prefabMap = new Dictionary<string, string>
             {
                 { "apProg", "APProgressive" },
@@ -634,6 +753,12 @@ public class APItemOverworld
                 { "ppfish", "PoolFish" },
                 { "bathfish", "BathFish" },
                 { "hqfish", "TadpoleFish" },
+                { "hckey", "HairballKey" },
+                { "ttkey", "TurbineKey" },
+                { "scfkey", "SalmonKey" },
+                { "ppkey", "PoolKey" },
+                { "bathkey", "BathKey" },
+                { "hqkey", "TadpoleKey" },
                 { "superJump", "SuperJump" },
                 { "hairballCity", "HairballCity" },
                 { "turbineTown", "TurbineTown" },
@@ -643,12 +768,14 @@ public class APItemOverworld
                 { "tadpoleHQ", "TadpoleHQ" },
                 { "garysGarden", "GarysGarden" },
             };
-            if (prefabMap.TryGetValue(itemName, out string prefabName))
+
+            if (!prefabMap.TryGetValue(itemName, out string prefabName))
             {
-                return CreateItemPrefab(prefabName, instance);
+                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                return null;
             }
-            Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
-            return null;
+            
+            return CreateItemPrefab(prefabName, instance);
         }
         private static void Postfix(scrCoin __instance)
         {
@@ -721,6 +848,12 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -795,6 +928,12 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -865,6 +1004,12 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -935,6 +1080,12 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -1005,6 +1156,12 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }
@@ -1075,6 +1232,12 @@ public class APItemOverworld
                                 "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
                                 "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
                                 "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                         }

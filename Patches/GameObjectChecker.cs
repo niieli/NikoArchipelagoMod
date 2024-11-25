@@ -122,11 +122,13 @@ public class GameObjectChecker : MonoBehaviour
             var titleScreen = GameObject.Find("Title Screen");
             if (titleScreen == null) return;
             titleScreen.GetComponent<Image>().sprite = Plugin.APLogoSprite;
-            // var actionScreen = GameObject.Find("ActionButton Title Screen");
-            // SmallAPLogo.TitleScreen = actionScreen;
+            var actionScreen = GameObject.Find("ActionButton Title Screen");
+            var textRef = actionScreen.transform.Find("text").GetComponent<TextMeshProUGUI>();
+            FirstTimeNotice.TitleScreen = actionScreen;
+            FirstTimeNotice.TextReference = textRef;
             // var text = actionScreen.transform.Find("Settings Title Screen/text").GetComponent<TextMeshProUGUI>();
             // text.text = "Settings &";
-            // SmallAPLogo.TitleScreenAPLogo();
+            FirstTimeNotice.TitleScreenAPLogo();
             Plugin.BepinLogger.LogInfo("Title Screen GameObject found!");
         }
         catch (NullReferenceException e)
