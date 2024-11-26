@@ -13,7 +13,8 @@ public class APItemSentNotification : MonoBehaviour
     public static GameObject noteBox;
     public static GameObject noteShadowBox;
     public static Image noteBoxImage;
-    public static RawImage _noteImage;
+    public static Image noteShadowBoxImage;
+    private static RawImage _noteImage;
     private static RawImage _noteProgImage;
     private static RawImage _noteUsefulImage;
     private static RawImage _noteFillerImage;
@@ -40,12 +41,14 @@ public class APItemSentNotification : MonoBehaviour
     private static TextMeshProUGUI _noteText;
     private static scrUIhider _uiHider;
     private static scrUIhider _uiHiderShadow;
+    private static Color DefaultShadowNoteColor;
 
     public void Start()
     {
         noteBox = transform.Find("ItemSent")?.gameObject;
         noteBoxImage = transform.Find("ItemSent")?.GetComponent<Image>();
         noteShadowBox = transform.Find("ItemSentShadow")?.gameObject;
+        noteShadowBoxImage = transform.Find("ItemSentShadow")?.GetComponent<Image>();
         _noteImage = transform.Find("ItemSent/Icon")?.GetComponent<RawImage>();
         _noteProgImage = transform.Find("ItemSent/Prog")?.GetComponent<RawImage>();
         _noteUsefulImage = transform.Find("ItemSent/Useful")?.GetComponent<RawImage>();
@@ -119,6 +122,8 @@ public class APItemSentNotification : MonoBehaviour
         _noteTrap3Image.gameObject.SetActive(false);
         _noteImage.gameObject.SetActive(false);
         
+        DefaultShadowNoteColor = noteShadowBoxImage.color;
+        
         _uiHider = transform.Find("ItemSent")?.gameObject.AddComponent<scrUIhider>();
         _uiHiderShadow = transform.Find("ItemSentShadow")?.gameObject.AddComponent<scrUIhider>();
         if (_uiHider != null)
@@ -137,9 +142,8 @@ public class APItemSentNotification : MonoBehaviour
         }
     }
 
-    public static void SentItem(LogMessage message)
+    private static void Clear()
     {
-        if (!ArchipelagoMenu.itemSent) return;
         _noteCoinImage.gameObject.SetActive(false);
         _noteCassetteImage.gameObject.SetActive(false);
         _noteKeyImage.gameObject.SetActive(false);
@@ -167,9 +171,17 @@ public class APItemSentNotification : MonoBehaviour
         _noteImage.gameObject.SetActive(false);
         _noteText.fontSize = 26;
         _noteText.enableAutoSizing = true;
+        _noteText.text = "";
+        noteShadowBoxImage.color = DefaultShadowNoteColor;
+    }
+
+    public static void SentItem(LogMessage message)
+    {
+        if (!ArchipelagoMenu.itemSent) return;
         switch (message)
         {
             case HintItemSendLogMessage hintLogMessage:
+                Clear();
                 var receiverHint = hintLogMessage.Receiver;
                 var networkItem = hintLogMessage.Item;
                 var found = hintLogMessage.IsFound;
@@ -272,13 +284,14 @@ public class APItemSentNotification : MonoBehaviour
                 }
                 break;
             case ItemSendLogMessage itemSendLogMessage: 
+                Clear();
                 var receiver = itemSendLogMessage.Receiver.Name;
                 var itemName = itemSendLogMessage.Item.ItemName;
                 var itemGame = itemSendLogMessage.Item.ItemGame;
                 var itemFlag = itemSendLogMessage.Item.Flags;
                 var itemLocation = itemSendLogMessage.Item.LocationName;
                 noteBoxImage.color = Color.white;
-                if (itemSendLogMessage.IsSenderTheActivePlayer && !itemSendLogMessage.IsReceiverTheActivePlayer)
+                if (itemSendLogMessage.IsSenderTheActivePlayer)
                 {
                     if (itemGame == "Here Comes Niko!")
                     {
@@ -370,6 +383,19 @@ public class APItemSentNotification : MonoBehaviour
                     }
 
                     _noteText.text = $"You sent {itemName} to {receiver}!\n({itemLocation})";
+                    if (itemFlag.HasFlag(ItemFlags.Advancement))
+                    {
+                        noteShadowBoxImage.color = new Color32(249, 138, 255, 255);
+                    } else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
+                    {
+                        noteShadowBoxImage.color = new Color32(116, 109, 255, 255);
+                    } else if (itemFlag.HasFlag(ItemFlags.Trap))
+                    {
+                        noteShadowBoxImage.color = new Color32(255, 192, 105, 255);
+                    } else if (itemFlag.HasFlag(ItemFlags.None))
+                    {
+                        noteShadowBoxImage.color = new Color32(152, 152, 152, 255);
+                    }
                     _uiHider.Show(3.25f);
                     _uiHiderShadow.Show(3.25f);
                 }

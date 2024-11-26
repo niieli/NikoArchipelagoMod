@@ -204,6 +204,7 @@ public class Locations
         { BaseID + 88, new Location(BaseID + 88, "letter4", 4) }, 
         { BaseID + 89, new Location(BaseID + 89, "letter11", 5) },
         { BaseID + 90, new Location(BaseID + 90, "letter5", 5) }, 
+        { BaseID + 250, new Location(BaseID + 250, "letter6", 6) },
     };
     
     public static Dictionary<long, Location> KeyLocations = new()
@@ -586,6 +587,9 @@ public class Locations
         BaseID + 86,
         BaseID + 87,
         BaseID + 88,
+        BaseID + 89,
+        BaseID + 90,
+        BaseID + 250,
     };
     
     public static readonly long[] ScoutIDs = ScoutList.ToArray();
@@ -848,6 +852,9 @@ public class Locations
         { BaseID + 86, "letter3" },
         { BaseID + 87, "letter10" },
         { BaseID + 88, "letter4" },
+        { BaseID + 89, "letter11" },
+        { BaseID + 90, "letter5" },
+        { BaseID + 250, "letter6" },
     };
     
     public static void AddLocation(long id, string flag, int level)

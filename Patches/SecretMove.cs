@@ -33,6 +33,7 @@ public class SecretMove
         private static MethodInfo _checkApplesMethod;
         private static bool Prefix(scrAppleSwitch __instance)
         {
+            __instance.minAppleAmount = 249;
             if (_checkApplesMethod == null)
             {
                 _checkApplesMethod = AccessTools.Method(typeof(scrAppleSwitch), "CheckApples");
