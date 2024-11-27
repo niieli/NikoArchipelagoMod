@@ -256,10 +256,7 @@ public class ArchipelagoClient
                     {
                         ItemHandler.AddContactList2(senderName, notify);
                     }
-                    else
-                    {
-                        ItemHandler.AddContactList1(senderName, notify);
-                    }
+                    ItemHandler.AddContactList1(senderName, notify);
                     break;
                 case 598_145_444_000+20: // HCFish
                     ItemHandler.AddHcFish(senderName, notify);

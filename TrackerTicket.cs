@@ -77,6 +77,10 @@ public class TrackerTicket : MonoBehaviour
             if (ItemHandler.Garden || int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0 
                 && gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketGgImage.color = Color.white;
         }
+        else if (gameSaveManager.gameData.generalGameData.unlockedLevels[7])
+        {
+            ticketGgImage.color = Color.white;
+        }
         if (!ArchipelagoMenu.contactList)
         {
             ticketCl1Image.gameObject.SetActive(false); 
