@@ -62,9 +62,10 @@ namespace NikoArchipelago
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
             SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite, 
-            APLogoSprite, APIconSprite, CoinSprite, CassetteSprite, FishSprite, 
-            ContactListSprite, KeySprite, 
-            BottledSprite, EmployeeSprite, FrogFanSprite, 
+            APLogoSprite, APIconSprite, CoinSprite, CassetteSprite, 
+            FishSprite, HairballFishSprite, TurbineFishSprite, SalmonFishSprite, PoolFishSprite, BathFishSprite, TadpoleFishSprite,
+            KeySprite, HairballKeySprite, TurbineKeySprite, SalmonKeySprite, PoolKeySprite, BathKeySprite, TadpoleKeySprite,
+            ContactListSprite, BottledSprite, EmployeeSprite, FrogFanSprite, 
             HandsomeSprite, LostSprite, SuperJumpSprite,
             SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
@@ -173,6 +174,18 @@ namespace NikoArchipelago
                 GoalBadSprite = AssetBundle.LoadAsset<Sprite>("goalBad");
                 SuperJumpSprite = AssetBundle.LoadAsset<Sprite>("SuperJump");
                 FishSprite = AssetBundle.LoadAsset<Sprite>("imgMapfish");
+                HairballFishSprite = AssetBundle.LoadAsset<Sprite>("HairballFish");
+                TurbineFishSprite = AssetBundle.LoadAsset<Sprite>("TurbineFish");
+                SalmonFishSprite = AssetBundle.LoadAsset<Sprite>("SalmonFish");
+                PoolFishSprite = AssetBundle.LoadAsset<Sprite>("PoolFish");
+                BathFishSprite = AssetBundle.LoadAsset<Sprite>("BathFish");
+                TadpoleFishSprite = AssetBundle.LoadAsset<Sprite>("TadpoleFish");
+                HairballKeySprite = AssetBundle.LoadAsset<Sprite>("txrHairballKey");
+                TurbineKeySprite = AssetBundle.LoadAsset<Sprite>("txrTurbineKey");
+                SalmonKeySprite = AssetBundle.LoadAsset<Sprite>("txrSalmonKey");
+                PoolKeySprite = AssetBundle.LoadAsset<Sprite>("txrPoolKey");
+                BathKeySprite = AssetBundle.LoadAsset<Sprite>("txrBathKey");
+                TadpoleKeySprite = AssetBundle.LoadAsset<Sprite>("txrTadpoleKey");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");

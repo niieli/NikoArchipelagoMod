@@ -303,7 +303,8 @@ public class APItemSentNotification : MonoBehaviour
                             case "Cassette":
                                 _noteCassetteImage.gameObject.SetActive(true);
                                 break;
-                            case "Key":
+                            case "Key" or "Hairball City Key" or "Turbine Town Key" or "Salmon Creek Forest Key" 
+                                or "Public Pool Key" or "Bathhouse Key" or "Tadpole HQ Key":
                                 _noteKeyImage.gameObject.SetActive(true);
                                 break;
                             case "Super Jump":
@@ -348,6 +349,9 @@ public class APItemSentNotification : MonoBehaviour
                             case "Hairball City Fish" or "Turbine Town Fish" or "Salmon Creek Forest Fish" 
                                 or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
                                 _noteFishImage.gameObject.SetActive(true);
+                                break;
+                            default:
+                                _noteImage.gameObject.SetActive(true);
                                 break;
                         }
                     }

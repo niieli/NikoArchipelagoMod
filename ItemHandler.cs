@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NikoArchipelago.Patches;
+using NikoArchipelago.Stuff;
+using UnityEngine;
 using ArchipelagoClient = NikoArchipelago.Archipelago.ArchipelagoClient;
 
 namespace NikoArchipelago;
@@ -21,6 +24,7 @@ public static class ItemHandler
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Coin from {sender}!" : "You found your Coin!",
                 3f, Plugin.CoinSprite);
         }
+        ShowDisplayers.CoinDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
 
@@ -33,6 +37,7 @@ public static class ItemHandler
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Cassette from {sender}!" : "You found your Cassette!",
                 3f, Plugin.CassetteSprite);
         }
+        ShowDisplayers.CassetteDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
 
@@ -45,6 +50,7 @@ public static class ItemHandler
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Key from {sender}!" : "You found your Key!",
                 3f, Plugin.KeySprite);
         }
+        ShowDisplayers.KeyDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
     
@@ -54,7 +60,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Key from {sender}!" : "You found your Hairball City Key!",
-                3f, Plugin.KeySprite);
+                3f, Plugin.HairballKeySprite);
         }
     }
     
@@ -64,7 +70,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Key from {sender}!" : "You found your Turbine Town Key!",
-                3f, Plugin.KeySprite);
+                3f, Plugin.TurbineKeySprite);
         }
     }
     
@@ -74,7 +80,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Key from {sender}!" : "You found your Salmon Creek Forest Key!",
-                3f, Plugin.KeySprite);
+                3f, Plugin.SalmonKeySprite);
         }
     }
     
@@ -84,7 +90,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Key from {sender}!" : "You found your Public Pool Key!",
-                3f, Plugin.KeySprite);
+                3f, Plugin.PoolKeySprite);
         }
     }
     
@@ -94,7 +100,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Key from {sender}!" : "You found your Bathhouse Key!",
-                3f, Plugin.KeySprite);
+                3f, Plugin.BathKeySprite);
         }
     }
     
@@ -104,7 +110,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Key from {sender}!" : "You found your Tadpole HQ Key!",
-                3f, Plugin.KeySprite);
+                3f, Plugin.TadpoleKeySprite);
         }
     }
 
@@ -129,6 +135,7 @@ public static class ItemHandler
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Apples from {sender}!" : $"You found your {amount} Apples!",
                 1.75f, Plugin.ApplesSprite);
         }
+        ShowDisplayers.AppleDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
     
@@ -142,6 +149,7 @@ public static class ItemHandler
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Bugs from {sender}!" : $"You found your {amount} Bugs!",
                 1.75f, Plugin.BugSprite);
         }
+        ShowDisplayers.BugDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
     
@@ -186,6 +194,7 @@ public static class ItemHandler
                 3f, Plugin.ContactListSprite);
         }
         scrWaveCheck.doCheck = true;
+        ShowDisplayers.TicketDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
 
@@ -207,6 +216,7 @@ public static class ItemHandler
                 3f, Plugin.ContactListSprite);
         }
         scrWaveCheck.doCheck = true;
+        ShowDisplayers.TicketDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
 
@@ -257,6 +267,7 @@ public static class ItemHandler
                     4f, Plugin.HqSprite);
                 break;
         }
+        ShowDisplayers.TicketDisplayer();
     }
 
     public static int UsedKeys()
@@ -371,6 +382,7 @@ public static class ItemHandler
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gary's Garden Ticket from {sender}!" : "You found your Gary's Garden Ticket!",
             4f, Plugin.GgSprite);
         Garden = true;
+        ShowDisplayers.TicketDisplayer();
         scrGameSaveManager.instance.SaveGame();
     }
     
@@ -379,7 +391,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Fish from {sender}!" : "You found your Hairball City Fish!",
-            3f, Plugin.FishSprite);
+            3f, Plugin.HairballFishSprite);
     }
     
     public static void AddTtFish(string sender, bool notify = true)
@@ -387,7 +399,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Fish from {sender}!" : "You found your Turbine Town Fish!",
-            3f, Plugin.FishSprite);
+            3f, Plugin.TurbineFishSprite);
     }
     
     public static void AddSfcFish(string sender, bool notify = true)
@@ -395,7 +407,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Fish from {sender}!" : "You found your Salmon Creek Forest Fish!",
-            3f, Plugin.FishSprite);
+            3f, Plugin.SalmonFishSprite);
     }
     
     public static void AddPpFish(string sender, bool notify = true)
@@ -403,7 +415,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Fish from {sender}!" : "You found your Public Pool Fish!",
-            3f, Plugin.FishSprite);
+            3f, Plugin.PoolFishSprite);
     }
     
     public static void AddBathFish(string sender, bool notify = true)
@@ -411,7 +423,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Fish from {sender}!" : "You found your Bathhouse Fish!",
-            3f, Plugin.FishSprite);
+            3f, Plugin.BathFishSprite);
     }
     
     public static void AddHqFish(string sender, bool notify = true)
@@ -419,6 +431,6 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Fish from {sender}!" : "You found your Tadpole HQ Fish!",
-            3f, Plugin.FishSprite);
+            3f, Plugin.TadpoleFishSprite);
     }
 }

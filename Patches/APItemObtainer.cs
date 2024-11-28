@@ -3,6 +3,7 @@ using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Stuff;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,35 @@ public class APItemObtainer
     [HarmonyPatch(typeof(scrObtainCoin), "Start")]
     public static class ObtainCoinPatch
     {
+        private static Texture TextureAndDisplayer(Texture texture, scrObtainCoin instance, string displayer = "")
+        {
+            var timer = 5f;
+            instance.coinDisplayer.visible = false;
+            switch (displayer)
+            {
+                case "Coin":
+                    instance.coinDisplayer.visible = true;
+                    break;
+                case "Cassette":
+                    ShowDisplayers.CassetteDisplayer(timer);
+                    break;
+                case "Key":
+                    ShowDisplayers.KeyDisplayer(timer);
+                    break;
+                case "Ticket":
+                    ShowDisplayers.TicketDisplayer(timer);
+                    break;
+                case "Apples":
+                    ShowDisplayers.AppleDisplayer(timer);
+                    break;
+                case "Bugs":
+                    ShowDisplayers.BugDisplayer(timer);
+                    break;
+                case "":
+                    break;
+            }
+            return texture;
+        }
         private static void Postfix(scrObtainCoin __instance)
         {
             var currentscene = SceneManager.GetActiveScene().name;
@@ -63,27 +93,33 @@ public class APItemObtainer
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => __instance.txrCoin,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -135,27 +171,33 @@ public class APItemObtainer
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => __instance.txrCoin,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -207,27 +249,33 @@ public class APItemObtainer
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => __instance.txrCoin,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -280,27 +328,33 @@ public class APItemObtainer
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => __instance.txrCoin,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -352,27 +406,33 @@ public class APItemObtainer
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => __instance.txrCoin,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -436,27 +496,33 @@ public class APItemObtainer
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => __instance.txrCoin,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.FishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -470,6 +536,36 @@ public class APItemObtainer
     [HarmonyPatch(typeof(scrObtainCassette), "Start")]
     public static class ObtainCassettePatch
     {
+        private static Texture TextureAndDisplayer(Texture texture, scrObtainCassette instance, string displayer = "")
+        {
+            var timer = 5f;
+            var cassetteDisplayer = Traverse.Create(instance).Field("cassetteDisplayer").GetValue<scrCassetteDisplayer>();
+            cassetteDisplayer.visible = false;
+            switch (displayer)
+            {
+                case "Coin":
+                    ShowDisplayers.CoinDisplayer(timer);
+                    break;
+                case "Cassette":
+                    cassetteDisplayer.visible = true;
+                    break;
+                case "Key":
+                    ShowDisplayers.KeyDisplayer(timer);
+                    break;
+                case "Ticket":
+                    ShowDisplayers.TicketDisplayer(timer);
+                    break;
+                case "Apples":
+                    ShowDisplayers.AppleDisplayer(timer);
+                    break;
+                case "Bugs":
+                    ShowDisplayers.BugDisplayer(timer);
+                    break;
+                case "":
+                    break;
+            }
+            return texture;
+        }
         private static void Postfix(scrObtainCassette __instance)
         {
             var currentscene = SceneManager.GetActiveScene().name;
@@ -514,27 +610,33 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => Plugin.CoinSprite.texture,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -584,27 +686,33 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => Plugin.CoinSprite.texture,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -650,27 +758,33 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => Plugin.CoinSprite.texture,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -716,27 +830,33 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => Plugin.CoinSprite.texture,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -782,27 +902,33 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => Plugin.CoinSprite.texture,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -848,27 +974,33 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => Plugin.CoinSprite.texture,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }
@@ -914,27 +1046,33 @@ public class APItemObtainer
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
                             {
-                                "Coin" => Plugin.CoinSprite.texture,
-                                "Cassette" => Plugin.CassetteSprite.texture,
-                                "Key" => Plugin.KeySprite.texture,
-                                "25 Apples" => Plugin.ApplesSprite.texture,
-                                "10 Bugs" => Plugin.BugSprite.texture,
-                                "1000 Snail Dollar" => Plugin.SnailMoneySprite.texture,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite.texture,
-                                "Hairball City Ticket" => Plugin.HcSprite.texture,
-                                "Turbine Town Ticket" => Plugin.TtSprite.texture,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite.texture,
-                                "Public Pool Ticket" => Plugin.PpSprite.texture,
-                                "Bathhouse Ticket" => Plugin.BathSprite.texture,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite.texture,
-                                "Gary's Garden Ticket" => Plugin.GgSprite.texture,
-                                "Super Jump" => Plugin.SuperJumpSprite.texture,
-                                "Hairball City Fish" => Plugin.FishSprite.texture,
-                                "Turbine Town Fish" => Plugin.FishSprite.texture,
-                                "Salmon Creek Forest Fish" => Plugin.FishSprite.texture,
-                                "Public Pool Fish" => Plugin.FishSprite.texture,
-                                "Bathhouse Fish" => Plugin.FishSprite.texture,
-                                "Tadpole HQ Fish" => Plugin.FishSprite.texture,
+                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
                                 _ => Plugin.APIconSprite.texture
                             };
                     }

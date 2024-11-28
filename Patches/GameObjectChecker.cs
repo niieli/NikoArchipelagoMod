@@ -2,6 +2,7 @@
 using System.Collections;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,6 +42,7 @@ public class GameObjectChecker : MonoBehaviour
         HqWhiteboard();
         HqGarden();
         SpawnGaryHome();
+        AssignDisplayers();
     }
     
     private void OnDestroy()
@@ -348,6 +350,19 @@ public class GameObjectChecker : MonoBehaviour
         {
             t.levelSelected = 0;
         }
+    }
+    
+    private static void AssignDisplayers()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        ShowDisplayers.InitializeCoroutineHost(scrGameSaveManager.instance);
+        ShowDisplayers.CoinDisplayerGameObject = GameObject.Find("CoinDisplayer").gameObject.GetComponent<scrCoinDisplayer>();
+        ShowDisplayers.CassetteDisplayerGameObject = GameObject.Find("CassetteDisplayer").gameObject.GetComponent<scrCassetteDisplayer>();
+        ShowDisplayers.AppleDisplayerUIhider = GameObject.Find("Apple Displayer").gameObject.GetComponent<scrUIhider>();
+        ShowDisplayers.BugDisplayerUIhider = GameObject.Find("Bug Displayer").gameObject.GetComponent<scrUIhider>();
+        if (!ArchipelagoData.slotData.ContainsKey("key_level"))  return;
+        if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) != 0) return;
+        ShowDisplayers.KeyDisplayerUIhider = GameObject.Find("Key Displayer").gameObject.GetComponent<scrUIhider>();
     }
 
     public void Update()
