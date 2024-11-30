@@ -203,6 +203,7 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
         ticketPrefab.layer = LayerMask.NameToLayer("UI");
+        ticketPrefab.transform.SetSiblingIndex(23);
         var manager = ticketPrefab.transform.Find("APTicketManager")?.gameObject;
         if (manager == null)
         {
@@ -229,6 +230,7 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
         kioskPrefab.layer = LayerMask.NameToLayer("UI");
+        kioskPrefab.transform.SetSiblingIndex(23);
         var manager = kioskPrefab.transform.Find("APKioskManager")?.gameObject;
         if (manager == null)
         {
@@ -255,6 +257,7 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
         ticketPrefab.layer = LayerMask.NameToLayer("UI");
+        ticketPrefab.transform.SetSiblingIndex(23);
         var manager = ticketPrefab.transform.Find("APKeyManager")?.gameObject;
         if (manager == null)
         {
@@ -360,7 +363,7 @@ public class GameObjectChecker : MonoBehaviour
         ShowDisplayers.CassetteDisplayerGameObject = GameObject.Find("CassetteDisplayer").gameObject.GetComponent<scrCassetteDisplayer>();
         ShowDisplayers.AppleDisplayerUIhider = GameObject.Find("Apple Displayer").gameObject.GetComponent<scrUIhider>();
         ShowDisplayers.BugDisplayerUIhider = GameObject.Find("Bug Displayer").gameObject.GetComponent<scrUIhider>();
-        if (!ArchipelagoData.slotData.ContainsKey("key_level"))  return;
+        if (!ArchipelagoData.slotData.ContainsKey("key_level")) return;
         if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) != 0) return;
         ShowDisplayers.KeyDisplayerUIhider = GameObject.Find("Key Displayer").gameObject.GetComponent<scrUIhider>();
     }

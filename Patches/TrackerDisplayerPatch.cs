@@ -28,10 +28,7 @@ public class TrackerDisplayerPatch
 
             if (!ArchipelagoData.slotData.ContainsKey("key_level")) return;
             if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) != 1) return;
-            if (ArchipelagoMenu.TrackerKey)
-            {
-                KeyUI.visible = visable;
-            }
+            KeyUI.visible = visable;
         }
     }
 }

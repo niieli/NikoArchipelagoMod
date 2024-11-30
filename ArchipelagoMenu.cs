@@ -70,10 +70,14 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip itemSentTooltip;
     public TooltipTrigger itemSentTrigger;
     public GameObject itemSentHighlight;
-    public Toggle trackerKeyToggle;
-    public Tooltip trackerKeyTooltip;
-    public TooltipTrigger trackerKeyTrigger;
-    public GameObject trackerKeyHighlight;
+    public Toggle cassetteSpoilerToggle;
+    public Tooltip cassetteSpoilerTooltip;
+    public TooltipTrigger cassetteSpoilerTrigger;
+    public GameObject cassetteSpoilerHighlight;
+    //public Toggle trackerKeyToggle;
+    //public Tooltip trackerKeyTooltip;
+    //public TooltipTrigger trackerKeyTrigger;
+    //public GameObject trackerKeyHighlight;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -88,12 +92,13 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _ticket;
     private static bool _kiosk;
     private static bool _kioskSpoiler;
+    private static bool _cassetteSpoiler;
     private static bool _cacmi;
     private static bool _kalmi;
     private static bool _itemSent;
     private static bool _contactList;
     private static bool _status;
-    private static bool _trackerKey;
+    //private static bool _trackerKey;
     private static bool _tooltips;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
@@ -109,7 +114,8 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool contactList;
     public static bool itemSent;
     public static bool status;
-    public static bool TrackerKey;
+    public static bool CassetteSpoiler;
+    //public static bool TrackerKey;
     public static bool Tooltips;
     
     // New Menu stuff
@@ -455,10 +461,14 @@ public class ArchipelagoMenu : MonoBehaviour
         contactListTooltip = contactListToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         contactListTrigger = contactListToggle.gameObject.AddComponent<TooltipTrigger>();
         contactListHighlight = contactListToggle.transform.Find("Highlight").gameObject;
-        trackerKeyToggle = trackersPanel.transform.Find("Key").gameObject.GetComponent<Toggle>();
-        trackerKeyTooltip = trackerKeyToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
-        trackerKeyTrigger = trackerKeyToggle.gameObject.AddComponent<TooltipTrigger>();
-        trackerKeyHighlight = trackerKeyToggle.transform.Find("Highlight").gameObject;
+        //trackerKeyToggle = trackersPanel.transform.Find("Key").gameObject.GetComponent<Toggle>();
+        //trackerKeyTooltip = trackerKeyToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        //trackerKeyTrigger = trackerKeyToggle.gameObject.AddComponent<TooltipTrigger>();
+        //trackerKeyHighlight = trackerKeyToggle.transform.Find("Highlight").gameObject;
+        cassetteSpoilerToggle = trackersPanel.transform.Find("CassetteSpoiler").gameObject.GetComponent<Toggle>();
+        cassetteSpoilerTooltip = cassetteSpoilerToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        cassetteSpoilerTrigger = cassetteSpoilerToggle.gameObject.AddComponent<TooltipTrigger>();
+        cassetteSpoilerHighlight = cassetteSpoilerToggle.transform.Find("Highlight").gameObject;
         
         // QOL
         qolButton = formPanel.transform.Find("Tabs/QOLButton").gameObject.GetComponent<Button>();
@@ -503,7 +513,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _itemSent = itemSentToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
-        _trackerKey = trackerKeyToggle.isOn;
+        //_trackerKey = trackerKeyToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
         hideOnce = false;
         LoadData();
@@ -542,8 +552,9 @@ public class ArchipelagoMenu : MonoBehaviour
         fishDisabledTrigger.tooltip = fishDisabledTooltip;
         keysTrigger.tooltip = keysTooltip;
         fishTrigger.tooltip = fishTooltip;
-        trackerKeyTrigger.tooltip = trackerKeyTooltip;
+        //trackerKeyTrigger.tooltip = trackerKeyTooltip;
         tooltipsTrigger.tooltip = tooltipsTooltip;
+        cassetteSpoilerTrigger.tooltip = cassetteSpoilerTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -557,7 +568,8 @@ public class ArchipelagoMenu : MonoBehaviour
         contactListToggle.gameObject.AddComponent<Highlighter>().highlightPanel = contactListHighlight;
         cacmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cacmiHighlight;
         kalmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kalmiHighlight;
-        trackerKeyToggle.gameObject.AddComponent<Highlighter>().highlightPanel = trackerKeyHighlight;
+        //trackerKeyToggle.gameObject.AddComponent<Highlighter>().highlightPanel = trackerKeyHighlight;
+        cassetteSpoilerToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cassetteSpoilerHighlight;
         
         // Information Tracker stuff
         boughtHomeImage.enabled = false;
@@ -654,8 +666,9 @@ public class ArchipelagoMenu : MonoBehaviour
         reloadTooltip.gameObject.SetActive(false);
         keysDisabledTooltip.gameObject.SetActive(false);
         fishDisabledTooltip.gameObject.SetActive(false);
-        trackerKeyTooltip.gameObject.SetActive(false);
+        //trackerKeyTooltip.gameObject.SetActive(false);
         tooltipsTooltip.gameObject.SetActive(false);
+        cassetteSpoilerTooltip.gameObject.SetActive(false);
     }
 
     private void SetActivePanel(CanvasGroup newPanel)
@@ -1013,8 +1026,9 @@ public class ArchipelagoMenu : MonoBehaviour
         _itemSent = itemSentToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
-        _trackerKey = trackerKeyToggle.isOn;
+        //_trackerKey = trackerKeyToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
+        _cassetteSpoiler = cassetteSpoilerToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1026,8 +1040,9 @@ public class ArchipelagoMenu : MonoBehaviour
         itemSent = _itemSent;
         contactList = _contactList;
         status = _status;
-        TrackerKey = _trackerKey;
+        //TrackerKey = _trackerKey;
         Tooltips = _tooltips;
+        CassetteSpoiler = _cassetteSpoiler;
         hideOnce = _tooltips;
         
         SavedData data = new SavedData
@@ -1046,8 +1061,9 @@ public class ArchipelagoMenu : MonoBehaviour
             ItemSent = _itemSent,
             ContactList = _contactList,
             Status = _status,
-            Key = _trackerKey,
+            //Key = _trackerKey,
             Tooltips = _tooltips,
+            CassetteSpoiler = _cassetteSpoiler,
         };
         if (_rememberMe)
         {
@@ -1073,8 +1089,9 @@ public class ArchipelagoMenu : MonoBehaviour
         _itemSent = itemSentToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
-        _trackerKey = trackerKeyToggle.isOn;
+        //_trackerKey = trackerKeyToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
+        _cassetteSpoiler = cassetteSpoilerToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1086,8 +1103,9 @@ public class ArchipelagoMenu : MonoBehaviour
         itemSent = _itemSent;
         contactList = _contactList;
         status = _status;
-        TrackerKey = _trackerKey;
+        //TrackerKey = _trackerKey;
         Tooltips = _tooltips;
+        CassetteSpoiler = _cassetteSpoiler;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -1124,8 +1142,9 @@ public class ArchipelagoMenu : MonoBehaviour
             ItemSent = _itemSent,
             ContactList = _contactList,
             Status = _status,
-            Key = _trackerKey,
+            //Key = _trackerKey,
             Tooltips = _tooltips,
+            CassetteSpoiler = _cassetteSpoiler,
         };
         if (_rememberMe)
         {
@@ -1189,9 +1208,10 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool ItemSent { get; set; } = _itemSent;
         public bool ContactList { get; set; } = _contactList;
         public bool Status { get; set; } = _status;
-        public bool Key { get; set; } = _trackerKey;
+        //public bool Key { get; set; } = _trackerKey;
         public bool Tooltips { get; set; } = _tooltips;
         public bool KALMI { get; set; } = _kalmi;
+        public bool CassetteSpoiler { get; set; } = _cassetteSpoiler;
     }
 
     private void LoadData()
@@ -1214,8 +1234,9 @@ public class ArchipelagoMenu : MonoBehaviour
             itemSentToggle.isOn = savedData.ItemSent;
             contactListToggle.isOn = savedData.ContactList;
             statusToggle.isOn = savedData.Status;
-            trackerKeyToggle.isOn = savedData.Key;
+            //trackerKeyToggle.isOn = savedData.Key;
             tooltipsToggle.isOn = savedData.Tooltips;
+            cassetteSpoilerToggle.isOn = savedData.CassetteSpoiler;
             hideOnce = savedData.Tooltips;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
@@ -1234,10 +1255,11 @@ public class ArchipelagoMenu : MonoBehaviour
             itemSentToggle.isOn = true;
             contactListToggle.isOn = true;
             statusToggle.isOn = true;
-            trackerKeyToggle.isOn = true;
+            //trackerKeyToggle.isOn = true;
             tooltipsToggle.isOn = false;
             hideOnce = false;
             kalmiToggle.isOn = true;
+            cassetteSpoilerToggle.isOn = true;
         }
     }
 

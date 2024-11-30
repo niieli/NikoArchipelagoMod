@@ -244,6 +244,9 @@ public class APItemSentNotification : MonoBehaviour
                                 or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
                                 _noteFishImage.gameObject.SetActive(true);
                                 break;
+                            default:
+                                _noteImage.gameObject.SetActive(true);
+                                break;
                         }
                     }
                     else
