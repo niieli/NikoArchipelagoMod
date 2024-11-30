@@ -283,7 +283,7 @@ public class ArchipelagoMenu : MonoBehaviour
         keysPanel = informationPanel.transform.Find("KeysScreen").gameObject;
         fishPanel = informationPanel.transform.Find("FishScreen").gameObject;
         debugButton = informationPanel.transform.Find("DEBUG").gameObject.GetComponent<Button>();
-        debugTooltip = debugButton.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        debugTooltip = informationPanel.transform.Find("DEBUGTooltip").gameObject.AddComponent<Tooltip>();
         debugTrigger = debugButton.gameObject.AddComponent<TooltipTrigger>();
         reloadButton = informationPanel.transform.Find("ReloadButton").gameObject.GetComponent<Button>();
         reloadTooltip = informationPanel.transform.Find("TooltipReload").gameObject.AddComponent<Tooltip>();

@@ -54,7 +54,7 @@ namespace NikoArchipelago
         private static bool _canLogin;
         public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
-        public static bool loggedIn, Compatibility;
+        public static bool loggedIn, Compatibility, SaveEstablished;
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle;
@@ -291,6 +291,7 @@ namespace NikoArchipelago
                     StartCoroutine(CheckWorldSaveManager());
                     loggedIn = true;
                     StartCoroutine(BandaidNotificationFix()); //TODO: Find real fix
+                    SaveEstablished = false;
                     //scrGameSaveManager.instance.gameData.generalGameData.snailSteps = ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
                 }
@@ -300,12 +301,20 @@ namespace NikoArchipelago
                 Flags();
                 if (worldReady & ArchipelagoClient.Authenticated)
                 {
-                    LocationHandler.SnailShop();
-                    LocationHandler.Update2();
-                    LocationHandler.WinCompletion();
                     StartCoroutine(SyncState());
+                    if (SaveEstablished)
+                    {
+                        LocationHandler.Update2();
+                        LocationHandler.SnailShop();
+                        LocationHandler.WinCompletion();
+                    }
                 }
                 DebugMode = File.Exists(Path.Combine(Paths.PluginPath, "debug.txt")) || ArchipelagoMenu.forceDebug;
+                if (!MyCharacterController.instance.blockMovementInput && !SaveEstablished)
+                {
+                    SaveEstablished = true;
+                    Logger.LogMessage("Save file safety check finished!");
+                }
                 if (loggedSuccess) return;
                 Logger.LogMessage("Game finished initialising");
                 loggedSuccess = true;

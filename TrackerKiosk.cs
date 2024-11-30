@@ -120,6 +120,8 @@ public class TrackerKiosk : MonoBehaviour
     public Image maiTadpoleCassetteImage;
     public Image mitchGardenCassetteImage;
     public Image maiGardenCassetteImage;
+    public Image mitchGardenDisabledImage;
+    public Image maiGardenDisabledImage;
 
     public void Start()
     {
@@ -172,6 +174,8 @@ public class TrackerKiosk : MonoBehaviour
         maiGardenShadowText = maiGardenImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         mitchGardenCassetteImage = mitchGardenImage.transform.Find("Image").GetComponent<Image>();
         maiGardenCassetteImage = maiGardenImage.transform.Find("Image").GetComponent<Image>();
+        mitchGardenDisabledImage = mitchGardenImage.transform.Find("Disabled").GetComponent<Image>();
+        maiGardenDisabledImage = maiGardenImage.transform.Find("Disabled").GetComponent<Image>();
         
         mitchHairballImage = kioskHcImage.transform.Find("Mitch").GetComponent<Image>();
         maiHairballImage = kioskHcImage.transform.Find("Mai").GetComponent<Image>();
@@ -282,6 +286,8 @@ public class TrackerKiosk : MonoBehaviour
         boughtMaiBathImage.enabled = false;
         boughtMitchTadpoleImage.enabled = false;
         boughtMaiTadpoleImage.enabled = false;
+        mitchGardenDisabledImage.enabled = false;
+        maiGardenDisabledImage.enabled = false;
 
         uiHider = transform.Find("TrackerKiosk")?.gameObject.AddComponent<scrUIhider>();
         if (uiHider != null)
@@ -402,6 +408,7 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskHomeImage.color = new Color(1f, 1f, 1f, 1f);
             kioskHomeText.enabled = false;
+            kioskHomeShadowText.enabled = false;
             kioskHomeCostImage.enabled = false;
             boughtHomeImage.enabled = true;
         }
@@ -409,6 +416,7 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskHcImage.color = new Color(1f, 1f, 1f, 1f);
             kioskHcText.enabled = false;
+            kioskHcShadowText.enabled = false;
             kioskHcCostImage.enabled = false;
             boughtHcImage.enabled = true;
         }
@@ -416,6 +424,7 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskTtImage.color = new Color(1f, 1f, 1f, 1f);
             kioskTtText.enabled = false;
+            kioskTtShadowText.enabled = false;
             kioskTtCostImage.enabled = false;
             boughtTtImage.enabled = true;
         }
@@ -423,6 +432,7 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskSfcImage.color = new Color(1f, 1f, 1f, 1f);
             kioskSfcText.enabled = false;
+            kioskSfcShadowText.enabled = false;
             kioskSfcCostImage.enabled = false;
             boughtSfcImage.enabled = true;
         }
@@ -430,6 +440,7 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskPpImage.color = new Color(1f, 1f, 1f, 1f);
             kioskPpText.enabled = false;
+            kioskPpShadowText.enabled = false;
             kioskPpCostImage.enabled = false;
             boughtPpImage.enabled = true;
         }
@@ -437,6 +448,7 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskBathImage.color = new Color(1f, 1f, 1f, 1f);
             kioskBathText.enabled = false;
+            kioskBathShadowText.enabled = false;
             kioskBathCostImage.enabled = false;
             boughtBathImage.enabled = true;
         }
@@ -444,10 +456,23 @@ public class TrackerKiosk : MonoBehaviour
         {
             kioskHqImage.color = new Color(1f, 1f, 1f, 1f);
             kioskHqText.enabled = false;
+            kioskHqShadowText.enabled = false;
             kioskHqCostImage.enabled = false;
             boughtHqImage.enabled = true;
         }
-
+        if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+        {
+            if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+            {
+                mitchGardenText.enabled = false;
+                mitchGardenShadowText.enabled = false;
+                mitchGardenDisabledImage.enabled = true;
+                
+                maiGardenText.enabled = false;
+                maiGardenShadowText.enabled = false;
+                maiGardenDisabledImage.enabled = true;
+            }
+        }
         for (var i = 1; i < 8; i++)
         {
             if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin"))
