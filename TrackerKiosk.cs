@@ -106,6 +106,20 @@ public class TrackerKiosk : MonoBehaviour
     public TextMeshProUGUI maiTadpoleText;
     public TextMeshProUGUI mitchTadpoleShadowText;
     public TextMeshProUGUI maiTadpoleShadowText;
+    public Image mitchHairballCassetteImage;
+    public Image maiHairballCassetteImage;
+    public Image mitchTurbineCassetteImage;
+    public Image maiTurbineCassetteImage;
+    public Image mitchSalmonCassetteImage;
+    public Image maiSalmonCassetteImage;
+    public Image mitchPoolCassetteImage;
+    public Image maiPoolCassetteImage;
+    public Image mitchBathCassetteImage;
+    public Image maiBathCassetteImage;
+    public Image mitchTadpoleCassetteImage;
+    public Image maiTadpoleCassetteImage;
+    public Image mitchGardenCassetteImage;
+    public Image maiGardenCassetteImage;
 
     public void Start()
     {
@@ -156,6 +170,8 @@ public class TrackerKiosk : MonoBehaviour
         mitchGardenShadowText = mitchGardenImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         maiGardenText = maiGardenImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
         maiGardenShadowText = maiGardenImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
+        mitchGardenCassetteImage = mitchGardenImage.transform.Find("Image").GetComponent<Image>();
+        maiGardenCassetteImage = maiGardenImage.transform.Find("Image").GetComponent<Image>();
         
         mitchHairballImage = kioskHcImage.transform.Find("Mitch").GetComponent<Image>();
         maiHairballImage = kioskHcImage.transform.Find("Mai").GetComponent<Image>();
@@ -165,6 +181,8 @@ public class TrackerKiosk : MonoBehaviour
         mitchHairballShadowText = mitchHairballImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         maiHairballText = maiHairballImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
         maiHairballShadowText = maiHairballImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
+        mitchHairballCassetteImage = mitchHairballImage.transform.Find("Image").GetComponent<Image>();
+        maiHairballCassetteImage = maiHairballImage.transform.Find("Image").GetComponent<Image>();
         
         mitchTurbineImage = kioskTtImage.transform.Find("Mitch").GetComponent<Image>();
         maiTurbineImage = kioskTtImage.transform.Find("Mai").GetComponent<Image>();
@@ -174,6 +192,8 @@ public class TrackerKiosk : MonoBehaviour
         mitchTurbineShadowText = mitchTurbineImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         maiTurbineText = maiTurbineImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
         maiTurbineShadowText = maiTurbineImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
+        mitchTurbineCassetteImage = mitchTurbineImage.transform.Find("Image").GetComponent<Image>();
+        maiTurbineCassetteImage = maiTurbineImage.transform.Find("Image").GetComponent<Image>();
         
         mitchSalmonImage = kioskSfcImage.transform.Find("Mitch").GetComponent<Image>();
         maiSalmonImage = kioskSfcImage.transform.Find("Mai").GetComponent<Image>();
@@ -183,6 +203,8 @@ public class TrackerKiosk : MonoBehaviour
         mitchSalmonShadowText = mitchSalmonImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         maiSalmonText = maiSalmonImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
         maiSalmonShadowText = maiSalmonImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
+        mitchSalmonCassetteImage = mitchSalmonImage.transform.Find("Image").GetComponent<Image>();
+        maiSalmonCassetteImage = maiSalmonImage.transform.Find("Image").GetComponent<Image>();
         
         mitchPoolImage = kioskPpImage.transform.Find("Mitch").GetComponent<Image>();
         maiPoolImage = kioskPpImage.transform.Find("Mai").GetComponent<Image>();
@@ -192,6 +214,8 @@ public class TrackerKiosk : MonoBehaviour
         mitchPoolShadowText = mitchPoolImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         maiPoolText = maiPoolImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
         maiPoolShadowText = maiPoolImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
+        mitchPoolCassetteImage = mitchPoolImage.transform.Find("Image").GetComponent<Image>();
+        maiPoolCassetteImage = maiPoolImage.transform.Find("Image").GetComponent<Image>();
         
         mitchBathImage = kioskBathImage.transform.Find("Mitch").GetComponent<Image>();
         maiBathImage = kioskBathImage.transform.Find("Mai").GetComponent<Image>();
@@ -201,6 +225,8 @@ public class TrackerKiosk : MonoBehaviour
         mitchBathShadowText = mitchBathImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         maiBathText = maiBathImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
         maiBathShadowText = maiBathImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
+        mitchBathCassetteImage = mitchBathImage.transform.Find("Image").GetComponent<Image>();
+        maiBathCassetteImage = maiBathImage.transform.Find("Image").GetComponent<Image>();
         
         mitchTadpoleImage = kioskHqImage.transform.Find("Mitch").GetComponent<Image>();
         maiTadpoleImage = kioskHqImage.transform.Find("Mai").GetComponent<Image>();
@@ -210,6 +236,8 @@ public class TrackerKiosk : MonoBehaviour
         mitchTadpoleShadowText = mitchTadpoleImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
         maiTadpoleText = maiTadpoleImage.transform.Find("Cost").GetComponent<TextMeshProUGUI>();
         maiTadpoleShadowText = maiTadpoleImage.transform.Find("CostShadow").GetComponent<TextMeshProUGUI>();
+        mitchTadpoleCassetteImage = mitchTadpoleImage.transform.Find("Image").GetComponent<Image>();
+        maiTadpoleCassetteImage = maiTadpoleImage.transform.Find("Image").GetComponent<Image>();
         
         if (kioskPanel == null)
         {
@@ -429,37 +457,51 @@ public class TrackerKiosk : MonoBehaviour
                     case 1:
                         mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
                         mitchHairballText.enabled = false;
+                        mitchHairballShadowText.enabled = false;
                         boughtMitchHairballImage.enabled = true;
+                        mitchHairballCassetteImage.enabled = false;
                         break;
                     case 2:
                         mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
                         mitchTurbineText.enabled = false;
+                        mitchTurbineShadowText.enabled = false;
                         boughtMitchTurbineImage.enabled = true;
+                        mitchTurbineCassetteImage.enabled = false;
                         break;
                     case 3:
                         mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
                         mitchSalmonText.enabled = false;
+                        mitchSalmonShadowText.enabled = false;
                         boughtMitchSalmonImage.enabled = true;
+                        mitchSalmonCassetteImage.enabled = false;
                         break;
                     case 4:
                         mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
                         mitchPoolText.enabled = false;
+                        mitchPoolShadowText.enabled = false;
                         boughtMitchPoolImage.enabled = true;
+                        mitchPoolCassetteImage.enabled = false;
                         break;
                     case 5:
                         mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
                         mitchBathText.enabled = false;
+                        mitchBathShadowText.enabled = false;
                         boughtMitchBathImage.enabled = true;
+                        mitchBathCassetteImage.enabled = false;
                         break;
                     case 6:
                         mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
                         mitchTadpoleText.enabled = false;
+                        mitchTadpoleShadowText.enabled = false;
                         boughtMitchTadpoleImage.enabled = true;
+                        mitchTadpoleCassetteImage.enabled = false;
                         break;
                     case 7:
                         mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
                         mitchGardenText.enabled = false;
+                        mitchGardenShadowText.enabled = false;
                         boughtMitchGardenImage.enabled = true;
+                        mitchGardenCassetteImage.enabled = false;
                         break;
                 }
             }
@@ -470,37 +512,51 @@ public class TrackerKiosk : MonoBehaviour
                     case 1:
                         maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
                         maiHairballText.enabled = false;
+                        maiHairballShadowText.enabled = false;
                         boughtMaiHairballImage.enabled = true;
+                        maiHairballCassetteImage.enabled = false;
                         break;
                     case 2:
                         maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
                         maiTurbineText.enabled = false;
+                        maiTurbineShadowText.enabled = false;
                         boughtMaiTurbineImage.enabled = true;
+                        maiTurbineCassetteImage.enabled = false;
                         break;
                     case 3:
                         maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
                         maiSalmonText.enabled = false;
+                        maiSalmonShadowText.enabled = false;
                         boughtMaiSalmonImage.enabled = true;
+                        maiSalmonCassetteImage.enabled = false;
                         break;
                     case 4:
                         maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
                         maiPoolText.enabled = false;
+                        maiPoolShadowText.enabled = false;
                         boughtMaiPoolImage.enabled = true;
+                        maiPoolCassetteImage.enabled = false;
                         break;
                     case 5:
                         maiBathImage.color = new Color(1f, 1f, 1f, 1f);
                         maiBathText.enabled = false;
+                        maiBathShadowText.enabled = false;
                         boughtMaiBathImage.enabled = true;
+                        maiBathCassetteImage.enabled = false;
                         break;
                     case 6:
                         maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
                         maiTadpoleText.enabled = false;
+                        maiTadpoleShadowText.enabled = false;
                         boughtMaiTadpoleImage.enabled = true;
+                        maiTadpoleCassetteImage.enabled = false;
                         break;
                     case 7:
                         maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
                         maiGardenText.enabled = false;
+                        maiGardenShadowText.enabled = false;
                         boughtMaiGardenImage.enabled = true;
+                        maiGardenCassetteImage.enabled = false;
                         break;
                 }
             }
