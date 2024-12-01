@@ -467,10 +467,12 @@ public class TrackerKiosk : MonoBehaviour
                 mitchGardenText.enabled = false;
                 mitchGardenShadowText.enabled = false;
                 mitchGardenDisabledImage.enabled = true;
+                mitchGardenCassetteImage.enabled = false;
                 
                 maiGardenText.enabled = false;
                 maiGardenShadowText.enabled = false;
                 maiGardenDisabledImage.enabled = true;
+                maiGardenCassetteImage.enabled = false;
             }
         }
         for (var i = 1; i < 8; i++)

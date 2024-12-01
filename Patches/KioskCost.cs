@@ -34,6 +34,16 @@ public static class KioskCost
         [HarmonyPostfix]
         public static void PostFix(scrKioskManager __instance)
         {
+            var gardenAdjustment = 0;
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
+                    gardenAdjustment = 2;
+                }
+            }
+            var adjustment = gardenAdjustment;
             _kioskManager = __instance;
             var currentScene = SceneManager.GetActiveScene().name;
             var levelPriceField = AccessTools.Field(typeof(scrKioskManager), "levelPrice");
@@ -70,7 +80,7 @@ public static class KioskCost
                             if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
                             {
                                 scrTextbox.instance.textMesh.text = 
-                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?\nIt will cost {levelPrice} Coins to purchase.";
+                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?\nIt will cost {levelPrice} Coins to purchase.";
                                 if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
                                 {
                                     ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
@@ -113,7 +123,7 @@ public static class KioskCost
                                     if (scrTextbox.instance.textMesh.text.Contains("You are free"))
                                     {
                                         scrTextbox.instance.textMesh.text = 
-                                            $"You already bought '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}.";
+                                            $"You already bought '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].Player}.";
                                     }
                                 }
                             }
@@ -137,7 +147,7 @@ public static class KioskCost
                             if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
                             {
                                 scrTextbox.instance.textMesh.text = 
-                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
+                                    $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].Player}?";
                             }
                             if (scrTextbox.instance.textMesh.text.Contains("It will cost"))
                             {
@@ -169,7 +179,7 @@ public static class KioskCost
                         if (scrTextbox.instance.textMesh.text.Contains("Do you want to go"))
                         {
                             scrTextbox.instance.textMesh.text = 
-                                $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?";
+                                $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].Player}?";
                         }
                         if (scrTextbox.instance.textMesh.text.Contains("It will cost"))
                         {
@@ -198,7 +208,7 @@ public static class KioskCost
                         if (scrTextbox.instance.textMesh.text.Contains("You are free"))
                         {
                             scrTextbox.instance.textMesh.text = 
-                                $"You already bought '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}.";
+                                $"You already bought '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].Player}.";
                             if (GameInput.GetButtonDown("Action"))
                             {
                                 scrTextbox.instance.EndConversation();

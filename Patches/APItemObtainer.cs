@@ -45,6 +45,25 @@ public class APItemObtainer
         }
         private static void Postfix(scrObtainCoin __instance)
         {
+            var gardenAdjustment = 0;
+            var snailShopAdjustment = 0;
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
+                    gardenAdjustment = 2;
+                }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                {
+                    snailShopAdjustment = 16;
+                }
+            }
+            var adjustment = gardenAdjustment + snailShopAdjustment;
+            
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
@@ -52,7 +71,7 @@ public class APItemObtainer
                 {
                     var list = Locations.ScoutHCCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    var offset = 36;
+                    var offset = 36 - adjustment;
                     if (Locations.ScoutMiMaList.ContainsValue(__instance.myFlag))
                     { 
                         list = Locations.ScoutMiMaList.ToList();
@@ -86,9 +105,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -124,13 +140,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Trash Kingdom":
                 {
                     var list = Locations.ScoutTTCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    var offset = 49;
+                    var offset = 49 - adjustment;
                     if (Locations.ScoutMiMaList.ContainsValue(__instance.myFlag))
                     {
                         list = Locations.ScoutMiMaList.ToList();
@@ -164,9 +183,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -202,13 +218,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Salmon Creek Forest":
                 {
                     var list = Locations.ScoutSFCCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    var offset = 58;
+                    var offset = 58 - adjustment;
                     if (Locations.ScoutMiMaList.ContainsValue(__instance.myFlag))
                     {
                         list = Locations.ScoutMiMaList.ToList();
@@ -242,9 +261,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -280,13 +296,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Public Pool":
                 {
                     var list = Locations.ScoutPPCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    var offset = 72;
+                    var offset = 72 - adjustment;
                     if (Locations.ScoutMiMaList.ContainsValue(__instance.myFlag))
                     {
                         list = Locations.ScoutMiMaList.ToList();
@@ -321,9 +340,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -359,13 +375,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "The Bathhouse":
                 {
                     var list = Locations.ScoutBathCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    var offset = 80;
+                    var offset = 80 - adjustment;
                     if (Locations.ScoutMiMaList.ContainsValue(__instance.myFlag))
                     {
                         list = Locations.ScoutMiMaList.ToList();
@@ -399,9 +418,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -437,6 +453,9 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Tadpole inc" or "GarysGarden":
@@ -460,7 +479,7 @@ public class APItemObtainer
                     {
                         var list = Locations.ScoutHQCoinList.ToList();
                         index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                        offset = 92;
+                        offset = 92 - adjustment;
                     }
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
@@ -489,9 +508,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCoin = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -527,6 +543,9 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
             }
@@ -568,6 +587,24 @@ public class APItemObtainer
         }
         private static void Postfix(scrObtainCassette __instance)
         {
+            var gardenAdjustment = 0;
+            var snailShopAdjustment = 0;
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
+                    gardenAdjustment = 3;
+                }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                {
+                    snailShopAdjustment = 16;
+                }
+            }
+            var adjustment = gardenAdjustment + snailShopAdjustment;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
@@ -575,7 +612,7 @@ public class APItemObtainer
                 {
                     var list = Locations.ScoutHCCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
-                    const int offset = 101;
+                    int offset = 101 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -603,9 +640,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -641,13 +675,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Trash Kingdom":
                 {
                     var list = Locations.ScoutTTCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
-                    const int offset = 111;
+                    int offset = 111 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -679,9 +716,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -717,13 +751,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Salmon Creek Forest":
                 {
                     var list = Locations.ScoutSFCCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
-                    const int offset = 121;
+                    int offset = 121 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -751,9 +788,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -789,13 +823,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Public Pool":
                 {
                     var list = Locations.ScoutPPCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
-                    const int offset = 132;
+                    int offset = 132 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -823,9 +860,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -861,13 +895,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "The Bathhouse":
                 {
                     var list = Locations.ScoutBathCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
-                    const int offset = 142;
+                    int offset = 142 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -895,9 +932,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -933,13 +967,16 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "Tadpole inc":
                 {
                     var list = Locations.ScoutHQCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
-                    const int offset = 152;
+                    int offset = 152 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -967,9 +1004,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -1005,6 +1039,9 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
                 case "GarysGarden":
@@ -1039,9 +1076,6 @@ public class APItemObtainer
                             {
                                 __instance.txrCassette = Plugin.ApFillerSprite.texture;
                             }
-                            Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                               + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                               + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                         }
                         else
                             __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
@@ -1077,6 +1111,9 @@ public class APItemObtainer
                             };
                     }
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
+                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
                     break;
                 }
             }

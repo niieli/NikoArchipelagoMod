@@ -128,6 +128,24 @@ public class APItemOverworld
         private static void Postfix(scrCassette __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
+            var gardenAdjustment = 0;
+            var snailShopAdjustment = 0;
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
+                    gardenAdjustment = 3;
+                }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                {
+                    snailShopAdjustment = 16;
+                }
+            }
+            var adjustment = gardenAdjustment + snailShopAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             Object.Destroy(ogQuads.gameObject);
 
@@ -141,7 +159,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutHCCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    const int offset = 101;
+                    int offset = 101 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -217,7 +235,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutTTCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    const int offset = 111;
+                    int offset = 111 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -297,7 +315,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutSFCCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    const int offset = 121;
+                    int offset = 121 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -373,7 +391,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutPPCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    const int offset = 132;
+                    int offset = 132 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -449,7 +467,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutBathCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    const int offset = 142;
+                    int offset = 142 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -525,7 +543,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutHQCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    const int offset = 152;
+                    int offset = 152 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -788,6 +806,24 @@ public class APItemOverworld
         private static void Postfix(scrCoin __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
+            var gardenAdjustment = 0;
+            var snailShopAdjustment = 0;
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
+                    gardenAdjustment = 2;
+                }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                {
+                    snailShopAdjustment = 16;
+                }
+            }
+            var adjustment = gardenAdjustment + snailShopAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
 
@@ -798,7 +834,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutHCCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    const int offset = 36;
+                    int offset = 36 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -875,7 +911,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutTTCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    const int offset = 49;
+                    int offset = 49 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -956,7 +992,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutSFCCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    const int offset = 58;
+                    int offset = 58 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -1033,7 +1069,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutPPCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    const int offset = 72;
+                    int offset = 72 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -1110,7 +1146,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutBathCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    const int offset = 80;
+                    int offset = 80 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -1187,7 +1223,7 @@ public class APItemOverworld
                 {
                     var list = Locations.ScoutHQCoinList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    const int offset = 92;
+                    int offset = 92 - adjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -1380,12 +1416,30 @@ public class APItemOverworld
         private static void Postfix(scrKey __instance)
         {
             if (!ArchipelagoMenu.kalmi) return;
+            var gardenAdjustment = 0;
+            var snailShopAdjustment = 0;
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
+                    gardenAdjustment = 13;
+                }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                {
+                    snailShopAdjustment = 16;
+                }
+            }
+            var adjustment = gardenAdjustment + snailShopAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
 
             var list = Locations.ScoutKeyList.ToList();
             var index = list.FindIndex(pair => pair.Value == __instance.flag);
-            const int offset = 172;
+            int offset = 172 - adjustment;
             if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
             {
                 if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -1576,13 +1630,31 @@ public class APItemOverworld
         private static void Postfix(scrEnvelope __instance)
         {
             if (!ArchipelagoMenu.kalmi) return;
+            var gardenAdjustment = 0;
+            var snailShopAdjustment = 0;
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
+                    gardenAdjustment = 13;
+                }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                {
+                    snailShopAdjustment = 16;
+                }
+            }
+            var adjustment = gardenAdjustment + snailShopAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
             try
             {
                 var list = Locations.ScoutLetterList.ToList();
                 var index = list.FindIndex(pair => pair.Value == __instance.myLetter.key);
-                const int offset = 181;
+                int offset = 181 - adjustment;
                 if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                 {
                     if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
