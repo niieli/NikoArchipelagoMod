@@ -1727,7 +1727,8 @@ public class APItemOverworld
             }
             catch (ArgumentOutOfRangeException e)
             {
-                Plugin.BepinLogger.LogError($"Letter not found! Probably using an older apworld, where this letter does not exist\nError:{e}");
+                Plugin.BepinLogger.LogWarning($"Letter not found! Probably using an apworld pre-0.5.0, where this letter does not exist." +
+                                              $"\nIf you are on 0.5.0+ and this keeps popping up please report it in the discord");
             }
             
         }
