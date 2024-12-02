@@ -256,6 +256,21 @@ public class ArchipelagoMenu : MonoBehaviour
     public TooltipTrigger tooltipsTrigger;
     public static bool forceDebug;
     public static bool hideOnce;
+    public Image mitchHairballImage;
+    public Image maiHairballImage;
+    public Image mitchTurbineImage;
+    public Image maiTurbineImage;
+    public Image mitchSalmonImage;
+    public Image maiSalmonImage;
+    public Image mitchPoolImage;
+    public Image maiPoolImage;
+    public Image mitchBathImage;
+    public Image maiBathImage;
+    public Image mitchTadpoleImage;
+    public Image maiTadpoleImage;
+    public Image mitchGardenImage;
+    public Image maiGardenImage;
+    public Image gardenDisabledImage;
     
     public void Start()
     {
@@ -323,6 +338,8 @@ public class ArchipelagoMenu : MonoBehaviour
         fishHcCountBackText = fishPanel.transform.Find("HCFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishHcCountFrontText = fishPanel.transform.Find("HCFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtHcFishImage = fishPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
+        mitchHairballImage = ticketHcImage.transform.Find("Mitch").GetComponent<Image>();
+        maiHairballImage = ticketHcImage.transform.Find("Mai").GetComponent<Image>();
         // Turbine
         ticketTtImage = kioskAndTicketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
         boughtTtImage = ticketTtImage.transform.Find("Bought").GetComponent<Image>();
@@ -336,6 +353,8 @@ public class ArchipelagoMenu : MonoBehaviour
         fishTtCountBackText = fishPanel.transform.Find("TTFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishTtCountFrontText = fishPanel.transform.Find("TTFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtTtFishImage = fishPanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
+        mitchTurbineImage = ticketTtImage.transform.Find("Mitch").GetComponent<Image>();
+        maiTurbineImage = ticketTtImage.transform.Find("Mai").GetComponent<Image>();
         // Salmon
         ticketSfcImage = kioskAndTicketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
         boughtSfcImage = ticketSfcImage.transform.Find("Bought").GetComponent<Image>();
@@ -349,6 +368,8 @@ public class ArchipelagoMenu : MonoBehaviour
         fishSfcCountBackText = fishPanel.transform.Find("SFCFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishSfcCountFrontText = fishPanel.transform.Find("SFCFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtScfFishImage = fishPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
+        mitchSalmonImage = ticketSfcImage.transform.Find("Mitch").GetComponent<Image>();
+        maiSalmonImage = ticketSfcImage.transform.Find("Mai").GetComponent<Image>();
         // Pool
         ticketPpImage = kioskAndTicketPanel.transform.Find("TicketPool").GetComponent<Image>();
         boughtPpImage = ticketPpImage.transform.Find("Bought").GetComponent<Image>();
@@ -362,6 +383,8 @@ public class ArchipelagoMenu : MonoBehaviour
         fishPpCountBackText = fishPanel.transform.Find("PPFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishPpCountFrontText = fishPanel.transform.Find("PPFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtPpFishImage = fishPanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
+        mitchPoolImage = ticketPpImage.transform.Find("Mitch").GetComponent<Image>();
+        maiPoolImage = ticketPpImage.transform.Find("Mai").GetComponent<Image>();
         // Bath
         ticketBathImage = kioskAndTicketPanel.transform.Find("TicketBath").GetComponent<Image>();
         boughtBathImage = ticketBathImage.transform.Find("Bought").GetComponent<Image>();
@@ -375,6 +398,8 @@ public class ArchipelagoMenu : MonoBehaviour
         fishBathCountBackText = fishPanel.transform.Find("BATHFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishBathCountFrontText = fishPanel.transform.Find("BATHFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtBathFishImage = fishPanel.transform.Find("BATHComplete").gameObject.GetComponent<Image>();
+        mitchBathImage = ticketBathImage.transform.Find("Mitch").GetComponent<Image>();
+        maiBathImage = ticketBathImage.transform.Find("Mai").GetComponent<Image>();
         // Tadpole
         ticketHqImage = kioskAndTicketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
         boughtHqImage = ticketHqImage.transform.Find("Bought").GetComponent<Image>();
@@ -388,8 +413,13 @@ public class ArchipelagoMenu : MonoBehaviour
         fishHqCountBackText = fishPanel.transform.Find("HQFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishHqCountFrontText = fishPanel.transform.Find("HQFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtHqFishImage = fishPanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
+        mitchTadpoleImage = ticketHqImage.transform.Find("Mitch").GetComponent<Image>();
+        maiTadpoleImage = ticketHqImage.transform.Find("Mai").GetComponent<Image>();
         // Misc
         ticketGgImage = kioskAndTicketPanel.transform.Find("TicketGarden").GetComponent<Image>();
+        mitchGardenImage = ticketGgImage.transform.Find("Mitch").GetComponent<Image>();
+        maiGardenImage = ticketGgImage.transform.Find("Mai").GetComponent<Image>();
+        gardenDisabledImage = ticketGgImage.transform.Find("Disabled").GetComponent<Image>();
         ticketCl1Image = informationPanel.transform.Find("ContactList1").GetComponent<Image>();
         ticketCl2Image = informationPanel.transform.Find("ContactList2").GetComponent<Image>();
         
@@ -855,6 +885,7 @@ public class ArchipelagoMenu : MonoBehaviour
                     coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
                     cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
                     cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                    gardenDisabledImage.gameObject.SetActive(false);
                 }
                 else
                 {
@@ -862,6 +893,7 @@ public class ArchipelagoMenu : MonoBehaviour
                     coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/76";
                     cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
                     cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
+                    gardenDisabledImage.gameObject.SetActive(true);
                 }
             }
             else
@@ -870,6 +902,7 @@ public class ArchipelagoMenu : MonoBehaviour
                 coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
                 cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
                 cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                gardenDisabledImage.gameObject.SetActive(true);
             }
             
             if (KioskSpoiler)
@@ -993,6 +1026,119 @@ public class ArchipelagoMenu : MonoBehaviour
             }
             if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave1")) ticketCl1Image.color = Color.white;
             if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave2")) ticketCl2Image.color = Color.white;
+            for (var i = 1; i < 8; i++)
+            {
+                if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin"))
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                            // mitchHairballText.enabled = false;
+                            // mitchHairballShadowText.enabled = false;
+                            // boughtMitchHairballImage.enabled = true;
+                            // mitchHairballCassetteImage.enabled = false;
+                            break;
+                        case 2:
+                            mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                            // mitchTurbineText.enabled = false;
+                            // mitchTurbineShadowText.enabled = false;
+                            // boughtMitchTurbineImage.enabled = true;
+                            // mitchTurbineCassetteImage.enabled = false;
+                            break;
+                        case 3:
+                            mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                            // mitchSalmonText.enabled = false;
+                            // mitchSalmonShadowText.enabled = false;
+                            // boughtMitchSalmonImage.enabled = true;
+                            // mitchSalmonCassetteImage.enabled = false;
+                            break;
+                        case 4:
+                            mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                            // mitchPoolText.enabled = false;
+                            // mitchPoolShadowText.enabled = false;
+                            // boughtMitchPoolImage.enabled = true;
+                            // mitchPoolCassetteImage.enabled = false;
+                            break;
+                        case 5:
+                            mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
+                            // mitchBathText.enabled = false;
+                            // mitchBathShadowText.enabled = false;
+                            // boughtMitchBathImage.enabled = true;
+                            // mitchBathCassetteImage.enabled = false;
+                            break;
+                        case 6:
+                            mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                            // mitchTadpoleText.enabled = false;
+                            // mitchTadpoleShadowText.enabled = false;
+                            // boughtMitchTadpoleImage.enabled = true;
+                            // mitchTadpoleCassetteImage.enabled = false;
+                            break;
+                        case 7:
+                            mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                            // mitchGardenText.enabled = false;
+                            // mitchGardenShadowText.enabled = false;
+                            // boughtMitchGardenImage.enabled = true;
+                            // mitchGardenCassetteImage.enabled = false;
+                            break;
+                    }
+                }
+                if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin2"))
+                {
+                    switch (i)
+                    {
+                        case 1:
+                            maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                            // maiHairballText.enabled = false;
+                            // maiHairballShadowText.enabled = false;
+                            // boughtMaiHairballImage.enabled = true;
+                            // maiHairballCassetteImage.enabled = false;
+                            break;
+                        case 2:
+                            maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                            // maiTurbineText.enabled = false;
+                            // maiTurbineShadowText.enabled = false;
+                            // boughtMaiTurbineImage.enabled = true;
+                            // maiTurbineCassetteImage.enabled = false;
+                            break;
+                        case 3:
+                            maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                            // maiSalmonText.enabled = false;
+                            // maiSalmonShadowText.enabled = false;
+                            // boughtMaiSalmonImage.enabled = true;
+                            // maiSalmonCassetteImage.enabled = false;
+                            break;
+                        case 4:
+                            maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                            // maiPoolText.enabled = false;
+                            // maiPoolShadowText.enabled = false;
+                            // boughtMaiPoolImage.enabled = true;
+                            // maiPoolCassetteImage.enabled = false;
+                            break;
+                        case 5:
+                            maiBathImage.color = new Color(1f, 1f, 1f, 1f);
+                            // maiBathText.enabled = false;
+                            // maiBathShadowText.enabled = false;
+                            // boughtMaiBathImage.enabled = true;
+                            // maiBathCassetteImage.enabled = false;
+                            break;
+                        case 6:
+                            maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                            // maiTadpoleText.enabled = false;
+                            // maiTadpoleShadowText.enabled = false;
+                            // boughtMaiTadpoleImage.enabled = true;
+                            // maiTadpoleCassetteImage.enabled = false;
+                            break;
+                        case 7:
+                            maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                            // maiGardenText.enabled = false;
+                            // maiGardenShadowText.enabled = false;
+                            // boughtMaiGardenImage.enabled = true;
+                            // maiGardenCassetteImage.enabled = false;
+                            break;
+                    }
+                }
+            }
         }
         else
         {
