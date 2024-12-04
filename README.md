@@ -1,19 +1,20 @@
-# Here Comes Niko! Archipelago WIP
-This mod integrates [Archipelago](https://archipelago.gg/) into Here Comes Niko! and randomizes a bunch of different things
+# Here Comes Niko! Archipelago
+This mod integrates [Archipelago](https://archipelago.gg/) into Here Comes Niko! and randomizes a bunch of different things.
 
 Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archipelago/releases/latest)
 
 ## Installation
 
-1. Download and install [BepInEx 5.4.x](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.22) in your Here Comes Niko root folder. 
+1. Download and install [BepInEx 5.4.x](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.22) in your Here Comes Niko root folder (where Here Comes Niko!.exe is located). 
 2. Start the game once so that BepInEx creates its stuff
 3. Download the latest zip from the [release page](https://github.com/niieli/NikoArchipelagoMod/releases/latest) and extract its content into `BepInEx/plugins`
+4. If done correctly it should look like this `...\common\Here Comes Niko\BepInEx\plugins`
 
 ## Connecting
 
-After loading into the game press the Archipelago icon in the middle of the screen and adjust everything to your liking.
+After loading into the game open the settings and then click on the Archipelago icon in the middle of the screen and adjust everything to your liking.
 
-![image](https://github.com/user-attachments/assets/6aab53b6-a02a-4be6-aedd-32ee1722357a)
+![image](https://github.com/user-attachments/assets/42516bb4-d568-4cb3-a0df-63912e682063)
 
 Then click 'Connect' and you should load into Home with a blank save. 
 
@@ -23,14 +24,16 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 
 ## Known issues
 
-- Apples & Snail Money get duplicated after reconnecting (Not a big deal, but will try to find a fix)
+- Apples & Snail Money duplicate after reconnecting (not critical, but will work on a fix | Planned for 0.5.1)
+- Item sent notification sometimes not updating correctly (I don't know why, maybe server issue?)
+- Dispatcher's Dialogue not reflecting the correct cost when thinking about buying (Breaks dialogue upon change with my current implemantation, prob will not fix)
 
 ## What is randomized?
 - Coins
 - Cassettes
   - Including Mitch & Mai
     - Either LevelBased or Scattered *(Depending on settings)*
-- Keys
+- Keys... Keysanity?!
 - Letters
 - Both Contact Lists
   - Contact List 1 & 2 are seperate items, so you can have 2 without having the first one *Visible on the in-game "tracker"* 
@@ -55,6 +58,5 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
-
-- Change access to Gary's Garden
-- MORE INSANITY?!?!
+- Every APSave has a companion save file (Improve Async sessions)
+- Collect/Release reflecting on the save
