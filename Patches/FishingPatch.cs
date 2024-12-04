@@ -31,6 +31,8 @@ public class FishingPatch
     public static class FishingUpdatePatch
     {
         private static MethodInfo _checkIfLastFishMethod;
+        private static int _currentFishCount;
+        private static string _currentLevelName;
 
         [HarmonyPrefix]
         private static bool Prefix(scrFishingMaster __instance)
@@ -52,6 +54,13 @@ public class FishingPatch
                     blockedLog = true;
                     return false;
                 }
+            } else if (textbox.isOn && textbox.characterName == "Fischer" && !CheckAllFish(level))
+            {
+                textbox.camIndex = 2;
+                textbox.textMesh.text = $"You need all 5 Fish of {_currentLevelName} to obtain my reward!\nYou have {_currentFishCount}/5 for this level!";
+                textbox.textMesh.maxVisibleCharacters = 99;
+                if (GameInput.GetButtonDown("Action"))
+                    textbox.EndConversation();
             }
             return true;
         }
@@ -63,25 +72,32 @@ public class FishingPatch
             {
                 case "Hairball City":
                     amountOfFish = ItemHandler.HairballFishAmount;
+                    _currentLevelName = "Hairball City";
                     break;
                 case "Trash Kingdom":
                     amountOfFish = ItemHandler.TurbineFishAmount;
+                    _currentLevelName = "Turbine Town";
                     break;
                 case "Salmon Creek Forest":
                     amountOfFish = ItemHandler.SalmonFishAmount;
+                    _currentLevelName = "Salmon Creek Forest";
                     break;
                 case "Public Pool":
                     amountOfFish = ItemHandler.PoolFishAmount;
+                    _currentLevelName = "Public Pool";
                     break;
                 case "The Bathhouse":
                     amountOfFish = ItemHandler.BathFishAmount;
+                    _currentLevelName = "Bathhouse";
                     break;
                 case "Tadpole inc":
                     amountOfFish = ItemHandler.TadpoleFishAmount;
+                    _currentLevelName = "Tadpole HQ";
                     break;
                 default:
                     return false;
             }
+            _currentFishCount = amountOfFish;
             return amountOfFish >= 5;
         }
     }
