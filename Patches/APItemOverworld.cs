@@ -115,6 +115,12 @@ public class APItemOverworld
                 { "bathhouse", "Bathhouse" },
                 { "tadpoleHQ", "TadpoleHQ" },
                 { "garysGarden", "GarysGarden" },
+                { "timepiece", "TimePieceHiT" },
+                { "yarn", "YarnHiT" },
+                { "yarn2", "Yarn2HiT" },
+                { "yarn3", "Yarn3HiT" },
+                { "yarn4", "Yarn4HiT" },
+                { "yarn5", "Yarn5HiT" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -164,28 +170,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance)
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
                         }
                         else
@@ -240,32 +273,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
                         }
                         else
@@ -320,28 +376,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
                         }
                         else
@@ -396,28 +479,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
                         }
                         else
@@ -472,28 +582,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
                         }
                         else
@@ -548,28 +685,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
                         }
                         else
@@ -624,28 +788,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
                         }
                         else
@@ -793,6 +984,12 @@ public class APItemOverworld
                 { "bathhouse", "Bathhouse" },
                 { "tadpoleHQ", "TadpoleHQ" },
                 { "garysGarden", "GarysGarden" },
+                { "timepiece", "TimePieceHiT" },
+                { "yarn", "YarnHiT" },
+                { "yarn2", "Yarn2HiT" },
+                { "yarn3", "Yarn3HiT" },
+                { "yarn4", "Yarn4HiT" },
+                { "yarn5", "Yarn5HiT" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -839,28 +1036,55 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance)
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance)
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    break;
+                                }
                             }
 
                             Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
@@ -916,34 +1140,62 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance),
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+
+                                    break;
+                                }
                             }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
-                            }
-                
+
                             Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
                                                                + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
                                                                + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
@@ -997,30 +1249,58 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance),
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+
+                                    break;
+                                }
                             }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
-                            }
-                
+
                             Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
                                                                + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
                                                                + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
@@ -1074,30 +1354,58 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance),
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+
+                                    break;
+                                }
                             }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
-                            }
-                
+
                             Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
                                                                + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
                                                                + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
@@ -1151,30 +1459,58 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance),
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+
+                                    break;
+                                }
                             }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
-                            }
-                
+
                             Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
                                                                + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
                                                                + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
@@ -1228,30 +1564,58 @@ public class APItemOverworld
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.quads = CreateItemOverworld("apProg", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.quads = CreateItemOverworld("apUseful", __instance);
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance),
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quads = trapTextures[randomIndex];
+                                    // var yarnTextures = new[]
+                                    // {
+                                    //     CreateItemOverworld("yarn", __instance),
+                                    //     CreateItemOverworld("yarn2", __instance),
+                                    //     CreateItemOverworld("yarn3", __instance),
+                                    //     CreateItemOverworld("yarn4", __instance),
+                                    //     CreateItemOverworld("yarn5", __instance),
+                                    // };
+                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    // __instance.quads = yarnTextures[randomIndex];
+                                    __instance.quads = CreateItemOverworld("yarn", __instance);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apProg", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            CreateItemOverworld("apTrap", __instance),
+                                            CreateItemOverworld("apTrap1", __instance),
+                                            CreateItemOverworld("apTrap2", __instance),
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.quads = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                    }
+
+                                    break;
+                                }
                             }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.quads = CreateItemOverworld("apFiller", __instance);
-                            }
-                
+
                             Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
                                                                + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
                                                                + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
@@ -1402,6 +1766,12 @@ public class APItemOverworld
                 { "bathhouse", "Bathhouse" },
                 { "tadpoleHQ", "TadpoleHQ" },
                 { "garysGarden", "GarysGarden" },
+                { "timepiece", "TimePieceHiT" },
+                { "yarn", "YarnHiT" },
+                { "yarn2", "Yarn2HiT" },
+                { "yarn3", "Yarn3HiT" },
+                { "yarn4", "Yarn4HiT" },
+                { "yarn5", "Yarn5HiT" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -1444,29 +1814,57 @@ public class APItemOverworld
             {
                 if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                 {
-                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                    switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                     {
-                        __instance.quads = CreateItemOverworld("apProg", __instance);
-                    }
-                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                             .HasFlag(ItemFlags.NeverExclude))
-                    {
-                        __instance.quads = CreateItemOverworld("apUseful", __instance);
-                    }
-                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                    {
-                        var trapTextures = new[]
+                        case "Time Piece" 
+                        when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                            __instance.quads = CreateItemOverworld("timepiece", __instance);
+                            break;
+                        case "Yarn" 
+                               when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            CreateItemOverworld("apTrap", __instance),
-                            CreateItemOverworld("apTrap1", __instance),
-                            CreateItemOverworld("apTrap2", __instance)
-                        };
-                        var randomIndex = Random.Range(0, trapTextures.Length);
-                        __instance.quads = trapTextures[randomIndex];
-                    }
-                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                    {
-                        __instance.quads = CreateItemOverworld("apFiller", __instance);
+                            // var yarnTextures = new[]
+                            // {
+                            //     CreateItemOverworld("yarn", __instance),
+                            //     CreateItemOverworld("yarn2", __instance),
+                            //     CreateItemOverworld("yarn3", __instance),
+                            //     CreateItemOverworld("yarn4", __instance),
+                            //     CreateItemOverworld("yarn5", __instance),
+                            // };
+                            // var randomIndex = Random.Range(0, yarnTextures.Length);
+                            // __instance.quads = yarnTextures[randomIndex];
+                            __instance.quads = CreateItemOverworld("yarn", __instance);
+                            break;
+                        }
+                        default:
+                        {
+                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            {
+                                __instance.quads = CreateItemOverworld("apProg", __instance);
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
+                                     .HasFlag(ItemFlags.NeverExclude))
+                            {
+                                __instance.quads = CreateItemOverworld("apUseful", __instance);
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                            {
+                                var trapTextures = new[]
+                                {
+                                    CreateItemOverworld("apTrap", __instance),
+                                    CreateItemOverworld("apTrap1", __instance),
+                                    CreateItemOverworld("apTrap2", __instance)
+                                };
+                                var randomIndex = Random.Range(0, trapTextures.Length);
+                                __instance.quads = trapTextures[randomIndex];
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                            {
+                                __instance.quads = CreateItemOverworld("apFiller", __instance);
+                            }
+
+                            break;
+                        }
                     }
                 }
                 else
@@ -1616,6 +2014,12 @@ public class APItemOverworld
                 { "bathhouse", "Bathhouse" },
                 { "tadpoleHQ", "TadpoleHQ" },
                 { "garysGarden", "GarysGarden" },
+                { "timepiece", "TimePieceHiT" },
+                { "yarn", "YarnHiT" },
+                { "yarn2", "Yarn2HiT" },
+                { "yarn3", "Yarn3HiT" },
+                { "yarn4", "Yarn4HiT" },
+                { "yarn5", "Yarn5HiT" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -1659,29 +2063,57 @@ public class APItemOverworld
                 {
                     if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                     {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                        switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                         {
-                            __instance.quads = CreateItemOverworld("apProg", __instance);
-                        }
-                        else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                 .HasFlag(ItemFlags.NeverExclude))
-                        {
-                            __instance.quads = CreateItemOverworld("apUseful", __instance);
-                        }
-                        else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                        {
-                            var trapTextures = new[]
+                            case "Time Piece" 
+                            when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                __instance.quads = CreateItemOverworld("timepiece", __instance);
+                                break;
+                            case "Yarn" 
+                                   when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                             {
-                                CreateItemOverworld("apTrap", __instance),
-                                CreateItemOverworld("apTrap1", __instance),
-                                CreateItemOverworld("apTrap2", __instance)
-                            };
-                            var randomIndex = Random.Range(0, trapTextures.Length);
-                            __instance.quads = trapTextures[randomIndex];
-                        }
-                        else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                        {
-                            __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                // var yarnTextures = new[]
+                                // {
+                                //     CreateItemOverworld("yarn", __instance),
+                                //     CreateItemOverworld("yarn2", __instance),
+                                //     CreateItemOverworld("yarn3", __instance),
+                                //     CreateItemOverworld("yarn4", __instance),
+                                //     CreateItemOverworld("yarn5", __instance),
+                                // };
+                                // var randomIndex = Random.Range(0, yarnTextures.Length);
+                                // __instance.quads = yarnTextures[randomIndex];
+                                __instance.quads = CreateItemOverworld("yarn", __instance);
+                                break;
+                            }
+                            default:
+                            {
+                                if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                {
+                                    __instance.quads = CreateItemOverworld("apProg", __instance);
+                                }
+                                else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
+                                         .HasFlag(ItemFlags.NeverExclude))
+                                {
+                                    __instance.quads = CreateItemOverworld("apUseful", __instance);
+                                }
+                                else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                {
+                                    var trapTextures = new[]
+                                    {
+                                        CreateItemOverworld("apTrap", __instance),
+                                        CreateItemOverworld("apTrap1", __instance),
+                                        CreateItemOverworld("apTrap2", __instance)
+                                    };
+                                    var randomIndex = Random.Range(0, trapTextures.Length);
+                                    __instance.quads = trapTextures[randomIndex];
+                                }
+                                else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                {
+                                    __instance.quads = CreateItemOverworld("apFiller", __instance);
+                                }
+
+                                break;
+                            }
                         }
                     }
                     else

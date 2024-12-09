@@ -38,6 +38,12 @@ public class APItemSentNotification : MonoBehaviour
     private static RawImage _noteBathhouseImage;
     private static RawImage _noteTadpoleImage;
     private static RawImage _noteSuperJumpImage;
+    private static RawImage _noteTimePieceImage;
+    private static RawImage _noteYarnImage;
+    private static RawImage _noteYarn2Image;
+    private static RawImage _noteYarn3Image;
+    private static RawImage _noteYarn4Image;
+    private static RawImage _noteYarn5Image;
     private static TextMeshProUGUI _noteText;
     private static scrUIhider _uiHider;
     private static scrUIhider _uiHiderShadow;
@@ -73,6 +79,12 @@ public class APItemSentNotification : MonoBehaviour
         _noteBathhouseImage = transform.Find("ItemSent/Bathhouse")?.GetComponent<RawImage>();
         _noteTadpoleImage = transform.Find("ItemSent/Tadpole")?.GetComponent<RawImage>();
         _noteSuperJumpImage = transform.Find("ItemSent/SuperJump")?.GetComponent<RawImage>();
+        _noteTimePieceImage = transform.Find("ItemSent/TimePieceHiT")?.GetComponent<RawImage>();
+        _noteYarnImage = transform.Find("ItemSent/YarnHiT")?.GetComponent<RawImage>();
+        _noteYarn2Image = transform.Find("ItemSent/Yarn2HiT")?.GetComponent<RawImage>();
+        _noteYarn3Image = transform.Find("ItemSent/Yarn3HiT")?.GetComponent<RawImage>();
+        _noteYarn4Image = transform.Find("ItemSent/Yarn4HiT")?.GetComponent<RawImage>();
+        _noteYarn5Image = transform.Find("ItemSent/Yarn5HiT")?.GetComponent<RawImage>();
         _noteText = transform.Find("ItemSent/Text")?.GetComponent<TextMeshProUGUI>();
 
         if (noteBox == null) Plugin.BepinLogger.LogError("ItemSent is null");
@@ -120,6 +132,12 @@ public class APItemSentNotification : MonoBehaviour
         _noteTrapImage.gameObject.SetActive(false);
         _noteTrap2Image.gameObject.SetActive(false);
         _noteTrap3Image.gameObject.SetActive(false);
+        _noteTimePieceImage.gameObject.SetActive(false);
+        _noteYarnImage.gameObject.SetActive(false);
+        _noteYarn2Image.gameObject.SetActive(false);
+        _noteYarn3Image.gameObject.SetActive(false);
+        _noteYarn4Image.gameObject.SetActive(false);
+        _noteYarn5Image.gameObject.SetActive(false);
         _noteImage.gameObject.SetActive(false);
         
         DefaultShadowNoteColor = noteShadowBoxImage.color;
@@ -168,6 +186,12 @@ public class APItemSentNotification : MonoBehaviour
         _noteTrapImage.gameObject.SetActive(false);
         _noteTrap2Image.gameObject.SetActive(false);
         _noteTrap3Image.gameObject.SetActive(false);
+        _noteTimePieceImage.gameObject.SetActive(false);
+        _noteYarnImage.gameObject.SetActive(false);
+        _noteYarn2Image.gameObject.SetActive(false);
+        _noteYarn3Image.gameObject.SetActive(false);
+        _noteYarn4Image.gameObject.SetActive(false);
+        _noteYarn5Image.gameObject.SetActive(false);
         _noteImage.gameObject.SetActive(false);
         _noteText.fontSize = 26;
         _noteText.enableAutoSizing = true;
@@ -188,95 +212,123 @@ public class APItemSentNotification : MonoBehaviour
                 noteBoxImage.color = new Color32(172, 174, 255, 255);
                 if (hintLogMessage.IsSenderTheActivePlayer)
                 {
-                    if (networkItem.ItemGame == "Here Comes Niko!")
+                    switch (networkItem.ItemGame)
                     {
-                        switch (networkItem.ItemName)
-                        {
-                            case "Coin":
-                                _noteCoinImage.gameObject.SetActive(true);
-                                break;
-                            case "Cassette":
-                                _noteCassetteImage.gameObject.SetActive(true);
-                                break;
-                            case "Key":
-                                _noteKeyImage.gameObject.SetActive(true);
-                                break;
-                            case "Super Jump":
-                                _noteSuperJumpImage.gameObject.SetActive(true);
-                                break;
-                            case "Letter":
-                                _noteLetterImage.gameObject.SetActive(true);
-                                break;
-                            case "1000 Snail Dollar":
-                                _noteSnailMoneyImage.gameObject.SetActive(true);
-                                break;
-                            case "10 Bugs":
-                                _noteBugImage.gameObject.SetActive(true);
-                                break;
-                            case "25 Apples":
-                                _noteApplesImage.gameObject.SetActive(true);
-                                break;
-                            case "Contact List 1" or "Contact List 2" or "Progressive Contact List":
-                                _noteContactListImage.gameObject.SetActive(true);
-                                break;
-                            case "Gary's Garden Ticket":
-                                _noteGardenImage.gameObject.SetActive(true);
-                                break;
-                            case "Hairball City Ticket":
-                                _noteHairballImage.gameObject.SetActive(true);
-                                break;
-                            case "Turbine Town Ticket":
-                                _noteTurbineImage.gameObject.SetActive(true);
-                                break;
-                            case "Salmon Creek Forest Ticket":
-                                _noteSalmonImage.gameObject.SetActive(true);
-                                break;
-                            case "Public Pool Ticket":
-                                _notePoolImage.gameObject.SetActive(true);
-                                break;
-                            case "Bathhouse Ticket":
-                                _noteBathhouseImage.gameObject.SetActive(true);
-                                break;
-                            case "Tadpole HQ Ticket":
-                                _noteTadpoleImage.gameObject.SetActive(true);
-                                break;
-                            case "Hairball City Fish" or "Turbine Town Fish" or "Salmon Creek Forest Fish" 
-                                or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
-                                _noteFishImage.gameObject.SetActive(true);
-                                break;
-                            default:
-                                _noteImage.gameObject.SetActive(true);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        if (networkItem.Flags.HasFlag(ItemFlags.Advancement))
-                        {
-                            _noteProgImage.gameObject.SetActive(true);
-                        }
-                        else if (networkItem.Flags.HasFlag(ItemFlags.NeverExclude))
-                        {
-                            _noteUsefulImage.gameObject.SetActive(true);
-                        }
-                        else if (networkItem.Flags.HasFlag(ItemFlags.Trap))
-                        {
-                            var trapTextures = new[]
+                        case "Here Comes Niko!":
+                            switch (networkItem.ItemName)
                             {
-                                _noteTrapImage,
-                                _noteTrap2Image,
-                                _noteTrap3Image
-                            };
-                            var randomIndex = Random.Range(0, trapTextures.Length);
-                            trapTextures[randomIndex].gameObject.SetActive(true);
-                        }
-                        else if (networkItem.Flags.HasFlag(ItemFlags.None))
+                                case "Coin":
+                                    _noteCoinImage.gameObject.SetActive(true);
+                                    break;
+                                case "Cassette":
+                                    _noteCassetteImage.gameObject.SetActive(true);
+                                    break;
+                                case "Key":
+                                    _noteKeyImage.gameObject.SetActive(true);
+                                    break;
+                                case "Super Jump":
+                                    _noteSuperJumpImage.gameObject.SetActive(true);
+                                    break;
+                                case "Letter":
+                                    _noteLetterImage.gameObject.SetActive(true);
+                                    break;
+                                case "1000 Snail Dollar":
+                                    _noteSnailMoneyImage.gameObject.SetActive(true);
+                                    break;
+                                case "10 Bugs":
+                                    _noteBugImage.gameObject.SetActive(true);
+                                    break;
+                                case "25 Apples":
+                                    _noteApplesImage.gameObject.SetActive(true);
+                                    break;
+                                case "Contact List 1" or "Contact List 2" or "Progressive Contact List":
+                                    _noteContactListImage.gameObject.SetActive(true);
+                                    break;
+                                case "Gary's Garden Ticket":
+                                    _noteGardenImage.gameObject.SetActive(true);
+                                    break;
+                                case "Hairball City Ticket":
+                                    _noteHairballImage.gameObject.SetActive(true);
+                                    break;
+                                case "Turbine Town Ticket":
+                                    _noteTurbineImage.gameObject.SetActive(true);
+                                    break;
+                                case "Salmon Creek Forest Ticket":
+                                    _noteSalmonImage.gameObject.SetActive(true);
+                                    break;
+                                case "Public Pool Ticket":
+                                    _notePoolImage.gameObject.SetActive(true);
+                                    break;
+                                case "Bathhouse Ticket":
+                                    _noteBathhouseImage.gameObject.SetActive(true);
+                                    break;
+                                case "Tadpole HQ Ticket":
+                                    _noteTadpoleImage.gameObject.SetActive(true);
+                                    break;
+                                case "Hairball City Fish" or "Turbine Town Fish" or "Salmon Creek Forest Fish" 
+                                    or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
+                                    _noteFishImage.gameObject.SetActive(true);
+                                    break;
+                                default:
+                                    _noteImage.gameObject.SetActive(true);
+                                    break;
+                            }
+                            break;
+                        default:
                         {
-                            _noteFillerImage.gameObject.SetActive(true);
-                        }
-                        else
-                        {
-                            _noteImage.gameObject.SetActive(true);
+                            switch (networkItem.ItemName)
+                            {
+                                case "Time Piece" when networkItem.ItemGame == "A Hat in Time":
+                                    _noteTimePieceImage.gameObject.SetActive(true);
+                                    break;
+                                case "Yarn" when networkItem.ItemGame == "A Hat in Time":
+                                {
+                                    var yarnTextures = new[]
+                                    {
+                                        _noteYarnImage,
+                                        _noteYarn2Image,
+                                        _noteYarn3Image,
+                                        _noteYarn4Image,
+                                        _noteYarn5Image,
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    yarnTextures[randomIndex].gameObject.SetActive(true);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (networkItem.Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        _noteProgImage.gameObject.SetActive(true);
+                                    }
+                                    else if (networkItem.Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        _noteUsefulImage.gameObject.SetActive(true);
+                                    }
+                                    else if (networkItem.Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            _noteTrapImage,
+                                            _noteTrap2Image,
+                                            _noteTrap3Image
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        trapTextures[randomIndex].gameObject.SetActive(true);
+                                    }
+                                    else if (networkItem.Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        _noteFillerImage.gameObject.SetActive(true);
+                                    }
+                                    else
+                                    {
+                                        _noteImage.gameObject.SetActive(true);
+                                    }
+
+                                    break;
+                                }
+                            }
+                            break;
                         }
                     }
                     
@@ -296,96 +348,124 @@ public class APItemSentNotification : MonoBehaviour
                 noteBoxImage.color = Color.white;
                 if (itemSendLogMessage.IsSenderTheActivePlayer)
                 {
-                    if (itemGame == "Here Comes Niko!")
+                    switch (itemGame)
                     {
-                        switch (itemName)
-                        {
-                            case "Coin":
-                                _noteCoinImage.gameObject.SetActive(true);
-                                break;
-                            case "Cassette":
-                                _noteCassetteImage.gameObject.SetActive(true);
-                                break;
-                            case "Key" or "Hairball City Key" or "Turbine Town Key" or "Salmon Creek Forest Key" 
-                                or "Public Pool Key" or "Bathhouse Key" or "Tadpole HQ Key":
-                                _noteKeyImage.gameObject.SetActive(true);
-                                break;
-                            case "Super Jump":
-                                _noteSuperJumpImage.gameObject.SetActive(true);
-                                break;
-                            case "Letter":
-                                _noteLetterImage.gameObject.SetActive(true);
-                                break;
-                            case "1000 Snail Dollar":
-                                _noteSnailMoneyImage.gameObject.SetActive(true);
-                                break;
-                            case "10 Bugs":
-                                _noteBugImage.gameObject.SetActive(true);
-                                break;
-                            case "25 Apples":
-                                _noteApplesImage.gameObject.SetActive(true);
-                                break;
-                            case "Contact List 1" or "Contact List 2" or "Progressive Contact List":
-                                _noteContactListImage.gameObject.SetActive(true);
-                                break;
-                            case "Gary's Garden Ticket":
-                                _noteGardenImage.gameObject.SetActive(true);
-                                break;
-                            case "Hairball City Ticket":
-                                _noteHairballImage.gameObject.SetActive(true);
-                                break;
-                            case "Turbine Town Ticket":
-                                _noteTurbineImage.gameObject.SetActive(true);
-                                break;
-                            case "Salmon Creek Forest Ticket":
-                                _noteSalmonImage.gameObject.SetActive(true);
-                                break;
-                            case "Public Pool Ticket":
-                                _notePoolImage.gameObject.SetActive(true);
-                                break;
-                            case "Bathhouse Ticket":
-                                _noteBathhouseImage.gameObject.SetActive(true);
-                                break;
-                            case "Tadpole HQ Ticket":
-                                _noteTadpoleImage.gameObject.SetActive(true);
-                                break;
-                            case "Hairball City Fish" or "Turbine Town Fish" or "Salmon Creek Forest Fish" 
-                                or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
-                                _noteFishImage.gameObject.SetActive(true);
-                                break;
-                            default:
-                                _noteImage.gameObject.SetActive(true);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        if (itemFlag.HasFlag(ItemFlags.Advancement))
-                        {
-                            _noteProgImage.gameObject.SetActive(true);
-                        }
-                        else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
-                        {
-                            _noteUsefulImage.gameObject.SetActive(true);
-                        }
-                        else if (itemFlag.HasFlag(ItemFlags.Trap))
-                        {
-                            var trapTextures = new[]
+                        case "Here Comes Niko!":
+                            switch (itemName)
                             {
-                                _noteTrapImage,
-                                _noteTrap2Image,
-                                _noteTrap3Image
-                            };
-                            var randomIndex = Random.Range(0, trapTextures.Length);
-                            trapTextures[randomIndex].gameObject.SetActive(true);
-                        }
-                        else if (itemFlag.HasFlag(ItemFlags.None))
+                                case "Coin":
+                                    _noteCoinImage.gameObject.SetActive(true);
+                                    break;
+                                case "Cassette":
+                                    _noteCassetteImage.gameObject.SetActive(true);
+                                    break;
+                                case "Key" or "Hairball City Key" or "Turbine Town Key" or "Salmon Creek Forest Key" 
+                                    or "Public Pool Key" or "Bathhouse Key" or "Tadpole HQ Key":
+                                    _noteKeyImage.gameObject.SetActive(true);
+                                    break;
+                                case "Super Jump":
+                                    _noteSuperJumpImage.gameObject.SetActive(true);
+                                    break;
+                                case "Letter":
+                                    _noteLetterImage.gameObject.SetActive(true);
+                                    break;
+                                case "1000 Snail Dollar":
+                                    _noteSnailMoneyImage.gameObject.SetActive(true);
+                                    break;
+                                case "10 Bugs":
+                                    _noteBugImage.gameObject.SetActive(true);
+                                    break;
+                                case "25 Apples":
+                                    _noteApplesImage.gameObject.SetActive(true);
+                                    break;
+                                case "Contact List 1" or "Contact List 2" or "Progressive Contact List":
+                                    _noteContactListImage.gameObject.SetActive(true);
+                                    break;
+                                case "Gary's Garden Ticket":
+                                    _noteGardenImage.gameObject.SetActive(true);
+                                    break;
+                                case "Hairball City Ticket":
+                                    _noteHairballImage.gameObject.SetActive(true);
+                                    break;
+                                case "Turbine Town Ticket":
+                                    _noteTurbineImage.gameObject.SetActive(true);
+                                    break;
+                                case "Salmon Creek Forest Ticket":
+                                    _noteSalmonImage.gameObject.SetActive(true);
+                                    break;
+                                case "Public Pool Ticket":
+                                    _notePoolImage.gameObject.SetActive(true);
+                                    break;
+                                case "Bathhouse Ticket":
+                                    _noteBathhouseImage.gameObject.SetActive(true);
+                                    break;
+                                case "Tadpole HQ Ticket":
+                                    _noteTadpoleImage.gameObject.SetActive(true);
+                                    break;
+                                case "Hairball City Fish" or "Turbine Town Fish" or "Salmon Creek Forest Fish" 
+                                    or "Public Pool Fish" or "Bathhouse Fish" or "Tadpole HQ Fish":
+                                    _noteFishImage.gameObject.SetActive(true);
+                                    break;
+                                default:
+                                    _noteImage.gameObject.SetActive(true);
+                                    break;
+                            }
+                            break;
+                        default:
                         {
-                            _noteFillerImage.gameObject.SetActive(true);
-                        }
-                        else
-                        {
-                            _noteImage.gameObject.SetActive(true);
+                            switch (itemName)
+                            {
+                                case "Time Piece" when itemGame == "A Hat in Time":
+                                    _noteTimePieceImage.gameObject.SetActive(true);
+                                    break;
+                                case "Yarn" when itemGame == "A Hat in Time":
+                                {
+                                    var yarnTextures = new[]
+                                    {
+                                        _noteYarnImage,
+                                        _noteYarn2Image,
+                                        _noteYarn3Image,
+                                        _noteYarn4Image,
+                                        _noteYarn5Image,
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    yarnTextures[randomIndex].gameObject.SetActive(true);
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (itemFlag.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        _noteProgImage.gameObject.SetActive(true);
+                                    }
+                                    else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        _noteUsefulImage.gameObject.SetActive(true);
+                                    }
+                                    else if (itemFlag.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            _noteTrapImage,
+                                            _noteTrap2Image,
+                                            _noteTrap3Image
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        trapTextures[randomIndex].gameObject.SetActive(true);
+                                    }
+                                    else if (itemFlag.HasFlag(ItemFlags.None))
+                                    {
+                                        _noteFillerImage.gameObject.SetActive(true);
+                                    }
+                                    else
+                                    {
+                                        _noteImage.gameObject.SetActive(true);
+                                    }
+
+                                    break;
+                                }
+                            }
+                            break;
                         }
                     }
 

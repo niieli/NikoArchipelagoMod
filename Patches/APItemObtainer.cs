@@ -82,28 +82,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCoin = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCoin = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCoin = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -160,28 +187,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCoin = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCoin = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCoin = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -238,28 +292,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCoin = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCoin = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCoin = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -317,28 +398,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCoin = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCoin = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCoin = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -395,28 +503,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCoin = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCoin = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCoin = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -485,28 +620,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCoin = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCoin = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCoin = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -617,28 +779,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCassette = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCassette = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCassette = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -689,32 +878,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCassette = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCassette = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCassette = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -765,28 +977,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCassette = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCassette = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCassette = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -837,28 +1076,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCassette = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCassette = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCassette = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -909,28 +1175,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCassette = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCassette = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCassette = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -981,28 +1274,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCassette = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCassette = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCassette = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else
@@ -1053,28 +1373,55 @@ public class APItemObtainer
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
                         {
-                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                            {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                            {
-                                var trapTextures = new[]
+                                case "Time Piece" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                                    break;
+                                case "Yarn" 
+                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
-                                };
-                                var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.txrCassette = trapTextures[randomIndex];
-                            }
-                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                            {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    var yarnTextures = new[]
+                                    {
+                                        Plugin.YarnSprite.texture,
+                                        Plugin.Yarn2Sprite.texture,
+                                        Plugin.Yarn3Sprite.texture,
+                                        Plugin.Yarn4Sprite.texture,
+                                        Plugin.Yarn5Sprite.texture
+                                    };
+                                    var randomIndex = Random.Range(0, yarnTextures.Length);
+                                    __instance.txrCassette = yarnTextures[randomIndex];
+                                    break;
+                                }
+                                default:
+                                {
+                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                                    {
+                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                                    {
+                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                                    {
+                                        var trapTextures = new[]
+                                        {
+                                            Plugin.ApTrapSprite.texture,
+                                            Plugin.ApTrap2Sprite.texture,
+                                            Plugin.ApTrap3Sprite.texture
+                                        };
+                                        var randomIndex = Random.Range(0, trapTextures.Length);
+                                        __instance.txrCassette = trapTextures[randomIndex];
+                                    }
+                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                                    {
+                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
                         else

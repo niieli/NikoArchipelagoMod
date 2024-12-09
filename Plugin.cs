@@ -70,7 +70,8 @@ namespace NikoArchipelago
             SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
             SnailMoneySprite, BugSprite, GgSprite, GoalBadSprite,
-            ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite;
+            ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite,
+            TimePieceSprite, YarnSprite, Yarn2Sprite, Yarn3Sprite, Yarn4Sprite, Yarn5Sprite;
 
         public static GameObject ApUIGameObject;
         public static Texture2D CassetteTexture;
@@ -186,6 +187,12 @@ namespace NikoArchipelago
                 PoolKeySprite = AssetBundle.LoadAsset<Sprite>("txrPoolKey");
                 BathKeySprite = AssetBundle.LoadAsset<Sprite>("txrBathKey");
                 TadpoleKeySprite = AssetBundle.LoadAsset<Sprite>("txrTadpoleKey");
+                TimePieceSprite = AssetBundle.LoadAsset<Sprite>("timepiece2D");
+                YarnSprite = AssetBundle.LoadAsset<Sprite>("yarn2d1");
+                Yarn2Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d2");
+                Yarn3Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d3");
+                Yarn4Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d4");
+                Yarn5Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d5");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
