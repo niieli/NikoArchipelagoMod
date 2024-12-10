@@ -284,9 +284,9 @@ namespace NikoArchipelago
                         gameSaveManager.ClearSaveData();
                     }
 
-                    if (Compatibility)
+                    if (gameSaveManager.gameData.generalGameData.currentLevel == 0)
                     {
-                        scrTrainManager.instance.UseTrain(!newFile ? gameSaveManager.gameData.generalGameData.currentLevel : 1);
+                        scrTrainManager.instance.UseTrain(1, false);
                     }
                     else
                     {
@@ -393,10 +393,12 @@ namespace NikoArchipelago
                 else
                 {
                     SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
+                    if (generalGameData.keyAmount < 0) generalGameData.keyAmount = 0;
                 }
             } else
             {
                 SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
+                if (generalGameData.keyAmount < 0) generalGameData.keyAmount = 0;
             }
 
             if (ArchipelagoData.slotData.ContainsKey("fishsanity"))

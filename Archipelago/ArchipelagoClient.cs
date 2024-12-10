@@ -26,7 +26,7 @@ public class ArchipelagoClient
     public static ArchipelagoSession _session;
     public int CoinAmount, CassetteAmount, KeyAmount, HcKeyAmount, TtKeyAmount, SfcKeyAmount, PpKeyAmount, BathKeyAmount, HqKeyAmount,
         HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount;
-    public bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
+    public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
     public Task _disconnectTask;
 
     /// <summary>
@@ -335,6 +335,19 @@ public class ArchipelagoClient
             }
         }
         return false;
+    }
+
+    public static int TicketCount()
+    {
+        var count = 0;
+        if (Ticket1) count++;
+        if (Ticket2) count++;
+        if (Ticket3) count++;
+        if (Ticket4) count++;
+        if (Ticket5) count++;
+        if (Ticket6) count++;
+        if (TicketGary) count++;
+        return count;
     }
     
     public static readonly List<ScoutedItemInfo> ScoutedLocations = [];
