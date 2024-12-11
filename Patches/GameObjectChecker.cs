@@ -15,6 +15,7 @@ public class GameObjectChecker : MonoBehaviour
 {
     private static GameObject _garyGhost, _garyGhostHome;
     private static bool _foundGhost;
+    private static bool _foundCamera;
     public static bool FirstMeeting;
     private static bool _checkedGhost;
     private static bool _spawned;
@@ -31,6 +32,7 @@ public class GameObjectChecker : MonoBehaviour
         FirstMeeting = false;
         _checkedGhost = false;
         _spawned = false;
+        _foundCamera = false;
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
@@ -370,6 +372,14 @@ public class GameObjectChecker : MonoBehaviour
 
     public void Update()
     {
+        var t = GameObject.Find("PlayerCamera");
+        if (t != null && !_foundCamera)
+        {
+            var asset = Plugin.AssetBundle.LoadAsset<GameObject>("Snowflakes");
+            var w = Instantiate(asset, t.transform, false);
+            w.AddComponent<StayOnScreen>();
+            _foundCamera = true;
+        }
         if (ArchipelagoData.slotData == null) return;
         if (Plugin.Compatibility) return;
         if (!ArchipelagoData.slotData.ContainsKey("garden_access")) return;
