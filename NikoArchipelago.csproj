@@ -63,6 +63,8 @@
   <ItemGroup>
     <None Remove="apassets" />
     <EmbeddedResource Include="apassets" />
+    <None Remove="apxmas" />
+    <EmbeddedResource Include="apxmas" />
     <None Remove="apassets2" />
   </ItemGroup>
 </Project>

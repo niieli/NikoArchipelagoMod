@@ -24,9 +24,9 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 
 ## Known issues
 
-- Apples & Snail Money duplicate after reconnecting (not critical, but will work on a fix | Planned for 0.5.1)
+- Apples & Snail Money duplicate after reconnecting (not critical, but will work on a fix)
 - Item sent notification sometimes not updating correctly (I don't know why, maybe server issue?)
-- Dispatcher's Dialogue not reflecting the correct cost when thinking about buying (Breaks dialogue upon change with my current implemantation, prob will not fix)
+- Dispatcher's Dialogue not reflecting the correct cost when thinking about buying (Breaks dialogue upon change with my current implementation, prob will not fix)
 
 ## What is randomized?
 - Coins
@@ -60,3 +60,4 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 ## Planned features
 - Every APSave has a companion save file (Improve Async sessions)
 - Collect/Release reflecting on the save
+- Fix box warping(Should be in the next version)

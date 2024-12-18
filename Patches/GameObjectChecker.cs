@@ -144,7 +144,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void InstantiateAPMenu()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var apUIGameObject = Plugin.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
+        var apUIGameObject = Plugin.ChristmasEvent ? Plugin.AssetBundleXmas.LoadAsset<GameObject>("APMenuXmasTheme") : Plugin.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
         APMenu = Instantiate(apUIGameObject, GameObject.Find("UI").transform, false);
         if (APMenu == null)
         {
@@ -372,13 +372,17 @@ public class GameObjectChecker : MonoBehaviour
 
     public void Update()
     {
-        var t = GameObject.Find("PlayerCamera");
-        if (t != null && !_foundCamera)
+        if (Plugin.ChristmasEvent)
         {
-            var asset = Plugin.AssetBundle.LoadAsset<GameObject>("Snowflakes");
-            var w = Instantiate(asset, t.transform, false);
-            w.AddComponent<StayOnScreen>();
-            _foundCamera = true;
+            var t = GameObject.Find("PlayerCamera");
+            if (t != null && !_foundCamera)
+            {
+                var asset = Plugin.AssetBundle.LoadAsset<GameObject>("Snowflakes");
+                var w = Instantiate(asset, t.transform, false);
+                w.AddComponent<StayOnScreen>();
+                _foundCamera = true;
+                Plugin.PlayerFound = true;
+            }
         }
         if (ArchipelagoData.slotData == null) return;
         if (Plugin.Compatibility) return;

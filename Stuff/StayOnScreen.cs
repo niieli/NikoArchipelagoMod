@@ -8,20 +8,23 @@ public class StayOnScreen : MonoBehaviour
 {
     private ParticleSystem _particleSystem;
     private ParticleSystem.Particle[] _particles;
-    public float snowRadius = 50f;
+    private ParticleSystem.MinMaxCurve _curve;
+    public static float snowflakeAmount = 100;
+    public float snowRadius = 150f;
     public Camera playerCamera;
 
     void Start()
     {
         _particleSystem = GetComponent<ParticleSystem>();
+        _curve = _particleSystem.emission.rateOverTime;
         _particles = new ParticleSystem.Particle[_particleSystem.main.maxParticles];
         playerCamera = transform.parent.GetComponent<Camera>();
     }
 
     void LateUpdate()
     {
+        _curve = snowflakeAmount;
         if (!_particleSystem.isPlaying) return;
-
         int activeParticles = _particleSystem.GetParticles(_particles);
         Vector3 cameraPosition = playerCamera.transform.position;
 

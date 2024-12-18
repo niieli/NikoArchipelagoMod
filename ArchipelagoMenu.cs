@@ -275,7 +275,6 @@ public class ArchipelagoMenu : MonoBehaviour
     public void Start()
     {
         gameSaveManager = scrGameSaveManager.instance;
-        
         formPanel = transform.Find("Panel").gameObject;
         openFormButton = transform.Find("APButton").gameObject.GetComponent<Button>();
         apButtonGameObject = transform.Find("APButton").gameObject;
@@ -623,6 +622,19 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtPpFishImage.enabled = false;
         boughtBathFishImage.enabled = false;
         boughtHqFishImage.enabled = false;
+        
+        // Lights
+        if (Plugin.ChristmasEvent)
+        {
+            var menuLights = formPanel.transform.Find("MenuLights");
+            var settingsLights = settingsButton.transform.Find("GlowLightsSettings");
+            var trackersLights = trackersButton.transform.Find("GlowLightsTrackers");
+            var qolLights = qolButton.transform.Find("GlowLightsQOL");
+            menuLights.gameObject.AddComponent<LightController>();
+            settingsLights.gameObject.AddComponent<LightController>();
+            trackersLights.gameObject.AddComponent<LightController>();
+            qolLights.gameObject.AddComponent<LightController>();
+        }
         
         settingsPanelCanvasGroup = formPanel.transform.Find("settingsPanel").gameObject.GetComponent<CanvasGroup>();
         trackersPanelCanvasGroup = formPanel.transform.Find("trackersPanel").gameObject.GetComponent<CanvasGroup>();

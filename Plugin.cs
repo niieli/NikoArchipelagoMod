@@ -11,6 +11,7 @@ using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Patches;
+using NikoArchipelago.Stuff;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -32,7 +33,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.5.0";
+        public const string PluginVersion = "0.5.1";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -47,17 +48,17 @@ namespace NikoArchipelago
 
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
         private int coinFlg, cassetteFlg, fishFlg, miscFlg, letterFlg, generalFlg, coinTotal, coinOld;
-        private int goToLevel;
+        private int goToLevel, snowAmount;
         private float env, mas, mus, sfx;
         private static scrNotificationDisplayer _noteDisplayer;
         public bool worldReady;
         private static bool _canLogin;
         public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
-        public static bool loggedIn, Compatibility, SaveEstablished;
+        public static bool loggedIn, Compatibility, SaveEstablished, PlayerFound;
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
-        public static AssetBundle AssetBundle;
+        public static AssetBundle AssetBundle, AssetBundleXmas;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
@@ -78,6 +79,8 @@ namespace NikoArchipelago
         public static Image APLogoImage; 
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
+        private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
+        public static bool ChristmasEvent;
         
         private void Awake()
         {
@@ -105,6 +108,14 @@ namespace NikoArchipelago
 
         public void Start()
         {
+            var startChrismas = _christmasTime.AddDays(-18);
+            var endChrismas = _christmasTime.AddDays(16);
+            if (DateTime.Now.Ticks > startChrismas.Ticks && DateTime.Now.Ticks < endChrismas.Ticks)
+            {
+                ChristmasEvent = true;
+                Logger.LogInfo($"Christmas: {DateTime.Now.Ticks}");
+                AssetBundleXmas = AssetBundleLoader.LoadEmbeddedAssetBundle("apxmas");
+            }
             GameOptions.MasterVolume = mas;
             GameOptions.EnvVolume = env;
             GameOptions.MusicVolume = mus;
@@ -634,6 +645,12 @@ namespace NikoArchipelago
                 {
                     Logger.LogWarning("Counted Item: " + t.ItemName + " | ItemID: " + t.ItemId);
                 }
+            }
+            snowAmount = Convert.ToInt32(GUI.TextField(new Rect(150, 360, 80, 20), snowAmount.ToString()));
+            if (GUI.Button(new Rect(16, 360, 100, 20), "Snowflake Amount"))
+            {
+                StayOnScreen.snowflakeAmount = snowAmount;
+                Logger.LogInfo($"Snowflake Amount: {StayOnScreen.snowflakeAmount}");
             }
         }
 
