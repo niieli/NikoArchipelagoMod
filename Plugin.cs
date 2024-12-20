@@ -81,6 +81,7 @@ namespace NikoArchipelago
         private CancellationTokenSource _cancellationTokenSource = new();
         private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
         public static bool ChristmasEvent;
+        private static ArchipelagoData _archipelagoData;
         
         private void Awake()
         {
@@ -109,7 +110,7 @@ namespace NikoArchipelago
         public void Start()
         {
             var startChrismas = _christmasTime.AddDays(-18);
-            var endChrismas = _christmasTime.AddDays(16);
+            var endChrismas = _christmasTime.AddDays(24);
             if (DateTime.Now.Ticks > startChrismas.Ticks && DateTime.Now.Ticks < endChrismas.Ticks)
             {
                 ChristmasEvent = true;

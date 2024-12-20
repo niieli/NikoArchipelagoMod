@@ -45,6 +45,10 @@ public class GameObjectChecker : MonoBehaviour
         HqGarden();
         SpawnGaryHome();
         AssignDisplayers();
+        if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
+        {
+            Plugin.newFile = false;
+        }
     }
     
     private void OnDestroy()
