@@ -201,11 +201,11 @@ public class APItemSentNotification : MonoBehaviour
 
     public static void SentItem(LogMessage message)
     {
+        Clear();
         if (!ArchipelagoMenu.itemSent) return;
         switch (message)
         {
             case HintItemSendLogMessage hintLogMessage:
-                Clear();
                 var receiverHint = hintLogMessage.Receiver;
                 var networkItem = hintLogMessage.Item;
                 var found = hintLogMessage.IsFound;
@@ -339,7 +339,6 @@ public class APItemSentNotification : MonoBehaviour
                 }
                 break;
             case ItemSendLogMessage itemSendLogMessage: 
-                Clear();
                 var receiver = itemSendLogMessage.Receiver.Name;
                 var itemName = itemSendLogMessage.Item.ItemName;
                 var itemGame = itemSendLogMessage.Item.ItemGame;

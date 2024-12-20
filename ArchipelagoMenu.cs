@@ -78,6 +78,10 @@ public class ArchipelagoMenu : MonoBehaviour
     //public Tooltip trackerKeyTooltip;
     //public TooltipTrigger trackerKeyTrigger;
     //public GameObject trackerKeyHighlight;
+    public Toggle seasonalThemesToggle;
+    public Tooltip seasonalThemesTooltip;
+    public TooltipTrigger seasonalThemesTrigger;
+    public GameObject seasonalThemesHighlight;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -100,6 +104,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _status;
     //private static bool _trackerKey;
     private static bool _tooltips;
+    private static bool _seasonalThemes;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
@@ -117,6 +122,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool CassetteSpoiler;
     //public static bool TrackerKey;
     public static bool Tooltips;
+    public static bool SeasonalThemes;
     
     // New Menu stuff
     public GameObject settingsPanel;
@@ -290,6 +296,9 @@ public class ArchipelagoMenu : MonoBehaviour
         tooltipsToggle = formPanel.transform.Find("Tooltips").gameObject.GetComponent<Toggle>();
         tooltipsTrigger = tooltipsToggle.gameObject.AddComponent<TooltipTrigger>();
         tooltipsTooltip = tooltipsToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        seasonalThemesToggle = formPanel.transform.Find("Seasonal").gameObject.GetComponent<Toggle>();
+        seasonalThemesTrigger = seasonalThemesToggle.gameObject.AddComponent<TooltipTrigger>();
+        seasonalThemesTooltip = seasonalThemesToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         
         // Information, when logged in
         informationPanel = formPanel.transform.Find("InformationScreen").gameObject;
@@ -544,6 +553,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _status = statusToggle.isOn;
         //_trackerKey = trackerKeyToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
+        _seasonalThemes = seasonalThemesToggle.isOn;
         hideOnce = false;
         LoadData();
 
@@ -584,6 +594,7 @@ public class ArchipelagoMenu : MonoBehaviour
         //trackerKeyTrigger.tooltip = trackerKeyTooltip;
         tooltipsTrigger.tooltip = tooltipsTooltip;
         cassetteSpoilerTrigger.tooltip = cassetteSpoilerTooltip;
+        seasonalThemesTrigger.tooltip = seasonalThemesTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -750,6 +761,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private void Update()
     {
         ToggleTooltips();
+        Plugin.ChristmasEvent = SeasonalThemes;
         if (Plugin.loggedIn)
         {
             informationPanel.SetActive(true);
@@ -1187,6 +1199,7 @@ public class ArchipelagoMenu : MonoBehaviour
         //_trackerKey = trackerKeyToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
+        _seasonalThemes = seasonalThemesToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1202,6 +1215,7 @@ public class ArchipelagoMenu : MonoBehaviour
         Tooltips = _tooltips;
         CassetteSpoiler = _cassetteSpoiler;
         hideOnce = _tooltips;
+        SeasonalThemes = _seasonalThemes;
         
         SavedData data = new SavedData
         {
@@ -1222,6 +1236,7 @@ public class ArchipelagoMenu : MonoBehaviour
             //Key = _trackerKey,
             Tooltips = _tooltips,
             CassetteSpoiler = _cassetteSpoiler,
+            SeasonalThemes =  _seasonalThemes,
         };
         if (_rememberMe)
         {
@@ -1264,6 +1279,8 @@ public class ArchipelagoMenu : MonoBehaviour
         //TrackerKey = _trackerKey;
         Tooltips = _tooltips;
         CassetteSpoiler = _cassetteSpoiler;
+        _seasonalThemes = seasonalThemesToggle.isOn;
+        SeasonalThemes = _seasonalThemes;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -1303,6 +1320,7 @@ public class ArchipelagoMenu : MonoBehaviour
             //Key = _trackerKey,
             Tooltips = _tooltips,
             CassetteSpoiler = _cassetteSpoiler,
+            SeasonalThemes = _seasonalThemes,
         };
         if (_rememberMe)
         {
@@ -1370,6 +1388,7 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool Tooltips { get; set; } = _tooltips;
         public bool KALMI { get; set; } = _kalmi;
         public bool CassetteSpoiler { get; set; } = _cassetteSpoiler;
+        public bool SeasonalThemes { get; set; } = _seasonalThemes;
     }
 
     private void LoadData()
@@ -1396,6 +1415,7 @@ public class ArchipelagoMenu : MonoBehaviour
             tooltipsToggle.isOn = savedData.Tooltips;
             cassetteSpoilerToggle.isOn = savedData.CassetteSpoiler;
             hideOnce = savedData.Tooltips;
+            seasonalThemesToggle.isOn = savedData.SeasonalThemes;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -1418,6 +1438,7 @@ public class ArchipelagoMenu : MonoBehaviour
             hideOnce = false;
             kalmiToggle.isOn = true;
             cassetteSpoilerToggle.isOn = true;
+            seasonalThemesToggle.isOn = true;
         }
     }
 
