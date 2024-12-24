@@ -112,7 +112,6 @@ public class ArchipelagoClient
             outText = $"Successfully connected to {ServerData.Uri} as {ServerData.SlotName}!";
 
             ArchipelagoConsole.LogMessage(outText);
-            LocationHandler.CheckedLocations = ServerData.CheckedLocations.ToArray();
         }
         else
         {
@@ -336,6 +335,12 @@ public class ArchipelagoClient
             }
         }
         return false;
+    }
+
+    public static void CheckLocationState()
+    {
+        var checkedLocations = _session.Locations.AllLocationsChecked;
+        if (ServerData.CheckedLocations.Count == checkedLocations.Count) return;
     }
 
     public static int TicketCount()

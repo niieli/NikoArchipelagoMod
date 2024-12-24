@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class LocationHandler : MonoBehaviour
     private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex, kioskIndex, shopIndex;
     private static bool _errored, _errored2, _sent;
     private static List<bool> shopFlagsList = [..new bool[16]];
-    public static long[] CheckedLocations;
+    public static ReadOnlyCollection<long> CheckedLocations;
 
     public static void Update2()
     {
