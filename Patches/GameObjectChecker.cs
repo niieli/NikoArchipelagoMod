@@ -381,7 +381,7 @@ public class GameObjectChecker : MonoBehaviour
             var t = GameObject.Find("PlayerCamera");
             if (t != null && !_foundCamera)
             {
-                var asset = Plugin.AssetBundle.LoadAsset<GameObject>("Snowflakes");
+                var asset = Plugin.AssetBundleXmas.LoadAsset<GameObject>("Snowflakes");
                 var w = Instantiate(asset, t.transform, false);
                 w.AddComponent<StayOnScreen>();
                 _foundCamera = true;

@@ -637,11 +637,55 @@ public class ArchipelagoMenu : MonoBehaviour
         // Lights
         if (Plugin.ChristmasEvent)
         {
-            var menuLights = formPanel.transform.Find("MenuLights");
+            var menuCandles = formPanel.transform.Find("MenuGlowCandles");
+            var menuCandles2 = formPanel.transform.Find("MenuGlowCandles2");
+            var menuCandlesBlink = formPanel.transform.Find("MenuGlowCandles1Blink");
+            var menuCandlesBlink2 = formPanel.transform.Find("MenuGlowCandles2Blink");
             var settingsLights = settingsButton.transform.Find("GlowLightsSettings");
             var trackersLights = trackersButton.transform.Find("GlowLightsTrackers");
             var qolLights = qolButton.transform.Find("GlowLightsQOL");
-            menuLights.gameObject.AddComponent<LightController>();
+            Color[] glowColors =
+            [
+                new Color(1f, 0f, 0f), 
+                new Color(1f, 0.5f, 0f), 
+                new Color(0f, 1f, 0f), 
+                new Color(0f, 0.9062204f, 1f),
+                new Color(1f, 0.5529412f, 0.788992f),
+                new Color(0.2071452f, 0f, 1f), 
+                new Color(1f, 0f, 0.6565428f), 
+                new Color(1f, 1f, 0f), 
+                new Color(0f, 1f, 0.4670312f), 
+                new Color(0f, 0f, 1f), 
+                new Color(0.9038821f, 0.5518868f, 1f), 
+                new Color(1f, 1f, 1f), 
+                new Color(0f, 0.444962f, 1f), 
+                new Color(1f, 0f, 0.9598556f), 
+                new Color(0.5898412f, 0.5882353f, 1f), 
+                new Color(1f, 0.7369196f, 0f), 
+            ];
+            menuCandles.gameObject.AddComponent<LightController>().glowColors = glowColors;
+            Color[] glowColors2 =
+            [
+                new(1f, 0.7369196f, 0f),
+                new(1f, 0f, 0f), 
+                new(1f, 0.5f, 0f), 
+                new(0f, 1f, 0f), 
+                new(0f, 0.9062204f, 1f),
+                new(1f, 0.5529412f, 0.788992f),
+                new(0.2071452f, 0f, 1f), 
+                new(1f, 0f, 0.6565428f), 
+                new(1f, 1f, 0f), 
+                new(0f, 1f, 0.4670312f), 
+                new(0f, 0f, 1f), 
+                new(0.9038821f, 0.5518868f, 1f), 
+                new(1f, 1f, 1f), 
+                new(0f, 0.444962f, 1f), 
+                new(1f, 0f, 0.9598556f), 
+                new(0.5898412f, 0.5882353f, 1f), 
+            ];
+            menuCandles2.gameObject.AddComponent<LightController>().glowColors = glowColors2;
+            menuCandlesBlink.gameObject.AddComponent<LightBlinking>();
+            menuCandlesBlink2.gameObject.AddComponent<LightBlinking>().alpha = 0f;
             settingsLights.gameObject.AddComponent<LightController>();
             trackersLights.gameObject.AddComponent<LightController>();
             qolLights.gameObject.AddComponent<LightController>();
