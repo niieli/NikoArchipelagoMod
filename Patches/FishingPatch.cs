@@ -18,6 +18,12 @@ public class FishingPatch
         private static void Postfix(scrFishingMaster __instance)
         {
           FischerReady();
+          var targetType = __instance.GetType();
+          FieldInfo firstTimeTalkedBoolean = targetType.GetField("firstTimeTalked", BindingFlags.NonPublic | BindingFlags.Instance);
+          if (firstTimeTalkedBoolean != null)
+          {
+              firstTimeTalkedBoolean.SetValue(__instance, true);
+          }
           level = SceneManager.GetActiveScene().name;
         }
     }
