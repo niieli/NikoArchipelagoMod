@@ -49,24 +49,26 @@ public class FishingPatch
             var textboxTrigger = Traverse.Create(__instance).Field("textboxTrigger").GetValue<scrTextboxTrigger>();
             var textbox = Traverse.Create(__instance).Field("textbox").GetValue<scrTextbox>();
             var gotCoin = Traverse.Create(__instance).Field("gotCoin").GetValue<bool>();
-
+            bool allFishCollected = CheckAllFish(level);
             if (scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf && !textbox.isOn)
             {
-                bool allFishCollected = CheckAllFish(level);
                 if (!allFishCollected)
                 {
+                    textbox.camIndex = 2;
                     if (blockedLog) return false;
                     Plugin.BepinLogger.LogInfo($"Reward blocked: Need all 5 fish of {level}");
                     blockedLog = true;
                     return false;
                 }
-            } else if (textbox.isOn && textbox.characterName == "Fischer" && !CheckAllFish(level))
+            }
+            else if (!allFishCollected && scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf && textbox.isOn && textbox.characterName == "Fischer")
             {
                 textbox.camIndex = 2;
                 textbox.textMesh.text = $"You need all 5 Fish of {_currentLevelName} to obtain my reward!\nYou have {_currentFishCount}/5 for this level!";
                 textbox.textMesh.maxVisibleCharacters = 99;
                 if (GameInput.GetButtonDown("Action"))
                     textbox.EndConversation();
+                return false;
             }
             return true;
         }
