@@ -635,7 +635,7 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHqFishImage.enabled = false;
         
         // Lights
-        if (Plugin.ChristmasEvent)
+        if (Plugin.ChristmasEvent && !Plugin.NoEvent)
         {
             var menuCandles = formPanel.transform.Find("MenuGlowCandles");
             var menuCandles2 = formPanel.transform.Find("MenuGlowCandles2");
@@ -805,7 +805,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private void Update()
     {
         ToggleTooltips();
-        Plugin.ChristmasEvent = SeasonalThemes;
+        Plugin.ChristmasEvent = !Plugin.NoEvent && SeasonalThemes;
         if (Plugin.loggedIn)
         {
             informationPanel.SetActive(true);

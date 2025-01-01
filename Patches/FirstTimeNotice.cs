@@ -10,7 +10,7 @@ public class FirstTimeNotice
     public static void TitleScreenAPLogo()
     {
         if (TitleScreen == null) return;
-        var infoGameObject = Plugin.ChristmasEvent ? Plugin.AssetBundleXmas.LoadAsset<GameObject>("FirstTimeInfoXmasTheme") : Plugin.AssetBundle.LoadAsset<GameObject>("FirstTimeInfo");
+        var infoGameObject = Plugin.ChristmasEvent && !Plugin.NoEvent ? Plugin.AssetBundleXmas.LoadAsset<GameObject>("FirstTimeInfoXmasTheme") : Plugin.AssetBundle.LoadAsset<GameObject>("FirstTimeInfo");
         var notice = Object.Instantiate(infoGameObject, GameObject.Find("UI").transform, false);
         var wobble = notice.AddComponent<scrUIwobble>();
         if (!Plugin.loggedIn)

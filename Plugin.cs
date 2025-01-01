@@ -80,7 +80,7 @@ namespace NikoArchipelago
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
         private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
-        public static bool ChristmasEvent;
+        public static bool ChristmasEvent, NoEvent;
         private static ArchipelagoData _archipelagoData;
         
         private void Awake()
@@ -109,13 +109,20 @@ namespace NikoArchipelago
 
         public void Start()
         {
-            var startChrismas = _christmasTime.AddDays(-18);
-            var endChrismas = _christmasTime.AddDays(24);
+            var now = DateTime.Now;
+            var currentYear = now.Month == 1 ? now.Year - 1 : now.Year;
+            var christmasTime = new DateTime(currentYear, 12, 25);
+            var startChrismas = christmasTime.AddDays(-18);
+            var endChrismas = christmasTime.AddDays(24);
             if (DateTime.Now.Ticks > startChrismas.Ticks && DateTime.Now.Ticks < endChrismas.Ticks)
             {
                 ChristmasEvent = true;
-                Logger.LogInfo($"Christmas: {DateTime.Now.Ticks}");
+                Logger.LogInfo($"Christmas Event Active.");
                 AssetBundleXmas = AssetBundleLoader.LoadEmbeddedAssetBundle("apxmas");
+            }
+            else
+            {
+                NoEvent = true;
             }
             GameOptions.MasterVolume = mas;
             GameOptions.EnvVolume = env;

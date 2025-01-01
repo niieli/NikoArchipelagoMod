@@ -389,7 +389,6 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
-        if (Plugin.Compatibility) return;
         if (!ArchipelagoData.slotData.ContainsKey("garden_access")) return;
         GardenLevelFix();
         if (SceneManager.GetActiveScene().name != "Home") return;

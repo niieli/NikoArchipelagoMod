@@ -341,6 +341,10 @@ public class ArchipelagoClient
     {
         var checkedLocations = _session.Locations.AllLocationsChecked;
         if (ServerData.CheckedLocations.Count == checkedLocations.Count) return;
+        foreach (var location in checkedLocations)
+        {
+            
+        }
     }
 
     public static int TicketCount()
