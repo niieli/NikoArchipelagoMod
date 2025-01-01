@@ -57,7 +57,7 @@ public class SnailShopPatch
 
                     if (validClothingNumbers.Count > 0)
                     {
-                        var newItemForSale = validClothingNumbers[Random.Range(0, validClothingNumbers.Count)];
+                        var newItemForSale = validClothingNumbers[Random.Range(0, validClothingNumbers.Count)]+1;
                         clothingForSaleField.SetValue(__instance, newItemForSale);
                         __instance.shopImage.sprite = __instance.clothes[newItemForSale];
                     }
