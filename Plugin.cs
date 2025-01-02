@@ -318,8 +318,19 @@ namespace NikoArchipelago
                     loggedIn = true;
                     StartCoroutine(BandaidNotificationFix()); //TODO: Find real fix
                     SaveEstablished = false;
+                    ArchipelagoClient.CheckReceivedItems();
                     //scrGameSaveManager.instance.gameData.generalGameData.snailSteps = ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
+                }
+                if (scrGameSaveManager.saveName == saveName && !ArchipelagoClient.Authenticated)
+                {
+                    Logger.LogWarning("You have disconnected from the server.");
+                    loggedIn = false;
+                }
+
+                if (!loggedIn && ArchipelagoClient.Authenticated && SaveEstablished)
+                {
+                    loggedIn = true;
                 }
 
                 KioskCost.PreFix();
@@ -648,7 +659,7 @@ namespace NikoArchipelago
 
             if (GUI.Button(new Rect(16, 340, 100, 20), "AllReceivedItems"))
             {
-                //ArchipelagoClient.CheckReceivedItems();
+                ArchipelagoClient.CheckReceivedItems();
                 foreach (var t in ArchipelagoClient._session.Items.AllItemsReceived)
                 {
                     Logger.LogWarning("Counted Item: " + t.ItemName + " | ItemID: " + t.ItemId);

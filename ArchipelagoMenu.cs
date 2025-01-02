@@ -20,9 +20,11 @@ public class ArchipelagoMenu : MonoBehaviour
     public GameObject formPanel; 
     public GameObject connectionPanel;
     public Button openFormButton; 
-    public InputField serverAddressField;
-    public InputField slotNameField;
-    public InputField passwordField;
+    public TMP_InputField serverAddressField;
+    public TMP_InputField slotNameField;
+    public Graphic slotNamePlaceholder;
+    public TMP_Text slotNameTextComponent;
+    public TMP_InputField passwordField;
     public Toggle rememberMeToggle;
     public Tooltip rememberMeTooltip;
     public TooltipTrigger rememberMeTrigger;
@@ -285,9 +287,26 @@ public class ArchipelagoMenu : MonoBehaviour
         openFormButton = transform.Find("APButton").gameObject.GetComponent<Button>();
         apButtonGameObject = transform.Find("APButton").gameObject;
         connectionPanel = formPanel.transform.Find("Connection").gameObject;
-        serverAddressField = connectionPanel.transform.Find("ServerAdress").GetComponent<InputField>();
-        slotNameField = connectionPanel.transform.Find("SlotName").GetComponent<InputField>();
-        passwordField = connectionPanel.transform.Find("Password").GetComponent<InputField>();
+        serverAddressField = connectionPanel.transform.Find("ServerAddress").gameObject.AddComponent<TMP_InputField>();
+        serverAddressField.textViewport = serverAddressField.transform.Find("Text Area").GetComponent<RectTransform>();
+        serverAddressField.placeholder = serverAddressField.transform.Find("Text Area/Placeholder").GetComponent<Graphic>();
+        serverAddressField.textComponent = serverAddressField.transform.Find("Text Area/Text").GetComponent<TMP_Text>();
+        
+        // var textTest = formPanel.transform.Find("TestInput");
+        // var input = textTest.gameObject.AddComponent<TMP_InputField>();
+        // input.placeholder = textTest.transform.Find("Text Area/Placeholder").GetComponent<Graphic>();
+        // input.textViewport = textTest.transform.Find("Text Area").GetComponent<RectTransform>();
+        // input.textComponent = textTest.transform.Find("Text Area/Text").GetComponent<TMP_Text>();
+        
+        slotNameField = connectionPanel.transform.Find("SlotName").gameObject.AddComponent<TMP_InputField>();
+        slotNameField.textViewport = slotNameField.transform.Find("Text Area").GetComponent<RectTransform>();
+        slotNameField.placeholder = slotNameField.transform.Find("Text Area/Placeholder").GetComponent<Graphic>();
+        slotNameField.textComponent = slotNameField.transform.Find("Text Area/Text").GetComponent<TMP_Text>();
+        passwordField = connectionPanel.transform.Find("Password").gameObject.AddComponent<TMP_InputField>();
+        passwordField.contentType = TMP_InputField.ContentType.Password;
+        passwordField.textViewport = passwordField.transform.Find("Text Area").GetComponent<RectTransform>();
+        passwordField.placeholder = passwordField.transform.Find("Text Area/Placeholder").GetComponent<Graphic>();
+        passwordField.textComponent = passwordField.transform.Find("Text Area/Text").GetComponent<TMP_Text>();
         rememberMeToggle = formPanel.transform.Find("Remember").gameObject.GetComponent<Toggle>();
         rememberMeTrigger = rememberMeToggle.gameObject.AddComponent<TooltipTrigger>();
         rememberMeTooltip = rememberMeToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
