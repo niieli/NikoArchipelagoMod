@@ -318,6 +318,7 @@ namespace NikoArchipelago
                     loggedIn = true;
                     StartCoroutine(BandaidNotificationFix()); //TODO: Find real fix
                     SaveEstablished = false;
+                    ArchipelagoClient.ItemIndex();
                     ArchipelagoClient.CheckReceivedItems();
                     //scrGameSaveManager.instance.gameData.generalGameData.snailSteps = ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
@@ -344,6 +345,7 @@ namespace NikoArchipelago
                         LocationHandler.Update2();
                         LocationHandler.SnailShop();
                         LocationHandler.WinCompletion();
+                        ArchipelagoClient.CheckLocationState();
                     }
                 }
                 DebugMode = File.Exists(Path.Combine(Paths.PluginPath, "debug.txt")) || ArchipelagoMenu.forceDebug;
@@ -462,6 +464,7 @@ namespace NikoArchipelago
             SyncValue(ref ItemHandler.Garden, ArchipelagoClient.TicketGary);
             //ArchipelagoClient._session.DataStorage["Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
             //ArchipelagoClient._session.DataStorage["SnailMoney"] = scrGameSaveManager.instance.gameData.generalGameData.snailSteps;
+            //if (!SaveEstablished) yield break;
             if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
             {
                 foreach (var t in ArchipelagoClient.queuedItems2)
@@ -587,13 +590,6 @@ namespace NikoArchipelago
                 }
                 Tracker();
             }
-            else
-            {
-                // BackgroundForText(new Rect(10, 14, 280, 70));
-                // statusMessage = " Status: Disconnected";
-                // GUI.Label(new Rect(16, 16, 300, 20), ModDisplayInfo);
-                // GUI.Label(new Rect(16, 50, 300, 20), APDisplayInfo + statusMessage);
-            }
 
             if (!DebugMode) return;
             if (GUI.Button(new Rect(16, 150, 100, 20), "All Flags"))
@@ -619,38 +615,35 @@ namespace NikoArchipelago
                     scrTrainManager.instance.UseTrain(goToLevel, false);
                 }
             }
-            if (GUI.Button(new Rect(16, 220, 100, 20), "Test Note"))
+            if (GUI.Button(new Rect(16, 220, 140, 20), "Money +1000"))
             {
-                APSendNote("VERY LOOOONG text. Here goes nothing hihihihihihi", 2F);
+                scrGameSaveManager.instance.gameData.generalGameData.snailSteps += 1000;
             }
             if (GUI.Button(new Rect(16, 240, 100, 20), "Kill"))
             {
                 KillPlayer("GETTT DEATHLINKED HEEHEH");
             }
-            if (GUI.Button(new Rect(16, 260, 100, 20), "AchievementPopup"))
+            if (GUI.Button(new Rect(16, 260, 140, 20), "Item Index"))
             {
-                AchievementPopup.instance.PopupAchievement(scrAchievementManager.instance.obj_lostAtSea);
+                ArchipelagoClient.ItemIndex();
             }
-            if (GUI.Button(new Rect(16, 280, 100, 20), "Cost-1"))
+            if (GUI.Button(new Rect(16, 280, 140, 20), "Collect State"))
             {
-                levelData.levelPrices[scrTrainManager.instance.currentLevel + 1]--;
+                ArchipelagoClient.CheckLocationState();
             }
             if (GUI.Button(new Rect(16, 300, 100, 20), "SlotData"))
             {
                 Logger.LogWarning("Deathlink: "+ArchipelagoData.slotData["death_link"]);
-                Logger.LogWarning("MinKiosk: "+ArchipelagoData.slotData["min_kiosk_cost"]);
-                Logger.LogWarning("MaxKiosk: "+ArchipelagoData.slotData["max_kiosk_cost"]);
-                Logger.LogWarning("MinElevator: "+ArchipelagoData.slotData["min_elevator_cost"]);
-                Logger.LogWarning("MaxElevator: "+ArchipelagoData.slotData["max_elevator_cost"]);
                 Logger.LogWarning("Goal: "+ArchipelagoData.slotData["goal_completion"]);
                 Logger.LogWarning("Kiosk Home: "+ArchipelagoData.slotData["kioskhome"]);
-                Logger.LogFatal("Kiosk Home Int: "+ArchipelagoData.slotData["kioskhome"].ToString());
                 Logger.LogWarning("Kiosk Hairball City: "+ArchipelagoData.slotData["kioskhc"]);
                 Logger.LogWarning("Kiosk Turbine Town: "+ArchipelagoData.slotData["kiosktt"]);
                 Logger.LogWarning("Kiosk Salmon Creek Forest: "+ArchipelagoData.slotData["kiosksfc"]);
                 Logger.LogWarning("Kiosk Public Pool: "+ArchipelagoData.slotData["kioskpp"]);
                 Logger.LogWarning("Kiosk Bathhouse: "+ArchipelagoData.slotData["kioskbath"]);
                 Logger.LogWarning("Elevator Repair: "+ArchipelagoData.slotData["kioskhq"]);
+                Logger.LogWarning("Garden Access: "+ArchipelagoData.slotData["garden_access"]);
+                Logger.LogWarning("Fishsanity: "+ArchipelagoData.slotData["fishsanity"]);
             }
             if (GUI.Button(new Rect(16, 320, 100, 20), "Current Level"))
             {

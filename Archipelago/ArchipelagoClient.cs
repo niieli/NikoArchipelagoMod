@@ -248,7 +248,7 @@ public class ArchipelagoClient
                     ItemHandler.AddBugs(10, senderName, notify);
                     break;
                 case 598_145_444_000+16:
-                    ItemHandler.AddMoney(1000, senderName, notify);
+                    ItemHandler.AddMoney(7500, senderName, notify);
                     break;
                 case 598_145_444_000+15:
                     var real = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Progressive Contact List");
@@ -343,8 +343,174 @@ public class ArchipelagoClient
         if (ServerData.CheckedLocations.Count == checkedLocations.Count) return;
         foreach (var location in checkedLocations)
         {
+            if (ServerData.CheckedLocations.Contains(location)) continue;
+            Location matchedLocation = null;
+            string flagType = null;
+
+            if (Locations.LetterLocations.TryGetValue(location, out var letterLocation))
+            {
+               matchedLocation = letterLocation; 
+               flagType = "Letter";
+            }
+                
+            else if (Locations.AchievementsLocations.TryGetValue(location, out var achievementLocation))
+            {
+                matchedLocation = achievementLocation;
+                flagType = "Achievement";
+            }
+            else if (Locations.CoinLocations.TryGetValue(location, out var coinLocation))
+            {
+                matchedLocation = coinLocation;
+                flagType = "Coin";
+            }
+            else if (Locations.CassetteLocations.TryGetValue(location, out var cassetteLocation))
+            {
+                matchedLocation = cassetteLocation;
+                flagType = "Cassette";
+            }
+            else if (Locations.FishsanityLocations.TryGetValue(location, out var fishsanityLocation))
+            {
+                matchedLocation = fishsanityLocation;
+                flagType = "Fish";
+            }
+            else if (Locations.GeneralLocations.TryGetValue(location, out var generalLocation))
+            {
+                matchedLocation = generalLocation;
+                flagType = "General";
+            }
+            else if (Locations.HandsomeLocations.TryGetValue(location, out var handsomeLocation))
+            {
+                matchedLocation = handsomeLocation;
+                flagType = "Handsome";
+            }
+            else if (Locations.KeyLocations.TryGetValue(location, out var keyLocation))
+            {
+                matchedLocation = keyLocation;
+                flagType = "Key";
+            }
+            else if (Locations.KioskLocations.TryGetValue(location, out var kioskLocation))
+            {
+                matchedLocation = kioskLocation;
+                flagType = "Kiosk";
+            }
+            else if (Locations.SnailShopLocations.TryGetValue(location, out var shopLocation))
+            {
+                matchedLocation = shopLocation;
+                flagType = "SnailShop";
+            }
+            else if (Locations.GaryGardenCoinLocations.TryGetValue(location, out var gardenCoinLocation))
+            {
+                matchedLocation = gardenCoinLocation;
+                flagType = "GardenCoin";
+            }
+            else if (Locations.GaryGardenCassetteLocations.TryGetValue(location, out var gardenCassetteLocation))
+            {
+                matchedLocation = gardenCassetteLocation;
+                flagType = "GardenCassette";
+            }
             
+            ServerData.CheckedLocations.Add(location);
+            if (matchedLocation != null)
+            {
+                int level = matchedLocation.Level;
+                string flag = matchedLocation.Flag;
+
+                AddFlag(flagType, flag, level);
+                Plugin.BepinLogger.LogInfo($"Processed Location: {location}, Level: {level}, Flag: {flag}");
+            }
+            else
+            {
+                Plugin.BepinLogger.LogInfo($"Location not found in dictionaries: {location}");
+            }
         }
+    }
+    
+    private static void AddFlag(string flagType, string flag, int level)
+    {
+        var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var genFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
+        switch (flagType)
+        {
+            case "Coin":
+                if (!worldsData[level].coinFlags.Contains(flag))
+                    worldsData[level].coinFlags.Add(flag);
+                break;
+            case "GardenCoin":
+                try
+                {
+                    if (!worldsData[7].coinFlags.Contains(flag))
+                        worldsData[7].coinFlags.Add(flag);
+                }
+                catch (Exception e)
+                {
+                    Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
+                }
+                break;
+            case "Cassette":
+                if (!worldsData[level].cassetteFlags.Contains(flag))
+                    worldsData[level].cassetteFlags.Add(flag);
+                break;
+            case "GardenCassette":
+                try
+                {
+                    if (!worldsData[7].cassetteFlags.Contains(flag))
+                        worldsData[7].cassetteFlags.Add(flag);
+                }
+                catch (Exception e)
+                {
+                    Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
+                }
+                break;
+            case "Key":
+                if (!worldsData[level].miscFlags.Contains(flag))
+                    worldsData[level].miscFlags.Add(flag);
+                break;
+            case "Letter":
+                if (!worldsData[level].letterFlags.Contains(flag))
+                    worldsData[level].letterFlags.Add(flag);
+                break;
+            case "General" or "Kiosk" or "Handsome" or "Achievement":
+                if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(flag))
+                    scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add(flag);
+                break;
+            case "SnailShop":
+                if (!scrGameSaveManager.instance.gameData.generalGameData.snailBoughtClothes[level])
+                    scrGameSaveManager.instance.gameData.generalGameData.snailBoughtClothes[level] = true;
+                break;
+            case "Fish":
+                if (!worldsData[level].fishFlags.Contains(flag))
+                    worldsData[level].fishFlags.Add(flag);
+                break;
+            default:
+                Plugin.BepinLogger.LogError($"Unknown flag type: {flagType}");
+                break;
+        }
+    }
+
+    public static int GetItemIndex()
+    {
+        List<int> itemIndexes = scrGameSaveManager.instance.gameData.generalGameData.generalFlags
+            .Where(flag => flag.StartsWith("ItemIndex."))
+            .Select(flag =>
+            {
+                string indexStr = flag.Split('.')[1];
+                return int.TryParse(indexStr, out int index) ? index : -1;
+            })
+            .Where(index => index != -1)
+            .ToList();
+
+        foreach (var index in itemIndexes)
+        {
+            Plugin.BepinLogger.LogInfo($"Found ItemIndex: {index}");
+        }
+        return 0;
+    }
+
+    public static void ItemIndex()
+    {
+        var index = _session.Items.AllItemsReceived.Count;
+        Plugin.BepinLogger.LogInfo($"Item Index: {index}");
+        //scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"ItemIndex.{index}");
     }
 
     public static int TicketCount()

@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace NikoArchipelago.Patches;
 
@@ -22,7 +25,7 @@ public class SnailShopPatch
             bool shopIsOpen = (bool)shopIsOpenField.GetValue(__instance);
             var clothingForSaleField = AccessTools.Field(typeof(scrSnail), "clothingForSale");
             int clothingForSale = (int)clothingForSaleField.GetValue(__instance);
-            if (__instance.mood == scrSnail.Moods.happy)
+            if (__instance.mood == scrSnail.Moods.happy || __instance.state == scrSnail.States.shop)
             {
                 List<int> validClothingNumbers = null;
 
@@ -57,9 +60,16 @@ public class SnailShopPatch
 
                     if (validClothingNumbers.Count > 0)
                     {
-                        var newItemForSale = validClothingNumbers[Random.Range(0, validClothingNumbers.Count)]+1;
-                        clothingForSaleField.SetValue(__instance, newItemForSale);
-                        __instance.shopImage.sprite = __instance.clothes[newItemForSale];
+                        try
+                        {
+                            var newItemForSale = validClothingNumbers[Random.Range(0, validClothingNumbers.Count+1)];
+                            clothingForSaleField.SetValue(__instance, newItemForSale);
+                            __instance.shopImage.sprite = __instance.clothes[newItemForSale];
+                        }
+                        catch (ArgumentOutOfRangeException e)
+                        {
+                            Plugin.BepinLogger.LogInfo("Caught Exception");
+                        }
                     }
                 }
             }
