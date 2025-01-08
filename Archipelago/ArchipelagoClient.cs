@@ -86,6 +86,7 @@ public class ArchipelagoClient
             Plugin.BepinLogger.LogError(e);
             HandleConnectResult(new LoginFailure(e.ToString()));
             attemptingConnection = false;
+            ArchipelagoMenu.pressedConnect = false;
         }
     }
 
@@ -144,6 +145,7 @@ public class ArchipelagoClient
 #endif
             _session = null;
             Authenticated = false;
+            ArchipelagoMenu.pressedConnect = false;
         }
         catch (Exception e)
         {
@@ -174,8 +176,10 @@ public class ArchipelagoClient
     private void OnItemReceived(ReceivedItemsHelper helper)
     {
         var receivedItem = helper.DequeueItem();
-        
-        if (helper.Index < ServerData.Index) return;
+        // Plugin.BepinLogger.LogInfo($"helper index: {helper.Index}");
+        // Plugin.BepinLogger.LogInfo($"Saved index: {ServerData.Index}");
+        // Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
+        if (helper.Index <= ServerData.Index) return;
 
         ServerData.Index++;
         if (IsValidScene() && Plugin.loggedIn)
@@ -508,15 +512,18 @@ public class ArchipelagoClient
         foreach (var index in itemIndexes)
         {
             Plugin.BepinLogger.LogInfo($"Found ItemIndex: {index}");
+            return index;
         }
-        return 0;
+        return itemIndexes.Count;
     }
 
     public static void ItemIndex()
     {
         var index = _session.Items.AllItemsReceived.Count;
         Plugin.BepinLogger.LogInfo($"Item Index: {index}");
-        //scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"ItemIndex.{index}");
+        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.RemoveAll(flag =>
+            flag.StartsWith("ItemIndex."));
+        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"ItemIndex.{index}");
     }
 
     public static int TicketCount()

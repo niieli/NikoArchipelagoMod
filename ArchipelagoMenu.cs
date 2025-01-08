@@ -279,6 +279,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public Image mitchGardenImage;
     public Image maiGardenImage;
     public Image gardenDisabledImage;
+    public static bool pressedConnect;
     
     public void Start()
     {
@@ -1310,6 +1311,8 @@ public class ArchipelagoMenu : MonoBehaviour
 
     public void Connect()
     {
+        if (pressedConnect) return;
+        pressedConnect = true;
         _serverAddress = serverAddressField.text;
         _slotName = slotNameField.text;
         password = passwordField.text;
