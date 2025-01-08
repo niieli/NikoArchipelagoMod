@@ -36,7 +36,8 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 - Keys... Keysanity?!
 - Letters
 - Both Contact Lists
-  - Contact List 1 & 2 are seperate items, so you can have 2 without having the first one *Visible on the in-game "tracker"* 
+  - Contact List 1 & 2 are seperate items, so you can have 2 without having the first one
+  - *Visible on the in-game "tracker"* 
   - Or change via the yaml to Progressive
 - Reward from Sensei (Super Jump)
 - Fish? Fishsanity? *(Depending on settings)*
@@ -59,5 +60,3 @@ The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
 - Every APSave has a companion save file (Improve Async sessions)
-- Collect/Release reflecting on the save
-- Fix box warping(Should be in the next version)
