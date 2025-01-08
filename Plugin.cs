@@ -83,7 +83,7 @@ namespace NikoArchipelago
         private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
         public static bool ChristmasEvent, NoEvent;
         private static ArchipelagoData _archipelagoData;
-        private static bool _appleAmount;
+        private static bool _appleAmount, annoy, _onlyOnce;
         private static int _realAppleAmount;
         
         private void Awake()
@@ -328,13 +328,19 @@ namespace NikoArchipelago
                 }
                 if (scrGameSaveManager.saveName == saveName && !ArchipelagoClient.Authenticated)
                 {
-                    Logger.LogWarning("You have disconnected from the server.");
                     loggedIn = false;
+                    if (!_onlyOnce)
+                    {
+                        StartCoroutine(DisconnectNotification());
+                        _onlyOnce = true;
+                    }
+                    
                 }
 
                 if (!loggedIn && ArchipelagoClient.Authenticated && SaveEstablished)
                 {
                     loggedIn = true;
+                    _onlyOnce = false;
                 }
 
                 KioskCost.PreFix();
@@ -395,6 +401,25 @@ namespace NikoArchipelago
             }
             //ArchipelagoClient._session.DataStorage["SnailMoney"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.snailSteps);
             // ArchipelagoClient._session.DataStorage["Apples"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.appleAmount);
+        }
+        
+        private static IEnumerator DisconnectNotification()
+        {
+            while (!loggedIn)
+            {
+                if (!annoy && ArchipelagoClient.IsValidScene())
+                {
+                    BepinLogger.LogWarning("You have disconnected from the server.");
+                    var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+                    achievement.nameKey = "Disconnected from Server";
+                    achievement.icon = ApFillerSprite;
+                    AchievementPopup.instance.PopupAchievement(achievement);
+                    AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+                    annoy = true;
+                }
+                yield return new WaitForSeconds(5f);
+                annoy = false;
+            }
         }
         
         private static IEnumerator SyncState()
