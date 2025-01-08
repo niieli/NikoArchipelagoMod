@@ -319,6 +319,10 @@ public class ArchipelagoMenu : MonoBehaviour
         seasonalThemesToggle = formPanel.transform.Find("Seasonal").gameObject.GetComponent<Toggle>();
         seasonalThemesTrigger = seasonalThemesToggle.gameObject.AddComponent<TooltipTrigger>();
         seasonalThemesTooltip = seasonalThemesToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+
+        serverAddressField.selectionColor = new Color(1,(float)0.5801887,(float)0.9300315,(float)0.7529412);
+        slotNameField.selectionColor = new Color(1,(float)0.5801887,(float)0.9300315,(float)0.7529412);
+        passwordField.selectionColor = new Color(1,(float)0.5801887,(float)0.9300315,(float)0.7529412);
         
         // Information, when logged in
         informationPanel = formPanel.transform.Find("InformationScreen").gameObject;
@@ -657,6 +661,9 @@ public class ArchipelagoMenu : MonoBehaviour
         // Lights
         if (Plugin.ChristmasEvent && !Plugin.NoEvent)
         {
+            slotNameField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
+            serverAddressField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
+            passwordField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
             var menuCandles = formPanel.transform.Find("MenuGlowCandles");
             var menuCandles2 = formPanel.transform.Find("MenuGlowCandles2");
             var menuCandlesBlink = formPanel.transform.Find("MenuGlowCandles1Blink");

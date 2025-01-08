@@ -415,6 +415,7 @@ namespace NikoArchipelago
                     achievement.icon = ApFillerSprite;
                     AchievementPopup.instance.PopupAchievement(achievement);
                     AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+                    AchievementPopup.instance.audioSource.volume = 0.35f;
                     annoy = true;
                 }
                 yield return new WaitForSeconds(5f);
