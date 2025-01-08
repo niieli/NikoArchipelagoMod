@@ -26,7 +26,7 @@ public class ArchipelagoClient
     private DeathLinkHandler deathLinkHandler;
     public static ArchipelagoSession _session;
     public int CoinAmount, CassetteAmount, KeyAmount, HcKeyAmount, TtKeyAmount, SfcKeyAmount, PpKeyAmount, BathKeyAmount, HqKeyAmount,
-        HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount;
+        HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount, SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
     public Task _disconnectTask;
 
@@ -179,6 +179,7 @@ public class ArchipelagoClient
         // Plugin.BepinLogger.LogInfo($"helper index: {helper.Index}");
         // Plugin.BepinLogger.LogInfo($"Saved index: {ServerData.Index}");
         // Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
+        //_session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (helper.Index <= ServerData.Index) return;
 
         ServerData.Index++;
@@ -212,6 +213,7 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000 + 3: // Apples
                     ItemHandler.AddApples(25, senderName, notify);
+                    Apples = _session.Items.AllItemsReceived.Count(t => t.ItemName == "25 Apples");
                     break;
                 case 598_145_444_000 + 4: // Contact List 1
                     ItemHandler.AddContactList1(senderName, notify);
@@ -259,6 +261,7 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000+16:
                     ItemHandler.AddMoney(7500, senderName, notify);
+                    SnailMoney = _session.Items.AllItemsReceived.Count(t => t.ItemName == "1000 Snail Dollar");
                     break;
                 case 598_145_444_000+15:
                     var real = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Progressive Contact List");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Archipelago.MultiClient.Net.Enums;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
@@ -45,6 +46,7 @@ public class GameObjectChecker : MonoBehaviour
         HqGarden();
         SpawnGaryHome();
         AssignDisplayers();
+        //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
         {
             Plugin.newFile = false;

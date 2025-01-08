@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -33,7 +34,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.5.1";
+        public const string PluginVersion = "0.5.2";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -82,6 +83,8 @@ namespace NikoArchipelago
         private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
         public static bool ChristmasEvent, NoEvent;
         private static ArchipelagoData _archipelagoData;
+        private static bool _appleAmount;
+        private static int _realAppleAmount;
         
         private void Awake()
         {
@@ -318,6 +321,7 @@ namespace NikoArchipelago
                     loggedIn = true;
                     StartCoroutine(BandaidNotificationFix()); //TODO: Find real fix
                     SaveEstablished = false;
+                    _realAppleAmount = gameSaveManager.gameData.generalGameData.appleAmount;
                     ArchipelagoClient.CheckReceivedItems();
                     //scrGameSaveManager.instance.gameData.generalGameData.snailSteps = ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);
@@ -346,6 +350,7 @@ namespace NikoArchipelago
                         LocationHandler.WinCompletion();
                         ArchipelagoClient.CheckLocationState();
                     }
+                    
                 }
                 DebugMode = File.Exists(Path.Combine(Paths.PluginPath, "debug.txt")) || ArchipelagoMenu.forceDebug;
                 if (!MyCharacterController.instance.blockMovementInput && !SaveEstablished)
@@ -388,7 +393,6 @@ namespace NikoArchipelago
                 APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
                 loggedIn = true; 
             }
-
             //ArchipelagoClient._session.DataStorage["SnailMoney"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.snailSteps);
             // ArchipelagoClient._session.DataStorage["Apples"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.appleAmount);
         }
