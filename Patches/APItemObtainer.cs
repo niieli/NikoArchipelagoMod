@@ -45,6 +45,11 @@ public class APItemObtainer
         }
         private static void Postfix(scrObtainCoin __instance)
         {
+            if (ArchipelagoMenu.SkipPickup)
+            {
+                Skip(__instance);
+                __instance.Invoke("Die", 0f);
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
@@ -712,6 +717,16 @@ public class APItemObtainer
                 }
             }
         }
+        private static void Skip(scrObtainCoin __instance)
+        {
+            var audio = __instance.GetComponent<AudioSource>();
+            if (scrWorldSaveDataContainer.instance.coinFlags.Contains(__instance.myFlag)) return;
+            audio.Play();
+            scrWorldSaveDataContainer.instance.coinFlags.Add(__instance.myFlag);
+            scrWorldSaveDataContainer.instance.gameSaveManager.gameData.generalGameData.coinAmount++;
+            scrWorldSaveDataContainer.instance.SaveWorld();
+            scrWorldSaveDataContainer.instance.gameSaveManager.SaveGame();
+        }
     }
 
     [HarmonyPatch(typeof(scrObtainCassette), "Start")]
@@ -749,6 +764,11 @@ public class APItemObtainer
         }
         private static void Postfix(scrObtainCassette __instance)
         {
+            if (ArchipelagoMenu.SkipPickup)
+            {
+                Skip(__instance);
+                __instance.Invoke("Die", 0f);
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
@@ -1464,6 +1484,17 @@ public class APItemObtainer
                     break;
                 }
             }
+        }
+
+        private static void Skip(scrObtainCassette __instance)
+        {
+            var audio = __instance.GetComponent<AudioSource>();
+            if (scrWorldSaveDataContainer.instance.cassetteFlags.Contains(__instance.flag)) return;
+            audio.Play();
+            scrWorldSaveDataContainer.instance.cassetteFlags.Add(__instance.flag);
+            scrWorldSaveDataContainer.instance.gameSaveManager.gameData.generalGameData.cassetteAmount++;
+            scrWorldSaveDataContainer.instance.SaveWorld();
+            scrWorldSaveDataContainer.instance.gameSaveManager.SaveGame();
         }
     }
 }

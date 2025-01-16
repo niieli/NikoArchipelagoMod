@@ -26,7 +26,9 @@ public class ArchipelagoClient
     private DeathLinkHandler deathLinkHandler;
     public static ArchipelagoSession _session;
     public int CoinAmount, CassetteAmount, KeyAmount, HcKeyAmount, TtKeyAmount, SfcKeyAmount, PpKeyAmount, BathKeyAmount, HqKeyAmount,
-        HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount, SnailMoney, Apples;
+        HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount;
+
+    public static int SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
     public Task _disconnectTask;
 
@@ -212,8 +214,12 @@ public class ArchipelagoClient
                     KeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Key");
                     break;
                 case 598_145_444_000 + 3: // Apples
-                    ItemHandler.AddApples(25, senderName, notify);
                     Apples = _session.Items.AllItemsReceived.Count(t => t.ItemName == "25 Apples");
+                    var diffApples = Apples - GetAppleIndex();
+                    for (int i = 0; i < diffApples; i++)
+                    {
+                        ItemHandler.AddApples(25, senderName, notify);
+                    }
                     break;
                 case 598_145_444_000 + 4: // Contact List 1
                     ItemHandler.AddContactList1(senderName, notify);
@@ -260,8 +266,12 @@ public class ArchipelagoClient
                     ItemHandler.AddBugs(10, senderName, notify);
                     break;
                 case 598_145_444_000+16:
-                    ItemHandler.AddMoney(7500, senderName, notify);
                     SnailMoney = _session.Items.AllItemsReceived.Count(t => t.ItemName == "1000 Snail Dollar");
+                    var diffMoney = SnailMoney- GetMoneyIndex();
+                    for (int i = 0; i < diffMoney; i++)
+                    {
+                        ItemHandler.AddMoney(7500, senderName, notify);
+                    }
                     break;
                 case 598_145_444_000+15:
                     var real = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Progressive Contact List");
@@ -500,10 +510,10 @@ public class ArchipelagoClient
         }
     }
 
-    public static int GetItemIndex()
+    public static int GetAppleIndex()
     {
         List<int> itemIndexes = scrGameSaveManager.instance.gameData.generalGameData.generalFlags
-            .Where(flag => flag.StartsWith("ItemIndex."))
+            .Where(flag => flag.StartsWith("AppleIndex."))
             .Select(flag =>
             {
                 string indexStr = flag.Split('.')[1];
@@ -514,19 +524,48 @@ public class ArchipelagoClient
 
         foreach (var index in itemIndexes)
         {
-            Plugin.BepinLogger.LogInfo($"Found ItemIndex: {index}");
+            Plugin.BepinLogger.LogInfo($"Found Apple Item Index: {index}");
             return index;
         }
         return itemIndexes.Count;
     }
 
-    public static void ItemIndex()
+    public static void AppleIndex()
     {
-        var index = _session.Items.AllItemsReceived.Count;
-        Plugin.BepinLogger.LogInfo($"Item Index: {index}");
+        var index = Apples;
+        Plugin.BepinLogger.LogInfo($"Apple Item Index: {index}");
         scrGameSaveManager.instance.gameData.generalGameData.generalFlags.RemoveAll(flag =>
-            flag.StartsWith("ItemIndex."));
-        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"ItemIndex.{index}");
+            flag.StartsWith("AppleIndex."));
+        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"AppleIndex.{index}");
+    }
+    
+    public static int GetMoneyIndex()
+    {
+        List<int> itemIndexes = scrGameSaveManager.instance.gameData.generalGameData.generalFlags
+            .Where(flag => flag.StartsWith("MoneyIndex."))
+            .Select(flag =>
+            {
+                string indexStr = flag.Split('.')[1];
+                return int.TryParse(indexStr, out int index) ? index : -1;
+            })
+            .Where(index => index != -1)
+            .ToList();
+
+        foreach (var index in itemIndexes)
+        {
+            Plugin.BepinLogger.LogInfo($"Found Money Item Index: {index}");
+            return index;
+        }
+        return itemIndexes.Count;
+    }
+
+    public static void MoneyIndex()
+    {
+        var index = SnailMoney;
+        Plugin.BepinLogger.LogInfo($"Money Item Index: {index}");
+        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.RemoveAll(flag =>
+            flag.StartsWith("MoneyIndex."));
+        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"MoneyIndex.{index}");
     }
 
     public static int TicketCount()

@@ -84,6 +84,10 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip seasonalThemesTooltip;
     public TooltipTrigger seasonalThemesTrigger;
     public GameObject seasonalThemesHighlight;
+    public Toggle skipPickupToggle;
+    public Tooltip skipPickupTooltip;
+    public TooltipTrigger skipPickupTrigger;
+    public GameObject skipPickupHighlight;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -107,6 +111,7 @@ public class ArchipelagoMenu : MonoBehaviour
     //private static bool _trackerKey;
     private static bool _tooltips;
     private static bool _seasonalThemes;
+    private static bool _skipPickup;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
@@ -125,6 +130,7 @@ public class ArchipelagoMenu : MonoBehaviour
     //public static bool TrackerKey;
     public static bool Tooltips;
     public static bool SeasonalThemes;
+    public static bool SkipPickup;
     
     // New Menu stuff
     public GameObject settingsPanel;
@@ -292,13 +298,6 @@ public class ArchipelagoMenu : MonoBehaviour
         serverAddressField.textViewport = serverAddressField.transform.Find("Text Area").GetComponent<RectTransform>();
         serverAddressField.placeholder = serverAddressField.transform.Find("Text Area/Placeholder").GetComponent<Graphic>();
         serverAddressField.textComponent = serverAddressField.transform.Find("Text Area/Text").GetComponent<TMP_Text>();
-        
-        // var textTest = formPanel.transform.Find("TestInput");
-        // var input = textTest.gameObject.AddComponent<TMP_InputField>();
-        // input.placeholder = textTest.transform.Find("Text Area/Placeholder").GetComponent<Graphic>();
-        // input.textViewport = textTest.transform.Find("Text Area").GetComponent<RectTransform>();
-        // input.textComponent = textTest.transform.Find("Text Area/Text").GetComponent<TMP_Text>();
-        
         slotNameField = connectionPanel.transform.Find("SlotName").gameObject.AddComponent<TMP_InputField>();
         slotNameField.textViewport = slotNameField.transform.Find("Text Area").GetComponent<RectTransform>();
         slotNameField.placeholder = slotNameField.transform.Find("Text Area/Placeholder").GetComponent<Graphic>();
@@ -545,6 +544,10 @@ public class ArchipelagoMenu : MonoBehaviour
         kalmiTooltip = kalmiToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         kalmiTrigger = kalmiToggle.gameObject.AddComponent<TooltipTrigger>();
         kalmiHighlight = kalmiToggle.transform.Find("Highlight").gameObject;
+        skipPickupToggle = qolPanel.transform.Find("SkipAnimation").gameObject.GetComponent<Toggle>();
+        skipPickupTooltip = skipPickupToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        skipPickupTrigger = skipPickupToggle.gameObject.AddComponent<TooltipTrigger>();
+        skipPickupHighlight = skipPickupToggle.transform.Find("Highlight").gameObject;
         // itemSentToggle = qolPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
         // itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         // itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
@@ -578,6 +581,7 @@ public class ArchipelagoMenu : MonoBehaviour
         //_trackerKey = trackerKeyToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
         _seasonalThemes = seasonalThemesToggle.isOn;
+        _skipPickup = skipPickupToggle.isOn;
         hideOnce = false;
         LoadData();
 
@@ -619,6 +623,7 @@ public class ArchipelagoMenu : MonoBehaviour
         tooltipsTrigger.tooltip = tooltipsTooltip;
         cassetteSpoilerTrigger.tooltip = cassetteSpoilerTooltip;
         seasonalThemesTrigger.tooltip = seasonalThemesTooltip;
+        skipPickupTrigger.tooltip = skipPickupTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -634,6 +639,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kalmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kalmiHighlight;
         //trackerKeyToggle.gameObject.AddComponent<Highlighter>().highlightPanel = trackerKeyHighlight;
         cassetteSpoilerToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cassetteSpoilerHighlight;
+        skipPickupToggle.gameObject.AddComponent<Highlighter>().highlightPanel = skipPickupHighlight;
         
         // Information Tracker stuff
         boughtHomeImage.enabled = false;
@@ -659,7 +665,7 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHqFishImage.enabled = false;
         
         // Lights
-        if (Plugin.ChristmasEvent && !Plugin.NoEvent)
+        if (Plugin.ChristmasEvent && !Plugin.NoXmasEvent)
         {
             slotNameField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
             serverAddressField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
@@ -724,35 +730,6 @@ public class ArchipelagoMenu : MonoBehaviour
         _activePanel = settingsPanelCanvasGroup;
         SetActivePanel(settingsPanelCanvasGroup);
     }
-    
-    private void CheckNullReferences()
-    {
-        // General UI Elements
-        LogIfNull(serverAddressField, "ServerAddress Field");
-        LogIfNull(slotNameField, "SlotName Field");
-        LogIfNull(passwordField, "Password Field");
-        LogIfNull(formPanel, "Form Panel");
-        LogIfNull(openFormButton, "APButton");
-        LogIfNull(rememberMeToggle, "Remember Toggle");
-        LogIfNull(chatToggle, "Chat Toggle");
-        LogIfNull(hintsToggle, "Hints Toggle");
-        LogIfNull(shopHintsToggle, "ShopHints Toggle");
-        LogIfNull(connectButton, "Connect Button");
-        LogIfNull(versionText, "Version Text");
-
-        // Settings, Trackers, and QOL Panels
-        LogIfNull(settingsPanel, "Settings Panel");
-        LogIfNull(trackersPanel, "Trackers Panel");
-        LogIfNull(qolPanel, "QOL Panel");
-    }
-
-    private void LogIfNull(Object obj, string name)
-    {
-        if (obj == null)
-        {
-            Plugin.BepinLogger.LogError($"{name} is null!");
-        }
-    }
 
     public void ShowSettings()
     {
@@ -793,6 +770,7 @@ public class ArchipelagoMenu : MonoBehaviour
         //trackerKeyTooltip.gameObject.SetActive(false);
         tooltipsTooltip.gameObject.SetActive(false);
         cassetteSpoilerTooltip.gameObject.SetActive(false);
+        skipPickupTooltip.gameObject.SetActive(false);
     }
 
     private void SetActivePanel(CanvasGroup newPanel)
@@ -832,7 +810,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private void Update()
     {
         ToggleTooltips();
-        Plugin.ChristmasEvent = !Plugin.NoEvent && SeasonalThemes;
+        Plugin.ChristmasEvent = !Plugin.NoXmasEvent && SeasonalThemes;
         if (Plugin.loggedIn)
         {
             informationPanel.SetActive(true);
@@ -1271,6 +1249,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _tooltips = tooltipsToggle.isOn;
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
         _seasonalThemes = seasonalThemesToggle.isOn;
+        _skipPickup = skipPickupToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1287,6 +1266,7 @@ public class ArchipelagoMenu : MonoBehaviour
         CassetteSpoiler = _cassetteSpoiler;
         hideOnce = _tooltips;
         SeasonalThemes = _seasonalThemes;
+        SkipPickup = _skipPickup;
         
         SavedData data = new SavedData
         {
@@ -1308,6 +1288,7 @@ public class ArchipelagoMenu : MonoBehaviour
             Tooltips = _tooltips,
             CassetteSpoiler = _cassetteSpoiler,
             SeasonalThemes =  _seasonalThemes,
+            SkipPickup = _skipPickup,
         };
         if (_rememberMe)
         {
@@ -1336,6 +1317,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
         //_trackerKey = trackerKeyToggle.isOn;
+        _skipPickup = skipPickupToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
         Hints = _hints;
@@ -1354,6 +1336,7 @@ public class ArchipelagoMenu : MonoBehaviour
         CassetteSpoiler = _cassetteSpoiler;
         _seasonalThemes = seasonalThemesToggle.isOn;
         SeasonalThemes = _seasonalThemes;
+        SkipPickup = _skipPickup;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -1394,6 +1377,7 @@ public class ArchipelagoMenu : MonoBehaviour
             Tooltips = _tooltips,
             CassetteSpoiler = _cassetteSpoiler,
             SeasonalThemes = _seasonalThemes,
+            SkipPickup = _skipPickup,
         };
         if (_rememberMe)
         {
@@ -1462,6 +1446,7 @@ public class ArchipelagoMenu : MonoBehaviour
         public bool KALMI { get; set; } = _kalmi;
         public bool CassetteSpoiler { get; set; } = _cassetteSpoiler;
         public bool SeasonalThemes { get; set; } = _seasonalThemes;
+        public bool SkipPickup { get; set; } = _skipPickup;
     }
 
     private void LoadData()
@@ -1489,6 +1474,7 @@ public class ArchipelagoMenu : MonoBehaviour
             cassetteSpoilerToggle.isOn = savedData.CassetteSpoiler;
             hideOnce = savedData.Tooltips;
             seasonalThemesToggle.isOn = savedData.SeasonalThemes;
+            skipPickupToggle.isOn = savedData.SkipPickup;
             Plugin.BepinLogger.LogInfo("Loaded saved settings.");
         }
         else
@@ -1512,6 +1498,7 @@ public class ArchipelagoMenu : MonoBehaviour
             kalmiToggle.isOn = true;
             cassetteSpoilerToggle.isOn = true;
             seasonalThemesToggle.isOn = true;
+            skipPickupToggle.isOn = true;
         }
     }
 

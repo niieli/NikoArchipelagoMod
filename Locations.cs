@@ -590,6 +590,10 @@ public class Locations
         BaseID + 89,
         BaseID + 90,
         BaseID + 250,
+        
+        // Contact Lists
+        BaseID + 167,
+        BaseID + 168,
     };
     
     public static readonly long[] ScoutIDs = ScoutList.ToArray();
@@ -855,6 +859,13 @@ public class Locations
         { BaseID + 89, "letter11" },
         { BaseID + 90, "letter5" },
         { BaseID + 250, "letter6" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutContactList = new()
+    {
+        // Contact Lists
+        { BaseID + 167, "CL1 Obtained" },
+        { BaseID + 168, "CL2 Obtained" },
     };
     
     public static void AddLocation(long id, string flag, int level)

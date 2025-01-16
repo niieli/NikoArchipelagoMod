@@ -81,7 +81,7 @@ namespace NikoArchipelago
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
         private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
-        public static bool ChristmasEvent, NoEvent;
+        public static bool ChristmasEvent, NoXmasEvent;
         private static ArchipelagoData _archipelagoData;
         private static bool _appleAmount, annoy, _onlyOnce;
         private static int _realAppleAmount;
@@ -115,8 +115,8 @@ namespace NikoArchipelago
             var now = DateTime.Now;
             var currentYear = now.Month == 1 ? now.Year - 1 : now.Year;
             var christmasTime = new DateTime(currentYear, 12, 25);
-            var startChrismas = christmasTime.AddDays(-18);
-            var endChrismas = christmasTime.AddDays(24);
+            var startChrismas = christmasTime.AddDays(-24);
+            var endChrismas = christmasTime.AddDays(18);
             if (DateTime.Now.Ticks > startChrismas.Ticks && DateTime.Now.Ticks < endChrismas.Ticks)
             {
                 ChristmasEvent = true;
@@ -125,7 +125,7 @@ namespace NikoArchipelago
             }
             else
             {
-                NoEvent = true;
+                NoXmasEvent = true;
             }
             GameOptions.MasterVolume = mas;
             GameOptions.EnvVolume = env;
@@ -355,6 +355,8 @@ namespace NikoArchipelago
                         LocationHandler.SnailShop();
                         LocationHandler.WinCompletion();
                         ArchipelagoClient.CheckLocationState();
+                        //ArchipelagoClient.MoneyIndex();
+                        //ArchipelagoClient.AppleIndex();
                     }
                     
                 }
@@ -652,7 +654,7 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 260, 140, 20), "Item Index"))
             {
-                ArchipelagoClient.ItemIndex();
+                ArchipelagoClient.AppleIndex();
             }
             if (GUI.Button(new Rect(16, 280, 140, 20), "Collect State"))
             {
