@@ -475,6 +475,15 @@ namespace NikoArchipelago
                     SyncValue(ref ItemHandler.TadpoleFishAmount, ArchipelagoClient.HqFishAmount);
                 }
             }
+            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 2)
+                {
+                    SyncValue(ref ItemHandler.HairballSeedAmount, ArchipelagoClient.HcSeedAmount);
+                    SyncValue(ref ItemHandler.SalmonSeedAmount, ArchipelagoClient.SfcSeedAmount);
+                    SyncValue(ref ItemHandler.BathSeedAmount, ArchipelagoClient.BathSeedAmount);
+                }
+            }
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)

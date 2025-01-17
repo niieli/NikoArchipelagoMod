@@ -26,7 +26,8 @@ public class ArchipelagoClient
     private DeathLinkHandler deathLinkHandler;
     public static ArchipelagoSession _session;
     public int CoinAmount, CassetteAmount, KeyAmount, HcKeyAmount, TtKeyAmount, SfcKeyAmount, PpKeyAmount, BathKeyAmount, HqKeyAmount,
-        HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount;
+        HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount,
+        HcSeedAmount, SfcSeedAmount, BathSeedAmount;
 
     public static int SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
@@ -329,6 +330,18 @@ public class ArchipelagoClient
                     ItemHandler.AddHQKey(senderName, notify);
                     HqKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Key");
                     break;
+                case 598_145_444_000+36: // HCSeed
+                    ItemHandler.AddHcSeed(senderName, notify);
+                    HcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Seed");
+                    break;
+                case 598_145_444_000+37: // SFCSeed
+                    ItemHandler.AddSfcSeed(senderName, notify);
+                    SfcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Seed");
+                    break;
+                case 598_145_444_000+38: // BathSeed
+                    ItemHandler.AddBathSeed(senderName, notify);
+                    BathSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Seed");
+                    break;
             }
     }
 
@@ -431,6 +444,11 @@ public class ArchipelagoClient
                 matchedLocation = gardenCassetteLocation;
                 flagType = "GardenCassette";
             }
+            else if (Locations.SunflowerSeedsLocations.TryGetValue(location, out var SunflowerSeedLocation))
+            {
+                matchedLocation = SunflowerSeedLocation;
+                flagType = "SunflowerSeed";
+            }
             
             ServerData.CheckedLocations.Add(location);
             if (matchedLocation != null)
@@ -484,7 +502,7 @@ public class ArchipelagoClient
                     Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
                 }
                 break;
-            case "Key":
+            case "Key" or "SunflowerSeed":
                 if (!worldsData[level].miscFlags.Contains(flag))
                     worldsData[level].miscFlags.Add(flag);
                 break;

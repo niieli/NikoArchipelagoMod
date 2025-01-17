@@ -57,7 +57,8 @@ public class LocationHandler : MonoBehaviour
             }
             if (miscFlag.Count > miscIndex)
             {
-                foreach (var locationEntry in Locations.KeyLocations.Where(locationEntry => 
+                var relevantLocations = Locations.KeyLocations.Concat(Locations.SunflowerSeedsLocations);
+                foreach (var locationEntry in relevantLocations.Where(locationEntry => 
                              locationEntry.Value.Level == currentLevel && miscFlag[miscIndex] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);

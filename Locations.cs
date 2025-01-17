@@ -340,6 +340,41 @@ public class Locations
         { BaseID + 247, new Location(BaseID + 247, "true", 14) },
         { BaseID + 248, new Location(BaseID + 248, "true", 15) },
     };
+    
+    public static Dictionary<long, Location> SunflowerSeedsLocations = new()
+    {
+        //Seeds
+        { BaseID + 260, new Location(BaseID + 260, "Seed", 1) },
+        { BaseID + 261, new Location(BaseID + 261, "Seed(1)", 1) },
+        { BaseID + 262, new Location(BaseID + 262, "Seed(2)", 1) },
+        { BaseID + 263, new Location(BaseID + 263, "Seed(3)", 1) },
+        { BaseID + 264, new Location(BaseID + 264, "Seed(4)", 1) },
+        { BaseID + 265, new Location(BaseID + 265, "Seed(5)", 1) },
+        { BaseID + 266, new Location(BaseID + 266, "Seed(6)", 1) },
+        { BaseID + 267, new Location(BaseID + 267, "Seed(7)", 1) },
+        { BaseID + 268, new Location(BaseID + 268, "Seed(8)", 1) },
+        { BaseID + 269, new Location(BaseID + 269, "Seed(9)", 1) },
+        { BaseID + 270, new Location(BaseID + 270, "Seed", 3) },
+        { BaseID + 271, new Location(BaseID + 271, "Seed(1)", 3) },
+        { BaseID + 272, new Location(BaseID + 272, "Seed(2)", 3) },
+        { BaseID + 273, new Location(BaseID + 273, "Seed(3)", 3) },
+        { BaseID + 274, new Location(BaseID + 274, "Seed(4)", 3) },
+        { BaseID + 275, new Location(BaseID + 275, "Seed(5)", 3) },
+        { BaseID + 276, new Location(BaseID + 276, "Seed(6)", 3) },
+        { BaseID + 277, new Location(BaseID + 277, "Seed(7)", 3) },
+        { BaseID + 278, new Location(BaseID + 278, "Seed(8)", 3) },
+        { BaseID + 279, new Location(BaseID + 279, "Seed(9)", 3) },
+        { BaseID + 280, new Location(BaseID + 280, "Seed", 5) },
+        { BaseID + 281, new Location(BaseID + 281, "Seed(1)", 5) },
+        { BaseID + 282, new Location(BaseID + 282, "Seed(2)", 5) },
+        { BaseID + 283, new Location(BaseID + 283, "Seed(3)", 5) },
+        { BaseID + 284, new Location(BaseID + 284, "Seed(4)", 5) },
+        { BaseID + 285, new Location(BaseID + 285, "Seed(5)", 5) },
+        { BaseID + 286, new Location(BaseID + 286, "Seed(6)", 5) },
+        { BaseID + 287, new Location(BaseID + 287, "Seed(7)", 5) },
+        { BaseID + 288, new Location(BaseID + 288, "Seed(8)", 5) },
+        { BaseID + 289, new Location(BaseID + 289, "Seed(9)", 5) },
+    };
 
     private static readonly List<long> ScoutList = new()
     {
@@ -592,8 +627,40 @@ public class Locations
         BaseID + 250,
         
         // Contact Lists
-        BaseID + 167,
-        BaseID + 168,
+        BaseID + 167, // Index: 193
+        BaseID + 168, 
+        
+        // Seeds
+        BaseID + 260, // Index: 195
+        BaseID + 261,
+        BaseID + 262,
+        BaseID + 263,
+        BaseID + 264,
+        BaseID + 265,
+        BaseID + 266,
+        BaseID + 267,
+        BaseID + 268,
+        BaseID + 269,
+        BaseID + 270, // Index: 205
+        BaseID + 271,
+        BaseID + 272,
+        BaseID + 273,
+        BaseID + 274,
+        BaseID + 275,
+        BaseID + 276,
+        BaseID + 277,
+        BaseID + 278,
+        BaseID + 279,
+        BaseID + 280, // Index: 215
+        BaseID + 281,
+        BaseID + 282,
+        BaseID + 283,
+        BaseID + 284,
+        BaseID + 285,
+        BaseID + 286,
+        BaseID + 287,
+        BaseID + 288,
+        BaseID + 289,
     };
     
     public static readonly long[] ScoutIDs = ScoutList.ToArray();
@@ -866,6 +933,51 @@ public class Locations
         // Contact Lists
         { BaseID + 167, "CL1 Obtained" },
         { BaseID + 168, "CL2 Obtained" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutHCSeedsList = new()
+    {
+        // Seeds
+        { BaseID + 260, "Seed" },
+        { BaseID + 261, "Seed(1)" },
+        { BaseID + 262, "Seed(2)" },
+        { BaseID + 263, "Seed(3)" },
+        { BaseID + 264, "Seed(4)" },
+        { BaseID + 265, "Seed(5)" },
+        { BaseID + 266, "Seed(6)" },
+        { BaseID + 267, "Seed(7)" },
+        { BaseID + 268, "Seed(8)" },
+        { BaseID + 269, "Seed(9)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutSFCSeedsList = new()
+    {
+        // Seeds
+        { BaseID + 270, "Seed" },
+        { BaseID + 271, "Seed(1)" },
+        { BaseID + 272, "Seed(2)" },
+        { BaseID + 273, "Seed(3)" },
+        { BaseID + 274, "Seed(4)" },
+        { BaseID + 275, "Seed(5)" },
+        { BaseID + 276, "Seed(6)" },
+        { BaseID + 277, "Seed(7)" },
+        { BaseID + 278, "Seed(8)" },
+        { BaseID + 279, "Seed(9)" },
+    };
+    
+    public static readonly Dictionary<long, string> ScoutBathSeedsList = new()
+    {
+        // Seeds
+        { BaseID + 280, "Seed" },
+        { BaseID + 281, "Seed(1)" },
+        { BaseID + 282, "Seed(2)" },
+        { BaseID + 283, "Seed(3)" },
+        { BaseID + 284, "Seed(4)" },
+        { BaseID + 285, "Seed(5)" },
+        { BaseID + 286, "Seed(6)" },
+        { BaseID + 287, "Seed(7)" },
+        { BaseID + 288, "Seed(8)" },
+        { BaseID + 289, "Seed(9)" }
     };
     
     public static void AddLocation(long id, string flag, int level)
