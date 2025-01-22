@@ -27,7 +27,8 @@ public class ArchipelagoClient
     public static ArchipelagoSession _session;
     public int CoinAmount, CassetteAmount, KeyAmount, HcKeyAmount, TtKeyAmount, SfcKeyAmount, PpKeyAmount, BathKeyAmount, HqKeyAmount,
         HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount,
-        HcSeedAmount, SfcSeedAmount, BathSeedAmount;
+        HcSeedAmount, SfcSeedAmount, BathSeedAmount,
+        HcFlowerAmount, TtFlowerAmount, SfcFlowerAmount, PpFlowerAmount, BathFlowerAmount, HqFlowerAmount;
 
     public static int SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
@@ -342,6 +343,30 @@ public class ArchipelagoClient
                     ItemHandler.AddBathSeed(senderName, notify);
                     BathSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Seed");
                     break;
+                case 598_145_444_000+40: // HCFlower
+                    ItemHandler.AddHcFlower(senderName, notify);
+                    HcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Flower");
+                    break;
+                case 598_145_444_000+41: // TTFlower
+                    ItemHandler.AddTtFlower(senderName, notify);
+                    TtFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Flower");
+                    break;
+                case 598_145_444_000+42: // SFCFlower
+                    ItemHandler.AddSfcFlower(senderName, notify);
+                    SfcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Flower");
+                    break;
+                case 598_145_444_000+43: // PPFlower
+                    ItemHandler.AddPpFlower(senderName, notify);
+                    PpFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Flower");
+                    break;
+                case 598_145_444_000+44: // BathFlower
+                    ItemHandler.AddBathFlower(senderName, notify);
+                    BathFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Flower");
+                    break;
+                case 598_145_444_000+45: // HQFlower
+                    ItemHandler.AddHqFlower(senderName, notify);
+                    HqFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Flower");
+                    break;
             }
     }
 
@@ -444,10 +469,15 @@ public class ArchipelagoClient
                 matchedLocation = gardenCassetteLocation;
                 flagType = "GardenCassette";
             }
-            else if (Locations.SunflowerSeedsLocations.TryGetValue(location, out var SunflowerSeedLocation))
+            else if (Locations.SunflowerSeedsLocations.TryGetValue(location, out var sunflowerSeedLocation))
             {
-                matchedLocation = SunflowerSeedLocation;
+                matchedLocation = sunflowerSeedLocation;
                 flagType = "SunflowerSeed";
+            }
+            else if (Locations.FlowerbedsLocations.TryGetValue(location, out var flowerbedsLocation))
+            {
+                matchedLocation = flowerbedsLocation;
+                flagType = "Flowerbed";
             }
             
             ServerData.CheckedLocations.Add(location);
@@ -502,7 +532,7 @@ public class ArchipelagoClient
                     Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
                 }
                 break;
-            case "Key" or "SunflowerSeed":
+            case "Key" or "SunflowerSeed" or "Flowerbed":
                 if (!worldsData[level].miscFlags.Contains(flag))
                     worldsData[level].miscFlags.Add(flag);
                 break;

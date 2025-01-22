@@ -484,6 +484,18 @@ namespace NikoArchipelago
                     SyncValue(ref ItemHandler.BathSeedAmount, ArchipelagoClient.BathSeedAmount);
                 }
             }
+            if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 2)
+                {
+                    SyncValue(ref ItemHandler.HairballFlowerAmount, ArchipelagoClient.HcFlowerAmount);
+                    SyncValue(ref ItemHandler.TurbineFlowerAmount, ArchipelagoClient.TtFlowerAmount);
+                    SyncValue(ref ItemHandler.SalmonFlowerAmount, ArchipelagoClient.SfcFlowerAmount);
+                    SyncValue(ref ItemHandler.PoolFlowerAmount, ArchipelagoClient.PpFlowerAmount);
+                    SyncValue(ref ItemHandler.BathFlowerAmount, ArchipelagoClient.BathFlowerAmount);
+                    SyncValue(ref ItemHandler.TadpoleFlowerAmount, ArchipelagoClient.HqFlowerAmount);
+                }
+            }
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)

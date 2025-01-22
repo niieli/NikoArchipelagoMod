@@ -40,13 +40,16 @@ public class MoomyPatch
                 {
                     __instance.NPCReward.SetActive(false);
                     __instance.NPC.SetActive(true);
+                    if (__instance.NPC.activeSelf)
+                        __instance.NPCTrigger.ChangeIcon(scrTextboxTrigger.IconType.quest, true);
                     if (blockedLog) return false;
                     Plugin.BepinLogger.LogInfo($"Reward blocked: Need all 10 seeds of {level}");
                     blockedLog = true;
                     return false;
                 }
             }
-            else if (!allSeedsCollected && __instance.sunflowerSeedsParent.transform.childCount == 0 && textbox.isOn && textbox.characterName == "Moomy" && !questComplete)
+            else if (!allSeedsCollected && __instance.sunflowerSeedsParent.transform.childCount == 0 && textbox.isOn 
+                     && textbox.nameMesh.text == "Moomy" && !questComplete)
             {
                 textbox.textMesh.text = $"You need all 10 seeds of {_currentLevelName} to obtain my reward!\nYou have {_currentSeedCount}/10 for this level!";
                 textbox.textMesh.maxVisibleCharacters = 99;
@@ -58,10 +61,6 @@ public class MoomyPatch
                 Traverse.Create(__instance).Field("questComplete").SetValue(false);
                 __instance.NPCReward.SetActive(false);
                 __instance.NPC.SetActive(true);
-                textbox.textMesh.text = $"You need all 10 seeds of {_currentLevelName} to obtain my reward!\nYou have {_currentSeedCount}/10 for this level!";
-                textbox.textMesh.maxVisibleCharacters = 99;
-                if (GameInput.GetButtonDown("Action"))
-                    textbox.EndConversation();
             }
             return true;
         }

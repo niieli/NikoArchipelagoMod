@@ -375,6 +375,33 @@ public class Locations
         { BaseID + 288, new Location(BaseID + 288, "Seed(8)", 5) },
         { BaseID + 289, new Location(BaseID + 289, "Seed(9)", 5) },
     };
+    
+    public static Dictionary<long, Location> FlowerbedsLocations = new()
+    {
+        //Flowerbeds
+        { BaseID + 300, new Location(BaseID + 300, "FPuzzle", 1) },
+        { BaseID + 301, new Location(BaseID + 301, "FPuzzle (1)", 1) },
+        { BaseID + 302, new Location(BaseID + 302, "FPuzzle (2)", 1) },
+        { BaseID + 303, new Location(BaseID + 303, "FPuzzle", 2) },
+        { BaseID + 304, new Location(BaseID + 304, "FPuzzle (1)", 2) },
+        { BaseID + 305, new Location(BaseID + 305, "FPuzzle (2)", 2) },
+        { BaseID + 306, new Location(BaseID + 306, "FPuzzle", 3) },
+        { BaseID + 307, new Location(BaseID + 307, "FPuzzle (1)", 3) },
+        { BaseID + 308, new Location(BaseID + 308, "FPuzzle (2)", 3) },
+        { BaseID + 309, new Location(BaseID + 309, "FPuzzle (3)", 3) },
+        { BaseID + 310, new Location(BaseID + 310, "FPuzzle (4)", 3) },
+        { BaseID + 311, new Location(BaseID + 311, "FPuzzle (5)", 3) },
+        { BaseID + 312, new Location(BaseID + 312, "FPuzzle", 4) },
+        { BaseID + 313, new Location(BaseID + 313, "FPuzzle (1)", 4) },
+        { BaseID + 314, new Location(BaseID + 314, "FPuzzle (2)", 4) },
+        { BaseID + 315, new Location(BaseID + 315, "FPuzzle", 5) },
+        { BaseID + 316, new Location(BaseID + 316, "FPuzzle (1)", 5) },
+        { BaseID + 317, new Location(BaseID + 317, "FPuzzle (2)", 5) },
+        { BaseID + 318, new Location(BaseID + 318, "FPuzzle", 6) },
+        { BaseID + 319, new Location(BaseID + 319, "FPuzzle (1)", 6) },
+        { BaseID + 320, new Location(BaseID + 320, "FPuzzle (2)", 6) },
+        { BaseID + 321, new Location(BaseID + 321, "FPuzzle (3)", 6) },
+    };
 
     private static readonly List<long> ScoutList = new()
     {
@@ -631,7 +658,7 @@ public class Locations
         BaseID + 168, 
         
         // Seeds
-        BaseID + 260, // Index: 195
+        BaseID + 260, // Index: 195 | Hairball City
         BaseID + 261,
         BaseID + 262,
         BaseID + 263,
@@ -641,7 +668,7 @@ public class Locations
         BaseID + 267,
         BaseID + 268,
         BaseID + 269,
-        BaseID + 270, // Index: 205
+        BaseID + 270, // Index: 205 | Salmon Creek Forest
         BaseID + 271,
         BaseID + 272,
         BaseID + 273,
@@ -651,7 +678,7 @@ public class Locations
         BaseID + 277,
         BaseID + 278,
         BaseID + 279,
-        BaseID + 280, // Index: 215
+        BaseID + 280, // Index: 215 | Bathhouse
         BaseID + 281,
         BaseID + 282,
         BaseID + 283,
@@ -978,6 +1005,18 @@ public class Locations
         { BaseID + 287, "Seed(7)" },
         { BaseID + 288, "Seed(8)" },
         { BaseID + 289, "Seed(9)" }
+    };
+    
+    public static readonly Dictionary<long, string> ScoutHCFlowersList = new()
+    {
+        // Flowerbeds
+        { BaseID + 300, "FPuzzle" },
+        { BaseID + 301, "FPuzzle (1)" },
+        { BaseID + 302, "FPuzzle (2)" },
+        // { BaseID + 263, "FPuzzle (3)" },
+        // { BaseID + 264, "FPuzzle (4)" },
+        // { BaseID + 265, "FPuzzle (5)" },
+        // { BaseID + 266, "FPuzzle (6)" },
     };
     
     public static void AddLocation(long id, string flag, int level)

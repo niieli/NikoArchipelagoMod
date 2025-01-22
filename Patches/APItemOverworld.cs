@@ -2654,7 +2654,7 @@ public class APItemOverworld
             {
                 if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
                 {
-                    gardenAdjustment = 2;
+                    gardenAdjustment = 13;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))

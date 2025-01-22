@@ -57,7 +57,7 @@ public class LocationHandler : MonoBehaviour
             }
             if (miscFlag.Count > miscIndex)
             {
-                var relevantLocations = Locations.KeyLocations.Concat(Locations.SunflowerSeedsLocations);
+                var relevantLocations = Locations.KeyLocations.Concat(Locations.SunflowerSeedsLocations).Concat(Locations.FlowerbedsLocations);
                 foreach (var locationEntry in relevantLocations.Where(locationEntry => 
                              locationEntry.Value.Level == currentLevel && miscFlag[miscIndex] == locationEntry.Value.Flag))
                 {

@@ -15,7 +15,8 @@ public static class ItemHandler
     public static bool Garden;
     public static int HairballKeyAmount, TurbineKeyAmount, SalmonKeyAmount, PoolKeyAmount, BathKeyAmount, TadpoleKeyAmount,
         HairballFishAmount, TurbineFishAmount, SalmonFishAmount, PoolFishAmount, BathFishAmount, TadpoleFishAmount,
-        HairballSeedAmount, SalmonSeedAmount, BathSeedAmount;
+        HairballSeedAmount, SalmonSeedAmount, BathSeedAmount,
+        HairballFlowerAmount, TurbineFlowerAmount, SalmonFlowerAmount, PoolFlowerAmount, BathFlowerAmount, TadpoleFlowerAmount;
     public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -457,5 +458,53 @@ public static class ItemHandler
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Seed from {sender}!" : "You found your Bathhouse Seed!",
             3f, Plugin.BathFishSprite);
+    }
+    
+    public static void AddHcFlower(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Flower from {sender}!" : "You found your Hairball City Flower!",
+            3f, Plugin.HairballFishSprite);
+    }
+    
+    public static void AddTtFlower(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Flower from {sender}!" : "You found your Turbine Town Flower!",
+            3f, Plugin.TurbineFishSprite);
+    }
+    
+    public static void AddSfcFlower(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Flower from {sender}!" : "You found your Salmon Creek Forest Flower!",
+            3f, Plugin.SalmonFishSprite);
+    }
+    
+    public static void AddPpFlower(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Flower from {sender}!" : "You found your Public Pool Flower!",
+            3f, Plugin.PoolFishSprite);
+    }
+    
+    public static void AddBathFlower(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Flower from {sender}!" : "You found your Bathhouse Flower!",
+            3f, Plugin.BathFishSprite);
+    }
+    
+    public static void AddHqFlower(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Flower from {sender}!" : "You found your Tadpole HQ Flower!",
+            3f, Plugin.TadpoleFishSprite);
     }
 }
