@@ -300,7 +300,7 @@ public class CassetteCost
                         _maiIndex = _mitchIndex - 1;
                         break;
                 }
-                if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price * 5)
+                if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price * 5 && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
                     MitchGameObject.parentNotBought.SetActive(true);
                     MitchGameObject.parentCantBuy.SetActive(false);
@@ -326,7 +326,7 @@ public class CassetteCost
                         MitchGameObject.parentBought.SetActive(true);
                     }
                 }
-                else
+                else if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount < __instance.price * 5  && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
                     MitchGameObject.parentNotBought.SetActive(false);
                     MitchGameObject.parentCantBuy.SetActive(true);
@@ -344,13 +344,13 @@ public class CassetteCost
                             $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}.";
                     }
                 }
-                if (MitchGameObject.isBought)
+                if (MitchGameObject.isBought || scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
                     MitchGameObject.parentNotBought.SetActive(false);
                     MitchGameObject.parentCantBuy.SetActive(false);
                     MitchGameObject.parentBought.SetActive(true);
                 }
-                if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= _maiPrice * 5)
+                if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= _maiPrice * 5 && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                 {
                     MaiGameObject.parentNotBought.SetActive(true);
                     MaiGameObject.parentCantBuy.SetActive(false);
@@ -379,7 +379,7 @@ public class CassetteCost
                         MaiGameObject.parentBought.SetActive(true);
                     }
                 } 
-                else
+                else if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount < _maiPrice * 5 && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                 {
                     MaiGameObject.parentNotBought.SetActive(false);
                     MaiGameObject.parentCantBuy.SetActive(true);
@@ -397,7 +397,7 @@ public class CassetteCost
                             $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}.";
                     }
                 }
-                if (MaiGameObject.isBought)
+                if (MaiGameObject.isBought || scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                 {
                     MaiGameObject.parentNotBought.SetActive(false);
                     MaiGameObject.parentCantBuy.SetActive(false);
