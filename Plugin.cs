@@ -694,6 +694,23 @@ namespace NikoArchipelago
                 Logger.LogWarning("Elevator Repair: "+ArchipelagoData.slotData["kioskhq"]);
                 Logger.LogWarning("Garden Access: "+ArchipelagoData.slotData["garden_access"]);
                 Logger.LogWarning("Fishsanity: "+ArchipelagoData.slotData["fishsanity"]);
+                Logger.LogWarning("Seedsanity: "+ArchipelagoData.slotData["seedsanity"]);
+                Logger.LogWarning("Flowersanity: "+ArchipelagoData.slotData["flowersanity"]);
+                Logger.LogWarning("Applesanity: "+ArchipelagoData.slotData["applesanity"]);
+                Logger.LogWarning("Hairball City - Mitch: "+ArchipelagoData.slotData["chc1"]);
+                Logger.LogWarning("Hairball City - Mai: "+ArchipelagoData.slotData["chc2"]);
+                Logger.LogWarning("Turbine Town - Mitch: "+ArchipelagoData.slotData["ctt1"]);
+                Logger.LogWarning("Turbine Town - Mai: "+ArchipelagoData.slotData["ctt2"]);
+                Logger.LogWarning("Salmon Creek Forest - Mitch: "+ArchipelagoData.slotData["csfc1"]);
+                Logger.LogWarning("Salmon Creek Forest - Mai: "+ArchipelagoData.slotData["csfc2"]);
+                Logger.LogWarning("Public Pool - Mitch: "+ArchipelagoData.slotData["cpp1"]);
+                Logger.LogWarning("Public Pool - Mai: "+ArchipelagoData.slotData["cpp2"]);
+                Logger.LogWarning("Bathhouse - Mitch: "+ArchipelagoData.slotData["cbath1"]);
+                Logger.LogWarning("Bathhouse - Mai: "+ArchipelagoData.slotData["cbath2"]);
+                Logger.LogWarning("Tadpole HQ - Mitch: "+ArchipelagoData.slotData["chq1"]);
+                Logger.LogWarning("Tadpole HQ - Mai: "+ArchipelagoData.slotData["chq2"]);
+                Logger.LogWarning("Gary's Garden - Mitch: "+ArchipelagoData.slotData["cgg1"]);
+                Logger.LogWarning("Gary's Garden - Mai: "+ArchipelagoData.slotData["cgg2"]);
             }
             if (GUI.Button(new Rect(16, 320, 100, 20), "Current Level"))
             {
