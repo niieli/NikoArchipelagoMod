@@ -134,6 +134,7 @@ public class Applesanity
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("applesanity")) return;
             if (int.Parse(ArchipelagoData.slotData["applesanity"].ToString()) == 0) return;
+            __instance.enabled = true;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
                 if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
                     gardenAdjustment = 13;
@@ -802,7 +803,7 @@ public class Applesanity
     {
         private static void Postfix(scrApple __instance)
         {
-            if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.name))
+            if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.name) && __instance.name.StartsWith("Apple Float"))
             {
                 scrWorldSaveDataContainer.instance.miscFlags.Add(__instance.name);
                 scrGameSaveManager.instance.gameData.generalGameData.appleAmount--;
