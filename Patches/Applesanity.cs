@@ -51,7 +51,7 @@ public class Applesanity
             Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quad").gameObject;
-            var itemQuads = itemOverworld.transform.Find("Quad").gameObject;
+            var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
 
             itemOverworld.transform.localPosition = Vector3.zero;
             itemQuads.transform.position = ogQuads.transform.position;
@@ -132,8 +132,8 @@ public class Applesanity
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
-            if (!ArchipelagoData.slotData.ContainsKey("applesanity")) return;
-            if (int.Parse(ArchipelagoData.slotData["applesanity"].ToString()) == 0) return;
+            if (!ArchipelagoData.slotData.ContainsKey("applessanity")) return;
+            if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0) return;
             __instance.enabled = true;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
                 if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
@@ -145,9 +145,11 @@ public class Applesanity
 
             var adjustment = gardenAdjustment + snailShopAdjustment;
             var ogQuads = __instance.transform.Find("Quad").gameObject;
+            var flag = __instance.name;
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag) || !flag.StartsWith("Apple Float")) return;
             Object.Destroy(ogQuads.gameObject);
             ogQuads.SetActive(false);
-            var flag = __instance.name;
+            
 
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
@@ -250,7 +252,6 @@ public class Applesanity
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
-
                     Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
                     Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
                                                         + "\nLocation: " +
@@ -805,6 +806,7 @@ public class Applesanity
         {
             if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.name) && __instance.name.StartsWith("Apple Float"))
             {
+                scrAppleDisplayer.show = false;
                 scrWorldSaveDataContainer.instance.miscFlags.Add(__instance.name);
                 scrGameSaveManager.instance.gameData.generalGameData.appleAmount--;
                 scrGameSaveManager.instance.SaveGame();
