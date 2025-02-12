@@ -31,7 +31,8 @@ public class ArchipelagoClient
         HcFlowerAmount, TtFlowerAmount, SfcFlowerAmount, PpFlowerAmount, BathFlowerAmount, HqFlowerAmount;
 
     public static int SnailMoney, Apples;
-    public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary;
+    public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary,
+        HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs;
     public Task _disconnectTask;
 
     /// <summary>
@@ -216,12 +217,13 @@ public class ArchipelagoClient
                     KeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Key");
                     break;
                 case 598_145_444_000 + 3: // Apples
-                    Apples = _session.Items.AllItemsReceived.Count(t => t.ItemName == "25 Apples");
-                    var diffApples = Apples - GetAppleIndex();
-                    for (int i = 0; i < diffApples; i++)
-                    {
-                        ItemHandler.AddApples(25, senderName, notify);
-                    }
+                    // Apples = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Apples");
+                    // var diffApples = Apples - GetAppleIndex();
+                    // for (int i = 0; i < diffApples; i++)
+                    // {
+                    //     ItemHandler.AddApples(25, senderName, notify);
+                    // }
+                    ItemHandler.AddApples(25, senderName, notify);
                     break;
                 case 598_145_444_000 + 4: // Contact List 1
                     ItemHandler.AddContactList1(senderName, notify);
@@ -268,7 +270,7 @@ public class ArchipelagoClient
                     ItemHandler.AddBugs(10, senderName, notify);
                     break;
                 case 598_145_444_000+16:
-                    SnailMoney = _session.Items.AllItemsReceived.Count(t => t.ItemName == "1000 Snail Dollar");
+                    SnailMoney = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Snail Money");
                     var diffMoney = SnailMoney- GetMoneyIndex();
                     for (int i = 0; i < diffMoney; i++)
                     {
@@ -366,6 +368,30 @@ public class ArchipelagoClient
                 case 598_145_444_000+45: // HQFlower
                     ItemHandler.AddHqFlower(senderName, notify);
                     HqFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Flower");
+                    break;
+                case 598_145_444_000+46: // HC NPCs
+                    ItemHandler.AddHcNPCs(senderName, notify);
+                    HcNPCs = true;
+                    break;
+                case 598_145_444_000+47: // TT NPCs
+                    ItemHandler.AddTtNPCs(senderName, notify);
+                    TtNPCs = true;
+                    break;
+                case 598_145_444_000+48: // SFC NPCs
+                    ItemHandler.AddSfcNPCs(senderName, notify);
+                    SfcNPCs = true;
+                    break;
+                case 598_145_444_000+49: // PP NPCs
+                    ItemHandler.AddPpNPCs(senderName, notify);
+                    PpNPCs = true;
+                    break;
+                case 598_145_444_000+50: // Bath NPCs
+                    ItemHandler.AddBathNPCs(senderName, notify);
+                    BathNPCs = true;
+                    break;
+                case 598_145_444_000+51: // HQ NPCs
+                    ItemHandler.AddHqNPCs(senderName, notify);
+                    HqNPCs = true;
                     break;
             }
     }
@@ -479,6 +505,16 @@ public class ArchipelagoClient
                 matchedLocation = flowerbedsLocation;
                 flagType = "Flowerbed";
             }
+            else if (Locations.ApplesanityLocations.TryGetValue(location, out var appleLocation))
+            {
+                matchedLocation = appleLocation;
+                flagType = "Apple";
+            }
+            else if (Locations.ProgressiveMitchMaiLocations.TryGetValue(location, out var mimaLocation))
+            {
+                matchedLocation = mimaLocation;
+                flagType = "MiMa";
+            }
             
             ServerData.CheckedLocations.Add(location);
             if (matchedLocation != null)
@@ -532,7 +568,7 @@ public class ArchipelagoClient
                     Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
                 }
                 break;
-            case "Key" or "SunflowerSeed" or "Flowerbed":
+            case "Key" or "SunflowerSeed" or "Flowerbed" or "Apple":
                 if (!worldsData[level].miscFlags.Contains(flag))
                     worldsData[level].miscFlags.Add(flag);
                 break;
@@ -540,7 +576,7 @@ public class ArchipelagoClient
                 if (!worldsData[level].letterFlags.Contains(flag))
                     worldsData[level].letterFlags.Add(flag);
                 break;
-            case "General" or "Kiosk" or "Handsome" or "Achievement":
+            case "General" or "Kiosk" or "Handsome" or "Achievement" or "MiMa":
                 if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(flag))
                     scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add(flag);
                 break;

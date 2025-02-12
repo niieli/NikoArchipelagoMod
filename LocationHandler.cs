@@ -10,7 +10,7 @@ namespace NikoArchipelago;
 public class LocationHandler : MonoBehaviour
 {
     private static long baseID = 598_145_444_000;
-    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex, kioskIndex, shopIndex;
+    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex, kioskIndex, shopIndex, mimaIndex;
     private static bool _errored, _errored2, _sent;
     private static List<bool> shopFlagsList = [..new bool[16]];
     public static ReadOnlyCollection<long> CheckedLocations;
@@ -34,7 +34,6 @@ public class LocationHandler : MonoBehaviour
                              locationEntry.Value.Level == currentLevel && coinsFlag[LocationHandler.coinFlag] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
-                    //await ArchipelagoClient.SyncItemsFromDataStorage();
                 }
                 coinFlag++;
             }
@@ -84,22 +83,14 @@ public class LocationHandler : MonoBehaviour
             {
                 letterIndex = 0;
             }
-            if (genFlag.Count > achIndex)
-            {
-                foreach (var locationEntry in Locations.AchievementsLocations.Where(locationEntry => 
-                             genFlag[achIndex] == locationEntry.Value.Flag))
-                {
-                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
-                }
-                achIndex++;
-            }
-            else if (achIndex > genFlag.Count)
-            {
-                achIndex = 0;
-            }
             if (genFlag.Count > genIndex)
             {
-                foreach (var locationEntry in Locations.GeneralLocations.Where(locationEntry => 
+                foreach (var locationEntry in Locations.AchievementsLocations
+                             .Concat(Locations.GeneralLocations)
+                             .Concat(Locations.KioskLocations)
+                             .Concat(Locations.ProgressiveMitchMaiLocations)
+                             .Concat(Locations.HandsomeLocations)
+                             .Where(locationEntry => 
                              genFlag[genIndex] == locationEntry.Value.Flag))
                 {
                     ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
@@ -109,32 +100,6 @@ public class LocationHandler : MonoBehaviour
             else if (genIndex > genFlag.Count)
             {
                 genIndex = 0;
-            }
-            if (genFlag.Count > frogIndex)
-            {
-                foreach (var locationEntry in Locations.HandsomeLocations.Where(locationEntry => 
-                             genFlag[frogIndex] == locationEntry.Value.Flag))
-                {
-                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
-                }
-                frogIndex++;
-            }
-            else if (frogIndex > genFlag.Count)
-            {
-                frogIndex = 0;
-            }
-            if (genFlag.Count > kioskIndex)
-            {
-                foreach (var locationEntry in Locations.KioskLocations.Where(locationEntry => 
-                             genFlag[kioskIndex] == locationEntry.Value.Flag))
-                {
-                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
-                }
-                kioskIndex++;
-            }
-            else if (kioskIndex > genFlag.Count)
-            {
-                kioskIndex = 0;
             }
             if (fishFlag.Count > fishIndex)
             {

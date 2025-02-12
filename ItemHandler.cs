@@ -507,4 +507,53 @@ public static class ItemHandler
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Flower from {sender}!" : "You found your Tadpole HQ Flower!",
             3f, Plugin.TadpoleFishSprite);
     }
+    
+    // NPCs
+    public static void AddHcNPCs(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City NPCs from {sender}!" : "You found your Hairball City NPCs!",
+            3f, Plugin.HairballFishSprite);
+    }
+    
+    public static void AddTtNPCs(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town NPCs from {sender}!" : "You found your Turbine Town NPCs!",
+            3f, Plugin.TurbineFishSprite);
+    }
+    
+    public static void AddSfcNPCs(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest NPCs from {sender}!" : "You found your Salmon Creek Forest NPCs!",
+            3f, Plugin.SalmonFishSprite);
+    }
+    
+    public static void AddPpNPCs(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool NPCs from {sender}!" : "You found your Public Pool NPCs!",
+            3f, Plugin.PoolFishSprite);
+    }
+    
+    public static void AddBathNPCs(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse NPCs from {sender}!" : "You found your Bathhouse NPCs!",
+            3f, Plugin.BathFishSprite);
+    }
+    
+    public static void AddHqNPCs(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ NPCs from {sender}!" : "You found your Tadpole HQ NPCs!",
+            3f, Plugin.TadpoleFishSprite);
+    }
 }

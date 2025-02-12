@@ -343,34 +343,68 @@ public class TrackerKiosk : MonoBehaviour
 
         if (ArchipelagoMenu.CassetteSpoiler)
         {
-            mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
+            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+            {
+                mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
+                ? "15" : "??";
+                maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
+                    ? "20" : "??";
+                mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
+                    ? "25" : "??";
+                maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
+                    ? "30" : "??";
+                mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
+                    ? "35" : "??";
+                maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
+                    ? "40" : "??";
+                maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
+                    ? "45" : "??";
+                mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
+                    ? "50" : "??";
+                mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
+                    ? "55" : "??";
+                maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint11") 
+                    ? "60" : "??";
+                maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
+                    ? "65" : "??";
+                mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint13") 
+                    ? "70" : "??";
+                maiGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
+                    ? "10" : "??";
+                mitchGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
+                    ? "5" : "??";
+            }
+            else
+            {
+                mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
                 ? (int.Parse(ArchipelagoData.slotData["chc1"].ToString())*5).ToString() : "??";
-            maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
-                ? (int.Parse(ArchipelagoData.slotData["chc2"].ToString())*5).ToString() : "??";
-            mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
-                ? (int.Parse(ArchipelagoData.slotData["ctt1"].ToString())*5).ToString() : "??";
-            maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
-                ? (int.Parse(ArchipelagoData.slotData["ctt2"].ToString())*5).ToString() : "??";
-            mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
-                ? (int.Parse(ArchipelagoData.slotData["csfc1"].ToString())*5).ToString() : "??";
-            maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
-                ? (int.Parse(ArchipelagoData.slotData["csfc2"].ToString())*5).ToString() : "??";
-            maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
-                ? (int.Parse(ArchipelagoData.slotData["cpp2"].ToString())*5).ToString() : "??";
-            mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
-                ? (int.Parse(ArchipelagoData.slotData["cpp1"].ToString())*5).ToString() : "??";
-            mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
-                ? (int.Parse(ArchipelagoData.slotData["cbath1"].ToString())*5).ToString() : "??";
-            maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
-                ? (int.Parse(ArchipelagoData.slotData["cbath2"].ToString())*5).ToString() : "??";
-            maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
-                ? (int.Parse(ArchipelagoData.slotData["chq2"].ToString())*5).ToString() : "??";
-            mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint11") 
-                ? (int.Parse(ArchipelagoData.slotData["chq1"].ToString())*5).ToString() : "??";
-            maiGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
-                ? (int.Parse(ArchipelagoData.slotData["cgg2"].ToString())*5).ToString() : "??";
-            mitchGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint13") 
-                ? (int.Parse(ArchipelagoData.slotData["cgg1"].ToString())*5).ToString() : "??";
+                maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
+                    ? (int.Parse(ArchipelagoData.slotData["chc2"].ToString())*5).ToString() : "??";
+                mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
+                    ? (int.Parse(ArchipelagoData.slotData["ctt1"].ToString())*5).ToString() : "??";
+                maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
+                    ? (int.Parse(ArchipelagoData.slotData["ctt2"].ToString())*5).ToString() : "??";
+                mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
+                    ? (int.Parse(ArchipelagoData.slotData["csfc1"].ToString())*5).ToString() : "??";
+                maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
+                    ? (int.Parse(ArchipelagoData.slotData["csfc2"].ToString())*5).ToString() : "??";
+                maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
+                    ? (int.Parse(ArchipelagoData.slotData["cpp2"].ToString())*5).ToString() : "??";
+                mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
+                    ? (int.Parse(ArchipelagoData.slotData["cpp1"].ToString())*5).ToString() : "??";
+                mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
+                    ? (int.Parse(ArchipelagoData.slotData["cbath1"].ToString())*5).ToString() : "??";
+                maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
+                    ? (int.Parse(ArchipelagoData.slotData["cbath2"].ToString())*5).ToString() : "??";
+                maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
+                    ? (int.Parse(ArchipelagoData.slotData["chq2"].ToString())*5).ToString() : "??";
+                mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint11") 
+                    ? (int.Parse(ArchipelagoData.slotData["chq1"].ToString())*5).ToString() : "??";
+                maiGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
+                    ? (int.Parse(ArchipelagoData.slotData["cgg2"].ToString())*5).ToString() : "??";
+                mitchGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint13") 
+                    ? (int.Parse(ArchipelagoData.slotData["cgg1"].ToString())*5).ToString() : "??";
+            }
         }
         else
         {
@@ -475,117 +509,246 @@ public class TrackerKiosk : MonoBehaviour
                 maiGardenCassetteImage.enabled = false;
             }
         }
-        for (var i = 1; i < 8; i++)
+
+        if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
         {
-            if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa3"))
             {
-                switch (i)
-                {
-                    case 1:
-                        mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
-                        mitchHairballText.enabled = false;
-                        mitchHairballShadowText.enabled = false;
-                        boughtMitchHairballImage.enabled = true;
-                        mitchHairballCassetteImage.enabled = false;
-                        break;
-                    case 2:
-                        mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
-                        mitchTurbineText.enabled = false;
-                        mitchTurbineShadowText.enabled = false;
-                        boughtMitchTurbineImage.enabled = true;
-                        mitchTurbineCassetteImage.enabled = false;
-                        break;
-                    case 3:
-                        mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
-                        mitchSalmonText.enabled = false;
-                        mitchSalmonShadowText.enabled = false;
-                        boughtMitchSalmonImage.enabled = true;
-                        mitchSalmonCassetteImage.enabled = false;
-                        break;
-                    case 4:
-                        mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
-                        mitchPoolText.enabled = false;
-                        mitchPoolShadowText.enabled = false;
-                        boughtMitchPoolImage.enabled = true;
-                        mitchPoolCassetteImage.enabled = false;
-                        break;
-                    case 5:
-                        mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
-                        mitchBathText.enabled = false;
-                        mitchBathShadowText.enabled = false;
-                        boughtMitchBathImage.enabled = true;
-                        mitchBathCassetteImage.enabled = false;
-                        break;
-                    case 6:
-                        mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
-                        mitchTadpoleText.enabled = false;
-                        mitchTadpoleShadowText.enabled = false;
-                        boughtMitchTadpoleImage.enabled = true;
-                        mitchTadpoleCassetteImage.enabled = false;
-                        break;
-                    case 7:
-                        mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
-                        mitchGardenText.enabled = false;
-                        mitchGardenShadowText.enabled = false;
-                        boughtMitchGardenImage.enabled = true;
-                        mitchGardenCassetteImage.enabled = false;
-                        break;
-                }
+                mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                mitchHairballText.enabled = false;
+                mitchHairballShadowText.enabled = false;
+                boughtMitchHairballImage.enabled = true;
+                mitchHairballCassetteImage.enabled = false;
             }
-            if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin2"))
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa4"))
             {
-                switch (i)
-                {
-                    case 1:
-                        maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
-                        maiHairballText.enabled = false;
-                        maiHairballShadowText.enabled = false;
-                        boughtMaiHairballImage.enabled = true;
-                        maiHairballCassetteImage.enabled = false;
-                        break;
-                    case 2:
-                        maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
-                        maiTurbineText.enabled = false;
-                        maiTurbineShadowText.enabled = false;
-                        boughtMaiTurbineImage.enabled = true;
-                        maiTurbineCassetteImage.enabled = false;
-                        break;
-                    case 3:
-                        maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
-                        maiSalmonText.enabled = false;
-                        maiSalmonShadowText.enabled = false;
-                        boughtMaiSalmonImage.enabled = true;
-                        maiSalmonCassetteImage.enabled = false;
-                        break;
-                    case 4:
-                        maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
-                        maiPoolText.enabled = false;
-                        maiPoolShadowText.enabled = false;
-                        boughtMaiPoolImage.enabled = true;
-                        maiPoolCassetteImage.enabled = false;
-                        break;
-                    case 5:
-                        maiBathImage.color = new Color(1f, 1f, 1f, 1f);
-                        maiBathText.enabled = false;
-                        maiBathShadowText.enabled = false;
-                        boughtMaiBathImage.enabled = true;
-                        maiBathCassetteImage.enabled = false;
-                        break;
-                    case 6:
-                        maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
-                        maiTadpoleText.enabled = false;
-                        maiTadpoleShadowText.enabled = false;
-                        boughtMaiTadpoleImage.enabled = true;
-                        maiTadpoleCassetteImage.enabled = false;
-                        break;
-                    case 7:
-                        maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
-                        maiGardenText.enabled = false;
-                        maiGardenShadowText.enabled = false;
-                        boughtMaiGardenImage.enabled = true;
-                        maiGardenCassetteImage.enabled = false;
-                        break;
-                }
+                maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                maiHairballText.enabled = false;
+                maiHairballShadowText.enabled = false;
+                boughtMaiHairballImage.enabled = true;
+                maiHairballCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa5"))
+            {
+                mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                mitchTurbineText.enabled = false;
+                mitchTurbineShadowText.enabled = false;
+                boughtMitchTurbineImage.enabled = true;
+                mitchTurbineCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa6"))
+            {
+                maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                maiTurbineText.enabled = false;
+                maiTurbineShadowText.enabled = false;
+                boughtMaiTurbineImage.enabled = true;
+                maiTurbineCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa7"))
+            {
+                mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                mitchSalmonText.enabled = false;
+                mitchSalmonShadowText.enabled = false;
+                boughtMitchSalmonImage.enabled = true;
+                mitchSalmonCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa8"))
+            {
+                maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                maiSalmonText.enabled = false;
+                maiSalmonShadowText.enabled = false;
+                boughtMaiSalmonImage.enabled = true;
+                maiSalmonCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa9"))
+            {
+                mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                mitchPoolText.enabled = false;
+                mitchPoolShadowText.enabled = false;
+                boughtMitchPoolImage.enabled = true;
+                mitchPoolCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa10"))
+            {
+                maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                maiPoolText.enabled = false;
+                maiPoolShadowText.enabled = false;
+                boughtMaiPoolImage.enabled = true;
+                maiPoolCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa11"))
+            {
+                mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
+                mitchBathText.enabled = false;
+                mitchBathShadowText.enabled = false;
+                boughtMitchBathImage.enabled = true;
+                mitchBathCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa12"))
+            {
+                maiBathImage.color = new Color(1f, 1f, 1f, 1f);
+                maiBathText.enabled = false;
+                maiBathShadowText.enabled = false;
+                boughtMaiBathImage.enabled = true;
+                maiBathCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa13"))
+            {
+                mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                mitchTadpoleText.enabled = false;
+                mitchTadpoleShadowText.enabled = false;
+                boughtMitchTadpoleImage.enabled = true;
+                mitchTadpoleCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa14"))
+            {
+                maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                maiTadpoleText.enabled = false;
+                maiTadpoleShadowText.enabled = false;
+                boughtMaiTadpoleImage.enabled = true;
+                maiTadpoleCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa1"))
+            {
+                mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                mitchGardenText.enabled = false;
+                mitchGardenShadowText.enabled = false;
+                boughtMitchGardenImage.enabled = true;
+                mitchGardenCassetteImage.enabled = false;
+            }
+
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa2"))
+            {
+                maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                maiGardenText.enabled = false;
+                maiGardenShadowText.enabled = false;
+                boughtMaiGardenImage.enabled = true;
+                maiGardenCassetteImage.enabled = false;
+            }
+        }
+        else
+        {
+            for (var i = 1; i < 8; i++)
+            {
+                if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin"))
+                    switch (i)
+                    {
+                        case 1:
+                            mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                            mitchHairballText.enabled = false;
+                            mitchHairballShadowText.enabled = false;
+                            boughtMitchHairballImage.enabled = true;
+                            mitchHairballCassetteImage.enabled = false;
+                            break;
+                        case 2:
+                            mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                            mitchTurbineText.enabled = false;
+                            mitchTurbineShadowText.enabled = false;
+                            boughtMitchTurbineImage.enabled = true;
+                            mitchTurbineCassetteImage.enabled = false;
+                            break;
+                        case 3:
+                            mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                            mitchSalmonText.enabled = false;
+                            mitchSalmonShadowText.enabled = false;
+                            boughtMitchSalmonImage.enabled = true;
+                            mitchSalmonCassetteImage.enabled = false;
+                            break;
+                        case 4:
+                            mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                            mitchPoolText.enabled = false;
+                            mitchPoolShadowText.enabled = false;
+                            boughtMitchPoolImage.enabled = true;
+                            mitchPoolCassetteImage.enabled = false;
+                            break;
+                        case 5:
+                            mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
+                            mitchBathText.enabled = false;
+                            mitchBathShadowText.enabled = false;
+                            boughtMitchBathImage.enabled = true;
+                            mitchBathCassetteImage.enabled = false;
+                            break;
+                        case 6:
+                            mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                            mitchTadpoleText.enabled = false;
+                            mitchTadpoleShadowText.enabled = false;
+                            boughtMitchTadpoleImage.enabled = true;
+                            mitchTadpoleCassetteImage.enabled = false;
+                            break;
+                        case 7:
+                            mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                            mitchGardenText.enabled = false;
+                            mitchGardenShadowText.enabled = false;
+                            boughtMitchGardenImage.enabled = true;
+                            mitchGardenCassetteImage.enabled = false;
+                            break;
+                    }
+
+                if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin2"))
+                    switch (i)
+                    {
+                        case 1:
+                            maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                            maiHairballText.enabled = false;
+                            maiHairballShadowText.enabled = false;
+                            boughtMaiHairballImage.enabled = true;
+                            maiHairballCassetteImage.enabled = false;
+                            break;
+                        case 2:
+                            maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                            maiTurbineText.enabled = false;
+                            maiTurbineShadowText.enabled = false;
+                            boughtMaiTurbineImage.enabled = true;
+                            maiTurbineCassetteImage.enabled = false;
+                            break;
+                        case 3:
+                            maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                            maiSalmonText.enabled = false;
+                            maiSalmonShadowText.enabled = false;
+                            boughtMaiSalmonImage.enabled = true;
+                            maiSalmonCassetteImage.enabled = false;
+                            break;
+                        case 4:
+                            maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                            maiPoolText.enabled = false;
+                            maiPoolShadowText.enabled = false;
+                            boughtMaiPoolImage.enabled = true;
+                            maiPoolCassetteImage.enabled = false;
+                            break;
+                        case 5:
+                            maiBathImage.color = new Color(1f, 1f, 1f, 1f);
+                            maiBathText.enabled = false;
+                            maiBathShadowText.enabled = false;
+                            boughtMaiBathImage.enabled = true;
+                            maiBathCassetteImage.enabled = false;
+                            break;
+                        case 6:
+                            maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                            maiTadpoleText.enabled = false;
+                            maiTadpoleShadowText.enabled = false;
+                            boughtMaiTadpoleImage.enabled = true;
+                            maiTadpoleCassetteImage.enabled = false;
+                            break;
+                        case 7:
+                            maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                            maiGardenText.enabled = false;
+                            maiGardenShadowText.enabled = false;
+                            boughtMaiGardenImage.enabled = true;
+                            maiGardenCassetteImage.enabled = false;
+                            break;
+                    }
             }
         }
     }

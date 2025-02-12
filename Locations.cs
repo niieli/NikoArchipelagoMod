@@ -246,7 +246,7 @@ public class Locations
         { BaseID + 195, new Location(BaseID + 195, "Froggy Salmon Creek Forest", 3) }, 
         { BaseID + 196, new Location(BaseID + 196, "Froggy Public Pool", 4) },
         { BaseID + 197, new Location(BaseID + 197, "Froggy The Bathhouse", 5) },
-        //{ BaseID + 201, new Location(BaseID + 201, "true", 23) },
+        { BaseID + 201, new Location(BaseID + 201, "Froggy GarysGarden", 23) },
 
     };
     
@@ -707,6 +707,25 @@ public class Locations
         { BaseID + 615, new Location(BaseID + 615, "Apple Float (8)", 6) }, 
         { BaseID + 616, new Location(BaseID + 616, "Apple Float (9)", 6) },
         { BaseID + 617, new Location(BaseID + 617, "Apple Float (10)", 6) },
+    };
+    
+    public static Dictionary<long, Location> ProgressiveMitchMaiLocations = new()
+    {
+        //Coins
+        { BaseID + 620, new Location(BaseID + 620, "MiMa1", 0) },
+        { BaseID + 621, new Location(BaseID + 621, "MiMa2", 0) },
+        { BaseID + 622, new Location(BaseID + 622, "MiMa3", 0) },
+        { BaseID + 623, new Location(BaseID + 623, "MiMa4", 0) },
+        { BaseID + 624, new Location(BaseID + 624, "MiMa5", 0) },
+        { BaseID + 625, new Location(BaseID + 625, "MiMa6", 0) },
+        { BaseID + 626, new Location(BaseID + 626, "MiMa7", 0) },
+        { BaseID + 627, new Location(BaseID + 627, "MiMa8", 0) },
+        { BaseID + 628, new Location(BaseID + 628, "MiMa9", 0) },
+        { BaseID + 629, new Location(BaseID + 629, "MiMa10", 0) },
+        { BaseID + 630, new Location(BaseID + 630, "MiMa11", 0) },
+        { BaseID + 631, new Location(BaseID + 631, "MiMa12", 0) },
+        { BaseID + 632, new Location(BaseID + 632, "MiMa13", 0) },
+        { BaseID + 633, new Location(BaseID + 633, "MiMa14", 0) },
     };
 
     private static readonly List<long> ScoutList = new()
@@ -1302,6 +1321,22 @@ public class Locations
         BaseID + 615,
         BaseID + 616,
         BaseID + 617, //520
+        
+        // Progressive MiMa
+        BaseID + 620,
+        BaseID + 621,
+        BaseID + 622,
+        BaseID + 623,
+        BaseID + 624, //525
+        BaseID + 625,
+        BaseID + 626,
+        BaseID + 627,
+        BaseID + 628,
+        BaseID + 629, // 530
+        BaseID + 630,
+        BaseID + 631,
+        BaseID + 632,
+        BaseID + 633, // 534
     };
     
     public static readonly long[] ScoutIDs = ScoutList.ToArray();
@@ -1957,6 +1992,25 @@ public class Locations
         { BaseID + 615, "Apple Float (8)" }, 
         { BaseID + 616, "Apple Float (9)" },
         { BaseID + 617, "Apple Float (10)" },
+    };
+    
+    public static Dictionary<long, string> ScoutProgressiveMitchMaiList = new()
+    {
+        //Coins
+        { BaseID + 620, "MiMa1" },
+        { BaseID + 621, "MiMa2" },
+        { BaseID + 622, "MiMa3" },
+        { BaseID + 623, "MiMa4" },
+        { BaseID + 624, "MiMa5" },
+        { BaseID + 625, "MiMa6" },
+        { BaseID + 626, "MiMa7" },
+        { BaseID + 627, "MiMa8" },
+        { BaseID + 628, "MiMa9" },
+        { BaseID + 629, "MiMa10" },
+        { BaseID + 630, "MiMa11" },
+        { BaseID + 631, "MiMa12" },
+        { BaseID + 632, "MiMa13" },
+        { BaseID + 633, "MiMa14" },
     };
     
     public static void AddLocation(long id, string flag, int level)

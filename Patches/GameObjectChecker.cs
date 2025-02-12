@@ -20,6 +20,8 @@ public class GameObjectChecker : MonoBehaviour
     public static bool FirstMeeting;
     private static bool _checkedGhost;
     private static bool _spawned;
+    private static bool _foundNpcs;
+    private static bool _missingFrog;
     public static GameObject APMenu;
 
     private void Start()
@@ -34,6 +36,8 @@ public class GameObjectChecker : MonoBehaviour
         _checkedGhost = false;
         _spawned = false;
         _foundCamera = false;
+        _foundNpcs = false;
+        _missingFrog = false;
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
@@ -391,6 +395,40 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
+        if (ArchipelagoData.slotData.TryGetValue("npcsanity", out var value))
+        {
+            if (int.Parse(value.ToString()) != 0)
+            {
+                var npcs = GameObject.Find("NPCs");
+                if (npcs != null && !_foundNpcs)
+                {
+                    var npccontroller = new GameObject("NpcController").AddComponent<NpcController>();
+                    npccontroller.NpcGameObject = npcs.gameObject;
+                    _foundNpcs = true;
+                }
+            }
+        }
+
+        if (ArchipelagoData.slotData.TryGetValue("cassette_logic", out var logic))
+        {
+            if (int.Parse(logic.ToString()) == 1)
+            {
+                var count = 1;
+                var list = scrGameSaveManager.instance.gameData.worldsData;
+                for (int i = 0; i < list.Count ; i++)
+                {
+                    if (list[i].coinFlags.Contains("cassetteCoin") || list[i].coinFlags.Contains("cassetteCoin2"))
+                    {
+                        if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{count}"))
+                        {
+                            scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"MiMa{count}");
+                        }
+                        count++;
+                    }
+                }
+            }
+        }
+        
         if (!ArchipelagoData.slotData.ContainsKey("garden_access")) return;
         GardenLevelFix();
         if (SceneManager.GetActiveScene().name != "Home") return;

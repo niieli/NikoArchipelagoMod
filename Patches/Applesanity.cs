@@ -129,8 +129,14 @@ public class Applesanity
         private static void Postfix(scrApple __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
+            var flag = __instance.name;
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag) || !flag.StartsWith("Apple Float"))
+            {
+                return;
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
+            var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("applessanity")) return;
             if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0) return;
@@ -142,11 +148,12 @@ public class Applesanity
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
                 if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
                     snailShopAdjustment = 16;
+            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
+                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                    cassetteAdjustment = 14;
 
-            var adjustment = gardenAdjustment + snailShopAdjustment;
+            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quad").gameObject;
-            var flag = __instance.name;
-            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag) || !flag.StartsWith("Apple Float")) return;
             Object.Destroy(ogQuads.gameObject);
             ogQuads.SetActive(false);
             
@@ -223,10 +230,10 @@ public class Applesanity
                                 "Coin" => CreateItemOverworld("coin", __instance),
                                 "Cassette" => CreateItemOverworld("cassette", __instance),
                                 "Key" => CreateItemOverworld("key", __instance),
-                                "25 Apples" => CreateItemOverworld("apples", __instance),
+                                "Apples" => CreateItemOverworld("apples", __instance),
                                 "10 Bugs" => CreateItemOverworld("bugs", __instance),
                                 "Letter" => CreateItemOverworld("letter", __instance),
-                                "1000 Snail Dollar" => CreateItemOverworld("snailMoney", __instance),
+                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
                                     CreateItemOverworld("contactList", __instance),
                                 "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
@@ -329,10 +336,10 @@ public class Applesanity
                                 "Coin" => CreateItemOverworld("coin", __instance),
                                 "Cassette" => CreateItemOverworld("cassette", __instance),
                                 "Key" => CreateItemOverworld("key", __instance),
-                                "25 Apples" => CreateItemOverworld("apples", __instance),
+                                "Apples" => CreateItemOverworld("apples", __instance),
                                 "10 Bugs" => CreateItemOverworld("bugs", __instance),
                                 "Letter" => CreateItemOverworld("letter", __instance),
-                                "1000 Snail Dollar" => CreateItemOverworld("snailMoney", __instance),
+                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
                                     CreateItemOverworld("contactList", __instance),
                                 "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
@@ -436,10 +443,10 @@ public class Applesanity
                                 "Coin" => CreateItemOverworld("coin", __instance),
                                 "Cassette" => CreateItemOverworld("cassette", __instance),
                                 "Key" => CreateItemOverworld("key", __instance),
-                                "25 Apples" => CreateItemOverworld("apples", __instance),
+                                "Apples" => CreateItemOverworld("apples", __instance),
                                 "10 Bugs" => CreateItemOverworld("bugs", __instance),
                                 "Letter" => CreateItemOverworld("letter", __instance),
-                                "1000 Snail Dollar" => CreateItemOverworld("snailMoney", __instance),
+                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
                                     CreateItemOverworld("contactList", __instance),
                                 "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
@@ -543,10 +550,10 @@ public class Applesanity
                                 "Coin" => CreateItemOverworld("coin", __instance),
                                 "Cassette" => CreateItemOverworld("cassette", __instance),
                                 "Key" => CreateItemOverworld("key", __instance),
-                                "25 Apples" => CreateItemOverworld("apples", __instance),
+                                "Apples" => CreateItemOverworld("apples", __instance),
                                 "10 Bugs" => CreateItemOverworld("bugs", __instance),
                                 "Letter" => CreateItemOverworld("letter", __instance),
-                                "1000 Snail Dollar" => CreateItemOverworld("snailMoney", __instance),
+                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
                                     CreateItemOverworld("contactList", __instance),
                                 "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
@@ -650,10 +657,10 @@ public class Applesanity
                                 "Coin" => CreateItemOverworld("coin", __instance),
                                 "Cassette" => CreateItemOverworld("cassette", __instance),
                                 "Key" => CreateItemOverworld("key", __instance),
-                                "25 Apples" => CreateItemOverworld("apples", __instance),
+                                "Apples" => CreateItemOverworld("apples", __instance),
                                 "10 Bugs" => CreateItemOverworld("bugs", __instance),
                                 "Letter" => CreateItemOverworld("letter", __instance),
-                                "1000 Snail Dollar" => CreateItemOverworld("snailMoney", __instance),
+                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
                                     CreateItemOverworld("contactList", __instance),
                                 "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
@@ -757,10 +764,10 @@ public class Applesanity
                                 "Coin" => CreateItemOverworld("coin", __instance),
                                 "Cassette" => CreateItemOverworld("cassette", __instance),
                                 "Key" => CreateItemOverworld("key", __instance),
-                                "25 Apples" => CreateItemOverworld("apples", __instance),
+                                "Apples" => CreateItemOverworld("apples", __instance),
                                 "10 Bugs" => CreateItemOverworld("bugs", __instance),
                                 "Letter" => CreateItemOverworld("letter", __instance),
-                                "1000 Snail Dollar" => CreateItemOverworld("snailMoney", __instance),
+                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
                                     CreateItemOverworld("contactList", __instance),
                                 "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),

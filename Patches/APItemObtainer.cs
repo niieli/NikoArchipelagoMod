@@ -52,6 +52,7 @@ public class APItemObtainer
             }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
+            var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
@@ -67,7 +68,10 @@ public class APItemObtainer
                     snailShopAdjustment = 16;
                 }
             }
-            var adjustment = gardenAdjustment + snailShopAdjustment;
+            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
+                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                    cassetteAdjustment = 14;
+            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
@@ -144,9 +148,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -249,9 +253,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -354,9 +358,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -460,9 +464,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -565,9 +569,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -682,9 +686,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -771,6 +775,7 @@ public class APItemObtainer
             }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
+            var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
@@ -786,7 +791,10 @@ public class APItemObtainer
                     snailShopAdjustment = 16;
                 }
             }
-            var adjustment = gardenAdjustment + snailShopAdjustment;
+            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
+                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                    cassetteAdjustment = 14;
+            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
@@ -856,9 +864,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -955,9 +963,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -1054,9 +1062,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -1153,9 +1161,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -1252,9 +1260,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -1351,9 +1359,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
@@ -1450,9 +1458,9 @@ public class APItemObtainer
                                 "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
                                 "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                                 "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
                                 "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                                 "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                                 "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
                                 "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),

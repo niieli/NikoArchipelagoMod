@@ -232,13 +232,13 @@ public class APItemSentNotification : MonoBehaviour
                                 case "Letter":
                                     _noteLetterImage.gameObject.SetActive(true);
                                     break;
-                                case "1000 Snail Dollar":
+                                case "Snail Money":
                                     _noteSnailMoneyImage.gameObject.SetActive(true);
                                     break;
                                 case "10 Bugs":
                                     _noteBugImage.gameObject.SetActive(true);
                                     break;
-                                case "25 Apples":
+                                case "Apples":
                                     _noteApplesImage.gameObject.SetActive(true);
                                     break;
                                 case "Contact List 1" or "Contact List 2" or "Progressive Contact List":
@@ -368,13 +368,13 @@ public class APItemSentNotification : MonoBehaviour
                                 case "Letter":
                                     _noteLetterImage.gameObject.SetActive(true);
                                     break;
-                                case "1000 Snail Dollar":
+                                case "Snail Money":
                                     _noteSnailMoneyImage.gameObject.SetActive(true);
                                     break;
                                 case "10 Bugs":
                                     _noteBugImage.gameObject.SetActive(true);
                                     break;
-                                case "25 Apples":
+                                case "Apples":
                                     _noteApplesImage.gameObject.SetActive(true);
                                     break;
                                 case "Contact List 1" or "Contact List 2" or "Progressive Contact List":
