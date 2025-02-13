@@ -137,22 +137,29 @@ public class Applesanity
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
+            var idkAdjustment = 0;
+            var seedAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("applessanity")) return;
             if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0) return;
             __instance.enabled = true;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
                 if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                {
                     gardenAdjustment = 13;
-
+                    idkAdjustment = 2;
+                }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
                 if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
                     snailShopAdjustment = 16;
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
                 if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
                     cassetteAdjustment = 14;
+            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
+                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 0)
+                    seedAdjustment = 30;
 
-            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
+            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment;
             var ogQuads = __instance.transform.Find("Quad").gameObject;
             Object.Destroy(ogQuads.gameObject);
             ogQuads.SetActive(false);
@@ -165,7 +172,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutHCApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 225 - adjustment;
+                    var offset = 225 - adjustment + idkAdjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -271,7 +278,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutTTApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 257 - adjustment;
+                    var offset = 257 - adjustment + idkAdjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -378,7 +385,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutSFCApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 289 - adjustment;
+                    var offset = 289 - adjustment + idkAdjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -485,7 +492,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutPPApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 375 - adjustment;
+                    var offset = 375 - adjustment + idkAdjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -592,7 +599,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutBathApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 443 - adjustment;
+                    var offset = 443 - adjustment + idkAdjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
@@ -699,7 +706,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutHQApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 510 - adjustment;
+                    var offset = 510 - adjustment + idkAdjustment;
                     if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
                     {
                         if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")

@@ -122,6 +122,7 @@ public class TrackerKiosk : MonoBehaviour
     public Image maiGardenCassetteImage;
     public Image mitchGardenDisabledImage;
     public Image maiGardenDisabledImage;
+    private static int gardenOffset;
 
     public void Start()
     {
@@ -345,34 +346,71 @@ public class TrackerKiosk : MonoBehaviour
         {
             if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
             {
-                mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
-                ? "15" : "??";
-                maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
-                    ? "20" : "??";
-                mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
-                    ? "25" : "??";
-                maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
-                    ? "30" : "??";
-                mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
-                    ? "35" : "??";
-                maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
-                    ? "40" : "??";
-                maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
-                    ? "45" : "??";
-                mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
-                    ? "50" : "??";
-                mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
-                    ? "55" : "??";
-                maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint11") 
-                    ? "60" : "??";
-                maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
-                    ? "65" : "??";
-                mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint13") 
-                    ? "70" : "??";
-                maiGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
-                    ? "10" : "??";
-                mitchGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
+                if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+                {
+                    if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                    {
+                        gardenOffset = 2;
+                    }
+                }
+                if (gardenOffset ==2)
+                {
+                    mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
                     ? "5" : "??";
+                    maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
+                        ? "10" : "??";
+                    mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
+                        ? "15" : "??";
+                    maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
+                        ? "20" : "??";
+                    mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
+                        ? "25" : "??";
+                    maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
+                        ? "30" : "??";
+                    maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
+                        ? "35" : "??";
+                    mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
+                        ? "40" : "??";
+                    mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
+                        ? "45" : "??";
+                    maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
+                        ? "50" : "??";
+                    maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
+                        ? "55" : "??";
+                    mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
+                        ? "60" : "??";
+                }
+                else
+                {
+                    mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
+                    ? "15" : "??";
+                    maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
+                        ? "20" : "??";
+                    mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
+                        ? "25" : "??";
+                    maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
+                        ? "30" : "??";
+                    mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
+                        ? "35" : "??";
+                    maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
+                        ? "40" : "??";
+                    maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
+                        ? "45" : "??";
+                    mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
+                        ? "50" : "??";
+                    mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
+                        ? "55" : "??";
+                    maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint11") 
+                        ? "60" : "??";
+                    maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
+                        ? "65" : "??";
+                    mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint13") 
+                        ? "70" : "??";
+                    maiGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
+                        ? "10" : "??";
+                    mitchGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
+                        ? "5" : "??";
+                }
             }
             else
             {
@@ -507,12 +545,13 @@ public class TrackerKiosk : MonoBehaviour
                 maiGardenShadowText.enabled = false;
                 maiGardenDisabledImage.enabled = true;
                 maiGardenCassetteImage.enabled = false;
+                gardenOffset = 2;
             }
         }
 
         if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
         {
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa3"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{3-gardenOffset}"))
             {
                 mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
                 mitchHairballText.enabled = false;
@@ -521,7 +560,7 @@ public class TrackerKiosk : MonoBehaviour
                 mitchHairballCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa4"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{4-gardenOffset}"))
             {
                 maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
                 maiHairballText.enabled = false;
@@ -530,7 +569,7 @@ public class TrackerKiosk : MonoBehaviour
                 maiHairballCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa5"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{5-gardenOffset}"))
             {
                 mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
                 mitchTurbineText.enabled = false;
@@ -539,7 +578,7 @@ public class TrackerKiosk : MonoBehaviour
                 mitchTurbineCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa6"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{6-gardenOffset}"))
             {
                 maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
                 maiTurbineText.enabled = false;
@@ -548,7 +587,7 @@ public class TrackerKiosk : MonoBehaviour
                 maiTurbineCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa7"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{7-gardenOffset}"))
             {
                 mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
                 mitchSalmonText.enabled = false;
@@ -557,7 +596,7 @@ public class TrackerKiosk : MonoBehaviour
                 mitchSalmonCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa8"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{8-gardenOffset}"))
             {
                 maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
                 maiSalmonText.enabled = false;
@@ -566,7 +605,7 @@ public class TrackerKiosk : MonoBehaviour
                 maiSalmonCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa9"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{9-gardenOffset}"))
             {
                 mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
                 mitchPoolText.enabled = false;
@@ -575,7 +614,7 @@ public class TrackerKiosk : MonoBehaviour
                 mitchPoolCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa10"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{10-gardenOffset}"))
             {
                 maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
                 maiPoolText.enabled = false;
@@ -584,7 +623,7 @@ public class TrackerKiosk : MonoBehaviour
                 maiPoolCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa11"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{11-gardenOffset}"))
             {
                 mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
                 mitchBathText.enabled = false;
@@ -593,7 +632,7 @@ public class TrackerKiosk : MonoBehaviour
                 mitchBathCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa12"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{12-gardenOffset}"))
             {
                 maiBathImage.color = new Color(1f, 1f, 1f, 1f);
                 maiBathText.enabled = false;
@@ -602,7 +641,7 @@ public class TrackerKiosk : MonoBehaviour
                 maiBathCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa13"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{13-gardenOffset}"))
             {
                 mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
                 mitchTadpoleText.enabled = false;
@@ -611,7 +650,7 @@ public class TrackerKiosk : MonoBehaviour
                 mitchTadpoleCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa14"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{14-gardenOffset}"))
             {
                 maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
                 maiTadpoleText.enabled = false;
@@ -620,7 +659,7 @@ public class TrackerKiosk : MonoBehaviour
                 maiTadpoleCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa1"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{1-gardenOffset}"))
             {
                 mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
                 mitchGardenText.enabled = false;
@@ -629,7 +668,7 @@ public class TrackerKiosk : MonoBehaviour
                 mitchGardenCassetteImage.enabled = false;
             }
 
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("MiMa2"))
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{2-gardenOffset}"))
             {
                 maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
                 maiGardenText.enabled = false;

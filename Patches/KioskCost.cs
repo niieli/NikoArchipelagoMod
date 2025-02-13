@@ -48,7 +48,10 @@ public static class KioskCost
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
                 if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                {
                     cassetteAdjustment = 14;
+                    gardenAdjustment = 0;
+                }
             var adjustment = gardenAdjustment + cassetteAdjustment;
             _kioskManager = __instance;
             var currentScene = SceneManager.GetActiveScene().name;
@@ -262,6 +265,7 @@ public static class KioskCost
             {
                 classification = "Unknown";
             }
+            //Plugin.BepinLogger.LogInfo("Location: "+ArchipelagoClient.ScoutedLocations[scoutID].LocationName);
             return classification;
         }
     }
