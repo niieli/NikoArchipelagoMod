@@ -535,6 +535,7 @@ public class ArchipelagoClient
     private static void AddFlag(string flagType, string flag, int level)
     {
         var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+        var world = scrWorldSaveDataContainer.instance;
         var genFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
         switch (flagType)
         {
@@ -542,35 +543,27 @@ public class ArchipelagoClient
                 if (!worldsData[level].coinFlags.Contains(flag))
                     worldsData[level].coinFlags.Add(flag);
                 break;
-            case "GardenCoin":
-                try
-                {
-                    if (!worldsData[7].coinFlags.Contains(flag))
-                        worldsData[7].coinFlags.Add(flag);
-                }
-                catch (Exception e)
-                {
-                    Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
-                }
-                break;
             case "Cassette":
                 if (!worldsData[level].cassetteFlags.Contains(flag))
                     worldsData[level].cassetteFlags.Add(flag);
                 break;
-            case "GardenCassette":
-                try
-                {
-                    if (!worldsData[7].cassetteFlags.Contains(flag))
-                        worldsData[7].cassetteFlags.Add(flag);
-                }
-                catch (Exception e)
-                {
-                    Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
-                }
-                break;
-            case "Key" or "SunflowerSeed" or "Flowerbed" or "Apple":
+            case "SunflowerSeed" or "Flowerbed" or "Apple":
                 if (!worldsData[level].miscFlags.Contains(flag))
                     worldsData[level].miscFlags.Add(flag);
+                break;
+            case "Key":
+                if (!worldsData[level].miscFlags.Contains(flag))
+                {
+                    worldsData[level].miscFlags.Add(flag);
+                    if (world.worldIndex == level)
+                    {
+                        world.keyAmount++;
+                    }
+                    else
+                    {
+                        worldsData[level].keyAmount++;
+                    }
+                }
                 break;
             case "Letter":
                 if (!worldsData[level].letterFlags.Contains(flag))
@@ -588,10 +581,33 @@ public class ArchipelagoClient
                 if (!worldsData[level].fishFlags.Contains(flag))
                     worldsData[level].fishFlags.Add(flag);
                 break;
+            case "GardenCoin":
+                try
+                {
+                    if (!worldsData[7].coinFlags.Contains(flag))
+                        worldsData[7].coinFlags.Add(flag);
+                }
+                catch (Exception e)
+                {
+                    Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
+                }
+                break;
+            case "GardenCassette":
+                try
+                {
+                    if (!worldsData[7].cassetteFlags.Contains(flag))
+                        worldsData[7].cassetteFlags.Add(flag);
+                }
+                catch (Exception e)
+                {
+                    Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
+                }
+                break;
             default:
                 Plugin.BepinLogger.LogError($"Unknown flag type: {flagType}");
                 break;
         }
+        scrWorldSaveDataContainer.instance.SaveWorld();
     }
 
     public static int GetAppleIndex()
