@@ -278,11 +278,12 @@ namespace NikoArchipelago
             {
                 _noteDisplayer = scrNotificationDisplayer.instance;
                 //Savefile is the same as SlotName & ServerPort, ':' is not allowed to be in a filename
-                saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", ".");
+                //saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", ".");
+                saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName;
                 if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
                 {
                     scrGameSaveManager.saveName = saveName;
-                    var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + ".json");
+                    var savePath = Path.Combine(ArchipelagoFolderPath, saveName + "_" + Seed + "_" + ArchipelagoClient._session.Players.ActivePlayer.Slot + ".json");
 
                     // Check if the save file exists
                     if (File.Exists(savePath))

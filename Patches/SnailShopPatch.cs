@@ -32,6 +32,12 @@ public class SnailShopPatch
             bool shopIsOpen = (bool)shopIsOpenField.GetValue(__instance);
             var clothingForSaleField = AccessTools.Field(typeof(scrSnail), "clothingForSale");
             int clothingForSale = (int)clothingForSaleField.GetValue(__instance);
+            //TODO: Toggle
+            scrGameSaveManager.instance.gameData.generalGameData.snailFood = true;
+            __instance.imgFood.sprite = __instance.sprFoodFull;
+            scrGameSaveManager.instance.gameData.generalGameData.snailPoopCount = 0;
+            scrGameSaveManager.instance.gameData.generalGameData.snailHappyPoints = 99;
+            __instance.sleepTimer = 0;
             if (__instance.mood == scrSnail.Moods.happy)
             {
                 List<int> validClothingNumbers = null;
