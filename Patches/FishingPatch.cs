@@ -50,6 +50,12 @@ public class FishingPatch
             var textbox = Traverse.Create(__instance).Field("textbox").GetValue<scrTextbox>();
             var gotCoin = Traverse.Create(__instance).Field("gotCoin").GetValue<bool>();
             bool allFishCollected = CheckAllFish(level);
+            if (scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count
+                && scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
+            {
+                __instance.gotCoin = true;
+                return true;
+            }
             if (scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf && !textbox.isOn)
             {
                 if (!allFishCollected)
@@ -61,7 +67,8 @@ public class FishingPatch
                     return false;
                 }
             }
-            else if (!allFishCollected && scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf && textbox.isOn && textbox.characterName == "Fischer")
+            else if (!allFishCollected && scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf
+                     && textbox.isOn && textbox.characterName == "Fischer" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
             {
                 textbox.camIndex = 2;
                 textbox.textMesh.text = $"You need all 5 Fish of {_currentLevelName} to obtain my reward!\nYou have {_currentFishCount}/5 for this level!";
@@ -69,6 +76,11 @@ public class FishingPatch
                 if (GameInput.GetButtonDown("Action"))
                     textbox.EndConversation();
                 return false;
+            } 
+            if (scrWorldSaveDataContainer.instance.fishFlags.Count < __instance.fishLocations.Count && scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
+            {
+                __instance.gotCoin = false;
+                return true;
             }
             return true;
         }

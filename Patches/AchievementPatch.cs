@@ -69,7 +69,7 @@ public class AchievementPatch
         private static void CheckEmployeeOfTheMonthAchievement(scrAchievementManager instance)
         {
             string flag = "EMLOYEE_OF_THE_MONTH";
-            if (scrGameSaveManager.instance.gameData.generalGameData.coinAmountTotal < 76) return;
+            if (Plugin.ArchipelagoClient.CoinAmount < 76) return;
             if (CheckForSavedAchievent(flag)) return;
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
