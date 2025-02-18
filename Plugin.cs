@@ -676,7 +676,7 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 260, 140, 20), "Item Index"))
             {
-                ArchipelagoClient.AppleIndex();
+                ArchipelagoClient.GetItemIndex();
             }
             if (GUI.Button(new Rect(16, 280, 140, 20), "Collect State"))
             {
