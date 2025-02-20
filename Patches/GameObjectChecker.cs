@@ -38,6 +38,7 @@ public class GameObjectChecker : MonoBehaviour
         _foundCamera = false;
         _foundNpcs = false;
         _missingFrog = false;
+        //LocationCheck();
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
@@ -50,6 +51,7 @@ public class GameObjectChecker : MonoBehaviour
         HqGarden();
         SpawnGaryHome();
         AssignDisplayers();
+        APArrowTracker();
         //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
         {
@@ -65,6 +67,26 @@ public class GameObjectChecker : MonoBehaviour
     public static void CheckGameObject(GameObject gameObject)
     {
         //???
+    }
+
+    private static void LocationCheck()
+    {
+        int count = 0;
+        GameObject[] allObjects = FindObjectsOfType<GameObject>() ;
+        foreach (var go in allObjects)
+        {
+            if (go.tag != "Apple"
+                && (go.transform.parent == null // Verhindert NullReferenceException
+                    || (go.transform.parent.gameObject.name != "Quests"
+                        && go.transform.parent.gameObject.name != "Cassettes"
+                        && go.transform.parent.gameObject.name != "Collectables"
+                        && go.transform.parent.gameObject.name != "NPCs"))) continue;
+            Plugin.BepinLogger.LogFatal($"{count} | Object Name: {go.name} | " 
+                                        + $"Object Position: {go.transform.position} | "
+                                        //+ $"Object Type: {go.GetType()} | " 
+                                        + $"Object InstanceID: {go.GetInstanceID()} |");
+            count++;
+        }
     }
     
     private static void MitchAndMaiObject()
@@ -283,6 +305,37 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
         tracker.enabled = true;
+    }
+
+    private static void APArrowTracker()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var apArrow = Plugin.AssetBundle.LoadAsset<GameObject>("Arrow");
+        var arrowUI = Plugin.AssetBundle.LoadAsset<GameObject>("ArrowUI");
+        var player = GameObject.Find("PlayerCharacter");
+        var arrowPrefab = Instantiate(apArrow, player.transform.Find("CharacterController"), false);
+        var arrowUIPrefab = Instantiate(arrowUI, GameObject.Find("UI").transform, false);
+        if (arrowPrefab == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to instantiate apTrackerUI prefab.");
+            return;
+        }
+        arrowPrefab.transform.position = new Vector3(arrowPrefab.transform.position.x, arrowPrefab.transform.position.y+1.5f, arrowPrefab.transform.position.z);
+        arrowUIPrefab.layer = LayerMask.NameToLayer("UI");
+        // var arrow = player.transform.Find("CharacterController").gameObject.AddComponent<ArrowIndicator>();
+        // arrow.player = player.transform.Find("CharacterController");
+        // arrow.arrowObject = arrowPrefab.transform;
+        // arrow.distanceText = arrowUIPrefab.transform.Find("Distance").GetComponent<TextMeshProUGUI>();
+        // arrow.distanceTextShadow = arrowUIPrefab.transform.Find("DistanceShadow").GetComponent<TextMeshProUGUI>();
+        // arrow.target = GameObject.Find("Pre Party/FetchQuest/NPCs Reward/NPCReward").transform;
+        // arrow.enabled = true;
+        // Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator = arrow;
+        Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.player = player.transform.Find("CharacterController");
+        Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.arrowObject = arrowPrefab.transform;
+        Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.distanceText = arrowUIPrefab.transform.Find("Distance").GetComponent<TextMeshProUGUI>();
+        Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.distanceTextShadow = arrowUIPrefab.transform.Find("DistanceShadow").GetComponent<TextMeshProUGUI>();
+        Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().iconImage = arrowUIPrefab.transform.Find("Icon").GetComponent<Image>();
+        
     }
 
     private static void HqWhiteboard()

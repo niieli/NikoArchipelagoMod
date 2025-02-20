@@ -1,5 +1,4 @@
-﻿using System;
-using Archipelago.MultiClient.Net.Enums;
+﻿using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using TMPro;
 using UnityEngine;
@@ -193,9 +192,12 @@ public class APItemSentNotification : MonoBehaviour
         _noteYarn4Image.gameObject.SetActive(false);
         _noteYarn5Image.gameObject.SetActive(false);
         _noteImage.gameObject.SetActive(false);
-        _noteText.fontSize = 26;
-        _noteText.enableAutoSizing = true;
-        _noteText.text = "";
+        if (_noteText != null)
+        {
+            _noteText.text = "";
+            _noteText.fontSize = 26;
+            _noteText.enableAutoSizing = true;
+        }
         noteShadowBoxImage.color = DefaultShadowNoteColor;
     }
 

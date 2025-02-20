@@ -75,7 +75,7 @@ namespace NikoArchipelago
             ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite,
             TimePieceSprite, YarnSprite, Yarn2Sprite, Yarn3Sprite, Yarn4Sprite, Yarn5Sprite;
 
-        public static GameObject ApUIGameObject;
+        public static GameObject ApUIGameObject, ArrowTrackerGameObject;
         public static Texture2D CassetteTexture;
         public static Image APLogoImage; 
         public static Dictionary<string, object> SlotData;
@@ -219,6 +219,9 @@ namespace NikoArchipelago
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
             gameObjectChecker.AddComponent<GameObjectChecker>();
+            ArrowTrackerGameObject = new GameObject("APArrowTracker");
+            ArrowTrackerGameObject.AddComponent<ArrowTrackerManager>();
+            DontDestroyOnLoad(ArrowTrackerGameObject);
             DontDestroyOnLoad(gameObjectChecker);
             harmony = new Harmony(PluginGuid);
             harmony.PatchAll();
@@ -336,6 +339,11 @@ namespace NikoArchipelago
                         _onlyOnce = true;
                     }
                     
+                }
+
+                if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 0)
+                {
+                    scrTrainManager.instance.UseTrain(1, false);
                 }
 
                 if (!loggedIn && ArchipelagoClient.Authenticated && SaveEstablished)

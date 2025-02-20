@@ -158,7 +158,7 @@ public class ArchipelagoClient
         }
     }
 
-    private static void OnMessageReceived(LogMessage message)
+    private void OnMessageReceived(LogMessage message)
     {
         ArchipelagoConsole.LogMessage(message.ToString());
         APItemSentNotification.SentItem(message);
@@ -186,7 +186,7 @@ public class ArchipelagoClient
         // Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
         //_session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (helper.Index <= ServerData.Index) return;
-
+        
         ServerData.Index++;
         if (IsValidScene() && Plugin.loggedIn)
         {
@@ -271,11 +271,7 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000+16:
                     SnailMoney = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Snail Money");
-                    var diffMoney = SnailMoney- GetMoneyIndex();
-                    for (int i = 0; i < diffMoney; i++)
-                    {
-                        ItemHandler.AddMoney(7500, senderName, notify);
-                    }
+                    ItemHandler.AddMoney(7500, senderName, notify);
                     break;
                 case 598_145_444_000+15:
                     var real = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Progressive Contact List");
@@ -610,62 +606,39 @@ public class ArchipelagoClient
         scrWorldSaveDataContainer.instance.SaveWorld();
     }
 
-    public static int GetAppleIndex()
+    public static void SaveitemIndex(int ItemIndex)
     {
-        List<int> itemIndexes = scrGameSaveManager.instance.gameData.generalGameData.generalFlags
-            .Where(flag => flag.StartsWith("AppleIndex."))
-            .Select(flag =>
-            {
-                string indexStr = flag.Split('.')[1];
-                return int.TryParse(indexStr, out int index) ? index : -1;
-            })
-            .Where(index => index != -1)
-            .ToList();
+        // Loggen Sie den gespeicherten Index
+        Plugin.BepinLogger.LogInfo($"Saving ItemIndex: {ItemIndex}");
 
-        foreach (var index in itemIndexes)
-        {
-            Plugin.BepinLogger.LogInfo($"Found Apple Item Index: {index}");
-            return index;
-        }
-        return itemIndexes.Count;
-    }
-
-    public static void AppleIndex()
-    {
-        var index = Apples;
-        Plugin.BepinLogger.LogInfo($"Apple Item Index: {index}");
+        // Alte AppleIndex-Einträge entfernen
         scrGameSaveManager.instance.gameData.generalGameData.generalFlags.RemoveAll(flag =>
-            flag.StartsWith("AppleIndex."));
-        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"AppleIndex.{index}");
-    }
-    
-    public static int GetMoneyIndex()
-    {
-        List<int> itemIndexes = scrGameSaveManager.instance.gameData.generalGameData.generalFlags
-            .Where(flag => flag.StartsWith("MoneyIndex."))
-            .Select(flag =>
-            {
-                string indexStr = flag.Split('.')[1];
-                return int.TryParse(indexStr, out int index) ? index : -1;
-            })
-            .Where(index => index != -1)
-            .ToList();
+            flag.StartsWith("ItemIndex."));
 
-        foreach (var index in itemIndexes)
+        // Neuen Index hinzufügen
+        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"ItemIndex.{ItemIndex}");
+
+        // Speicherstatus markieren
+        scrGameSaveManager.IsDirty = true;
+    }
+
+    public static int GetItemIndex()
+    {
+        // Suchen nach AppleIndex im generalFlags
+        var itemFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags
+            .FirstOrDefault(flag => flag.StartsWith("ItemIndex."));
+
+        if (!string.IsNullOrEmpty(itemFlag))
         {
-            Plugin.BepinLogger.LogInfo($"Found Money Item Index: {index}");
-            return index;
+            // Die gespeicherte Zahl extrahieren
+            if (int.TryParse(itemFlag.Split('.')[1], out var index))
+            {
+                return index;
+            }
         }
-        return itemIndexes.Count;
-    }
 
-    public static void MoneyIndex()
-    {
-        var index = SnailMoney;
-        Plugin.BepinLogger.LogInfo($"Money Item Index: {index}");
-        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.RemoveAll(flag =>
-            flag.StartsWith("MoneyIndex."));
-        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"MoneyIndex.{index}");
+        // Wenn kein Index vorhanden ist, geben Sie 0 zurück
+        return 0;
     }
 
     public static int TicketCount()

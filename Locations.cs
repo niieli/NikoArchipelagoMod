@@ -2,21 +2,16 @@
 using System.Linq;
 using HarmonyLib;
 using NikoArchipelago.Archipelago;
+using UnityEngine;
 
 namespace NikoArchipelago;
 
-public class Location
+public class Location(long id, string flag, int level, Vector3 position = default)
 {
-    public long ID { get; set; }
-    public string Flag { get; set; }
-    public int Level { get; set; }
-
-    public Location(long id, string flag, int level)
-    {
-        ID = id;
-        Flag = flag;
-        Level = level;
-    }
+    public long ID { get; set; } = id;
+    public string Flag { get; set; } = flag;
+    public int Level { get; set; } = level;
+    public Vector3 Position { get; set; } = position;
 }
 
 public class Locations
@@ -26,23 +21,23 @@ public class Locations
     public static Dictionary<long, Location> CoinLocations = new()
     {
     // Home
-    { BaseID + 0, new Location(BaseID + 0, "Fetch", 0) },
+    { BaseID + 0, new Location(BaseID + 0, "Fetch", 0, new Vector3()) },
 
     // Hairball City
-    { BaseID + 3, new Location(BaseID + 3, "volley", 1) },
-    { BaseID + 4, new Location(BaseID + 4, "Dustan", 1) },
+    { BaseID + 3, new Location(BaseID + 3, "volley", 1, new Vector3(6.96f, 1.79f, -49.37f) ) },
+    { BaseID + 4, new Location(BaseID + 4, "Dustan", 1, new Vector3(-91.10f, 26.73f, 81.77f) ) },
     { BaseID + 5, new Location(BaseID + 5, "flowerPuzzle", 1) },
-    { BaseID + 6, new Location(BaseID + 6, "main", 1) },
-    { BaseID + 7, new Location(BaseID + 7, "fishing", 1) },
-    { BaseID + 8, new Location(BaseID + 8, "bug", 1) },
+    { BaseID + 6, new Location(BaseID + 6, "main", 1, new Vector3(434.37f, -300.08f, 932.11f) ) },
+    { BaseID + 7, new Location(BaseID + 7, "fishing", 1, new Vector3(-60.46f, 9.41f, 20.38f) ) },
+    { BaseID + 8, new Location(BaseID + 8, "bug", 1, new Vector3(16.62f, 12.15f, 16.73f) ) },
     { BaseID + 9, new Location(BaseID + 9, "graffiti", 1) },
-    { BaseID + 10, new Location(BaseID + 10, "hamsterball", 1) },
+    { BaseID + 10, new Location(BaseID + 10, "hamsterball", 1, new Vector3(35.97f, 8.36f, -8.58f) ) },
     { BaseID + 11, new Location(BaseID + 11, "cassetteCoin", 1) },
     { BaseID + 12, new Location(BaseID + 12, "cassetteCoin2", 1) },
     { BaseID + 13, new Location(BaseID + 13, "gamerQuest", 1) },
-    { BaseID + 14, new Location(BaseID + 14, "arcadeBone", 1) },
-    { BaseID + 15, new Location(BaseID + 15, "arcade", 1) },
-    { BaseID + 16, new Location(BaseID + 16, "carrynojump", 1) },
+    { BaseID + 14, new Location(BaseID + 14, "arcadeBone", 1, new Vector3(-33.98f, 5996.29f, 36.73f) ) },
+    { BaseID + 15, new Location(BaseID + 15, "arcade", 1, new Vector3(-14.36f, 5991.58f, 23.84f) ) }, //TODO: Check if this is the correct position otherwise swap
+    { BaseID + 16, new Location(BaseID + 16, "carrynojump", 1, new Vector3(3.85f, -15.14f, 280.63f) ) },
 
     // Turbine Town
     { BaseID + 17, new Location(BaseID + 17, "fishing", 2) },
@@ -406,38 +401,38 @@ public class Locations
     public static Dictionary<long, Location> ApplesanityLocations = new()
     {
         //Applesanity
-        { BaseID + 322, new Location(BaseID + 322, "Apple Float", 1) },
-        { BaseID + 323, new Location(BaseID + 323, "Apple Float (1)", 1) },
-        { BaseID + 324, new Location(BaseID + 324, "Apple Float (2)", 1) },
-        { BaseID + 325, new Location(BaseID + 325, "Apple Float (3)", 1) },
-        { BaseID + 326, new Location(BaseID + 326, "Apple Float (4)", 1) }, 
-        { BaseID + 327, new Location(BaseID + 327, "Apple Float (5)", 1) },
-        { BaseID + 328, new Location(BaseID + 328, "Apple Float (6)", 1) }, 
-        { BaseID + 329, new Location(BaseID + 329, "Apple Float (7)", 1) },
-        { BaseID + 330, new Location(BaseID + 330, "Apple Float (8)", 1) }, 
-        { BaseID + 331, new Location(BaseID + 331, "Apple Float (9)", 1) },
-        { BaseID + 332, new Location(BaseID + 332, "Apple Float (10)", 1) }, 
-        { BaseID + 333, new Location(BaseID + 333, "Apple Float (11)", 1) },
-        { BaseID + 334, new Location(BaseID + 334, "Apple Float (12)", 1) }, 
-        { BaseID + 335, new Location(BaseID + 335, "Apple Float (13)", 1) },
-        { BaseID + 336, new Location(BaseID + 336, "Apple Float (14)", 1) }, 
-        { BaseID + 337, new Location(BaseID + 337, "Apple Float (15)", 1) },
-        { BaseID + 338, new Location(BaseID + 338, "Apple Float (16)", 1) }, 
-        { BaseID + 339, new Location(BaseID + 339, "Apple Float (17)", 1) },
-        { BaseID + 340, new Location(BaseID + 340, "Apple Float (18)", 1) }, 
-        { BaseID + 341, new Location(BaseID + 341, "Apple Float (19)", 1) },
-        { BaseID + 342, new Location(BaseID + 342, "Apple Float (20)", 1) }, 
-        { BaseID + 343, new Location(BaseID + 343, "Apple Float (21)", 1) },
-        { BaseID + 344, new Location(BaseID + 344, "Apple Float (22)", 1) }, 
-        { BaseID + 345, new Location(BaseID + 345, "Apple Float (23)", 1) },
-        { BaseID + 346, new Location(BaseID + 346, "Apple Float (24)", 1) }, 
-        { BaseID + 347, new Location(BaseID + 347, "Apple Float (25)", 1) },
-        { BaseID + 348, new Location(BaseID + 348, "Apple Float (26)", 1) }, 
-        { BaseID + 349, new Location(BaseID + 349, "Apple Float (27)", 1) },
-        { BaseID + 350, new Location(BaseID + 350, "Apple Float (28)", 1) }, 
-        { BaseID + 351, new Location(BaseID + 351, "Apple Float (29)", 1) },
-        { BaseID + 352, new Location(BaseID + 352, "Apple Float (30)", 1) }, 
-        { BaseID + 353, new Location(BaseID + 353, "Apple Float (31)", 1) },
+        { BaseID + 322, new Location(BaseID + 322, "Apple Float", 1, new Vector3(105.46f, 0.90f, -67.24f) ) },
+        { BaseID + 323, new Location(BaseID + 323, "Apple Float (1)", 1, new Vector3(104.65f, 0.62f, -65.92f) ) },
+        { BaseID + 324, new Location(BaseID + 324, "Apple Float (2)", 1, new Vector3(103.83f, 0.44f, -64.70f) ) },
+        { BaseID + 325, new Location(BaseID + 325, "Apple Float (3)", 1, new Vector3(102.98f, 0.31f, -63.24f) ) },
+        { BaseID + 326, new Location(BaseID + 326, "Apple Float (4)", 1, new Vector3(102.08f, 0.04f, -61.84f) ) }, 
+        { BaseID + 327, new Location(BaseID + 327, "Apple Float (5)", 1, new Vector3(47.63f, 8.87f, 10.65f) ) },
+        { BaseID + 328, new Location(BaseID + 328, "Apple Float (6)", 1, new Vector3(46.87f, 8.87f, 10.05f) ) }, 
+        { BaseID + 329, new Location(BaseID + 329, "Apple Float (7)", 1, new Vector3(46.80f, 8.87f, 10.95f) ) },
+        { BaseID + 330, new Location(BaseID + 330, "Apple Float (8)", 1, new Vector3(43.49f, 8.87f, 5.66f) ) }, 
+        { BaseID + 331, new Location(BaseID + 331, "Apple Float (9)", 1, new Vector3(42.66f, 8.87f, 5.96f) ) },
+        { BaseID + 332, new Location(BaseID + 332, "Apple Float (10)", 1, new Vector3(42.73f, 8.87f, 5.06f) ) }, 
+        { BaseID + 333, new Location(BaseID + 333, "Apple Float (11)", 1, new Vector3(48.24f, 8.87f, 0.69f) ) },
+        { BaseID + 334, new Location(BaseID + 334, "Apple Float (12)", 1, new Vector3(47.41f, 8.87f, 0.99f) ) }, 
+        { BaseID + 335, new Location(BaseID + 335, "Apple Float (13)", 1, new Vector3(47.48f, 8.87f, 0.09f) ) },
+        { BaseID + 336, new Location(BaseID + 336, "Apple Float (14)", 1, new Vector3(49.57f, 7.47f, 22.94f) ) }, 
+        { BaseID + 337, new Location(BaseID + 337, "Apple Float (15)", 1, new Vector3(47.35f, 4.82f, 30.87f) ) },
+        { BaseID + 338, new Location(BaseID + 338, "Apple Float (16)", 1, new Vector3(33.03f, 4.61f, 38.67f) ) }, 
+        { BaseID + 339, new Location(BaseID + 339, "Apple Float (17)", 1, new Vector3(30.71f, 4.61f, 41.12f) ) },
+        { BaseID + 340, new Location(BaseID + 340, "Apple Float (18)", 1, new Vector3(28.23f, 4.61f, 43.61f) ) }, 
+        { BaseID + 341, new Location(BaseID + 341, "Apple Float (19)", 1, new Vector3(25.81f, 4.61f, 46.07f) ) },
+        { BaseID + 342, new Location(BaseID + 342, "Apple Float (20)", 1, new Vector3(9.34f, 4.95f, 54.90f) ) }, 
+        { BaseID + 343, new Location(BaseID + 343, "Apple Float (21)", 1, new Vector3(5.92f, 4.95f, 54.90f) ) },
+        { BaseID + 344, new Location(BaseID + 344, "Apple Float (22)", 1, new Vector3(2.39f, 4.95f, 54.90f) ) }, 
+        { BaseID + 345, new Location(BaseID + 345, "Apple Float (23)", 1, new Vector3(60.48f, 1.62f, 62.66f) ) },
+        { BaseID + 346, new Location(BaseID + 346, "Apple Float (24)", 1, new Vector3(60.22f, 1.62f, 63.67f) ) }, 
+        { BaseID + 347, new Location(BaseID + 347, "Apple Float (25)", 1, new Vector3(59.51f, 1.62f, 63.08f) ) },
+        { BaseID + 348, new Location(BaseID + 348, "Apple Float (26)", 1, new Vector3(48.16f, 3.53f, 59.47f) ) }, 
+        { BaseID + 349, new Location(BaseID + 349, "Apple Float (27)", 1, new Vector3(49.09f, 3.53f, 59.72f) ) },
+        { BaseID + 350, new Location(BaseID + 350, "Apple Float (28)", 1, new Vector3(48.46f, 3.53f, 60.47f) ) }, 
+        { BaseID + 351, new Location(BaseID + 351, "Apple Float (29)", 1, new Vector3(15.07f, 9.18f, 45.11f) ) },
+        { BaseID + 352, new Location(BaseID + 352, "Apple Float (30)", 1, new Vector3(17.41f, 9.18f, 45.85f) ) }, 
+        { BaseID + 353, new Location(BaseID + 353, "Apple Float (31)", 1, new Vector3(15.72f, 9.18f, 47.63f) ) },
         
         { BaseID + 354, new Location(BaseID + 354, "Apple Float", 2) },
         { BaseID + 355, new Location(BaseID + 355, "Apple Float (1)", 2) },
@@ -2022,5 +2017,17 @@ public class Locations
     {
         return CoinLocations.ContainsKey(id) ? CoinLocations[id] : null;
     }
+    
+    public static IEnumerable<Location> GetTrackableLocations(scrWorldSaveDataContainer saveData)
+    {
+        var allFlags = saveData.coinFlags
+            .Concat(saveData.cassetteFlags)
+            .Concat(saveData.miscFlags)
+            .Concat(saveData.letterFlags);
+        return CoinLocations.Values
+            .Where(loc => !allFlags.Contains(loc.Flag) 
+                          && loc.Level == scrGameSaveManager.instance.gameData.generalGameData.currentLevel);
+    }
+
 }
 
