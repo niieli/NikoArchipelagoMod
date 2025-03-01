@@ -51,7 +51,7 @@ public class GameObjectChecker : MonoBehaviour
         HqGarden();
         SpawnGaryHome();
         AssignDisplayers();
-        APArrowTracker();
+        //APArrowTracker();
         //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
         {
@@ -448,19 +448,19 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
-        if (ArchipelagoData.slotData.TryGetValue("npcsanity", out var value))
-        {
-            if (int.Parse(value.ToString()) != 0)
-            {
-                var npcs = GameObject.Find("NPCs");
-                if (npcs != null && !_foundNpcs)
-                {
-                    var npccontroller = new GameObject("NpcController").AddComponent<NpcController>();
-                    npccontroller.NpcGameObject = npcs.gameObject;
-                    _foundNpcs = true;
-                }
-            }
-        }
+        // if (ArchipelagoData.slotData.TryGetValue("npcsanity", out var value))
+        // {
+        //     if (int.Parse(value.ToString()) != 0)
+        //     {
+        //         var npcs = GameObject.Find("NPCs");
+        //         if (npcs != null && !_foundNpcs)
+        //         {
+        //             var npccontroller = new GameObject("NpcController").AddComponent<NpcController>();
+        //             npccontroller.NpcGameObject = npcs.gameObject;
+        //             _foundNpcs = true;
+        //         }
+        //     }
+        // }
 
         if (ArchipelagoData.slotData.TryGetValue("cassette_logic", out var logic))
         {

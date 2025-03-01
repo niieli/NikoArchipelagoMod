@@ -365,30 +365,30 @@ public class ArchipelagoClient
                     ItemHandler.AddHqFlower(senderName, notify);
                     HqFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Flower");
                     break;
-                case 598_145_444_000+46: // HC NPCs
-                    ItemHandler.AddHcNPCs(senderName, notify);
-                    HcNPCs = true;
-                    break;
-                case 598_145_444_000+47: // TT NPCs
-                    ItemHandler.AddTtNPCs(senderName, notify);
-                    TtNPCs = true;
-                    break;
-                case 598_145_444_000+48: // SFC NPCs
-                    ItemHandler.AddSfcNPCs(senderName, notify);
-                    SfcNPCs = true;
-                    break;
-                case 598_145_444_000+49: // PP NPCs
-                    ItemHandler.AddPpNPCs(senderName, notify);
-                    PpNPCs = true;
-                    break;
-                case 598_145_444_000+50: // Bath NPCs
-                    ItemHandler.AddBathNPCs(senderName, notify);
-                    BathNPCs = true;
-                    break;
-                case 598_145_444_000+51: // HQ NPCs
-                    ItemHandler.AddHqNPCs(senderName, notify);
-                    HqNPCs = true;
-                    break;
+                // case 598_145_444_000+46: // HC NPCs
+                //     ItemHandler.AddHcNPCs(senderName, notify);
+                //     HcNPCs = true;
+                //     break;
+                // case 598_145_444_000+47: // TT NPCs
+                //     ItemHandler.AddTtNPCs(senderName, notify);
+                //     TtNPCs = true;
+                //     break;
+                // case 598_145_444_000+48: // SFC NPCs
+                //     ItemHandler.AddSfcNPCs(senderName, notify);
+                //     SfcNPCs = true;
+                //     break;
+                // case 598_145_444_000+49: // PP NPCs
+                //     ItemHandler.AddPpNPCs(senderName, notify);
+                //     PpNPCs = true;
+                //     break;
+                // case 598_145_444_000+50: // Bath NPCs
+                //     ItemHandler.AddBathNPCs(senderName, notify);
+                //     BathNPCs = true;
+                //     break;
+                // case 598_145_444_000+51: // HQ NPCs
+                //     ItemHandler.AddHqNPCs(senderName, notify);
+                //     HqNPCs = true;
+                //     break;
             }
     }
 

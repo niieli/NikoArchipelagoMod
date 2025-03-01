@@ -24,6 +24,7 @@ public class MoomyPatch
     {
         private static int _currentSeedCount;
         private static string _currentLevelName;
+        private static bool _answerFix;
 
         [HarmonyPrefix]
         private static bool Prefix(scrHamsterballMaster __instance)
@@ -48,13 +49,20 @@ public class MoomyPatch
                     return false;
                 }
             }
-            else if (!allSeedsCollected && __instance.sunflowerSeedsParent.transform.childCount == 0 && textbox.isOn 
-                     && textbox.nameMesh.text == "Moomy" && !questComplete)
+            else if (!allSeedsCollected && __instance.sunflowerSeedsParent.transform.childCount == 0 && !questComplete)
             {
-                textbox.textMesh.text = $"You need all 10 seeds of {_currentLevelName} to obtain my reward!\nYou have {_currentSeedCount}/10 for this level!";
-                textbox.textMesh.maxVisibleCharacters = 99;
-                if (GameInput.GetButtonDown("Action"))
-                    textbox.EndConversation();
+                if (textbox.isOn && textbox.conversation == "MoomyQuest")
+                {
+                    if (!_answerFix)
+                    {
+                        textbox.conversationLocalized[0] = $"You need all 10 seeds of {_currentLevelName} to obtain a reward!\nYou have {_currentSeedCount}/10 for this level! ##end;";
+                        _answerFix = true;
+                    }
+                }
+                else
+                {
+                    _answerFix = false;
+                }
                 return false;
             } else if (!allSeedsCollected && __instance.sunflowerSeedsParent.transform.childCount == 0 && __instance.NPCReward.activeSelf && !__instance.nikoInBall.activeSelf)
             {

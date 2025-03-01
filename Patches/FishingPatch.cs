@@ -68,7 +68,7 @@ public class FishingPatch
                 }
             }
             else if (!allFishCollected && scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf
-                     && textbox.isOn && textbox.characterName == "Fischer" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
+                     && textbox.isOn && textbox.characterName is "Fischer" or "フィッシャー" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
             {
                 textbox.camIndex = 2;
                 textbox.textMesh.text = $"You need all 5 Fish of {_currentLevelName} to obtain my reward!\nYou have {_currentFishCount}/5 for this level!";

@@ -13,6 +13,7 @@ public class CassetteCost
     static bool _gaveCoin2 = false;
     static bool _changed = false;
     static int _maiPrice = 0;
+    private static bool _answerFix;
     public static scrCassetteBuyer MitchGameObject;
     public static scrCassetteBuyer MaiGameObject;
     private static scrTextbox _textbox;
@@ -29,6 +30,8 @@ public class CassetteCost
             {
                 _textbox = scrTextbox.instance;
             }
+            var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
+            int _currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
             if (scrGameSaveManager.instance != null)
             {
                 _gameSaveManager = scrGameSaveManager.instance;
@@ -90,7 +93,7 @@ public class CassetteCost
                         _maiIndex = _mitchIndex - 1;
                         break;
                 }
-                if (_textbox.isOn && _textbox.nameMesh.text == "Mitch" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
+                if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
                     if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                     {
@@ -99,12 +102,12 @@ public class CassetteCost
                     }
                     if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
                     {
-                        if (_textbox.textMesh.text.Contains("Wanna trade"))
+                        if (_currentBox == 1)
                         {
-                            _textbox.textMesh.text = 
-                                $"It will Cost " + __instance.price + 
-                                $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
-                                $"\nIt seems {ItemClassification(_mitchIndex)}...";
+                            _textbox.conversationLocalized[1] = 
+                                $"It will cost " + __instance.price + 
+                                $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
+                                $"\nIt seems {ItemClassification(_mitchIndex)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
                         }
                     }
                     else
@@ -112,12 +115,12 @@ public class CassetteCost
                         _textbox.canWaklaway = true;
                         _textbox.textMesh.text = 
                             $"Come back when you have " + __instance.price + 
-                            $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
+                            $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
                             $"\nIt seems {ItemClassification(_mitchIndex)}...";
                     }
                 }
 
-                if (_textbox.isOn && _textbox.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
+                if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                 {
                     if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex) && ArchipelagoMenu.Hints)
                     {
@@ -126,12 +129,12 @@ public class CassetteCost
                     }
                     if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
                     {
-                        if (_textbox.textMesh.text.Contains("Wanna trade"))
+                        if (_currentBox == 1)
                         {
-                            _textbox.textMesh.text = 
-                                "It will Cost " + __instance.price + 
-                                $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'." +
-                                $"\nIt seems {ItemClassification(_maiIndex)}...";
+                            _textbox.conversationLocalized[1] = 
+                                "It will cost " + __instance.price + 
+                                $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'." +
+                                $"\nIt seems {ItemClassification(_maiIndex)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
                         }
                     }
                     else
@@ -139,7 +142,7 @@ public class CassetteCost
                         _textbox.canWaklaway = true;
                         _textbox.textMesh.text = 
                             "Come back when you have " + __instance.price + 
-                            $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}." +
+                            $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}." +
                             $"\nIt seems {ItemClassification(_maiIndex)}...";
                     }
                 }
@@ -203,7 +206,7 @@ public class CassetteCost
                     MitchGameObject.parentNotBought.SetActive(true);
                     MitchGameObject.parentCantBuy.SetActive(false);
                     MitchGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mitch" &&
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ" &&
                         !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
@@ -211,12 +214,22 @@ public class CassetteCost
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[scoutId+adjustment]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
                         }
-                        if (_textbox.textMesh.text.Contains("Wanna trade"))
-                            _textbox.textMesh.text =
-                                $"It will Cost " + __instance.price +
-                                $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName}' for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}." +
-                                $"\nIt seems {ItemClassification(scoutId-offset)}...";
-                        if (_textbox.textMesh.text.Contains("Alright, you got it")) MitchGameObject.buyCassette();
+                        if (_currentBox == 0)
+                        {
+                            _answerFix = false;
+                        }
+                        if (_currentBox == 1 && !_answerFix)
+                        {
+                            _textbox.conversationLocalized[1] =
+                                $"It will cost " + __instance.price +
+                                $" cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName}' for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}." +
+                                $"\nIt seems {ItemClassification(scoutId-offset)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
+                            _answerFix = true;
+                        }
+                        if (_currentBox == 3)
+                        {
+                            MitchGameObject.buyCassette();
+                        }
                     }
                     else if (scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
@@ -230,7 +243,7 @@ public class CassetteCost
                     MitchGameObject.parentNotBought.SetActive(false);
                     MitchGameObject.parentCantBuy.SetActive(true);
                     MitchGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mitch")
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ")
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                         {
@@ -240,7 +253,7 @@ public class CassetteCost
                         _textbox.canWaklaway = true;
                         _textbox.textMesh.text =
                             $"Come back when you have " + __instance.price +
-                            $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName}' for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}." +
+                            $" cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName}' for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}." +
                             $"\nIt seems {ItemClassification(scoutId-offset)}...";
                     }
                 }
@@ -255,23 +268,28 @@ public class CassetteCost
                     MaiGameObject.parentNotBought.SetActive(true);
                     MaiGameObject.parentCantBuy.SetActive(false);
                     MaiGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[scoutId+adjustment]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
                         }
-                        if (_textbox.textMesh.text.Contains("Wanna trade"))
+                        if (_currentBox == 0)
                         {
-                            _textbox.textMesh.text = 
-                                "It will Cost " + __instance.price + 
-                                $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName} for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}'." +
-                                $"\nIt seems {ItemClassification(scoutId-offset)}...";
-                            if (_textbox.textMesh.text.Contains("Alright, you got it"))
-                            {
-                                MaiGameObject.buyCassette();
-                            }
+                            _answerFix = false;
+                        }
+                        if (_currentBox == 1 && !_answerFix)
+                        {
+                            _textbox.conversationLocalized[1] = 
+                                "It will cost " + __instance.price + 
+                                $" cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName} for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}'." +
+                                $"\nIt seems {ItemClassification(scoutId-offset)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
+                            _answerFix = true;
+                        }
+                        if (_currentBox == 3)
+                        {
+                            MaiGameObject.buyCassette();
                         }
                     } else if (scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
@@ -285,7 +303,7 @@ public class CassetteCost
                     MaiGameObject.parentNotBought.SetActive(false);
                     MaiGameObject.parentCantBuy.SetActive(true);
                     MaiGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mai")
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ")
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                         {
@@ -295,7 +313,7 @@ public class CassetteCost
                         _textbox.canWaklaway = true;
                         _textbox.textMesh.text = 
                             "Come back when you have " + __instance.price + 
-                            $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName}' for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}." +
+                            $" cassettes to get '{ArchipelagoClient.ScoutedLocations[scoutId-offset].ItemName}' for {ArchipelagoClient.ScoutedLocations[scoutId-offset].Player}." +
                             $"\nIt seems {ItemClassification(scoutId-offset)}...";
                     }
                 }
@@ -369,7 +387,7 @@ public class CassetteCost
                     MitchGameObject.parentNotBought.SetActive(true);
                     MitchGameObject.parentCantBuy.SetActive(false);
                     MitchGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mitch" &&
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ" &&
                         !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
@@ -377,12 +395,22 @@ public class CassetteCost
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_mitchIndex]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
                         }
-                        if (_textbox.textMesh.text.Contains("Wanna trade"))
-                            _textbox.textMesh.text =
-                                $"It will Cost " + __instance.price * 5 +
-                                $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
-                                $"\nIt seems {ItemClassification(_mitchIndex)}...";
-                        if (_textbox.textMesh.text.Contains("Alright, you got it")) MitchGameObject.buyCassette();
+                        if (_currentBox == 0)
+                        {
+                            _answerFix = false;
+                        }
+                        if (_currentBox == 1 && !_answerFix)
+                        {
+                            _textbox.conversationLocalized[1] =
+                                $"It will cost " + __instance.price * 5 +
+                                $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
+                                $"\nIt seems {ItemClassification(_mitchIndex)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
+                            _answerFix = true;
+                        }
+                        if (_currentBox == 3)
+                        {
+                            MitchGameObject.buyCassette();
+                        }
                     }
                     else if (scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
@@ -396,7 +424,7 @@ public class CassetteCost
                     MitchGameObject.parentNotBought.SetActive(false);
                     MitchGameObject.parentCantBuy.SetActive(true);
                     MitchGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mitch")
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ")
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex) && ArchipelagoMenu.Hints)
                         {
@@ -406,7 +434,7 @@ public class CassetteCost
                         _textbox.canWaklaway = true;
                         _textbox.textMesh.text =
                             $"Come back when you have " + __instance.price * 5 +
-                            $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
+                            $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
                             $"\nIt seems {ItemClassification(_mitchIndex)}...";
                     }
                 }
@@ -421,23 +449,29 @@ public class CassetteCost
                     MaiGameObject.parentNotBought.SetActive(true);
                     MaiGameObject.parentCantBuy.SetActive(false);
                     MaiGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mai" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex) && ArchipelagoMenu.Hints)
                         {
                             ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_maiIndex]);
                             _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
                         }
-                        if (_textbox.textMesh.text.Contains("Wanna trade"))
+
+                        if (_currentBox == 0)
                         {
-                            _textbox.textMesh.text = 
-                                "It will Cost " + _maiPrice * 5 + 
-                                $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'." +
-                                $"\nIt seems {ItemClassification(_maiIndex)}...";
-                            if (_textbox.textMesh.text.Contains("Alright, you got it"))
-                            {
-                                MaiGameObject.buyCassette();
-                            }
+                            _answerFix = false;
+                        }
+                        if (_currentBox == 1 && !_answerFix)
+                        {
+                            _textbox.conversationLocalized[1] = 
+                                "It will cost " + _maiPrice * 5 + 
+                                $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'." +
+                                $"\nIt seems {ItemClassification(_maiIndex)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
+                            _answerFix = true;
+                        }
+                        if (_currentBox == 3)
+                        {
+                            MaiGameObject.buyCassette();
                         }
                     } else if (scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
@@ -451,7 +485,7 @@ public class CassetteCost
                     MaiGameObject.parentNotBought.SetActive(false);
                     MaiGameObject.parentCantBuy.SetActive(true);
                     MaiGameObject.parentBought.SetActive(false);
-                    if (_textbox.isOn && _textbox.nameMesh.text == "Mai")
+                    if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ")
                     {
                         if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex) && ArchipelagoMenu.Hints)
                         {
@@ -461,7 +495,7 @@ public class CassetteCost
                         _textbox.canWaklaway = true;
                         _textbox.textMesh.text = 
                             "Come back when you have " + _maiPrice * 5 + 
-                            $" Cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}." +
+                            $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}." +
                             $"\nIt seems {ItemClassification(_maiIndex)}...";
                     }
                 }

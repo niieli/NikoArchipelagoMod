@@ -12,6 +12,7 @@ public class GabiFlowerPatch
     private static bool blockedLog;
     private static int solvedCount;
     private static float checkTimer;
+    private static bool _answerFix;
     [HarmonyPatch(typeof(scrFlowerPuzzleMaster), "Start")]
     public static class MoomyStartPatch
     {
@@ -57,15 +58,19 @@ public class GabiFlowerPatch
                 if (__instance.NPCQuest.activeSelf)
                     __instance.NPCTrigger.ChangeIcon(scrTextboxTrigger.IconType.quest, true);
 
-                if (scrTextbox.instance.nameMesh.text == "Little Gabi" && scrTextbox.instance.isOn)
+                if (scrTextbox.instance.nameMesh.text is "Little Gabi" or "リトルガビ" && scrTextbox.instance.isOn)
                 {
-                    scrTextbox.instance.typeSpeedMod = 0.2f;
-                    scrTextbox.instance.textMesh.text =
-                        $"Help, I lost my precious {_currentLevelName} flowers to some sort of... multiworld?!" +
-                        $"\nI currently have {CheckAllFlowers(level)}/{_neededFlowerCount}!";
-                    scrTextbox.instance.textMesh.maxVisibleCharacters = 99;
-                    if (GameInput.GetButtonDown("Action"))
-                        scrTextbox.instance.EndConversation();
+                    if (!_answerFix)
+                    {
+                        scrTextbox.instance.conversationLocalized[0] =
+                            $"Help, I lost my precious {_currentLevelName} flowers to some sort of... multiworld?!" +
+                            $"\nI currently have {CheckAllFlowers(level)}/{_neededFlowerCount}! ##end;";
+                        _answerFix = true;
+                    }
+                }
+                else
+                {
+                    _answerFix = false;
                 }
                 return false;
             }

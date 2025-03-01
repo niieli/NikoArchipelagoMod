@@ -176,7 +176,7 @@ namespace NikoArchipelago
                 SnailFashionSprite = AssetBundle.LoadAsset<Sprite>("SNAIL_FASHION_SHOW");
                 VolleyDreamsSprite = AssetBundle.LoadAsset<Sprite>("VOLLEY_DREAMS");
                 LetterSprite = AssetBundle.LoadAsset<Sprite>("txrLetter");
-                ApplesSprite = AssetBundle.LoadAsset<Sprite>("txrApple");
+                ApplesSprite = AssetBundle.LoadAsset<Sprite>("AppleBundle");
                 KeySprite = AssetBundle.LoadAsset<Sprite>("txrKey");
                 HcSprite = AssetBundle.LoadAsset<Sprite>("TrainHairball");
                 TtSprite = AssetBundle.LoadAsset<Sprite>("TrainTurbine");
@@ -219,9 +219,9 @@ namespace NikoArchipelago
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
             gameObjectChecker.AddComponent<GameObjectChecker>();
-            ArrowTrackerGameObject = new GameObject("APArrowTracker");
-            ArrowTrackerGameObject.AddComponent<ArrowTrackerManager>();
-            DontDestroyOnLoad(ArrowTrackerGameObject);
+            // ArrowTrackerGameObject = new GameObject("APArrowTracker");
+            // ArrowTrackerGameObject.AddComponent<ArrowTrackerManager>();
+            // DontDestroyOnLoad(ArrowTrackerGameObject);
             DontDestroyOnLoad(gameObjectChecker);
             harmony = new Harmony(PluginGuid);
             harmony.PatchAll();
