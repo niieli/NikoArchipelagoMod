@@ -16,7 +16,8 @@ public static class ItemHandler
     public static int HairballKeyAmount, TurbineKeyAmount, SalmonKeyAmount, PoolKeyAmount, BathKeyAmount, TadpoleKeyAmount,
         HairballFishAmount, TurbineFishAmount, SalmonFishAmount, PoolFishAmount, BathFishAmount, TadpoleFishAmount,
         HairballSeedAmount, SalmonSeedAmount, BathSeedAmount,
-        HairballFlowerAmount, TurbineFlowerAmount, SalmonFlowerAmount, PoolFlowerAmount, BathFlowerAmount, TadpoleFlowerAmount;
+        HairballFlowerAmount, TurbineFlowerAmount, SalmonFlowerAmount, PoolFlowerAmount, BathFlowerAmount, TadpoleFlowerAmount,
+        HairballCassetteAmount, TurbineCassetteAmount, SalmonCassetteAmount, PoolCassetteAmount, BathCassetteAmount, TadpoleCassetteAmount, GardenCassetteAmount;
     public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -441,7 +442,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Seed from {sender}!" : "You found your Hairball City Seed!",
-            3f, Plugin.HairballFishSprite);
+            3f, Plugin.HairballSeedSprite);
     }
     
     public static void AddSfcSeed(string sender, bool notify = true)
@@ -449,7 +450,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Seed from {sender}!" : "You found your Salmon Creek Forest Seed!",
-            3f, Plugin.SalmonFishSprite);
+            3f, Plugin.SalmonSeedSprite);
     }
     
     public static void AddBathSeed(string sender, bool notify = true)
@@ -457,7 +458,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Seed from {sender}!" : "You found your Bathhouse Seed!",
-            3f, Plugin.BathFishSprite);
+            3f, Plugin.BathSeedSprite);
     }
     
     public static void AddHcFlower(string sender, bool notify = true)
@@ -465,7 +466,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Flower from {sender}!" : "You found your Hairball City Flower!",
-            3f, Plugin.HairballFishSprite);
+            3f, Plugin.HairballFlowerSprite);
     }
     
     public static void AddTtFlower(string sender, bool notify = true)
@@ -473,7 +474,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Flower from {sender}!" : "You found your Turbine Town Flower!",
-            3f, Plugin.TurbineFishSprite);
+            3f, Plugin.TurbineFlowerSprite);
     }
     
     public static void AddSfcFlower(string sender, bool notify = true)
@@ -481,7 +482,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Flower from {sender}!" : "You found your Salmon Creek Forest Flower!",
-            3f, Plugin.SalmonFishSprite);
+            3f, Plugin.SalmonFlowerSprite);
     }
     
     public static void AddPpFlower(string sender, bool notify = true)
@@ -489,7 +490,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Flower from {sender}!" : "You found your Public Pool Flower!",
-            3f, Plugin.PoolFishSprite);
+            3f, Plugin.PoolFlowerSprite);
     }
     
     public static void AddBathFlower(string sender, bool notify = true)
@@ -497,7 +498,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Flower from {sender}!" : "You found your Bathhouse Flower!",
-            3f, Plugin.BathFishSprite);
+            3f, Plugin.BathFlowerSprite);
     }
     
     public static void AddHqFlower(string sender, bool notify = true)
@@ -505,7 +506,91 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Flower from {sender}!" : "You found your Tadpole HQ Flower!",
-            3f, Plugin.TadpoleFishSprite);
+            3f, Plugin.TadpoleFlowerSprite);
+    }
+    
+    // Level Based Cassettes
+    public static void AddHcCassette(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Cassette from {sender}!" : "You found your Hairball City Cassette!",
+            3f, Plugin.HairballCassetteSprite);
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 2)
+        {
+            ShowDisplayers.CassetteDisplayer();
+        }
+    }
+    
+    public static void AddTtCassette(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Cassette from {sender}!" : "You found your Turbine Town Cassette!",
+            3f, Plugin.TurbineCassetteSprite);
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 3)
+        {
+            ShowDisplayers.CassetteDisplayer();
+        }
+    }
+    
+    public static void AddSfcCassette(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Cassette from {sender}!" : "You found your Salmon Creek Forest Cassette!",
+            3f, Plugin.SalmonCassetteSprite);
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 4)
+        {
+            ShowDisplayers.CassetteDisplayer();
+        }
+    }
+    
+    public static void AddPpCassette(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Cassette from {sender}!" : "You found your Public Pool Cassette!",
+            3f, Plugin.PoolCassetteSprite);
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 5)
+        {
+            ShowDisplayers.CassetteDisplayer();
+        }
+    }
+    
+    public static void AddBathCassette(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Cassette from {sender}!" : "You found your Bathhouse Cassette!",
+            3f, Plugin.BathCassetteSprite);
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 6)
+        {
+            ShowDisplayers.CassetteDisplayer();
+        }
+    }
+    
+    public static void AddHqCassette(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Cassette from {sender}!" : "You found your Tadpole HQ Cassette!",
+            3f, Plugin.TadpoleCassetteSprite);
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 7)
+        {
+            ShowDisplayers.CassetteDisplayer();
+        }
+    }
+    public static void AddGgCassette(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gary's Garden Cassette from {sender}!" : "You found your Gary's Garden Cassette!",
+            3f, Plugin.GardenCassetteSprite);
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 24)
+        {
+            ShowDisplayers.CassetteDisplayer();
+        }
     }
     
     // NPCs

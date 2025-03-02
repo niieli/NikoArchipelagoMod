@@ -28,7 +28,8 @@ public class ArchipelagoClient
     public int CoinAmount, CassetteAmount, KeyAmount, HcKeyAmount, TtKeyAmount, SfcKeyAmount, PpKeyAmount, BathKeyAmount, HqKeyAmount,
         HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount,
         HcSeedAmount, SfcSeedAmount, BathSeedAmount,
-        HcFlowerAmount, TtFlowerAmount, SfcFlowerAmount, PpFlowerAmount, BathFlowerAmount, HqFlowerAmount;
+        HcFlowerAmount, TtFlowerAmount, SfcFlowerAmount, PpFlowerAmount, BathFlowerAmount, HqFlowerAmount,
+        HcCassetteAmount, TtCassetteAmount, SfcCassetteAmount, PpCassetteAmount, BathCassetteAmount, HqCassetteAmount, GgCassetteAmount;
 
     public static int SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary,
@@ -389,6 +390,34 @@ public class ArchipelagoClient
                 //     ItemHandler.AddHqNPCs(senderName, notify);
                 //     HqNPCs = true;
                 //     break;
+                case 598_145_444_000+52: // HCCassette
+                    ItemHandler.AddHcCassette(senderName, notify);
+                    HcCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Cassette");
+                    break;
+                case 598_145_444_000+53: // TTCassette
+                    ItemHandler.AddTtCassette(senderName, notify);
+                    TtCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Cassette");
+                    break;
+                case 598_145_444_000+54: // SFCCassette
+                    ItemHandler.AddSfcCassette(senderName, notify);
+                    SfcCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Cassette");
+                    break;
+                case 598_145_444_000+55: // PPCassette
+                    ItemHandler.AddPpCassette(senderName, notify);
+                    PpCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Cassette");
+                    break;
+                case 598_145_444_000+56: // BathCassette
+                    ItemHandler.AddBathCassette(senderName, notify);
+                    BathCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Cassette");
+                    break;
+                case 598_145_444_000+57: // HQCassette
+                    ItemHandler.AddHqCassette(senderName, notify);
+                    HqCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Cassette");
+                    break;
+                case 598_145_444_000+58: // GGCassette
+                    ItemHandler.AddGgCassette(senderName, notify);
+                    GgCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Gary's Garden Cassette");
+                    break;
             }
     }
 

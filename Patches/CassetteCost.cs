@@ -44,51 +44,49 @@ public class CassetteCost
                     Plugin.BepinLogger.LogInfo("Found 'Level Based' Cassette Logic!");
                     _logged = true;
                 }
-                
-                int count = 0;
-                for (int i = 0; i < scrWorldSaveDataContainer.instance.coinFlags.Count; i++)
-                {
-                    if (scrWorldSaveDataContainer.instance.coinFlags[i].Contains("cassetteCoin") || scrWorldSaveDataContainer.instance.coinFlags[i].Contains("cassetteCoin2"))
-                    {
-                        count++;
-                    }
-                }
                 string currentScene = SceneManager.GetActiveScene().name;
             
                 switch (currentScene)
                 {
                     case "Hairball City":
-                        __instance.price = 5 + (5*count);
+                        __instance.price = 5;
+                        _maiPrice = 10;
                         _mitchIndex = 0;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Trash Kingdom":
-                        __instance.price = 15 + (5*count);
+                        __instance.price = 5;
+                        _maiPrice = 10;
                         _mitchIndex = 2;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Salmon Creek Forest":
-                        __instance.price = 25 + (5*count); 
+                        __instance.price = 5; 
+                        _maiPrice = 10;
                         _mitchIndex = 4;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Public Pool":
-                        __instance.price = 35 + (5*count); 
+                        __instance.price = 5; 
+                        _maiPrice = 10;
                         _mitchIndex = 7;
                         _maiIndex = _mitchIndex - 1;
                         break;
                     case "The Bathhouse":
-                        __instance.price = 45 + (5*count); 
+                        __instance.price = 5; 
+                        _maiPrice = 10;
                         _mitchIndex = 8;
                         _maiIndex = _mitchIndex + 1;
                         break;
                     case "Tadpole inc":
-                        __instance.price = 55 + (5*count); 
+                        __instance.price = 5; 
+                        _maiPrice = 10;
                         _mitchIndex = 11;
                         _maiIndex = _mitchIndex - 1;
                         break;
                     case "GarysGarden":
-                        __instance.price = 65 + (5*count); 
+                        __instance.price = 5; 
+                        _maiPrice = 10;
                         _mitchIndex = 13;
                         _maiIndex = _mitchIndex - 1;
                         break;
@@ -102,12 +100,21 @@ public class CassetteCost
                     }
                     if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
                     {
-                        if (_currentBox == 1)
+                        if (_currentBox == 0)
+                        {
+                            _answerFix = false;
+                        }
+                        if (_currentBox == 1 && !_answerFix)
                         {
                             _textbox.conversationLocalized[1] = 
                                 $"It will cost " + __instance.price + 
                                 $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_mitchIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_mitchIndex].Player}." +
                                 $"\nIt seems {ItemClassification(_mitchIndex)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
+                            _answerFix = true;
+                        }
+                        if (_currentBox == 3)
+                        {
+                            MitchGameObject.buyCassette();
                         }
                     }
                     else
@@ -127,28 +134,37 @@ public class CassetteCost
                         ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[_maiIndex]);
                         _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
                     }
-                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price)
+                    if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= _maiPrice)
                     {
-                        if (_currentBox == 1)
+                        if (_currentBox == 0)
+                        {
+                            _answerFix = false;
+                        }
+                        if (_currentBox == 1 && !_answerFix)
                         {
                             _textbox.conversationLocalized[1] = 
-                                "It will cost " + __instance.price + 
+                                "It will cost " + _maiPrice + 
                                 $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName} for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}'." +
                                 $"\nIt seems {ItemClassification(_maiIndex)}... ##addinput:No!;skip0; ##addinput:Yes please!;skip1;";
+                            _answerFix = true;
+                        }
+                        if (_currentBox == 3)
+                        {
+                            MaiGameObject.buyCassette();
                         }
                     }
                     else
                     {
                         _textbox.canWaklaway = true;
                         _textbox.textMesh.text = 
-                            "Come back when you have " + __instance.price + 
+                            "Come back when you have " + _maiPrice + 
                             $" cassettes to get '{ArchipelagoClient.ScoutedLocations[_maiIndex].ItemName}' for {ArchipelagoClient.ScoutedLocations[_maiIndex].Player}." +
                             $"\nIt seems {ItemClassification(_maiIndex)}...";
                     }
                 }
-                if (_changed) return;
-                Plugin.BepinLogger.LogInfo($"CassetteBuyer price updated to: {__instance.price} (Scene: {currentScene}, based on {count} cassette coins found).");
-                _changed = true;
+                // if (_changed) return;
+                // Plugin.BepinLogger.LogInfo($"CassetteBuyer price updated to: {__instance.price} (Scene: {currentScene}, based on {count} cassette coins found).");
+                // _changed = true;
             }
             else if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
             {

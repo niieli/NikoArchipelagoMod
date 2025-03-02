@@ -73,7 +73,10 @@ namespace NikoArchipelago
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
             SnailMoneySprite, BugSprite, GgSprite, GoalBadSprite,
             ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite,
-            TimePieceSprite, YarnSprite, Yarn2Sprite, Yarn3Sprite, Yarn4Sprite, Yarn5Sprite;
+            TimePieceSprite, YarnSprite, Yarn2Sprite, Yarn3Sprite, Yarn4Sprite, Yarn5Sprite,
+            HairballFlowerSprite, TurbineFlowerSprite, SalmonFlowerSprite, PoolFlowerSprite, BathFlowerSprite, TadpoleFlowerSprite,
+            HairballSeedSprite, SalmonSeedSprite, BathSeedSprite,
+            HairballCassetteSprite, TurbineCassetteSprite, SalmonCassetteSprite, PoolCassetteSprite, BathCassetteSprite, TadpoleCassetteSprite, GardenCassetteSprite;
 
         public static GameObject ApUIGameObject, ArrowTrackerGameObject;
         public static Texture2D CassetteTexture;
@@ -215,6 +218,22 @@ namespace NikoArchipelago
                 Yarn3Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d3");
                 Yarn4Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d4");
                 Yarn5Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d5");
+                HairballFlowerSprite = AssetBundle.LoadAsset<Sprite>("HairballFlower");
+                TurbineFlowerSprite = AssetBundle.LoadAsset<Sprite>("TurbineFlower");
+                SalmonFlowerSprite = AssetBundle.LoadAsset<Sprite>("SalmonFlower");
+                PoolFlowerSprite = AssetBundle.LoadAsset<Sprite>("PoolFlower");
+                BathFlowerSprite = AssetBundle.LoadAsset<Sprite>("BathFlower");
+                TadpoleFlowerSprite = AssetBundle.LoadAsset<Sprite>("TadpoleFlower");
+                HairballSeedSprite = AssetBundle.LoadAsset<Sprite>("HairballSeed");
+                SalmonSeedSprite = AssetBundle.LoadAsset<Sprite>("SalmonSeed");
+                BathSeedSprite = AssetBundle.LoadAsset<Sprite>("BathSeed");
+                HairballCassetteSprite = AssetBundle.LoadAsset<Sprite>("HairballCassette");
+                TurbineCassetteSprite = AssetBundle.LoadAsset<Sprite>("TurbineCassette");
+                SalmonCassetteSprite = AssetBundle.LoadAsset<Sprite>("SalmonCassette");
+                PoolCassetteSprite = AssetBundle.LoadAsset<Sprite>("PoolCassette");
+                BathCassetteSprite = AssetBundle.LoadAsset<Sprite>("BathCassette");
+                TadpoleCassetteSprite = AssetBundle.LoadAsset<Sprite>("TadpoleCassette");
+                GardenCassetteSprite = AssetBundle.LoadAsset<Sprite>("GardenCassette");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -448,7 +467,6 @@ namespace NikoArchipelago
             // Sync Coins, Cassettes, Keys
             SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
-            SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
             if (ArchipelagoData.slotData.ContainsKey("key_level"))
             {
                 if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
@@ -505,6 +523,21 @@ namespace NikoArchipelago
                     SyncValue(ref ItemHandler.TadpoleFlowerAmount, ArchipelagoClient.HqFlowerAmount);
                 }
             }
+            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            {
+                SyncValue(ref ItemHandler.HairballCassetteAmount, ArchipelagoClient.HcCassetteAmount);
+                SyncValue(ref ItemHandler.TurbineCassetteAmount, ArchipelagoClient.TtCassetteAmount);
+                SyncValue(ref ItemHandler.SalmonCassetteAmount, ArchipelagoClient.SfcCassetteAmount);
+                SyncValue(ref ItemHandler.PoolCassetteAmount, ArchipelagoClient.PpCassetteAmount);
+                SyncValue(ref ItemHandler.BathCassetteAmount, ArchipelagoClient.BathCassetteAmount);
+                SyncValue(ref ItemHandler.TadpoleCassetteAmount, ArchipelagoClient.HqCassetteAmount);
+                SyncValue(ref ItemHandler.GardenCassetteAmount, ArchipelagoClient.GgCassetteAmount);
+                FakeLevelSpecificCassetteAmount();
+            }
+            else
+            {
+                SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
+            }
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
@@ -550,6 +583,21 @@ namespace NikoArchipelago
                 "Public Pool" => ItemHandler.PoolKeyAmount,
                 "The Bathhouse" => ItemHandler.BathKeyAmount,
                 "Tadpole inc" => ItemHandler.TadpoleKeyAmount,
+                _ => 0
+            };
+        }
+        
+        private static void FakeLevelSpecificCassetteAmount()
+        {
+            scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount = SceneManager.GetActiveScene().name switch
+            {
+                "Hairball City" => ItemHandler.HairballCassetteAmount,
+                "Trash Kingdom" => ItemHandler.TurbineCassetteAmount,
+                "Salmon Creek Forest" => ItemHandler.SalmonCassetteAmount,
+                "Public Pool" => ItemHandler.PoolCassetteAmount,
+                "The Bathhouse" => ItemHandler.BathCassetteAmount,
+                "Tadpole inc" => ItemHandler.TadpoleCassetteAmount,
+                "Gary's Garden" => ItemHandler.GardenCassetteAmount,
                 _ => 0
             };
         }

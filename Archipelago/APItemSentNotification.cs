@@ -237,7 +237,7 @@ public class APItemSentNotification : MonoBehaviour
                                 case "Snail Money":
                                     _noteSnailMoneyImage.gameObject.SetActive(true);
                                     break;
-                                case "10 Bugs":
+                                case "Bugs":
                                     _noteBugImage.gameObject.SetActive(true);
                                     break;
                                 case "Apples":
@@ -373,7 +373,7 @@ public class APItemSentNotification : MonoBehaviour
                                 case "Snail Money":
                                     _noteSnailMoneyImage.gameObject.SetActive(true);
                                     break;
-                                case "10 Bugs":
+                                case "Bugs":
                                     _noteBugImage.gameObject.SetActive(true);
                                     break;
                                 case "Apples":

@@ -47,6 +47,7 @@ public class GameObjectChecker : MonoBehaviour
         TrackerKiosk();
         TrackerTicket();
         TrackerKey();
+        TrackerCassette();
         HqWhiteboard();
         HqGarden();
         SpawnGaryHome();
@@ -283,25 +284,24 @@ public class GameObjectChecker : MonoBehaviour
     private static void TrackerKey()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var apTrackerUI = Plugin.AssetBundle.LoadAsset<GameObject>("APTrackerKey");
-        var ticketPrefab = Instantiate(apTrackerUI, GameObject.Find("UI").transform, false);
-        if (ticketPrefab == null)
-        {
-            Plugin.BepinLogger.LogError("Failed to instantiate apTrackerUI prefab.");
-            return;
-        }
-        ticketPrefab.layer = LayerMask.NameToLayer("UI");
-        ticketPrefab.transform.SetSiblingIndex(23);
-        var manager = ticketPrefab.transform.Find("APKeyManager")?.gameObject;
-        if (manager == null)
-        {
-            Plugin.BepinLogger.LogError("APKeyManager not found in the prefab.");
-            return;
-        }
-        var tracker = manager.AddComponent<TrackerKeys>();
+        var apTrackerUI = new GameObject("APTrackerKey");
+        var tracker = apTrackerUI.AddComponent<TrackerKeys>();
         if (tracker == null)
         {
             Plugin.BepinLogger.LogError("Failed to add TrackerKeys component to APKeyManager.");
+            return;
+        }
+        tracker.enabled = true;
+    }
+    
+    private static void TrackerCassette()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var apTrackerUI = new GameObject("APTrackerCassette");
+        var tracker = apTrackerUI.AddComponent<TrackerCassettes>();
+        if (tracker == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrackerCassettes component to APTrackerCassette.");
             return;
         }
         tracker.enabled = true;
@@ -428,8 +428,6 @@ public class GameObjectChecker : MonoBehaviour
         ShowDisplayers.CassetteDisplayerGameObject = GameObject.Find("CassetteDisplayer").gameObject.GetComponent<scrCassetteDisplayer>();
         ShowDisplayers.AppleDisplayerUIhider = GameObject.Find("Apple Displayer").gameObject.GetComponent<scrUIhider>();
         ShowDisplayers.BugDisplayerUIhider = GameObject.Find("Bug Displayer").gameObject.GetComponent<scrUIhider>();
-        if (!ArchipelagoData.slotData.ContainsKey("key_level")) return;
-        if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) != 0) return;
         ShowDisplayers.KeyDisplayerUIhider = GameObject.Find("Key Displayer").gameObject.GetComponent<scrUIhider>();
     }
 

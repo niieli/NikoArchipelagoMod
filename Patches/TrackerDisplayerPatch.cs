@@ -25,10 +25,6 @@ public class TrackerDisplayerPatch
             {
                 KioskUI.visible = visable;
             }
-
-            if (!ArchipelagoData.slotData.ContainsKey("key_level")) return;
-            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) != 1) return;
-            KeyUI.visible = visable;
         }
     }
 }
