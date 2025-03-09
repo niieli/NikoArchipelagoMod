@@ -412,6 +412,37 @@ public class TrackerKiosk : MonoBehaviour
                         ? "5" : "??";
                 }
             }
+            else if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            {
+                mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
+                ? (int.Parse(ArchipelagoData.slotData["chc1"].ToString())).ToString() : "??";
+                maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
+                    ? (int.Parse(ArchipelagoData.slotData["chc2"].ToString())).ToString() : "??";
+                mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
+                    ? (int.Parse(ArchipelagoData.slotData["ctt1"].ToString())).ToString() : "??";
+                maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
+                    ? (int.Parse(ArchipelagoData.slotData["ctt2"].ToString())).ToString() : "??";
+                mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
+                    ? (int.Parse(ArchipelagoData.slotData["csfc1"].ToString())).ToString() : "??";
+                maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
+                    ? (int.Parse(ArchipelagoData.slotData["csfc2"].ToString())).ToString() : "??";
+                maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
+                    ? (int.Parse(ArchipelagoData.slotData["cpp2"].ToString())).ToString() : "??";
+                mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
+                    ? (int.Parse(ArchipelagoData.slotData["cpp1"].ToString())).ToString() : "??";
+                mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
+                    ? (int.Parse(ArchipelagoData.slotData["cbath1"].ToString())).ToString() : "??";
+                maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
+                    ? (int.Parse(ArchipelagoData.slotData["cbath2"].ToString())).ToString() : "??";
+                maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
+                    ? (int.Parse(ArchipelagoData.slotData["chq2"].ToString())).ToString() : "??";
+                mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint11") 
+                    ? (int.Parse(ArchipelagoData.slotData["chq1"].ToString())).ToString() : "??";
+                maiGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
+                    ? (int.Parse(ArchipelagoData.slotData["cgg2"].ToString())).ToString() : "??";
+                mitchGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint13") 
+                    ? (int.Parse(ArchipelagoData.slotData["cgg1"].ToString())).ToString() : "??";
+            }
             else
             {
                 mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
@@ -446,20 +477,54 @@ public class TrackerKiosk : MonoBehaviour
         }
         else
         {
-            mitchGardenText.text = (int.Parse(ArchipelagoData.slotData["cgg1"].ToString())*5).ToString();
-            maiGardenText.text = (int.Parse(ArchipelagoData.slotData["cgg2"].ToString())*5).ToString();
-            mitchTadpoleText.text = (int.Parse(ArchipelagoData.slotData["chq1"].ToString())*5).ToString();
-            maiTadpoleText.text = (int.Parse(ArchipelagoData.slotData["chq2"].ToString())*5).ToString();
-            mitchBathText.text = (int.Parse(ArchipelagoData.slotData["cbath1"].ToString())*5).ToString();
-            maiBathText.text = (int.Parse(ArchipelagoData.slotData["cbath2"].ToString())*5).ToString();
-            mitchPoolText.text = (int.Parse(ArchipelagoData.slotData["cpp1"].ToString())*5).ToString();
-            maiPoolText.text = (int.Parse(ArchipelagoData.slotData["cpp2"].ToString())*5).ToString();
-            mitchSalmonText.text = (int.Parse(ArchipelagoData.slotData["csfc1"].ToString())*5).ToString();
-            maiSalmonText.text = (int.Parse(ArchipelagoData.slotData["csfc2"].ToString())*5).ToString();
-            mitchTurbineText.text = (int.Parse(ArchipelagoData.slotData["ctt1"].ToString())*5).ToString();
-            maiTurbineText.text = (int.Parse(ArchipelagoData.slotData["ctt2"].ToString())*5).ToString();
-            mitchHairballText.text = (int.Parse(ArchipelagoData.slotData["chc1"].ToString())*5).ToString();
-            maiHairballText.text = (int.Parse(ArchipelagoData.slotData["chc2"].ToString())*5).ToString();
+            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            {
+                mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
+                ? (int.Parse(ArchipelagoData.slotData["chc1"].ToString())).ToString() : "??";
+                maiHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint1") 
+                    ? (int.Parse(ArchipelagoData.slotData["chc2"].ToString())).ToString() : "??";
+                mitchTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint2") 
+                    ? (int.Parse(ArchipelagoData.slotData["ctt1"].ToString())).ToString() : "??";
+                maiTurbineText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint3") 
+                    ? (int.Parse(ArchipelagoData.slotData["ctt2"].ToString())).ToString() : "??";
+                mitchSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint4") 
+                    ? (int.Parse(ArchipelagoData.slotData["csfc1"].ToString())).ToString() : "??";
+                maiSalmonText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint5") 
+                    ? (int.Parse(ArchipelagoData.slotData["csfc2"].ToString())).ToString() : "??";
+                maiPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint6") 
+                    ? (int.Parse(ArchipelagoData.slotData["cpp2"].ToString())).ToString() : "??";
+                mitchPoolText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint7") 
+                    ? (int.Parse(ArchipelagoData.slotData["cpp1"].ToString())).ToString() : "??";
+                mitchBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint8") 
+                    ? (int.Parse(ArchipelagoData.slotData["cbath1"].ToString())).ToString() : "??";
+                maiBathText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint9") 
+                    ? (int.Parse(ArchipelagoData.slotData["cbath2"].ToString())).ToString() : "??";
+                maiTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint10") 
+                    ? (int.Parse(ArchipelagoData.slotData["chq2"].ToString())).ToString() : "??";
+                mitchTadpoleText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint11") 
+                    ? (int.Parse(ArchipelagoData.slotData["chq1"].ToString())).ToString() : "??";
+                maiGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint12") 
+                    ? (int.Parse(ArchipelagoData.slotData["cgg2"].ToString())).ToString() : "??";
+                mitchGardenText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint13") 
+                    ? (int.Parse(ArchipelagoData.slotData["cgg1"].ToString())).ToString() : "??";
+            }
+            else
+            {
+                mitchGardenText.text = (int.Parse(ArchipelagoData.slotData["cgg1"].ToString())*5).ToString();
+                maiGardenText.text = (int.Parse(ArchipelagoData.slotData["cgg2"].ToString())*5).ToString();
+                mitchTadpoleText.text = (int.Parse(ArchipelagoData.slotData["chq1"].ToString())*5).ToString();
+                maiTadpoleText.text = (int.Parse(ArchipelagoData.slotData["chq2"].ToString())*5).ToString();
+                mitchBathText.text = (int.Parse(ArchipelagoData.slotData["cbath1"].ToString())*5).ToString();
+                maiBathText.text = (int.Parse(ArchipelagoData.slotData["cbath2"].ToString())*5).ToString();
+                mitchPoolText.text = (int.Parse(ArchipelagoData.slotData["cpp1"].ToString())*5).ToString();
+                maiPoolText.text = (int.Parse(ArchipelagoData.slotData["cpp2"].ToString())*5).ToString();
+                mitchSalmonText.text = (int.Parse(ArchipelagoData.slotData["csfc1"].ToString())*5).ToString();
+                maiSalmonText.text = (int.Parse(ArchipelagoData.slotData["csfc2"].ToString())*5).ToString();
+                mitchTurbineText.text = (int.Parse(ArchipelagoData.slotData["ctt1"].ToString())*5).ToString();
+                maiTurbineText.text = (int.Parse(ArchipelagoData.slotData["ctt2"].ToString())*5).ToString();
+                mitchHairballText.text = (int.Parse(ArchipelagoData.slotData["chc1"].ToString())*5).ToString();
+                maiHairballText.text = (int.Parse(ArchipelagoData.slotData["chc2"].ToString())*5).ToString();
+            }
         }
         mitchGardenShadowText.text = mitchGardenText.text; 
         maiGardenShadowText.text = maiGardenText.text;

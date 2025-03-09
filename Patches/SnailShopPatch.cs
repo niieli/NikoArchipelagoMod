@@ -27,6 +27,7 @@ public class SnailShopPatch
         static void Postfix(scrSnail __instance)
         {
             if (ArchipelagoData.slotData == null) return;
+            if (!ArchipelagoData.slotData.ContainsKey("snailshop")) return;
             if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0) return;
             var shopIsOpenField = AccessTools.Field(typeof(scrSnail), "shopIsOpen");
             bool shopIsOpen = (bool)shopIsOpenField.GetValue(__instance);

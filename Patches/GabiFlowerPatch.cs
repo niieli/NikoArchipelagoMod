@@ -50,7 +50,7 @@ public class GabiFlowerPatch
                 }
                 if (!flag) return true;
             }
-            if (CheckAllFlowers(level) != __instance.PuzzleParent.childCount)
+            if (CheckAllFlowers(level) < __instance.PuzzleParent.childCount)
             {
                 //Plugin.BepinLogger.LogInfo($"GabiFlower Condition: {level}, {__instance.PuzzleParent.childCount}, {CheckAllFlowers(level)}");
                 __instance.NPCReward.SetActive(false);

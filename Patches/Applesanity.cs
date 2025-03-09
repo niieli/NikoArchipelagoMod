@@ -2,7 +2,6 @@
 using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
-using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
 using UnityEngine;
@@ -101,6 +100,22 @@ public class Applesanity
                 { "ppkey", "PoolKey" },
                 { "bathkey", "BathKey" },
                 { "hqkey", "TadpoleKey" },
+                { "hcflower", "HairballFlower" },
+                { "ttflower", "TurbineFlower" },
+                { "scfflower", "SalmonFlower" },
+                { "ppflower", "PoolFlower" },
+                { "bathflower", "BathFlower" },
+                { "hqflower", "TadpoleFlower" },
+                { "hccassette", "HairballCassette" },
+                { "ttcassette", "TurbineCassette" },
+                { "scfcassette", "SalmonCassette" },
+                { "ppcassette", "PoolCassette" },
+                { "bathcassette", "BathCassette" },
+                { "hqcassette", "TadpoleCassette" },
+                { "gardencassette", "GardenCassette" },
+                { "hcseed", "HairballSeed" },
+                { "scfseed", "SalmonSeed" },
+                { "bathseed", "BathSeed" },
                 { "superJump", "SuperJump" },
                 { "hairballCity", "HairballCity" },
                 { "turbineTown", "TurbineTown" },
@@ -263,6 +278,22 @@ public class Applesanity
                                 "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
                                 "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
                                 "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
+                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
+                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
+                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
+                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
+                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
+                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
+                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
+                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
+                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
+                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
+                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
+                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
+                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
+                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
+                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
+                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
@@ -369,6 +400,22 @@ public class Applesanity
                                 "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
                                 "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
                                 "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
+                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
+                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
+                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
+                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
+                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
+                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
+                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
+                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
+                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
+                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
+                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
+                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
+                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
+                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
+                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
+                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
@@ -476,6 +523,22 @@ public class Applesanity
                                 "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
                                 "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
                                 "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
+                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
+                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
+                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
+                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
+                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
+                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
+                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
+                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
+                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
+                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
+                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
+                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
+                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
+                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
+                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
+                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
@@ -583,6 +646,22 @@ public class Applesanity
                                 "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
                                 "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
                                 "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
+                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
+                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
+                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
+                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
+                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
+                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
+                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
+                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
+                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
+                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
+                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
+                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
+                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
+                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
+                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
+                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
@@ -690,6 +769,22 @@ public class Applesanity
                                 "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
                                 "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
                                 "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
+                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
+                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
+                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
+                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
+                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
+                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
+                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
+                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
+                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
+                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
+                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
+                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
+                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
+                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
+                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
+                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
@@ -797,6 +892,22 @@ public class Applesanity
                                 "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
                                 "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
                                 "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
+                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
+                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
+                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
+                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
+                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
+                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
+                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
+                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
+                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
+                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
+                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
+                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
+                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
+                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
+                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
+                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }

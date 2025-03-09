@@ -585,6 +585,7 @@ namespace NikoArchipelago
                 "Tadpole inc" => ItemHandler.TadpoleKeyAmount,
                 _ => 0
             };
+            if (scrGameSaveManager.instance.gameData.generalGameData.keyAmount < 0) scrGameSaveManager.instance.gameData.generalGameData.keyAmount = 0;
         }
         
         private static void FakeLevelSpecificCassetteAmount()

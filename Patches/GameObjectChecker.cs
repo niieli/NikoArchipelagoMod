@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
+using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
@@ -23,7 +25,6 @@ public class GameObjectChecker : MonoBehaviour
     private static bool _foundNpcs;
     private static bool _missingFrog;
     public static GameObject APMenu;
-
     private void Start()
     {
         Plugin.BepinLogger.LogDebug("GameObjectChecker started!");
@@ -52,6 +53,9 @@ public class GameObjectChecker : MonoBehaviour
         HqGarden();
         SpawnGaryHome();
         AssignDisplayers();
+        NpcController();
+        Statistics();
+        StatisticsWhiteboard();
         //APArrowTracker();
         //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
@@ -306,6 +310,73 @@ public class GameObjectChecker : MonoBehaviour
         }
         tracker.enabled = true;
     }
+    
+    private static void Statistics()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var mapStatsApples = Plugin.AssetBundle.LoadAsset<GameObject>("Statsapples");
+        var mapStatsFish = Plugin.AssetBundle.LoadAsset<GameObject>("Statsfish");
+        var mapStatsFlowers = Plugin.AssetBundle.LoadAsset<GameObject>("Statsflowers");
+        var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("Statsseeds");
+        var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("Statslocations");
+        Instantiate(mapStatsApples, GameObject.Find("Statistics").transform, false);
+        Instantiate(mapStatsFish, GameObject.Find("Statistics").transform, false);
+        Instantiate(mapStatsFlowers, GameObject.Find("Statistics").transform, false);
+        Instantiate(mapStatsSeeds, GameObject.Find("Statistics").transform, false);
+        Instantiate(mapStatsLocations, GameObject.Find("Statistics").transform, false);
+        Plugin.BepinLogger.LogInfo("Added new stats to Statistics.");
+    }
+    
+    private static void StatisticsWhiteboard()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        if (GameObject.Find("Pepper/Whiteboard/Canvas/Statistics") == null) return;
+        var mapStatsApples = Plugin.AssetBundle.LoadAsset<GameObject>("StatsapplesBoard");
+        var mapStatsFish = Plugin.AssetBundle.LoadAsset<GameObject>("StatsfishBoard");
+        var mapStatsFlowers = Plugin.AssetBundle.LoadAsset<GameObject>("StatsflowersBoard");
+        var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("StatsseedsBoard");
+        var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("StatslocationsBoard");
+        var apple = Instantiate(mapStatsApples, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var fish = Instantiate(mapStatsFish, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var flower = Instantiate(mapStatsFlowers, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var seed = Instantiate(mapStatsSeeds, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var location = Instantiate(mapStatsLocations, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+
+        apple.transform.localPosition = new Vector3(95f, -121f, 0f);
+        apple.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        fish.transform.localPosition = new Vector3(95f, -192f, 0f);
+        flower.transform.localPosition = new Vector3(95f, -252f, 0f);
+        flower.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        seed.transform.localPosition = new Vector3(95f, -320f, 0f);
+        seed.transform.Find("Image").transform.localRotation = Quaternion.Euler(0f, 0f, 331f);
+        location.transform.localPosition = new Vector3(-144f, -447f, -0f);
+        location.transform.localScale = new Vector3(0.8166f, 0.8166f, 1.0166f);
+        if (GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys") != null)
+        {
+            var keys = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys");
+            keys.transform.localPosition = new Vector3(-165f, -288f, 0f);
+            keys.transform.localScale = new Vector3(0.7158f, 0.7158f, 0.85f);
+        }
+        var cassettes = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/cassettes");
+        cassettes.transform.localPosition = new Vector3(-392f, -423f, 0f);
+        Plugin.BepinLogger.LogInfo("Added new stats to Whiteboard.");
+    }
+    
+    private static void NpcController()
+    {
+        if (ArchipelagoData.slotData == null) return;
+        if (!ArchipelagoData.slotData.ContainsKey("npcsanity")) return;
+        if (int.Parse(ArchipelagoData.slotData["npcsanity"].ToString()) == 0) return;
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var apTrackerUI = new GameObject("NPCController");
+        var tracker = apTrackerUI.AddComponent<NpcController>();
+        if (tracker == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add NPCController component to NPCController.");
+            return;
+        }
+        tracker.enabled = true;
+    }
 
     private static void APArrowTracker()
     {
@@ -433,6 +504,10 @@ public class GameObjectChecker : MonoBehaviour
 
     public void Update()
     {
+        if (GameInput.GetButtonDown("Pause") && MenuHelpers.Menus.Count > 0)
+        {
+            Cursor.visible = false;
+        }
         if (Plugin.ChristmasEvent)
         {
             var t = GameObject.Find("PlayerCamera");
@@ -446,20 +521,6 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
-        // if (ArchipelagoData.slotData.TryGetValue("npcsanity", out var value))
-        // {
-        //     if (int.Parse(value.ToString()) != 0)
-        //     {
-        //         var npcs = GameObject.Find("NPCs");
-        //         if (npcs != null && !_foundNpcs)
-        //         {
-        //             var npccontroller = new GameObject("NpcController").AddComponent<NpcController>();
-        //             npccontroller.NpcGameObject = npcs.gameObject;
-        //             _foundNpcs = true;
-        //         }
-        //     }
-        // }
-
         if (ArchipelagoData.slotData.TryGetValue("cassette_logic", out var logic))
         {
             if (int.Parse(logic.ToString()) == 1)
