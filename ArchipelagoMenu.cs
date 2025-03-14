@@ -147,10 +147,13 @@ public class ArchipelagoMenu : MonoBehaviour
     private CanvasGroup _activePanel;    
     public Button settingsButton;
     public TooltipTrigger settingsTrigger;
+    public Image settingsImage;
     public Button trackersButton;
     public TooltipTrigger trackersTrigger;
+    public Image trackersImage;
     public Button qolButton;
     public TooltipTrigger qolTrigger;
+    public Image qolImage;
     
     // Information stuff
     public GameObject informationPanel;
@@ -286,6 +289,54 @@ public class ArchipelagoMenu : MonoBehaviour
     public Image maiGardenImage;
     public Image gardenDisabledImage;
     public static bool pressedConnect;
+    private CanvasGroup _activePanelSanity;
+    public GameObject sanityPanel1;
+    public GameObject sanityPanel2;
+    public CanvasGroup sanityPanel1CanvasGroup;
+    public CanvasGroup sanityPanel2CanvasGroup;
+    
+    //SanityPage2
+    public GameObject seedsPanel;
+    public GameObject flowersPanel;
+    public TextMeshProUGUI seedHcCountBackText;
+    public TextMeshProUGUI seedHcCountFrontText;
+    public TextMeshProUGUI seedSfcCountBackText;
+    public TextMeshProUGUI seedSfcCountFrontText;
+    public TextMeshProUGUI seedBathCountBackText;
+    public TextMeshProUGUI seedBathCountFrontText;
+    public TextMeshProUGUI flowerHcCountBackText;
+    public TextMeshProUGUI flowerHcCountFrontText;
+    public TextMeshProUGUI flowerTtCountBackText;
+    public TextMeshProUGUI flowerTtCountFrontText;
+    public TextMeshProUGUI flowerSfcCountBackText;
+    public TextMeshProUGUI flowerSfcCountFrontText;
+    public TextMeshProUGUI flowerPpCountBackText;
+    public TextMeshProUGUI flowerPpCountFrontText;
+    public TextMeshProUGUI flowerBathCountBackText;
+    public TextMeshProUGUI flowerBathCountFrontText;
+    public TextMeshProUGUI flowerHqCountBackText;
+    public TextMeshProUGUI flowerHqCountFrontText;
+    public Image seedsDisabledImage;
+    public Image flowersDisabledImage;
+    public TooltipTrigger seedsDisabledTrigger;
+    public Tooltip seedsDisabledTooltip;
+    public TooltipTrigger flowersDisabledTrigger;
+    public Tooltip flowersDisabledTooltip;
+    public TooltipTrigger seedsTrigger;
+    public Tooltip seedsTooltip;
+    public TooltipTrigger flowersTrigger;
+    public Tooltip flowersTooltip;
+    public Image boughtHcFlowersImage;
+    public Image boughtTtFlowersImage;
+    public Image boughtScfFlowersImage;
+    public Image boughtPpFlowersImage;
+    public Image boughtBathFlowersImage;
+    public Image boughtHqFlowersImage;
+    public Image boughtHcSeedsImage;
+    public Image boughtScfSeedsImage;
+    public Image boughtBathSeedsImage;
+    public Button sanityPageBackButton;
+    public Button sanityPageForwardButton;
     
     public void Start()
     {
@@ -326,18 +377,23 @@ public class ArchipelagoMenu : MonoBehaviour
         // Information, when logged in
         informationPanel = formPanel.transform.Find("InformationScreen").gameObject;
         kioskAndTicketPanel = informationPanel.transform.Find("KioskAndTicketScreen").gameObject;
-        keysPanel = informationPanel.transform.Find("KeysScreen").gameObject;
-        fishPanel = informationPanel.transform.Find("FishScreen").gameObject;
+        sanityPanel1 = informationPanel.transform.Find("SanityPage1").gameObject;
+        sanityPanel2 = informationPanel.transform.Find("SanityPage2").gameObject;
+        sanityPageBackButton = informationPanel.transform.Find("PrevPage").gameObject.GetComponent<Button>();
+        sanityPageForwardButton = informationPanel.transform.Find("NextPage").gameObject.GetComponent<Button>();
+        
+        keysPanel = sanityPanel1.transform.Find("KeysScreen").gameObject;
+        fishPanel = sanityPanel1.transform.Find("FishScreen").gameObject;
         debugButton = informationPanel.transform.Find("DEBUG").gameObject.GetComponent<Button>();
         debugTooltip = informationPanel.transform.Find("DEBUGTooltip").gameObject.AddComponent<Tooltip>();
         debugTrigger = debugButton.gameObject.AddComponent<TooltipTrigger>();
         reloadButton = informationPanel.transform.Find("ReloadButton").gameObject.GetComponent<Button>();
         reloadTooltip = informationPanel.transform.Find("TooltipReload").gameObject.AddComponent<Tooltip>();
         reloadTrigger = reloadButton.gameObject.AddComponent<TooltipTrigger>();
-        keysDisabledImage = informationPanel.transform.Find("KeysDisabled").gameObject.GetComponent<Image>();
+        keysDisabledImage = sanityPanel1.transform.Find("KeysDisabled").gameObject.GetComponent<Image>();
         keysDisabledTrigger = keysDisabledImage.gameObject.AddComponent<TooltipTrigger>();
         keysDisabledTooltip = keysDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
-        fishDisabledImage = informationPanel.transform.Find("FishDisabled").gameObject.GetComponent<Image>();
+        fishDisabledImage = sanityPanel1.transform.Find("FishDisabled").gameObject.GetComponent<Image>();
         fishDisabledTrigger = fishDisabledImage.gameObject.AddComponent<TooltipTrigger>();
         fishDisabledTooltip = fishDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         goalText = informationPanel.transform.Find("Goal/Text").GetComponent<TextMeshProUGUI>();
@@ -348,6 +404,21 @@ public class ArchipelagoMenu : MonoBehaviour
         keysTooltip = keysPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         fishTrigger = fishPanel.gameObject.AddComponent<TooltipTrigger>();
         fishTooltip = fishPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        
+        // SanityPage2
+        seedsPanel = sanityPanel2.transform.Find("SeedsScreen").gameObject;
+        flowersPanel = sanityPanel2.transform.Find("FlowersScreen").gameObject;
+        seedsDisabledImage = sanityPanel2.transform.Find("SeedsDisabled").gameObject.GetComponent<Image>();
+        seedsDisabledTrigger = seedsDisabledImage.gameObject.AddComponent<TooltipTrigger>();
+        seedsDisabledTooltip = seedsDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        flowersDisabledImage = sanityPanel2.transform.Find("FlowersDisabled").gameObject.GetComponent<Image>();
+        flowersDisabledTrigger = flowersDisabledImage.gameObject.AddComponent<TooltipTrigger>();
+        flowersDisabledTooltip = flowersDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        seedsTrigger = seedsPanel.gameObject.AddComponent<TooltipTrigger>();
+        seedsTooltip = seedsPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        flowersTrigger = flowersPanel.gameObject.AddComponent<TooltipTrigger>();
+        flowersTooltip = flowersPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        
         // Home
         kioskHomeImage = kioskAndTicketPanel.transform.Find("KioskHome").GetComponent<Image>();
         boughtHomeImage = kioskHomeImage.transform.Find("Bought").GetComponent<Image>();
@@ -371,6 +442,12 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHcFishImage = fishPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
         mitchHairballImage = ticketHcImage.transform.Find("Mitch").GetComponent<Image>();
         maiHairballImage = ticketHcImage.transform.Find("Mai").GetComponent<Image>();
+        seedHcCountBackText = seedsPanel.transform.Find("HCSeedCount/Back").GetComponent<TextMeshProUGUI>();
+        seedHcCountFrontText = seedsPanel.transform.Find("HCSeedCount/Front").GetComponent<TextMeshProUGUI>();
+        flowerHcCountBackText = flowersPanel.transform.Find("HCFlowersCount/Back").GetComponent<TextMeshProUGUI>();
+        flowerHcCountFrontText = flowersPanel.transform.Find("HCFlowersCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtHcFlowersImage = flowersPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
+        boughtHcSeedsImage = seedsPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
         // Turbine
         ticketTtImage = kioskAndTicketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
         boughtTtImage = ticketTtImage.transform.Find("Bought").GetComponent<Image>();
@@ -386,6 +463,9 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtTtFishImage = fishPanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
         mitchTurbineImage = ticketTtImage.transform.Find("Mitch").GetComponent<Image>();
         maiTurbineImage = ticketTtImage.transform.Find("Mai").GetComponent<Image>();
+        flowerTtCountBackText = flowersPanel.transform.Find("TTFlowersCount/Back").GetComponent<TextMeshProUGUI>();
+        flowerTtCountFrontText = flowersPanel.transform.Find("TTFlowersCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtTtFlowersImage = flowersPanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
         // Salmon
         ticketSfcImage = kioskAndTicketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
         boughtSfcImage = ticketSfcImage.transform.Find("Bought").GetComponent<Image>();
@@ -401,6 +481,12 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtScfFishImage = fishPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
         mitchSalmonImage = ticketSfcImage.transform.Find("Mitch").GetComponent<Image>();
         maiSalmonImage = ticketSfcImage.transform.Find("Mai").GetComponent<Image>();
+        seedSfcCountBackText = seedsPanel.transform.Find("SCFSeedCount/Back").GetComponent<TextMeshProUGUI>();
+        seedSfcCountFrontText = seedsPanel.transform.Find("SCFSeedCount/Front").GetComponent<TextMeshProUGUI>();
+        flowerSfcCountBackText = flowersPanel.transform.Find("SCFFlowersCount/Back").GetComponent<TextMeshProUGUI>();
+        flowerSfcCountFrontText = flowersPanel.transform.Find("SCFFlowersCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtScfFlowersImage = flowersPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
+        boughtScfSeedsImage = seedsPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
         // Pool
         ticketPpImage = kioskAndTicketPanel.transform.Find("TicketPool").GetComponent<Image>();
         boughtPpImage = ticketPpImage.transform.Find("Bought").GetComponent<Image>();
@@ -416,6 +502,9 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtPpFishImage = fishPanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
         mitchPoolImage = ticketPpImage.transform.Find("Mitch").GetComponent<Image>();
         maiPoolImage = ticketPpImage.transform.Find("Mai").GetComponent<Image>();
+        flowerPpCountBackText = flowersPanel.transform.Find("PPFlowersCount/Back").GetComponent<TextMeshProUGUI>();
+        flowerPpCountFrontText = flowersPanel.transform.Find("PPFlowersCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtPpFlowersImage = flowersPanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
         // Bath
         ticketBathImage = kioskAndTicketPanel.transform.Find("TicketBath").GetComponent<Image>();
         boughtBathImage = ticketBathImage.transform.Find("Bought").GetComponent<Image>();
@@ -431,6 +520,12 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtBathFishImage = fishPanel.transform.Find("BATHComplete").gameObject.GetComponent<Image>();
         mitchBathImage = ticketBathImage.transform.Find("Mitch").GetComponent<Image>();
         maiBathImage = ticketBathImage.transform.Find("Mai").GetComponent<Image>();
+        seedBathCountBackText = seedsPanel.transform.Find("BathSeedCount/Back").GetComponent<TextMeshProUGUI>();
+        seedBathCountFrontText = seedsPanel.transform.Find("BathSeedCount/Front").GetComponent<TextMeshProUGUI>();
+        flowerBathCountBackText = flowersPanel.transform.Find("BATHFlowersCount/Back").GetComponent<TextMeshProUGUI>();
+        flowerBathCountFrontText = flowersPanel.transform.Find("BATHFlowersCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtBathFlowersImage = flowersPanel.transform.Find("BATHComplete").gameObject.GetComponent<Image>();
+        boughtBathSeedsImage = seedsPanel.transform.Find("BathComplete").gameObject.GetComponent<Image>();
         // Tadpole
         ticketHqImage = kioskAndTicketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
         boughtHqImage = ticketHqImage.transform.Find("Bought").GetComponent<Image>();
@@ -446,6 +541,9 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHqFishImage = fishPanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
         mitchTadpoleImage = ticketHqImage.transform.Find("Mitch").GetComponent<Image>();
         maiTadpoleImage = ticketHqImage.transform.Find("Mai").GetComponent<Image>();
+        flowerHqCountBackText = flowersPanel.transform.Find("HQFlowersCount/Back").GetComponent<TextMeshProUGUI>();
+        flowerHqCountFrontText = flowersPanel.transform.Find("HQFlowersCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtHqFlowersImage = flowersPanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
         // Misc
         ticketGgImage = kioskAndTicketPanel.transform.Find("TicketGarden").GetComponent<Image>();
         mitchGardenImage = ticketGgImage.transform.Find("Mitch").GetComponent<Image>();
@@ -454,8 +552,8 @@ public class ArchipelagoMenu : MonoBehaviour
         ticketCl1Image = informationPanel.transform.Find("ContactList1").GetComponent<Image>();
         ticketCl2Image = informationPanel.transform.Find("ContactList2").GetComponent<Image>();
         
-        keyCountBackText = keysPanel.transform.Find("KeyCount/Back").GetComponent<TextMeshProUGUI>();
-        keyCountFrontText = keysPanel.transform.Find("KeyCount/Front").GetComponent<TextMeshProUGUI>();
+        keyCountBackText = informationPanel.transform.Find("KeyCount/Back").GetComponent<TextMeshProUGUI>();
+        keyCountFrontText = informationPanel.transform.Find("KeyCount/Front").GetComponent<TextMeshProUGUI>();
         coinCountBackText = informationPanel.transform.Find("CoinCount/Back").GetComponent<TextMeshProUGUI>();
         coinCountFrontText = informationPanel.transform.Find("CoinCount/Front").GetComponent<TextMeshProUGUI>();
         cassetteCountBackText = informationPanel.transform.Find("CassetteCount/Back").GetComponent<TextMeshProUGUI>();
@@ -479,6 +577,7 @@ public class ArchipelagoMenu : MonoBehaviour
         settingsButton = formPanel.transform.Find("Tabs/SettingsButton").gameObject.GetComponent<Button>();
         settingsButton.gameObject.AddComponent<ButtonHoverEffect>();
         settingsTrigger = settingsButton.gameObject.AddComponent<TooltipTrigger>();
+        settingsImage = settingsButton.gameObject.GetComponent<Image>();
         
         chatToggle = settingsPanel.transform.Find("Chat").gameObject.GetComponent<Toggle>();
         chatTooltip = chatToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
@@ -505,6 +604,7 @@ public class ArchipelagoMenu : MonoBehaviour
         trackersButton = formPanel.transform.Find("Tabs/TrackersButton").gameObject.GetComponent<Button>();
         trackersButton.gameObject.AddComponent<ButtonHoverEffect>();
         trackersTrigger = trackersButton.gameObject.AddComponent<TooltipTrigger>();
+        trackersImage = trackersButton.gameObject.GetComponent<Image>();
         
         ticketToggle = trackersPanel.transform.Find("Ticket").gameObject.GetComponent<Toggle>();
         ticketTooltip = ticketToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
@@ -535,6 +635,7 @@ public class ArchipelagoMenu : MonoBehaviour
         qolButton = formPanel.transform.Find("Tabs/QOLButton").gameObject.GetComponent<Button>();
         qolButton.gameObject.AddComponent<ButtonHoverEffect>();
         qolTrigger = qolButton.gameObject.AddComponent<TooltipTrigger>();
+        qolImage = qolButton.gameObject.GetComponent<Image>();
         
         cacmiToggle = qolPanel.transform.Find("CACMI").gameObject.GetComponent<Toggle>();
         cacmiTooltip = cacmiToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
@@ -619,6 +720,10 @@ public class ArchipelagoMenu : MonoBehaviour
         fishDisabledTrigger.tooltip = fishDisabledTooltip;
         keysTrigger.tooltip = keysTooltip;
         fishTrigger.tooltip = fishTooltip;
+        seedsDisabledTrigger.tooltip = seedsDisabledTooltip;
+        flowersDisabledTrigger.tooltip = flowersDisabledTooltip;
+        seedsTrigger.tooltip = seedsTooltip;
+        flowersTrigger.tooltip = flowersTooltip;
         //trackerKeyTrigger.tooltip = trackerKeyTooltip;
         tooltipsTrigger.tooltip = tooltipsTooltip;
         cassetteSpoilerTrigger.tooltip = cassetteSpoilerTooltip;
@@ -663,6 +768,15 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtPpFishImage.enabled = false;
         boughtBathFishImage.enabled = false;
         boughtHqFishImage.enabled = false;
+        boughtHcFlowersImage.enabled = false;
+        boughtTtFlowersImage.enabled = false;
+        boughtScfFlowersImage.enabled = false;
+        boughtPpFlowersImage.enabled = false;
+        boughtBathFlowersImage.enabled = false;
+        boughtHqFlowersImage.enabled = false;
+        boughtHcSeedsImage.enabled = false;
+        boughtScfSeedsImage.enabled = false;
+        boughtBathSeedsImage.enabled = false;
         
         // Lights
         if (Plugin.ChristmasEvent && !Plugin.NoXmasEvent)
@@ -723,27 +837,60 @@ public class ArchipelagoMenu : MonoBehaviour
             trackersLights.gameObject.AddComponent<LightController>();
             qolLights.gameObject.AddComponent<LightController>();
         }
+        sanityPageBackButton.onClick.AddListener(ShowPage1);
+        sanityPageForwardButton.onClick.AddListener(ShowPage2);
+        qolButton.onClick.AddListener(ShowQOL);
+        debugButton.onClick.AddListener(ToggleDebugMode);
+        reloadButton.onClick.AddListener(ReloadSettings);
         
         settingsPanelCanvasGroup = formPanel.transform.Find("settingsPanel").gameObject.GetComponent<CanvasGroup>();
         trackersPanelCanvasGroup = formPanel.transform.Find("trackersPanel").gameObject.GetComponent<CanvasGroup>();
         qolPanelCanvasGroup = formPanel.transform.Find("qolPanel").gameObject.GetComponent<CanvasGroup>();
+        sanityPanel1CanvasGroup = informationPanel.transform.Find("SanityPage1").gameObject.GetComponent<CanvasGroup>();
+        sanityPanel2CanvasGroup = informationPanel.transform.Find("SanityPage2").gameObject.GetComponent<CanvasGroup>();
         _activePanel = settingsPanelCanvasGroup;
+        _activePanelSanity = sanityPanel1CanvasGroup;
+        SetActiveSanityPanel(sanityPanel1CanvasGroup);
         SetActivePanel(settingsPanelCanvasGroup);
+        settingsImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+    }
+
+    public void ShowPage1()
+    {
+        SetActiveSanityPanel(sanityPanel1CanvasGroup);
+        sanityPageBackButton.image.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        sanityPageForwardButton.image.color = Color.white;
+    }
+    
+    public void ShowPage2()
+    {
+        SetActiveSanityPanel(sanityPanel2CanvasGroup);
+        sanityPageForwardButton.image.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        sanityPageBackButton.image.color = Color.white;
     }
 
     public void ShowSettings()
     {
         SetActivePanel(settingsPanelCanvasGroup);
+        settingsImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        trackersImage.color = Color.white;
+        qolImage.color = Color.white;
     }
 
     public void ShowTrackers()
     {
         SetActivePanel(trackersPanelCanvasGroup);
+        trackersImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        settingsImage.color = Color.white;
+        qolImage.color = Color.white;
     }
 
     public void ShowQOL()
     {
         SetActivePanel(qolPanelCanvasGroup);
+        qolImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        settingsImage.color = Color.white;
+        trackersImage.color = Color.white;
     }
 
     public void ToggleTooltips()
@@ -767,6 +914,8 @@ public class ArchipelagoMenu : MonoBehaviour
         reloadTooltip.gameObject.SetActive(false);
         keysDisabledTooltip.gameObject.SetActive(false);
         fishDisabledTooltip.gameObject.SetActive(false);
+        seedsDisabledTooltip.gameObject.SetActive(false);
+        flowersDisabledTooltip.gameObject.SetActive(false);
         //trackerKeyTooltip.gameObject.SetActive(false);
         tooltipsTooltip.gameObject.SetActive(false);
         cassetteSpoilerTooltip.gameObject.SetActive(false);
@@ -781,6 +930,16 @@ public class ArchipelagoMenu : MonoBehaviour
         StartCoroutine(FadeOut(_activePanel));
         StartCoroutine(FadeIn(newPanel));
         _activePanel = newPanel;
+    }
+    
+    private void SetActiveSanityPanel(CanvasGroup newPanel)
+    {
+        if (_activePanelSanity == newPanel) return;
+        
+        StopAllCoroutines();
+        StartCoroutine(FadeOut(_activePanelSanity));
+        StartCoroutine(FadeIn(newPanel));
+        _activePanelSanity = newPanel;
     }
 
     private IEnumerator FadeIn(CanvasGroup panel)
@@ -1211,6 +1370,108 @@ public class ArchipelagoMenu : MonoBehaviour
                             break;
                     }
                 }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 2)
+                {
+                    flowersDisabledImage.gameObject.SetActive(false);
+                    flowerHcCountBackText.text = ItemHandler.HairballFlowerAmount + "/3";
+                    flowerHcCountFrontText.text = ItemHandler.HairballFlowerAmount + "/3";
+                    if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("flowerPuzzle"))
+                        boughtHcFlowersImage.enabled = true;
+                    flowerTtCountBackText.text = ItemHandler.TurbineFlowerAmount + "/3";
+                    flowerTtCountFrontText.text = ItemHandler.TurbineFlowerAmount + "/3";
+                    if (scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("flowerPuzzle"))
+                        boughtTtFlowersImage.enabled = true;
+                    flowerSfcCountBackText.text = ItemHandler.SalmonFlowerAmount + "/6";
+                    flowerSfcCountFrontText.text = ItemHandler.SalmonFlowerAmount + "/6";
+                    if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle"))
+                        boughtScfFlowersImage.enabled = true;
+                    flowerPpCountBackText.text = ItemHandler.PoolFlowerAmount + "/3";
+                    flowerPpCountFrontText.text = ItemHandler.PoolFlowerAmount + "/3";
+                    if (scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle"))
+                        boughtPpFlowersImage.enabled = true;
+                    flowerBathCountBackText.text = ItemHandler.BathFlowerAmount + "/3";
+                    flowerBathCountFrontText.text = ItemHandler.BathFlowerAmount + "/3";
+                    if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle"))
+                        boughtBathFlowersImage.enabled = true;
+                    flowerHqCountBackText.text = ItemHandler.TadpoleFlowerAmount + "/4";
+                    flowerHqCountFrontText.text = ItemHandler.TadpoleFlowerAmount + "/4";
+                    if (scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("flowerPuzzle"))
+                        boughtHqFlowersImage.enabled = true;
+                }
+                else
+                {
+                    flowersDisabledImage.gameObject.SetActive(true);
+                    flowerHcCountBackText.text = "X";
+                    flowerHcCountFrontText.text = "X";
+                    flowerTtCountBackText.text = "X";
+                    flowerTtCountFrontText.text = "X";
+                    flowerSfcCountBackText.text = "X";
+                    flowerSfcCountFrontText.text = "X";
+                    flowerPpCountBackText.text = "X";
+                    flowerPpCountFrontText.text = "X";
+                    flowerBathCountBackText.text = "X";
+                    flowerBathCountFrontText.text = "X";
+                    flowerHqCountBackText.text = "X";
+                    flowerHqCountFrontText.text = "X";
+                }
+            }
+            else
+            {
+                flowersDisabledImage.gameObject.SetActive(true);
+                flowerHcCountBackText.text = "X";
+                flowerHcCountFrontText.text = "X";
+                flowerTtCountBackText.text = "X";
+                flowerTtCountFrontText.text = "X";
+                flowerSfcCountBackText.text = "X";
+                flowerSfcCountFrontText.text = "X";
+                flowerPpCountBackText.text = "X";
+                flowerPpCountFrontText.text = "X";
+                flowerBathCountBackText.text = "X";
+                flowerBathCountFrontText.text = "X";
+                flowerHqCountBackText.text = "X";
+                flowerHqCountFrontText.text = "X";
+            }
+            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 2)
+                {
+                    seedsDisabledImage.gameObject.SetActive(false);
+                    seedHcCountBackText.text = ItemHandler.HairballSeedAmount + "/10";
+                    seedHcCountFrontText.text = ItemHandler.HairballSeedAmount + "/10";
+                    if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("hamsterball"))
+                        boughtHcSeedsImage.enabled = true;
+                    seedSfcCountBackText.text = ItemHandler.SalmonSeedAmount + "/10";
+                    seedSfcCountFrontText.text = ItemHandler.SalmonSeedAmount + "/10";
+                    if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("hamsterball"))
+                        boughtScfSeedsImage.enabled = true;
+                    seedBathCountBackText.text = ItemHandler.BathSeedAmount + "/10";
+                    seedBathCountFrontText.text = ItemHandler.BathSeedAmount + "/10";
+                    if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("hamsterball"))
+                        boughtBathSeedsImage.enabled = true;
+                }
+                else
+                {
+                    seedsDisabledImage.gameObject.SetActive(true);
+                    seedHcCountBackText.text = "X";
+                    seedHcCountFrontText.text = "X";
+                    seedSfcCountBackText.text = "X";
+                    seedSfcCountFrontText.text = "X";
+                    seedBathCountBackText.text = "X";
+                    seedBathCountFrontText.text = "X";
+                }
+            }
+            else
+            {
+                seedsDisabledImage.gameObject.SetActive(true);
+                seedHcCountBackText.text = "X";
+                seedHcCountFrontText.text = "X";
+                seedSfcCountBackText.text = "X";
+                seedSfcCountFrontText.text = "X";
+                seedBathCountBackText.text = "X";
+                seedBathCountFrontText.text = "X";
             }
         }
         else
