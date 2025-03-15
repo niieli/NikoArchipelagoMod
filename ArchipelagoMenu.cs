@@ -839,9 +839,6 @@ public class ArchipelagoMenu : MonoBehaviour
         }
         sanityPageBackButton.onClick.AddListener(ShowPage1);
         sanityPageForwardButton.onClick.AddListener(ShowPage2);
-        qolButton.onClick.AddListener(ShowQOL);
-        debugButton.onClick.AddListener(ToggleDebugMode);
-        reloadButton.onClick.AddListener(ReloadSettings);
         
         settingsPanelCanvasGroup = formPanel.transform.Find("settingsPanel").gameObject.GetComponent<CanvasGroup>();
         trackersPanelCanvasGroup = formPanel.transform.Find("trackersPanel").gameObject.GetComponent<CanvasGroup>();

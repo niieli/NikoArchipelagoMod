@@ -521,6 +521,10 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
+        if (!scrTextbox.instance.isOn)
+        {
+            scrTextbox.instance.nameMesh.text = "";
+        }
         if (ArchipelagoData.slotData.TryGetValue("cassette_logic", out var logic))
         {
             if (int.Parse(logic.ToString()) == 1)

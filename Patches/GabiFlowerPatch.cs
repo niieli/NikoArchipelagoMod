@@ -58,15 +58,14 @@ public class GabiFlowerPatch
                 if (__instance.NPCQuest.activeSelf)
                     __instance.NPCTrigger.ChangeIcon(scrTextboxTrigger.IconType.quest, true);
 
-                if (scrTextbox.instance.nameMesh.text is "Little Gabi" or "リトルガビ" && scrTextbox.instance.isOn)
+                if (scrTextbox.instance.isOn)
                 {
-                    if (!_answerFix)
-                    {
-                        scrTextbox.instance.conversationLocalized[0] =
-                            $"Help, I lost my precious {_currentLevelName} flowers to some sort of... multiworld?!" +
-                            $"\nI currently have {CheckAllFlowers(level)}/{_neededFlowerCount}! ##end;";
-                        _answerFix = true;
-                    }
+                    if (scrTextbox.instance.nameMesh.text is not ("Little Gabi" or "リトルガビ")) return false;
+                    if (_answerFix) return false;
+                    scrTextbox.instance.conversationLocalized[0] =
+                        $"Help, I lost my precious {_currentLevelName} flowers to some sort of... multiworld?!" +
+                        $"\nI currently have {CheckAllFlowers(level)}/{_neededFlowerCount}! ##end;";
+                    _answerFix = true;
                 }
                 else
                 {
