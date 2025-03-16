@@ -21,25 +21,32 @@ public class TrackerCassettes : MonoBehaviour
         switch (SceneManager.GetActiveScene().name)
         {
             case "Hairball City":
-                cassetteDisplayer.color = new Color(0f, 0.6196079f, 1f, 1f);
+                cassetteDisplayer.sprite = Plugin.HairballCassetteSprite;
+                //cassetteDisplayer.color = new Color(0f, 0.6196079f, 1f, 1f);
                 break;
             case "Trash Kingdom":
-                cassetteDisplayer.color = new Color(0.6705883f, 0.6705883f, 0.6705883f, 1f);
+                cassetteDisplayer.sprite = Plugin.TurbineCassetteSprite;
+                //cassetteDisplayer.color = new Color(0.6705883f, 0.6705883f, 0.6705883f, 1f);
                 break;
             case "Salmon Creek Forest":
-                cassetteDisplayer.color = new Color(0.2117647f, 1f, 0f, 1f);
+                cassetteDisplayer.sprite = Plugin.SalmonCassetteSprite;
+                //cassetteDisplayer.color = new Color(0.2117647f, 1f, 0f, 1f);
                 break;
             case "Public Pool":
-                cassetteDisplayer.color = new Color(0f, 1f, 1f, 1f);
+                cassetteDisplayer.sprite = Plugin.PoolCassetteSprite;
+                //cassetteDisplayer.color = new Color(0f, 1f, 1f, 1f);
                 break;
             case "The Bathhouse":
-                cassetteDisplayer.color = new Color(1f, 0f, 0f, 1f);
+                cassetteDisplayer.sprite = Plugin.BathCassetteSprite;
+                //cassetteDisplayer.color = new Color(1f, 0f, 0f, 1f);
                 break;
             case "Tadpole inc":
-                cassetteDisplayer.color = new Color(0.6577053f, 1f, 0f, 1f);
+                cassetteDisplayer.sprite = Plugin.TadpoleCassetteSprite;
+                //cassetteDisplayer.color = new Color(0.6577053f, 1f, 0f, 1f);
                 break;
-            case "Gary's Garden":
-                cassetteDisplayer.color = new Color(1f, 0.5518868f, 0.8447619f, 1f);
+            case "GarysGarden":
+                cassetteDisplayer.sprite = Plugin.GardenCassetteSprite;
+                //cassetteDisplayer.color = new Color(1f, 0.5518868f, 0.8447619f, 1f);
                 break;
             default:
                 cassetteDisplayer.color = new Color(0.4361057f, 0f, 1f, 1f);

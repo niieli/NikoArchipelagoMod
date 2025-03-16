@@ -598,7 +598,7 @@ namespace NikoArchipelago
                 "Public Pool" => ItemHandler.PoolCassetteAmount,
                 "The Bathhouse" => ItemHandler.BathCassetteAmount,
                 "Tadpole inc" => ItemHandler.TadpoleCassetteAmount,
-                "Gary's Garden" => ItemHandler.GardenCassetteAmount,
+                "GarysGarden" => ItemHandler.GardenCassetteAmount,
                 _ => 0
             };
         }
