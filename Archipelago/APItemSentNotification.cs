@@ -77,113 +77,7 @@ public class APItemSentNotification : MonoBehaviour
                 noteBoxImage.color = new Color32(172, 174, 255, 255);
                 if (hintLogMessage.IsSenderTheActivePlayer)
                 {
-                    switch (networkItem.ItemGame)
-                    {
-                        case "Here Comes Niko!":
-                            _noteSprite.sprite = networkItem.ItemName switch
-                            {
-                                "Coin" => Plugin.CoinSprite,
-                                "Cassette" => Plugin.CassetteSprite,
-                                "Key" => Plugin.KeySprite,
-                                "Super Jump" => Plugin.SuperJumpSprite,
-                                "Letter" => Plugin.LetterSprite,
-                                "Snail Money" => Plugin.SnailMoneySprite,
-                                "Bugs" => Plugin.BugSprite,
-                                "Apples" => Plugin.ApplesSprite,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite,
-                                "Gary's Garden Ticket" => Plugin.GgSprite,
-                                "Hairball City Ticket" => Plugin.HcSprite,
-                                "Turbine Town Ticket" => Plugin.TtSprite,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite,
-                                "Public Pool Ticket" => Plugin.PpSprite,
-                                "Bathhouse Ticket" => Plugin.BathSprite,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite,
-                                "Hairball City Fish" => Plugin.HairballFishSprite,
-                                "Turbine Town Fish" => Plugin.TurbineFishSprite,
-                                "Salmon Creek Forest Fish" => Plugin.SalmonFishSprite,
-                                "Public Pool Fish" => Plugin.PoolFishSprite,
-                                "Bathhouse Fish" => Plugin.BathFishSprite,
-                                "Tadpole HQ Fish" => Plugin.TadpoleFishSprite,
-                                "Hairball City Key" => Plugin.HairballKeySprite,
-                                "Turbine Town Key" => Plugin.TurbineKeySprite,
-                                "Salmon Creek Forest Key" => Plugin.SalmonKeySprite,
-                                "Public Pool Key" => Plugin.PoolKeySprite,
-                                "Bathhouse Key" => Plugin.BathKeySprite,
-                                "Tadpole HQ Key" => Plugin.TadpoleKeySprite,
-                                "Hairball City Flower" => Plugin.HairballFlowerSprite,
-                                "Turbine Town Flower" => Plugin.TurbineFlowerSprite,
-                                "Salmon Creek Forest Flower" => Plugin.SalmonFlowerSprite,
-                                "Public Pool Flower" => Plugin.PoolFlowerSprite,
-                                "Bathhouse Flower" => Plugin.BathFlowerSprite,
-                                "Tadpole HQ Flower" => Plugin.TadpoleFlowerSprite,
-                                "Hairball City Cassette" => Plugin.HairballCassetteSprite,
-                                "Turbine Town Cassette" => Plugin.TurbineCassetteSprite,
-                                "Salmon Creek Forest Cassette" => Plugin.SalmonCassetteSprite,
-                                "Public Pool Cassette" => Plugin.PoolCassetteSprite,
-                                "Bathhouse Cassette" => Plugin.BathCassetteSprite,
-                                "Tadpole HQ Cassette" => Plugin.TadpoleCassetteSprite,
-                                "Gary's Garden Cassette" => Plugin.GardenCassetteSprite,
-                                "Hairball City Seed" => Plugin.HairballSeedSprite,
-                                "Salmon Creek Forest Seed" => Plugin.SalmonSeedSprite,
-                                "Bathhouse Seed" => Plugin.BathSeedSprite,
-                                _ => Plugin.ApProgressionSprite
-                            };
-                            break;
-                        default:
-                        {
-                            switch (networkItem.ItemName)
-                            {
-                                case "Time Piece" when networkItem.ItemGame == "A Hat in Time":
-                                    break;
-                                case "Yarn" when networkItem.ItemGame == "A Hat in Time":
-                                {
-                                    var yarnSprites = new[]
-                                    {
-                                        _noteSprite.sprite = Plugin.YarnSprite,
-                                        _noteSprite.sprite = Plugin.Yarn2Sprite,
-                                        _noteSprite.sprite = Plugin.Yarn3Sprite,
-                                        _noteSprite.sprite = Plugin.Yarn4Sprite,
-                                        _noteSprite.sprite = Plugin.Yarn5Sprite,
-                                    };
-                                    var randomIndex = Random.Range(0, yarnSprites.Length);
-                                    _noteSprite.sprite = yarnSprites[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (networkItem.Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        _noteSprite.sprite = Plugin.ApProgressionSprite;
-                                    }
-                                    else if (networkItem.Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        _noteSprite.sprite = Plugin.ApUsefulSprite;
-                                    }
-                                    else if (networkItem.Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapSprites = new[]
-                                        {
-                                            _noteSprite.sprite = Plugin.ApTrapSprite,
-                                            _noteSprite.sprite = Plugin.ApTrap2Sprite,
-                                            _noteSprite.sprite = Plugin.ApTrap3Sprite,
-                                        };
-                                        var randomIndex = Random.Range(0, trapSprites.Length);
-                                        _noteSprite.sprite = trapSprites[randomIndex];
-                                    }
-                                    else if (networkItem.Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        _noteSprite.sprite = Plugin.ApFillerSprite;
-                                    }
-                                    else
-                                    {
-                                        _noteSprite.sprite = Plugin.ApProgressionSprite;
-                                    }
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    SetSprite(networkItem.ItemGame, networkItem.ItemName, networkItem.Flags);
                     
                     var obtained = found ? "Found" : "Not Found";
                     _noteText.text = $"[Hint]: {receiverHint.Name}'s {networkItem.ItemName} is at {networkItem.LocationName}.\n({obtained})";
@@ -200,114 +94,7 @@ public class APItemSentNotification : MonoBehaviour
                 noteBoxImage.color = Color.white;
                 if (itemSendLogMessage.IsSenderTheActivePlayer)
                 {
-                    switch (itemGame)
-                    {
-                        case "Here Comes Niko!":
-                            _noteSprite.sprite = itemName switch
-                            {
-                                "Coin" => Plugin.CoinSprite,
-                                "Cassette" => Plugin.CassetteSprite,
-                                "Key" => Plugin.KeySprite,
-                                "Super Jump" => Plugin.SuperJumpSprite,
-                                "Letter" => Plugin.LetterSprite,
-                                "Snail Money" => Plugin.SnailMoneySprite,
-                                "Bugs" => Plugin.BugSprite,
-                                "Apples" => Plugin.ApplesSprite,
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite,
-                                "Gary's Garden Ticket" => Plugin.GgSprite,
-                                "Hairball City Ticket" => Plugin.HcSprite,
-                                "Turbine Town Ticket" => Plugin.TtSprite,
-                                "Salmon Creek Forest Ticket" => Plugin.SfcSprite,
-                                "Public Pool Ticket" => Plugin.PpSprite,
-                                "Bathhouse Ticket" => Plugin.BathSprite,
-                                "Tadpole HQ Ticket" => Plugin.HqSprite,
-                                "Hairball City Fish" => Plugin.HairballFishSprite,
-                                "Turbine Town Fish" => Plugin.TurbineFishSprite,
-                                "Salmon Creek Forest Fish" => Plugin.SalmonFishSprite,
-                                "Public Pool Fish" => Plugin.PoolFishSprite,
-                                "Bathhouse Fish" => Plugin.BathFishSprite,
-                                "Tadpole HQ Fish" => Plugin.TadpoleFishSprite,
-                                "Hairball City Key" => Plugin.HairballKeySprite,
-                                "Turbine Town Key" => Plugin.TurbineKeySprite,
-                                "Salmon Creek Forest Key" => Plugin.SalmonKeySprite,
-                                "Public Pool Key" => Plugin.PoolKeySprite,
-                                "Bathhouse Key" => Plugin.BathKeySprite,
-                                "Tadpole HQ Key" => Plugin.TadpoleKeySprite,
-                                "Hairball City Flower" => Plugin.HairballFlowerSprite,
-                                "Turbine Town Flower" => Plugin.TurbineFlowerSprite,
-                                "Salmon Creek Forest Flower" => Plugin.SalmonFlowerSprite,
-                                "Public Pool Flower" => Plugin.PoolFlowerSprite,
-                                "Bathhouse Flower" => Plugin.BathFlowerSprite,
-                                "Tadpole HQ Flower" => Plugin.TadpoleFlowerSprite,
-                                "Hairball City Cassette" => Plugin.HairballCassetteSprite,
-                                "Turbine Town Cassette" => Plugin.TurbineCassetteSprite,
-                                "Salmon Creek Forest Cassette" => Plugin.SalmonCassetteSprite,
-                                "Public Pool Cassette" => Plugin.PoolCassetteSprite,
-                                "Bathhouse Cassette" => Plugin.BathCassetteSprite,
-                                "Tadpole HQ Cassette" => Plugin.TadpoleCassetteSprite,
-                                "Gary's Garden Cassette" => Plugin.GardenCassetteSprite,
-                                "Hairball City Seed" => Plugin.HairballSeedSprite,
-                                "Salmon Creek Forest Seed" => Plugin.SalmonSeedSprite,
-                                "Bathhouse Seed" => Plugin.BathSeedSprite,
-                                _ => Plugin.ApProgressionSprite
-                            };
-                            break;
-                        default:
-                        {
-                            switch (itemName)
-                            {
-                                case "Time Piece" when itemGame == "A Hat in Time":
-                                    
-                                    break;
-                                case "Yarn" when itemGame == "A Hat in Time":
-                                {
-                                    var yarnSprites = new[]
-                                    {
-                                        _noteSprite.sprite = Plugin.YarnSprite,
-                                        _noteSprite.sprite = Plugin.Yarn2Sprite,
-                                        _noteSprite.sprite = Plugin.Yarn3Sprite,
-                                        _noteSprite.sprite = Plugin.Yarn4Sprite,
-                                        _noteSprite.sprite = Plugin.Yarn5Sprite,
-                                    };
-                                    var randomIndex = Random.Range(0, yarnSprites.Length);
-                                    _noteSprite.sprite = yarnSprites[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (itemFlag.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        _noteSprite.sprite = Plugin.ApProgressionSprite;
-                                    }
-                                    else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        _noteSprite.sprite = Plugin.ApUsefulSprite;
-                                    }
-                                    else if (itemFlag.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapSprites = new[]
-                                        {
-                                            _noteSprite.sprite = Plugin.ApTrapSprite,
-                                            _noteSprite.sprite = Plugin.ApTrap2Sprite,
-                                            _noteSprite.sprite = Plugin.ApTrap3Sprite,
-                                        };
-                                        var randomIndex = Random.Range(0, trapSprites.Length);
-                                        _noteSprite.sprite = trapSprites[randomIndex];
-                                    }
-                                    else if (itemFlag.HasFlag(ItemFlags.None))
-                                    {
-                                        _noteSprite.sprite = Plugin.ApFillerSprite;
-                                    }
-                                    else
-                                    {
-                                        _noteSprite.sprite = Plugin.ApProgressionSprite;
-                                    }
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    SetSprite(itemGame, itemName, itemFlag);
 
                     _noteText.text = $"You sent {itemName} to {receiver}!\n({itemLocation})";
                     if (itemFlag.HasFlag(ItemFlags.Advancement))
@@ -327,6 +114,120 @@ public class APItemSentNotification : MonoBehaviour
                     _uiHiderShadow.Show(3.25f);
                 }
                 break;
+        }
+    }
+
+    private static void SetSprite(string itemGame, string itemName, ItemFlags itemFlag)
+    {
+        switch (itemGame)
+        {
+            case "Here Comes Niko!":
+                _noteSprite.sprite = itemName switch
+                {
+                    "Coin" => Plugin.CoinSprite,
+                    "Cassette" => Plugin.CassetteSprite,
+                    "Key" => Plugin.KeySprite,
+                    "Super Jump" => Plugin.SuperJumpSprite,
+                    "Letter" => Plugin.LetterSprite,
+                    "Snail Money" or "1000 Snail Dollar" => Plugin.SnailMoneySprite,
+                    "Bugs" or "10 Bugs" => Plugin.BugSprite,
+                    "Apples" or "25 Apples" => Plugin.ApplesSprite,
+                    "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite,
+                    "Gary's Garden Ticket" => Plugin.GgSprite,
+                    "Hairball City Ticket" => Plugin.HcSprite,
+                    "Turbine Town Ticket" => Plugin.TtSprite,
+                    "Salmon Creek Forest Ticket" => Plugin.SfcSprite,
+                    "Public Pool Ticket" => Plugin.PpSprite,
+                    "Bathhouse Ticket" => Plugin.BathSprite,
+                    "Tadpole HQ Ticket" => Plugin.HqSprite,
+                    "Hairball City Fish" => Plugin.HairballFishSprite,
+                    "Turbine Town Fish" => Plugin.TurbineFishSprite,
+                    "Salmon Creek Forest Fish" => Plugin.SalmonFishSprite,
+                    "Public Pool Fish" => Plugin.PoolFishSprite,
+                    "Bathhouse Fish" => Plugin.BathFishSprite,
+                    "Tadpole HQ Fish" => Plugin.TadpoleFishSprite,
+                    "Hairball City Key" => Plugin.HairballKeySprite,
+                    "Turbine Town Key" => Plugin.TurbineKeySprite,
+                    "Salmon Creek Forest Key" => Plugin.SalmonKeySprite,
+                    "Public Pool Key" => Plugin.PoolKeySprite,
+                    "Bathhouse Key" => Plugin.BathKeySprite,
+                    "Tadpole HQ Key" => Plugin.TadpoleKeySprite,
+                    "Hairball City Flower" => Plugin.HairballFlowerSprite,
+                    "Turbine Town Flower" => Plugin.TurbineFlowerSprite,
+                    "Salmon Creek Forest Flower" => Plugin.SalmonFlowerSprite,
+                    "Public Pool Flower" => Plugin.PoolFlowerSprite,
+                    "Bathhouse Flower" => Plugin.BathFlowerSprite,
+                    "Tadpole HQ Flower" => Plugin.TadpoleFlowerSprite,
+                    "Hairball City Cassette" => Plugin.HairballCassetteSprite,
+                    "Turbine Town Cassette" => Plugin.TurbineCassetteSprite,
+                    "Salmon Creek Forest Cassette" => Plugin.SalmonCassetteSprite,
+                    "Public Pool Cassette" => Plugin.PoolCassetteSprite,
+                    "Bathhouse Cassette" => Plugin.BathCassetteSprite,
+                    "Tadpole HQ Cassette" => Plugin.TadpoleCassetteSprite,
+                    "Gary's Garden Cassette" => Plugin.GardenCassetteSprite,
+                    "Hairball City Seed" => Plugin.HairballSeedSprite,
+                    "Salmon Creek Forest Seed" => Plugin.SalmonSeedSprite,
+                    "Bathhouse Seed" => Plugin.BathSeedSprite,
+                    _ => Plugin.ApProgressionSprite
+                };
+                break;
+            default:
+            {
+                switch (itemName)
+                {
+                    case "Time Piece" when itemGame == "A Hat in Time":
+
+                        break;
+                    case "Yarn" when itemGame == "A Hat in Time":
+                    {
+                        var yarnSprites = new[]
+                        {
+                            _noteSprite.sprite = Plugin.YarnSprite,
+                            _noteSprite.sprite = Plugin.Yarn2Sprite,
+                            _noteSprite.sprite = Plugin.Yarn3Sprite,
+                            _noteSprite.sprite = Plugin.Yarn4Sprite,
+                            _noteSprite.sprite = Plugin.Yarn5Sprite
+                        };
+                        var randomIndex = Random.Range(0, yarnSprites.Length);
+                        _noteSprite.sprite = yarnSprites[randomIndex];
+                        break;
+                    }
+                    default:
+                    {
+                        if (itemFlag.HasFlag(ItemFlags.Advancement))
+                        {
+                            _noteSprite.sprite = Plugin.ApProgressionSprite;
+                        }
+                        else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
+                        {
+                            _noteSprite.sprite = Plugin.ApUsefulSprite;
+                        }
+                        else if (itemFlag.HasFlag(ItemFlags.Trap))
+                        {
+                            var trapSprites = new[]
+                            {
+                                _noteSprite.sprite = Plugin.ApTrapSprite,
+                                _noteSprite.sprite = Plugin.ApTrap2Sprite,
+                                _noteSprite.sprite = Plugin.ApTrap3Sprite
+                            };
+                            var randomIndex = Random.Range(0, trapSprites.Length);
+                            _noteSprite.sprite = trapSprites[randomIndex];
+                        }
+                        else if (itemFlag.HasFlag(ItemFlags.None))
+                        {
+                            _noteSprite.sprite = Plugin.ApFillerSprite;
+                        }
+                        else
+                        {
+                            _noteSprite.sprite = Plugin.ApProgressionSprite;
+                        }
+
+                        break;
+                    }
+                }
+
+                break;
+            }
         }
     }
 }

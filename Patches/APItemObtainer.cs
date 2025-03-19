@@ -43,6 +43,121 @@ public class APItemObtainer
             }
             return texture;
         }
+
+        private static void PlaceModel(int index, int offset, scrObtainCoin __instance)
+        {
+            if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
+            {
+                if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
+                {
+                    switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
+                    {
+                        case "Time Piece" 
+                            when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                            __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                            break;
+                        case "Yarn" 
+                            when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                        {
+                            var yarnTextures = new[]
+                            {
+                                Plugin.YarnSprite.texture,
+                                Plugin.Yarn2Sprite.texture,
+                                Plugin.Yarn3Sprite.texture,
+                                Plugin.Yarn4Sprite.texture,
+                                Plugin.Yarn5Sprite.texture
+                            };
+                            var randomIndex = Random.Range(0, yarnTextures.Length);
+                            __instance.txrCoin = yarnTextures[randomIndex];
+                            break;
+                        }
+                        default:
+                        {
+                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            {
+                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                            {
+                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                            {
+                                var trapTextures = new[]
+                                {
+                                    Plugin.ApTrapSprite.texture,
+                                    Plugin.ApTrap2Sprite.texture,
+                                    Plugin.ApTrap3Sprite.texture
+                                };
+                                var randomIndex = Random.Range(0, trapTextures.Length);
+                                __instance.txrCoin = trapTextures[randomIndex];
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                            {
+                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+                else
+                    __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
+                    {
+                        "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                        "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                        "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                        "Apples" or "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                        "Bugs" or "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                        "Snail Money" or "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                        "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                        "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                        "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                        "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                        "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                        "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                        "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                        "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                        "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                        "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                        "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                        "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                        "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                        "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                        "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                        "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                        "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                        "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                        "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                        "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                        "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
+                        "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
+                        "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
+                        "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
+                        "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
+                        "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
+                        "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
+                        "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
+                        "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
+                        "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
+                        "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
+                        "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
+                        "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
+                        "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
+                        "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
+                        "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
+                        _ => Plugin.APIconSprite.texture
+                    };
+            }
+            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
+                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                       + "\nLocation: " +
+                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
+                                       + "\nLocationID: " +
+                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+        }
+        
         private static void Postfix(scrObtainCoin __instance)
         {
             if (ArchipelagoMenu.SkipPickup)
@@ -89,113 +204,7 @@ public class APItemObtainer
                         index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                         offset = 0;
                     }
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCoin = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCoin = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                                "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                                "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                                "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                                "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                                "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                                "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                                "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                                "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                                "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                                "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                                "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                                "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                                "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                                "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Trash Kingdom":
@@ -209,113 +218,7 @@ public class APItemObtainer
                         index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                         offset = 2;
                     }
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCoin = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCoin = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                                "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                                "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                                "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                                "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                                "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                                "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                                "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                                "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                                "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                                "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                                "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                                "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                                "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                                "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Salmon Creek Forest":
@@ -329,113 +232,7 @@ public class APItemObtainer
                         index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                         offset = 4;
                     }
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCoin = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCoin = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                                "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                                "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                                "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                                "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                                "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                                "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                                "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                                "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                                "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                                "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                                "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                                "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                                "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                                "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Public Pool":
@@ -450,113 +247,7 @@ public class APItemObtainer
                         offset = __instance.myFlag == "cassetteCoin" ? 7 : 5;
                         
                     }
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCoin = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCoin = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                                "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                                "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                                "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                                "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                                "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                                "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                                "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                                "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                                "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                                "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                                "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                                "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                                "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                                "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "The Bathhouse":
@@ -570,113 +261,7 @@ public class APItemObtainer
                         index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                         offset = 8;
                     }
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCoin = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCoin = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                                "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                                "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                                "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                                "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                                "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                                "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                                "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                                "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                                "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                                "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                                "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                                "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                                "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                                "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Tadpole inc" or "GarysGarden":
@@ -702,113 +287,7 @@ public class APItemObtainer
                         index = list.FindIndex(pair => pair.Value == __instance.myFlag);
                         offset = 92 - adjustment;
                     }
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCoin = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCoin = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCoin = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCoin = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCoin = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCoin = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                                "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                                "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                                "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                                "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                                "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                                "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                                "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                                "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                                "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                                "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                                "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                                "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                                "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                                "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName 
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
             }
@@ -858,6 +337,121 @@ public class APItemObtainer
             }
             return texture;
         }
+        
+        private static void PlaceModel(int index, int offset, scrObtainCassette __instance)
+        {
+            if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
+            {
+                if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
+                {
+                    switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
+                    {
+                        case "Time Piece" 
+                            when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                            __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                            break;
+                        case "Yarn" 
+                            when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                        {
+                            var yarnTextures = new[]
+                            {
+                                Plugin.YarnSprite.texture,
+                                Plugin.Yarn2Sprite.texture,
+                                Plugin.Yarn3Sprite.texture,
+                                Plugin.Yarn4Sprite.texture,
+                                Plugin.Yarn5Sprite.texture
+                            };
+                            var randomIndex = Random.Range(0, yarnTextures.Length);
+                            __instance.txrCassette = yarnTextures[randomIndex];
+                            break;
+                        }
+                        default:
+                        {
+                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
+                            {
+                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
+                            {
+                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
+                            {
+                                var trapTextures = new[]
+                                {
+                                    Plugin.ApTrapSprite.texture,
+                                    Plugin.ApTrap2Sprite.texture,
+                                    Plugin.ApTrap3Sprite.texture
+                                };
+                                var randomIndex = Random.Range(0, trapTextures.Length);
+                                __instance.txrCassette = trapTextures[randomIndex];
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
+                            {
+                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                            }
+
+                            break;
+                        }
+                    }
+                }
+                else
+                    __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
+                    {
+                        "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
+                        "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
+                        "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
+                        "Apples" or "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
+                        "Bugs" or "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                        "Snail Money" or "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
+                        "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
+                        "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
+                        "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
+                        "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
+                        "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
+                        "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
+                        "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
+                        "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
+                        "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
+                        "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
+                        "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
+                        "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
+                        "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
+                        "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
+                        "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
+                        "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
+                        "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
+                        "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
+                        "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
+                        "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
+                        "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
+                        "Hairball City Flower" => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
+                        "Turbine Town Flower" => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
+                        "Salmon Creek Forest Flower" => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
+                        "Public Pool Flower" => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
+                        "Bathhouse Flower" => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
+                        "Tadpole HQ Flower" => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
+                        "Hairball City Cassette" => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
+                        "Turbine Town Cassette" => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
+                        "Salmon Creek Forest Cassette" => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
+                        "Public Pool Cassette" => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
+                        "Bathhouse Cassette" => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
+                        "Tadpole HQ Cassette" => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
+                        "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
+                        "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
+                        "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
+                        _ => Plugin.APIconSprite.texture
+                    };
+            }
+            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
+                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                       + "\nLocation: " +
+                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
+                                       + "\nLocationID: " +
+                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+        }
+        
         private static void Postfix(scrObtainCassette __instance)
         {
             if (ArchipelagoMenu.SkipPickup)
@@ -897,98 +491,7 @@ public class APItemObtainer
                     var list = Locations.ScoutHCCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
                     int offset = 101 - adjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCassette = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCassette = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Trash Kingdom":
@@ -996,98 +499,7 @@ public class APItemObtainer
                     var list = Locations.ScoutTTCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
                     int offset = 111 - adjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCassette = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCassette = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Salmon Creek Forest":
@@ -1095,98 +507,7 @@ public class APItemObtainer
                     var list = Locations.ScoutSFCCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
                     int offset = 121 - adjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCassette = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCassette = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Public Pool":
@@ -1194,98 +515,7 @@ public class APItemObtainer
                     var list = Locations.ScoutPPCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
                     int offset = 132 - adjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCassette = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCassette = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "The Bathhouse":
@@ -1293,98 +523,7 @@ public class APItemObtainer
                     var list = Locations.ScoutBathCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
                     int offset = 142 - adjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCassette = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCassette = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Tadpole inc":
@@ -1392,98 +531,7 @@ public class APItemObtainer
                     var list = Locations.ScoutHQCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
                     int offset = 152 - adjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCassette = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCassette = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "GarysGarden":
@@ -1491,98 +539,7 @@ public class APItemObtainer
                     var list = Locations.ScoutGardenCassetteList.ToList();
                     var index = list.FindIndex(pair => pair.Value == __instance.flag);
                     const int offset = 162;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                        {
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.txrCassette = Plugin.TimePieceSprite.texture;
-                                    break;
-                                case "Yarn" 
-                                when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    var yarnTextures = new[]
-                                    {
-                                        Plugin.YarnSprite.texture,
-                                        Plugin.Yarn2Sprite.texture,
-                                        Plugin.Yarn3Sprite.texture,
-                                        Plugin.Yarn4Sprite.texture,
-                                        Plugin.Yarn5Sprite.texture
-                                    };
-                                    var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    __instance.txrCassette = yarnTextures[randomIndex];
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.txrCassette = Plugin.ApProgressionSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.txrCassette = Plugin.ApUsefulSprite.texture;
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            Plugin.ApTrapSprite.texture,
-                                            Plugin.ApTrap2Sprite.texture,
-                                            Plugin.ApTrap3Sprite.texture
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.txrCassette = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.txrCassette = Plugin.ApFillerSprite.texture;
-                                    }
-
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                            __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                                "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                                "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                                "Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                                "Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
-                                "Snail Money" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                                "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                                "Turbine Town Ticket" => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                                "Salmon Creek Forest Ticket" => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                                "Public Pool Ticket" => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                                "Bathhouse Ticket" => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                                "Tadpole HQ Ticket" => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                                "Gary's Garden Ticket" => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                                "Super Jump" => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                                "Hairball City Fish" => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                                "Turbine Town Fish" => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                                "Salmon Creek Forest Fish" => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                                "Public Pool Fish" => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                                "Bathhouse Fish" => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                                "Tadpole HQ Fish" => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                                "Hairball City Key" => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                                "Turbine Town Key" => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                                "Salmon Creek Forest Key" => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                                "Public Pool Key" => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                                "Bathhouse Key" => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                                "Tadpole HQ Key" => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                                _ => Plugin.APIconSprite.texture
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: "+ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                       + "\nLocation: "+ ArchipelagoClient.ScoutedLocations[index + offset].LocationName 
-                                                       + "\nLocationID: " + ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
             }

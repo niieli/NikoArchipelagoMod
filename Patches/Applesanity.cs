@@ -11,6 +11,7 @@ namespace NikoArchipelago.Patches;
 
 public class Applesanity
 {
+    private static bool noSpam;
     [HarmonyPatch(typeof(scrApple), "Start")]
     public static class ApplesanityStart
     {
@@ -141,6 +142,128 @@ public class Applesanity
             return CreateItemPrefab(prefabName, instance);
         }
 
+        private static void PlaceModel(int index, int offset, scrApple __instance)
+        {
+            if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
+            {
+                if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
+                    switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
+                    {
+                        case "Time Piece"
+                            when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                            __instance.quad = CreateItemOverworld("timepiece", __instance);
+                            break;
+                        case "Yarn"
+                            when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
+                        {
+                            // var yarnTextures = new[]
+                            // {
+                            //     CreateItemOverworld("yarn", __instance),
+                            //     CreateItemOverworld("yarn2", __instance),
+                            //     CreateItemOverworld("yarn3", __instance),
+                            //     CreateItemOverworld("yarn4", __instance),
+                            //     CreateItemOverworld("yarn5", __instance),
+                            // };
+                            // var randomIndex = Random.Range(0, yarnTextures.Length);
+                            // __instance.quad = yarnTextures[randomIndex];
+                            __instance.quad = CreateItemOverworld("yarn", __instance);
+                            break;
+                        }
+                        default:
+                        {
+                            if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
+                                .HasFlag(ItemFlags.Advancement))
+                            {
+                                __instance.quad = CreateItemOverworld("apProg", __instance);
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
+                                     .HasFlag(ItemFlags.NeverExclude))
+                            {
+                                __instance.quad = CreateItemOverworld("apUseful", __instance);
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
+                                     .HasFlag(ItemFlags.Trap))
+                            {
+                                var trapTextures = new[]
+                                {
+                                    CreateItemOverworld("apTrap", __instance),
+                                    CreateItemOverworld("apTrap1", __instance),
+                                    CreateItemOverworld("apTrap2", __instance)
+                                };
+                                var randomIndex = Random.Range(0, trapTextures.Length);
+                                __instance.quad = trapTextures[randomIndex];
+                            }
+                            else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
+                                     .HasFlag(ItemFlags.None))
+                            {
+                                __instance.quad = CreateItemOverworld("apFiller", __instance);
+                            }
+
+                            break;
+                        }
+                    }
+                else
+                    __instance.quad = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
+                    {
+                        "Coin" => CreateItemOverworld("coin", __instance),
+                        "Cassette" => CreateItemOverworld("cassette", __instance),
+                        "Key" => CreateItemOverworld("key", __instance),
+                        "Apples" or "25 Apples" => CreateItemOverworld("apples", __instance),
+                        "10 Bugs" or "Bugs" => CreateItemOverworld("bugs", __instance),
+                        "Letter" => CreateItemOverworld("letter", __instance),
+                        "Snail Money" or "1000 Snail Dollar" => CreateItemOverworld("snailMoney", __instance),
+                        "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
+                            CreateItemOverworld("contactList", __instance),
+                        "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
+                        "Turbine Town Ticket" => CreateItemOverworld("turbineTown", __instance),
+                        "Salmon Creek Forest Ticket" => CreateItemOverworld("salmonCreekForest", __instance),
+                        "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
+                        "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
+                        "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
+                        "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
+                        "Super Jump" => CreateItemOverworld("superJump", __instance),
+                        "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
+                        "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
+                        "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
+                        "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
+                        "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
+                        "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
+                        "Hairball City Key" => CreateItemOverworld("hckey", __instance),
+                        "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
+                        "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
+                        "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
+                        "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
+                        "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
+                        "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
+                        "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
+                        "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
+                        "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
+                        "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
+                        "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
+                        "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
+                        "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
+                        "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
+                        "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
+                        "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
+                        "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
+                        "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
+                        "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
+                        "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
+                        "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                        _ => CreateItemOverworld("apProg", __instance)
+                    };
+            }
+
+            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
+                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
+                                       + "\nLocation: " +
+                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
+                                       + "\nLocationID: " +
+                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+            noSpam = true;
+        }
+
         private static void Postfix(scrApple __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
@@ -179,7 +302,7 @@ public class Applesanity
             Object.Destroy(ogQuads.gameObject);
             ogQuads.SetActive(false);
             
-
+            noSpam = false;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
@@ -188,121 +311,7 @@ public class Applesanity
                     var list = Locations.ScoutHCApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 225 - adjustment + idkAdjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.quad = CreateItemOverworld("timepiece", __instance);
-                                    break;
-                                case "Yarn"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quad = yarnTextures[randomIndex];
-                                    __instance.quad = CreateItemOverworld("yarn", __instance);
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                        .HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apProg", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apUseful", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            CreateItemOverworld("apTrap", __instance),
-                                            CreateItemOverworld("apTrap1", __instance),
-                                            CreateItemOverworld("apTrap2", __instance)
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.quad = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apFiller", __instance);
-                                    }
-
-                                    break;
-                                }
-                            }
-                        else
-                            __instance.quad = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => CreateItemOverworld("coin", __instance),
-                                "Cassette" => CreateItemOverworld("cassette", __instance),
-                                "Key" => CreateItemOverworld("key", __instance),
-                                "Apples" => CreateItemOverworld("apples", __instance),
-                                "10 Bugs" => CreateItemOverworld("bugs", __instance),
-                                "Letter" => CreateItemOverworld("letter", __instance),
-                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
-                                    CreateItemOverworld("contactList", __instance),
-                                "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
-                                "Turbine Town Ticket" => CreateItemOverworld("turbineTown", __instance),
-                                "Salmon Creek Forest Ticket" => CreateItemOverworld("salmonCreekForest", __instance),
-                                "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
-                                "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
-                                "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
-                                "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
-                                "Super Jump" => CreateItemOverworld("superJump", __instance),
-                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
-                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
-                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
-                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
-                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
-                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
-                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
-                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
-                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
-                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
-                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
-                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
-                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
-                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
-                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
-                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
-                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
-                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
-                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
-                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
-                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
-                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
-                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
-                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
-                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
-                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
-                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
-                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
-                                _ => CreateItemOverworld("apProg", __instance)
-                            };
-                    }
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Trash Kingdom":
@@ -310,122 +319,7 @@ public class Applesanity
                     var list = Locations.ScoutTTApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 257 - adjustment + idkAdjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.quad = CreateItemOverworld("timepiece", __instance);
-                                    break;
-                                case "Yarn"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quad = yarnTextures[randomIndex];
-                                    __instance.quad = CreateItemOverworld("yarn", __instance);
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                        .HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apProg", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apUseful", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            CreateItemOverworld("apTrap", __instance),
-                                            CreateItemOverworld("apTrap1", __instance),
-                                            CreateItemOverworld("apTrap2", __instance)
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.quad = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apFiller", __instance);
-                                    }
-
-                                    break;
-                                }
-                            }
-                        else
-                            __instance.quad = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => CreateItemOverworld("coin", __instance),
-                                "Cassette" => CreateItemOverworld("cassette", __instance),
-                                "Key" => CreateItemOverworld("key", __instance),
-                                "Apples" => CreateItemOverworld("apples", __instance),
-                                "10 Bugs" => CreateItemOverworld("bugs", __instance),
-                                "Letter" => CreateItemOverworld("letter", __instance),
-                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
-                                    CreateItemOverworld("contactList", __instance),
-                                "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
-                                "Turbine Town Ticket" => CreateItemOverworld("turbineTown", __instance),
-                                "Salmon Creek Forest Ticket" => CreateItemOverworld("salmonCreekForest", __instance),
-                                "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
-                                "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
-                                "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
-                                "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
-                                "Super Jump" => CreateItemOverworld("superJump", __instance),
-                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
-                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
-                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
-                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
-                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
-                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
-                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
-                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
-                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
-                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
-                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
-                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
-                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
-                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
-                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
-                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
-                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
-                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
-                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
-                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
-                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
-                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
-                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
-                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
-                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
-                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
-                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
-                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
-                                _ => CreateItemOverworld("apProg", __instance)
-                            };
-                    }
-
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Salmon Creek Forest":
@@ -433,122 +327,7 @@ public class Applesanity
                     var list = Locations.ScoutSFCApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 289 - adjustment + idkAdjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.quad = CreateItemOverworld("timepiece", __instance);
-                                    break;
-                                case "Yarn"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quad = yarnTextures[randomIndex];
-                                    __instance.quad = CreateItemOverworld("yarn", __instance);
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                        .HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apProg", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apUseful", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            CreateItemOverworld("apTrap", __instance),
-                                            CreateItemOverworld("apTrap1", __instance),
-                                            CreateItemOverworld("apTrap2", __instance)
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.quad = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apFiller", __instance);
-                                    }
-
-                                    break;
-                                }
-                            }
-                        else
-                            __instance.quad = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => CreateItemOverworld("coin", __instance),
-                                "Cassette" => CreateItemOverworld("cassette", __instance),
-                                "Key" => CreateItemOverworld("key", __instance),
-                                "Apples" => CreateItemOverworld("apples", __instance),
-                                "10 Bugs" => CreateItemOverworld("bugs", __instance),
-                                "Letter" => CreateItemOverworld("letter", __instance),
-                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
-                                    CreateItemOverworld("contactList", __instance),
-                                "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
-                                "Turbine Town Ticket" => CreateItemOverworld("turbineTown", __instance),
-                                "Salmon Creek Forest Ticket" => CreateItemOverworld("salmonCreekForest", __instance),
-                                "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
-                                "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
-                                "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
-                                "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
-                                "Super Jump" => CreateItemOverworld("superJump", __instance),
-                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
-                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
-                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
-                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
-                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
-                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
-                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
-                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
-                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
-                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
-                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
-                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
-                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
-                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
-                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
-                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
-                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
-                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
-                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
-                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
-                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
-                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
-                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
-                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
-                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
-                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
-                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
-                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
-                                _ => CreateItemOverworld("apProg", __instance)
-                            };
-                    }
-
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Public Pool":
@@ -556,122 +335,7 @@ public class Applesanity
                     var list = Locations.ScoutPPApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 375 - adjustment + idkAdjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.quad = CreateItemOverworld("timepiece", __instance);
-                                    break;
-                                case "Yarn"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quad = yarnTextures[randomIndex];
-                                    __instance.quad = CreateItemOverworld("yarn", __instance);
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                        .HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apProg", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apUseful", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            CreateItemOverworld("apTrap", __instance),
-                                            CreateItemOverworld("apTrap1", __instance),
-                                            CreateItemOverworld("apTrap2", __instance)
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.quad = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apFiller", __instance);
-                                    }
-
-                                    break;
-                                }
-                            }
-                        else
-                            __instance.quad = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => CreateItemOverworld("coin", __instance),
-                                "Cassette" => CreateItemOverworld("cassette", __instance),
-                                "Key" => CreateItemOverworld("key", __instance),
-                                "Apples" => CreateItemOverworld("apples", __instance),
-                                "10 Bugs" => CreateItemOverworld("bugs", __instance),
-                                "Letter" => CreateItemOverworld("letter", __instance),
-                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
-                                    CreateItemOverworld("contactList", __instance),
-                                "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
-                                "Turbine Town Ticket" => CreateItemOverworld("turbineTown", __instance),
-                                "Salmon Creek Forest Ticket" => CreateItemOverworld("salmonCreekForest", __instance),
-                                "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
-                                "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
-                                "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
-                                "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
-                                "Super Jump" => CreateItemOverworld("superJump", __instance),
-                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
-                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
-                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
-                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
-                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
-                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
-                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
-                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
-                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
-                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
-                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
-                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
-                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
-                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
-                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
-                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
-                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
-                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
-                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
-                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
-                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
-                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
-                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
-                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
-                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
-                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
-                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
-                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
-                                _ => CreateItemOverworld("apProg", __instance)
-                            };
-                    }
-
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "The Bathhouse":
@@ -679,122 +343,7 @@ public class Applesanity
                     var list = Locations.ScoutBathApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 443 - adjustment + idkAdjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.quad = CreateItemOverworld("timepiece", __instance);
-                                    break;
-                                case "Yarn"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quad = yarnTextures[randomIndex];
-                                    __instance.quad = CreateItemOverworld("yarn", __instance);
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                        .HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apProg", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apUseful", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            CreateItemOverworld("apTrap", __instance),
-                                            CreateItemOverworld("apTrap1", __instance),
-                                            CreateItemOverworld("apTrap2", __instance)
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.quad = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apFiller", __instance);
-                                    }
-
-                                    break;
-                                }
-                            }
-                        else
-                            __instance.quad = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => CreateItemOverworld("coin", __instance),
-                                "Cassette" => CreateItemOverworld("cassette", __instance),
-                                "Key" => CreateItemOverworld("key", __instance),
-                                "Apples" => CreateItemOverworld("apples", __instance),
-                                "10 Bugs" => CreateItemOverworld("bugs", __instance),
-                                "Letter" => CreateItemOverworld("letter", __instance),
-                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
-                                    CreateItemOverworld("contactList", __instance),
-                                "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
-                                "Turbine Town Ticket" => CreateItemOverworld("turbineTown", __instance),
-                                "Salmon Creek Forest Ticket" => CreateItemOverworld("salmonCreekForest", __instance),
-                                "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
-                                "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
-                                "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
-                                "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
-                                "Super Jump" => CreateItemOverworld("superJump", __instance),
-                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
-                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
-                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
-                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
-                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
-                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
-                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
-                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
-                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
-                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
-                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
-                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
-                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
-                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
-                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
-                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
-                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
-                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
-                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
-                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
-                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
-                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
-                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
-                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
-                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
-                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
-                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
-                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
-                                _ => CreateItemOverworld("apProg", __instance)
-                            };
-                    }
-
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Tadpole inc":
@@ -802,122 +351,7 @@ public class Applesanity
                     var list = Locations.ScoutHQApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 510 - adjustment + idkAdjustment;
-                    if (index + offset <= ArchipelagoClient.ScoutedLocations.Count)
-                    {
-                        if (ArchipelagoClient.ScoutedLocations[index + offset].ItemGame != "Here Comes Niko!")
-                            switch (ArchipelagoClient.ScoutedLocations[index + offset].ItemName)
-                            {
-                                case "Time Piece"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                    __instance.quad = CreateItemOverworld("timepiece", __instance);
-                                    break;
-                                case "Yarn"
-                                    when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                                {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quad = yarnTextures[randomIndex];
-                                    __instance.quad = CreateItemOverworld("yarn", __instance);
-                                    break;
-                                }
-                                default:
-                                {
-                                    if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                        .HasFlag(ItemFlags.Advancement))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apProg", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.NeverExclude))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apUseful", __instance);
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.Trap))
-                                    {
-                                        var trapTextures = new[]
-                                        {
-                                            CreateItemOverworld("apTrap", __instance),
-                                            CreateItemOverworld("apTrap1", __instance),
-                                            CreateItemOverworld("apTrap2", __instance)
-                                        };
-                                        var randomIndex = Random.Range(0, trapTextures.Length);
-                                        __instance.quad = trapTextures[randomIndex];
-                                    }
-                                    else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
-                                             .HasFlag(ItemFlags.None))
-                                    {
-                                        __instance.quad = CreateItemOverworld("apFiller", __instance);
-                                    }
-
-                                    break;
-                                }
-                            }
-                        else
-                            __instance.quad = ArchipelagoClient.ScoutedLocations[index + offset].ItemName switch
-                            {
-                                "Coin" => CreateItemOverworld("coin", __instance),
-                                "Cassette" => CreateItemOverworld("cassette", __instance),
-                                "Key" => CreateItemOverworld("key", __instance),
-                                "Apples" => CreateItemOverworld("apples", __instance),
-                                "10 Bugs" => CreateItemOverworld("bugs", __instance),
-                                "Letter" => CreateItemOverworld("letter", __instance),
-                                "Snail Money" => CreateItemOverworld("snailMoney", __instance),
-                                "Contact List 1" or "Contact List 2" or "Progressive Contact List" =>
-                                    CreateItemOverworld("contactList", __instance),
-                                "Hairball City Ticket" => CreateItemOverworld("hairballCity", __instance),
-                                "Turbine Town Ticket" => CreateItemOverworld("turbineTown", __instance),
-                                "Salmon Creek Forest Ticket" => CreateItemOverworld("salmonCreekForest", __instance),
-                                "Public Pool Ticket" => CreateItemOverworld("publicPool", __instance),
-                                "Bathhouse Ticket" => CreateItemOverworld("bathhouse", __instance),
-                                "Tadpole HQ Ticket" => CreateItemOverworld("tadpoleHQ", __instance),
-                                "Gary's Garden Ticket" => CreateItemOverworld("garysGarden", __instance),
-                                "Super Jump" => CreateItemOverworld("superJump", __instance),
-                                "Hairball City Fish" => CreateItemOverworld("hcfish", __instance),
-                                "Turbine Town Fish" => CreateItemOverworld("ttfish", __instance),
-                                "Salmon Creek Forest Fish" => CreateItemOverworld("scffish", __instance),
-                                "Public Pool Fish" => CreateItemOverworld("ppfish", __instance),
-                                "Bathhouse Fish" => CreateItemOverworld("bathfish", __instance),
-                                "Tadpole HQ Fish" => CreateItemOverworld("hqfish", __instance),
-                                "Hairball City Key" => CreateItemOverworld("hckey", __instance),
-                                "Turbine Town Key" => CreateItemOverworld("ttkey", __instance),
-                                "Salmon Creek Forest Key" => CreateItemOverworld("scfkey", __instance),
-                                "Public Pool Key" => CreateItemOverworld("ppkey", __instance),
-                                "Bathhouse Key" => CreateItemOverworld("bathkey", __instance),
-                                "Tadpole HQ Key" => CreateItemOverworld("hqkey", __instance),
-                                "Hairball City Flower" => CreateItemOverworld("hcflower", __instance),
-                                "Turbine Town Flower" => CreateItemOverworld("ttflower", __instance),
-                                "Salmon Creek Forest Flower" => CreateItemOverworld("scfflower", __instance),
-                                "Public Pool Flower" => CreateItemOverworld("ppflower", __instance),
-                                "Bathhouse Flower" => CreateItemOverworld("bathflower", __instance),
-                                "Tadpole HQ Flower" => CreateItemOverworld("hqflower", __instance),
-                                "Hairball City Cassette" => CreateItemOverworld("hccassette", __instance),
-                                "Turbine Town Cassette" => CreateItemOverworld("ttcassette", __instance),
-                                "Salmon Creek Forest Cassette" => CreateItemOverworld("scfcassette", __instance),
-                                "Public Pool Cassette" => CreateItemOverworld("ppcassette", __instance),
-                                "Bathhouse Cassette" => CreateItemOverworld("bathcassette", __instance),
-                                "Tadpole HQ Cassette" => CreateItemOverworld("hqcassette", __instance),
-                                "Gary's Garden Cassette" => CreateItemOverworld("gardencassette", __instance),
-                                "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
-                                "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
-                                "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
-                                _ => CreateItemOverworld("apProg", __instance)
-                            };
-                    }
-
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
+                    PlaceModel(index, offset, __instance);
                     break;
                 }
             }
