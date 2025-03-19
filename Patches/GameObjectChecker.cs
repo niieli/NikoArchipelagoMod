@@ -25,6 +25,9 @@ public class GameObjectChecker : MonoBehaviour
     private static bool _foundNpcs;
     private static bool _missingFrog;
     public static GameObject APMenu;
+    private static bool _sentNote, _sentNote2, _sentNote3, _sentNote4, _sentNote5, 
+        _sentNote6, _sentNote7, _sentNote8, _sentNote9, _sentNote10, _sentNote11, _sentNote12, _sentNote13, _sentNote14,
+        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19;
     private void Start()
     {
         Plugin.BepinLogger.LogDebug("GameObjectChecker started!");
@@ -39,6 +42,9 @@ public class GameObjectChecker : MonoBehaviour
         _foundCamera = false;
         _foundNpcs = false;
         _missingFrog = false;
+        _sentNote = _sentNote2 = _sentNote3 = _sentNote4 = _sentNote5 =  
+            _sentNote6 = _sentNote7 = _sentNote8 = _sentNote9 = _sentNote10 = _sentNote11 = _sentNote12 = _sentNote13 = _sentNote14 = 
+                _sentNote15 = _sentNote16 = _sentNote17 = _sentNote18 = _sentNote19 = false;
         //LocationCheck();
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
@@ -502,6 +508,150 @@ public class GameObjectChecker : MonoBehaviour
         ShowDisplayers.KeyDisplayerUIhider = GameObject.Find("Key Displayer").gameObject.GetComponent<scrUIhider>();
     }
 
+    private static void SendReminderNote()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        if (ItemHandler.HairballFishAmount >= 5 && !_sentNote10 && ArchipelagoClient.Ticket1
+            && !scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("fishing")
+            && SceneManager.GetActiveScene().name != "Hairball City")
+        {
+            Plugin.APSendNote("You gathered all fish from Hairball City! Come get your reward!", 6.5f,
+                Plugin.FischerNoteSprite);
+            _sentNote10 = true;
+        }
+
+        if (ItemHandler.TurbineFishAmount >= 5 && !_sentNote11 && ArchipelagoClient.Ticket2
+            && !scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("fishing")
+            && SceneManager.GetActiveScene().name != "Trash Kingdom")
+        {
+            Plugin.APSendNote("You gathered all fish from Turbine Town! Come get your reward!", 6.5f,
+                Plugin.FischerNoteSprite);
+            _sentNote11 = true;
+        }
+
+        if (ItemHandler.SalmonFishAmount >= 5 && !_sentNote12 && ArchipelagoClient.Ticket3
+            && !scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("fishing") 
+            && scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1")
+            && SceneManager.GetActiveScene().name != "Salmon Creek Forest")
+        {
+            Plugin.APSendNote("You gathered all fish from Salmon Creek Forest! Come get your reward!", 6.5f,
+                Plugin.FischerNoteSprite);
+            _sentNote12 = true;
+        }
+
+        if (ItemHandler.PoolFishAmount >= 5 && !_sentNote13 && ArchipelagoClient.Ticket4
+            && !scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("fishing")
+            && SceneManager.GetActiveScene().name != "Public Pool")
+        {
+            Plugin.APSendNote("You gathered all fish from Public Pool! Come get your reward!", 6.5f,
+                Plugin.FischerNoteSprite);
+            _sentNote13 = true;
+        }
+
+        if (ItemHandler.BathFishAmount >= 5 && !_sentNote14 && ArchipelagoClient.Ticket5
+            && !scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("fishing") 
+            && scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2")
+            && SceneManager.GetActiveScene().name != "The Bathhouse")
+        {
+            Plugin.APSendNote("You gathered all fish from Bathhouse! Come get your reward!", 6.5f,
+                Plugin.FischerNoteSprite);
+            _sentNote14 = true;
+        }
+
+        if (ItemHandler.TadpoleFishAmount >= 5 && !_sentNote15 && ArchipelagoClient.Ticket6
+            && !scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("fishing")
+            && SceneManager.GetActiveScene().name != "Tadpole inc")
+        {
+            Plugin.APSendNote("You gathered all fish from Tadpole HQ! Come get your reward!", 6.5f,
+                Plugin.FischerNoteSprite);
+            _sentNote15 = true;
+        }
+
+        if (ItemHandler.HairballFlowerAmount >= 3 && !_sentNote4 && ArchipelagoClient.Ticket1
+            && !scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("flowerPuzzle")
+            && SceneManager.GetActiveScene().name != "Hairball City")
+        {
+            Plugin.APSendNote("You gathered all flowers from Hairball City! Come get your reward!", 6.5f,
+                Plugin.GabiNoteSprite);
+            _sentNote4 = true;
+        }
+
+        if (ItemHandler.TurbineFlowerAmount >= 3 && !_sentNote5 && ArchipelagoClient.Ticket2
+            && !scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("flowerPuzzle")
+            && SceneManager.GetActiveScene().name != "Trash Kingdom")
+        {
+            Plugin.APSendNote("You gathered all flowers from Turbine Town! Come get your reward!", 6.5f,
+                Plugin.GabiNoteSprite);
+            _sentNote5 = true;
+        }
+
+        if (ItemHandler.SalmonFlowerAmount >= 6 && !_sentNote6 && ArchipelagoClient.Ticket3
+            && !scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle")
+            && SceneManager.GetActiveScene().name != "Salmon Creek Forest")
+        {
+            Plugin.APSendNote("You gathered all flowers from Salmon Creek Forest! Come get your reward!", 6.5f,
+                Plugin.GabiNoteSprite);
+            _sentNote6 = true;
+        }
+
+        if (ItemHandler.PoolFlowerAmount >= 3 && !_sentNote7 && ArchipelagoClient.Ticket4
+            && !scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle") 
+            && scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2")
+            && SceneManager.GetActiveScene().name != "Public Pool")
+        {
+            Plugin.APSendNote("You gathered all flowers from Public Pool! Come get your reward!", 6.5f,
+                Plugin.GabiNoteSprite);
+            _sentNote7 = true;
+        }
+
+        if (ItemHandler.BathFlowerAmount >= 3 && !_sentNote8 && ArchipelagoClient.Ticket5
+            && !scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle") 
+            && scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave2")
+            && SceneManager.GetActiveScene().name != "The Bathhouse")
+        {
+            Plugin.APSendNote("You gathered all flowers from Bathhouse! Come get your reward!", 6.5f,
+                Plugin.GabiNoteSprite);
+            _sentNote8 = true;
+        }
+
+        if (ItemHandler.TadpoleFlowerAmount >= 4 && !_sentNote9 && ArchipelagoClient.Ticket6
+            && !scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("flowerPuzzle")
+            && SceneManager.GetActiveScene().name != "Tadpole inc")
+        {
+            Plugin.APSendNote("You gathered all flowers from Tadpole HQ! Come get your reward!", 6.5f,
+                Plugin.GabiNoteSprite);
+            _sentNote9 = true;
+        }
+
+        if (ItemHandler.HairballSeedAmount >= 10 && !_sentNote && ArchipelagoClient.Ticket1
+            && !scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("hamsterball") 
+            && scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("APWave1")
+            && SceneManager.GetActiveScene().name != "Hairball City")
+        {
+            Plugin.APSendNote("You gathered all 10 Seeds from Hairball City! Come get your reward!", 6.5f,
+                Plugin.MoomyNoteSprite);
+            _sentNote = true;
+        }
+
+        if (ItemHandler.SalmonSeedAmount >= 10 && !_sentNote2 && ArchipelagoClient.Ticket3
+            && !scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle")
+            && SceneManager.GetActiveScene().name != "Salmon Creek Forest")
+        {
+            Plugin.APSendNote("You gathered all 10 Seeds from Salmon Creek Forest! Come get your reward!", 6.5f,
+                Plugin.MoomyNoteSprite);
+            _sentNote2 = true;
+        }
+
+        if (ItemHandler.BathSeedAmount >= 10 && !_sentNote3 && ArchipelagoClient.Ticket5
+            && !scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle")
+            && SceneManager.GetActiveScene().name != "The Bathhouse")
+        {
+            Plugin.APSendNote("You gathered all 10 Seeds from Bathhouse! Come get your reward!", 6.5f,
+                Plugin.MoomyNoteSprite);
+            _sentNote3 = true;
+        }
+    }
+
     public void Update()
     {
         if (GameInput.GetButtonDown("Pause") && MenuHelpers.Menus.Count > 0)
@@ -521,6 +671,7 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
+        SendReminderNote();
         if (!scrTextbox.instance.isOn)
         {
             scrTextbox.instance.nameMesh.text = "";

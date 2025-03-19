@@ -76,7 +76,8 @@ namespace NikoArchipelago
             TimePieceSprite, YarnSprite, Yarn2Sprite, Yarn3Sprite, Yarn4Sprite, Yarn5Sprite,
             HairballFlowerSprite, TurbineFlowerSprite, SalmonFlowerSprite, PoolFlowerSprite, BathFlowerSprite, TadpoleFlowerSprite,
             HairballSeedSprite, SalmonSeedSprite, BathSeedSprite,
-            HairballCassetteSprite, TurbineCassetteSprite, SalmonCassetteSprite, PoolCassetteSprite, BathCassetteSprite, TadpoleCassetteSprite, GardenCassetteSprite;
+            HairballCassetteSprite, TurbineCassetteSprite, SalmonCassetteSprite, PoolCassetteSprite, BathCassetteSprite, TadpoleCassetteSprite, GardenCassetteSprite,
+            FischerNoteSprite, GabiNoteSprite, MoomyNoteSprite, BlessleyNoteSprite;
 
         public static GameObject ApUIGameObject, ArrowTrackerGameObject;
         public static Texture2D CassetteTexture;
@@ -234,6 +235,10 @@ namespace NikoArchipelago
                 BathCassetteSprite = AssetBundle.LoadAsset<Sprite>("BathCassette");
                 TadpoleCassetteSprite = AssetBundle.LoadAsset<Sprite>("TadpoleCassette");
                 GardenCassetteSprite = AssetBundle.LoadAsset<Sprite>("GardenCassette");
+                FischerNoteSprite = AssetBundle.LoadAsset<Sprite>("sprFischerHappyNote");
+                GabiNoteSprite = AssetBundle.LoadAsset<Sprite>("sprFlowerNote");
+                MoomyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprHamsterNote");
+                BlessleyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprBugNote");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
