@@ -244,6 +244,8 @@ public static class KioskCost
                         }
                     }
                 }
+                _sentNoteEnough = true;
+                scrNotificationDisplayer.instance.RemoveNotification(__instance.noteEnough);
             }
     
             if (_changed2) return;

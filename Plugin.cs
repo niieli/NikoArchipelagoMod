@@ -34,7 +34,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.5.2";
+        public const string PluginVersion = "0.6.0";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -52,7 +52,7 @@ namespace NikoArchipelago
         private int goToLevel, snowAmount;
         private float env, mas, mus, sfx;
         private static scrNotificationDisplayer _noteDisplayer;
-        public bool worldReady;
+        public static bool worldReady;
         private static bool _canLogin;
         public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
@@ -295,6 +295,8 @@ namespace NikoArchipelago
         
         public void Update()
         {
+            //Logger.LogFatal("LoggedIn: " + loggedIn); Something broke somehow | Need to investigate on why it skips setting this true
+            //Logger.LogFatal("ItemIndex: " + ArchipelagoClient.GetItemIndex());
             if (!saveReady) return;
             try
             {
@@ -313,7 +315,6 @@ namespace NikoArchipelago
                         scrGameSaveManager.dataPath = savePath;
                         Logger.LogInfo("Found a SaveFile with the current SlotName & Port!");
                         ArchipelagoConsole.LogMessage("Found a SaveFile with the current SlotName & Port!");
-
                         gameSaveManager.LoadGame();
                     }
                     else
@@ -342,7 +343,6 @@ namespace NikoArchipelago
                     LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     loggedIn = true;
-                    StartCoroutine(BandaidNotificationFix()); //TODO: Find real fix
                     SaveEstablished = false;
                     _realAppleAmount = gameSaveManager.gameData.generalGameData.appleAmount;
                     ArchipelagoClient.CheckReceivedItems();
@@ -357,7 +357,6 @@ namespace NikoArchipelago
                         StartCoroutine(DisconnectNotification());
                         _onlyOnce = true;
                     }
-                    
                 }
 
                 if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 0)
@@ -383,8 +382,6 @@ namespace NikoArchipelago
                         LocationHandler.SnailShop();
                         LocationHandler.WinCompletion();
                         ArchipelagoClient.CheckLocationState();
-                        //ArchipelagoClient.MoneyIndex();
-                        //ArchipelagoClient.AppleIndex();
                     }
                     
                 }
@@ -429,8 +426,6 @@ namespace NikoArchipelago
                 APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
                 loggedIn = true; 
             }
-            //ArchipelagoClient._session.DataStorage["SnailMoney"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.snailSteps);
-            // ArchipelagoClient._session.DataStorage["Apples"].Initialize(scrGameSaveManager.instance.gameData.generalGameData.appleAmount);
         }
         
         private static IEnumerator DisconnectNotification()
@@ -565,7 +560,7 @@ namespace NikoArchipelago
                 }
                 ArchipelagoClient.queuedItems2.Clear();
             }
-            if (ArchipelagoClient.queuedItems.Count <= 0 || !ArchipelagoClient.IsValidScene()) yield break;
+            if (ArchipelagoClient.queuedItems.Count <= 0 || !ArchipelagoClient.IsValidScene() || !SaveEstablished) yield break;
             foreach (var t in ArchipelagoClient.queuedItems)
             {
                 ArchipelagoClient.GiveItem(t);

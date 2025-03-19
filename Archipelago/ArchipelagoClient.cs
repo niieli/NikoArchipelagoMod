@@ -34,6 +34,9 @@ public class ArchipelagoClient
     public static int SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary,
         HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs;
+
+    private static int savedItemIndex;
+    private static bool stopIt;
     public Task _disconnectTask;
 
     /// <summary>
@@ -119,6 +122,7 @@ public class ArchipelagoClient
             outText = $"Successfully connected to {ServerData.Uri} as {ServerData.SlotName}!";
 
             ArchipelagoConsole.LogMessage(outText);
+            Plugin.loggedIn = true;
         }
         else
         {
@@ -181,14 +185,37 @@ public class ArchipelagoClient
     /// <param name="helper">item helper which we can grab our item from</param>
     private void OnItemReceived(ReceivedItemsHelper helper)
     {
+        while (!Plugin.worldReady)
+        {
+            if (stopIt) continue;
+            Plugin.BepinLogger.LogError("Waiting for save to finish loading...");
+            stopIt = true;
+        }
         var receivedItem = helper.DequeueItem();
-        // Plugin.BepinLogger.LogInfo($"helper index: {helper.Index}");
-        // Plugin.BepinLogger.LogInfo($"Saved index: {ServerData.Index}");
-        // Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
-        //_session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (helper.Index <= ServerData.Index) return;
-        
         ServerData.Index++;
+
+        if (ServerData.Index <= GetItemIndex())
+        {
+            Plugin.BepinLogger.LogInfo($"helper index: {helper.Index}");
+            Plugin.BepinLogger.LogInfo($"Server index: {ServerData.Index}");
+            Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
+            Plugin.BepinLogger.LogFatal($"Current Item: {receivedItem.ItemName}");
+            if (receivedItem.ItemName is "Apples" or "25 Apples" or "10 Bugs" or "Bugs" or "Letter" or "Snail Money"
+                    or "1000 Snail Money")
+            {
+                Plugin.BepinLogger.LogFatal($"Skipping Item: {receivedItem.ItemName}");
+            }
+            else
+            {
+                GiveItem(receivedItem, false);
+            }
+            return;
+        }
+        
+        savedItemIndex = GetItemIndex()+1;
+        SaveItemIndex(savedItemIndex);
+        
         if (IsValidScene() && Plugin.loggedIn)
         {
             GiveItem(receivedItem);
@@ -218,12 +245,6 @@ public class ArchipelagoClient
                     KeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Key");
                     break;
                 case 598_145_444_000 + 3: // Apples
-                    // Apples = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Apples");
-                    // var diffApples = Apples - GetAppleIndex();
-                    // for (int i = 0; i < diffApples; i++)
-                    // {
-                    //     ItemHandler.AddApples(25, senderName, notify);
-                    // }
                     ItemHandler.AddApples(25, senderName, notify);
                     break;
                 case 598_145_444_000 + 4: // Contact List 1
@@ -635,38 +656,30 @@ public class ArchipelagoClient
         scrWorldSaveDataContainer.instance.SaveWorld();
     }
 
-    public static void SaveitemIndex(int ItemIndex)
+    private static void SaveItemIndex(int itemIndex)
     {
-        // Loggen Sie den gespeicherten Index
-        Plugin.BepinLogger.LogInfo($"Saving ItemIndex: {ItemIndex}");
+        Plugin.BepinLogger.LogInfo($"Saving ItemIndex: {itemIndex}");
 
-        // Alte AppleIndex-Einträge entfernen
         scrGameSaveManager.instance.gameData.generalGameData.generalFlags.RemoveAll(flag =>
             flag.StartsWith("ItemIndex."));
 
-        // Neuen Index hinzufügen
-        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"ItemIndex.{ItemIndex}");
-
-        // Speicherstatus markieren
+        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"ItemIndex.{itemIndex}");
         scrGameSaveManager.IsDirty = true;
     }
 
     public static int GetItemIndex()
     {
-        // Suchen nach AppleIndex im generalFlags
         var itemFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags
             .FirstOrDefault(flag => flag.StartsWith("ItemIndex."));
 
         if (!string.IsNullOrEmpty(itemFlag))
         {
-            // Die gespeicherte Zahl extrahieren
             if (int.TryParse(itemFlag.Split('.')[1], out var index))
             {
                 return index;
             }
         }
 
-        // Wenn kein Index vorhanden ist, geben Sie 0 zurück
         return 0;
     }
 
