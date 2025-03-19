@@ -749,7 +749,7 @@ namespace NikoArchipelago
                 Logger.LogWarning("Fishsanity: "+ArchipelagoData.slotData["fishsanity"]);
                 Logger.LogWarning("Seedsanity: "+ArchipelagoData.slotData["seedsanity"]);
                 Logger.LogWarning("Flowersanity: "+ArchipelagoData.slotData["flowersanity"]);
-                Logger.LogWarning("Applesanity: "+ArchipelagoData.slotData["applesanity"]);
+                Logger.LogWarning("Applesanity: "+ArchipelagoData.slotData["applessanity"]);
                 Logger.LogWarning("Hairball City - Mitch: "+ArchipelagoData.slotData["chc1"]);
                 Logger.LogWarning("Hairball City - Mai: "+ArchipelagoData.slotData["chc2"]);
                 Logger.LogWarning("Turbine Town - Mitch: "+ArchipelagoData.slotData["ctt1"]);
@@ -770,13 +770,14 @@ namespace NikoArchipelago
                 Logger.LogInfo(scrGameSaveManager.instance.gameData.generalGameData.currentLevel-1);
             }
 
-            if (GUI.Button(new Rect(16, 340, 100, 20), "AllReceivedItems"))
+            if (GUI.Button(new Rect(16, 340, 100, 20), "Resync"))
             {
                 ArchipelagoClient.CheckReceivedItems();
                 foreach (var t in ArchipelagoClient._session.Items.AllItemsReceived)
                 {
                     Logger.LogWarning("Counted Item: " + t.ItemName + " | ItemID: " + t.ItemId);
                 }
+                ArchipelagoClient.CheckLocationState();
             }
             snowAmount = Convert.ToInt32(GUI.TextField(new Rect(150, 360, 80, 20), snowAmount.ToString()));
             if (GUI.Button(new Rect(16, 360, 100, 20), "Snowflake Amount"))

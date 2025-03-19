@@ -292,8 +292,10 @@ public class ArchipelagoMenu : MonoBehaviour
     private CanvasGroup _activePanelSanity;
     public GameObject sanityPanel1;
     public GameObject sanityPanel2;
+    public GameObject sanityPanel3;
     public CanvasGroup sanityPanel1CanvasGroup;
     public CanvasGroup sanityPanel2CanvasGroup;
+    public CanvasGroup sanityPanel3CanvasGroup;
     
     //SanityPage2
     public GameObject seedsPanel;
@@ -337,6 +339,26 @@ public class ArchipelagoMenu : MonoBehaviour
     public Image boughtBathSeedsImage;
     public Button sanityPageBackButton;
     public Button sanityPageForwardButton;
+    public GameObject cassettesPanel;
+    public TextMeshProUGUI cassettesHcCountBackText;
+    public TextMeshProUGUI cassettesHcCountFrontText;
+    public TextMeshProUGUI cassettesTtCountBackText;
+    public TextMeshProUGUI cassettesTtCountFrontText;
+    public TextMeshProUGUI cassettesSfcCountBackText;
+    public TextMeshProUGUI cassettesSfcCountFrontText;
+    public TextMeshProUGUI cassettesPpCountBackText;
+    public TextMeshProUGUI cassettesPpCountFrontText;
+    public TextMeshProUGUI cassettesBathCountBackText;
+    public TextMeshProUGUI cassettesBathCountFrontText;
+    public TextMeshProUGUI cassettesHqCountBackText;
+    public TextMeshProUGUI cassettesHqCountFrontText;
+    public TextMeshProUGUI cassettesGgCountBackText;
+    public TextMeshProUGUI cassettesGgCountFrontText;
+    public Image cassettesDisabledImage;
+    public TooltipTrigger cassettesDisabledTrigger;
+    public Tooltip cassettesDisabledTooltip;
+    public TooltipTrigger cassettesTrigger;
+    public Tooltip cassettesTooltip;
     
     public void Start()
     {
@@ -379,6 +401,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskAndTicketPanel = informationPanel.transform.Find("KioskAndTicketScreen").gameObject;
         sanityPanel1 = informationPanel.transform.Find("SanityPage1").gameObject;
         sanityPanel2 = informationPanel.transform.Find("SanityPage2").gameObject;
+        sanityPanel3 = informationPanel.transform.Find("SanityPage3").gameObject;
         sanityPageBackButton = informationPanel.transform.Find("PrevPage").gameObject.GetComponent<Button>();
         sanityPageForwardButton = informationPanel.transform.Find("NextPage").gameObject.GetComponent<Button>();
         
@@ -419,6 +442,14 @@ public class ArchipelagoMenu : MonoBehaviour
         flowersTrigger = flowersPanel.gameObject.AddComponent<TooltipTrigger>();
         flowersTooltip = flowersPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         
+        // SanityPage3
+        cassettesPanel = sanityPanel3.transform.Find("CassetteScreen").gameObject;
+        cassettesDisabledImage = sanityPanel3.transform.Find("CassettesDisabled").gameObject.GetComponent<Image>();
+        cassettesDisabledTrigger = cassettesDisabledImage.gameObject.AddComponent<TooltipTrigger>();
+        cassettesDisabledTooltip = cassettesDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        cassettesTrigger = cassettesPanel.gameObject.AddComponent<TooltipTrigger>();
+        cassettesTooltip = cassettesPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        
         // Home
         kioskHomeImage = kioskAndTicketPanel.transform.Find("KioskHome").GetComponent<Image>();
         boughtHomeImage = kioskHomeImage.transform.Find("Bought").GetComponent<Image>();
@@ -448,6 +479,8 @@ public class ArchipelagoMenu : MonoBehaviour
         flowerHcCountFrontText = flowersPanel.transform.Find("HCFlowersCount/Front").GetComponent<TextMeshProUGUI>();
         boughtHcFlowersImage = flowersPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
         boughtHcSeedsImage = seedsPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
+        cassettesHcCountBackText = cassettesPanel.transform.Find("HCCassetteCount/Back").GetComponent<TextMeshProUGUI>();
+        cassettesHcCountFrontText = cassettesPanel.transform.Find("HCCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         // Turbine
         ticketTtImage = kioskAndTicketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
         boughtTtImage = ticketTtImage.transform.Find("Bought").GetComponent<Image>();
@@ -466,6 +499,8 @@ public class ArchipelagoMenu : MonoBehaviour
         flowerTtCountBackText = flowersPanel.transform.Find("TTFlowersCount/Back").GetComponent<TextMeshProUGUI>();
         flowerTtCountFrontText = flowersPanel.transform.Find("TTFlowersCount/Front").GetComponent<TextMeshProUGUI>();
         boughtTtFlowersImage = flowersPanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
+        cassettesTtCountBackText = cassettesPanel.transform.Find("TTCassetteCount/Back").GetComponent<TextMeshProUGUI>();
+        cassettesTtCountFrontText = cassettesPanel.transform.Find("TTCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         // Salmon
         ticketSfcImage = kioskAndTicketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
         boughtSfcImage = ticketSfcImage.transform.Find("Bought").GetComponent<Image>();
@@ -487,6 +522,8 @@ public class ArchipelagoMenu : MonoBehaviour
         flowerSfcCountFrontText = flowersPanel.transform.Find("SCFFlowersCount/Front").GetComponent<TextMeshProUGUI>();
         boughtScfFlowersImage = flowersPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
         boughtScfSeedsImage = seedsPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
+        cassettesSfcCountBackText = cassettesPanel.transform.Find("SCFCassetteCount/Back").GetComponent<TextMeshProUGUI>();
+        cassettesSfcCountFrontText = cassettesPanel.transform.Find("SCFCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         // Pool
         ticketPpImage = kioskAndTicketPanel.transform.Find("TicketPool").GetComponent<Image>();
         boughtPpImage = ticketPpImage.transform.Find("Bought").GetComponent<Image>();
@@ -505,6 +542,8 @@ public class ArchipelagoMenu : MonoBehaviour
         flowerPpCountBackText = flowersPanel.transform.Find("PPFlowersCount/Back").GetComponent<TextMeshProUGUI>();
         flowerPpCountFrontText = flowersPanel.transform.Find("PPFlowersCount/Front").GetComponent<TextMeshProUGUI>();
         boughtPpFlowersImage = flowersPanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
+        cassettesPpCountBackText = cassettesPanel.transform.Find("PPCassetteCount/Back").GetComponent<TextMeshProUGUI>();
+        cassettesPpCountFrontText = cassettesPanel.transform.Find("PPCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         // Bath
         ticketBathImage = kioskAndTicketPanel.transform.Find("TicketBath").GetComponent<Image>();
         boughtBathImage = ticketBathImage.transform.Find("Bought").GetComponent<Image>();
@@ -526,6 +565,8 @@ public class ArchipelagoMenu : MonoBehaviour
         flowerBathCountFrontText = flowersPanel.transform.Find("BATHFlowersCount/Front").GetComponent<TextMeshProUGUI>();
         boughtBathFlowersImage = flowersPanel.transform.Find("BATHComplete").gameObject.GetComponent<Image>();
         boughtBathSeedsImage = seedsPanel.transform.Find("BathComplete").gameObject.GetComponent<Image>();
+        cassettesBathCountBackText = cassettesPanel.transform.Find("BathCassetteCount/Back").GetComponent<TextMeshProUGUI>();
+        cassettesBathCountFrontText = cassettesPanel.transform.Find("BathCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         // Tadpole
         ticketHqImage = kioskAndTicketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
         boughtHqImage = ticketHqImage.transform.Find("Bought").GetComponent<Image>();
@@ -544,6 +585,8 @@ public class ArchipelagoMenu : MonoBehaviour
         flowerHqCountBackText = flowersPanel.transform.Find("HQFlowersCount/Back").GetComponent<TextMeshProUGUI>();
         flowerHqCountFrontText = flowersPanel.transform.Find("HQFlowersCount/Front").GetComponent<TextMeshProUGUI>();
         boughtHqFlowersImage = flowersPanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
+        cassettesHqCountBackText = cassettesPanel.transform.Find("HQCassetteCount/Back").GetComponent<TextMeshProUGUI>();
+        cassettesHqCountFrontText = cassettesPanel.transform.Find("HQCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         // Misc
         ticketGgImage = kioskAndTicketPanel.transform.Find("TicketGarden").GetComponent<Image>();
         mitchGardenImage = ticketGgImage.transform.Find("Mitch").GetComponent<Image>();
@@ -551,6 +594,8 @@ public class ArchipelagoMenu : MonoBehaviour
         gardenDisabledImage = ticketGgImage.transform.Find("Disabled").GetComponent<Image>();
         ticketCl1Image = informationPanel.transform.Find("ContactList1").GetComponent<Image>();
         ticketCl2Image = informationPanel.transform.Find("ContactList2").GetComponent<Image>();
+        cassettesGgCountBackText = cassettesPanel.transform.Find("GGCassetteCount/Back").GetComponent<TextMeshProUGUI>();
+        cassettesGgCountFrontText = cassettesPanel.transform.Find("GGCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         
         keyCountBackText = informationPanel.transform.Find("KeyCount/Back").GetComponent<TextMeshProUGUI>();
         keyCountFrontText = informationPanel.transform.Find("KeyCount/Front").GetComponent<TextMeshProUGUI>();
@@ -724,6 +769,8 @@ public class ArchipelagoMenu : MonoBehaviour
         flowersDisabledTrigger.tooltip = flowersDisabledTooltip;
         seedsTrigger.tooltip = seedsTooltip;
         flowersTrigger.tooltip = flowersTooltip;
+        cassettesDisabledTrigger.tooltip = cassettesDisabledTooltip;
+        cassettesTrigger.tooltip = cassettesTooltip;
         //trackerKeyTrigger.tooltip = trackerKeyTooltip;
         tooltipsTrigger.tooltip = tooltipsTooltip;
         cassetteSpoilerTrigger.tooltip = cassetteSpoilerTooltip;
@@ -837,57 +884,87 @@ public class ArchipelagoMenu : MonoBehaviour
             trackersLights.gameObject.AddComponent<LightController>();
             qolLights.gameObject.AddComponent<LightController>();
         }
-        sanityPageBackButton.onClick.AddListener(ShowPage1);
-        sanityPageForwardButton.onClick.AddListener(ShowPage2);
+        sanityPageBackButton.onClick.AddListener(ShowPageBack);
+        sanityPageForwardButton.onClick.AddListener(ShowPageForward);
         
         settingsPanelCanvasGroup = formPanel.transform.Find("settingsPanel").gameObject.GetComponent<CanvasGroup>();
         trackersPanelCanvasGroup = formPanel.transform.Find("trackersPanel").gameObject.GetComponent<CanvasGroup>();
         qolPanelCanvasGroup = formPanel.transform.Find("qolPanel").gameObject.GetComponent<CanvasGroup>();
         sanityPanel1CanvasGroup = informationPanel.transform.Find("SanityPage1").gameObject.GetComponent<CanvasGroup>();
         sanityPanel2CanvasGroup = informationPanel.transform.Find("SanityPage2").gameObject.GetComponent<CanvasGroup>();
+        sanityPanel3CanvasGroup = informationPanel.transform.Find("SanityPage3").gameObject.GetComponent<CanvasGroup>();
         _activePanel = settingsPanelCanvasGroup;
         _activePanelSanity = sanityPanel1CanvasGroup;
+        sanityPageBackButton.enabled = false;
+        sanityPageBackButton.image.color = Color.gray;
         SetActiveSanityPanel(sanityPanel1CanvasGroup);
         SetActivePanel(settingsPanelCanvasGroup);
-        settingsImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        settingsImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
+        settingsButton.enabled = false;
     }
 
-    public void ShowPage1()
+    public void ShowPageBack()
     {
-        SetActiveSanityPanel(sanityPanel1CanvasGroup);
-        sanityPageBackButton.image.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        if (_activePanelSanity == sanityPanel2CanvasGroup)
+        {
+            SetActiveSanityPanel(sanityPanel1CanvasGroup);
+            sanityPageBackButton.enabled = false;
+            sanityPageBackButton.image.color = Color.gray;
+        } else if (_activePanelSanity == sanityPanel3CanvasGroup)
+        {
+            SetActiveSanityPanel(sanityPanel2CanvasGroup);
+        }
         sanityPageForwardButton.image.color = Color.white;
+        sanityPageForwardButton.enabled = true;
     }
     
-    public void ShowPage2()
+    public void ShowPageForward()
     {
-        SetActiveSanityPanel(sanityPanel2CanvasGroup);
-        sanityPageForwardButton.image.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        if (_activePanelSanity == sanityPanel1CanvasGroup)
+        {
+            SetActiveSanityPanel(sanityPanel2CanvasGroup);
+        }
+        else if (_activePanelSanity == sanityPanel2CanvasGroup)
+        {
+            SetActiveSanityPanel(sanityPanel3CanvasGroup);
+            sanityPageForwardButton.enabled = false;
+            sanityPageForwardButton.image.color = Color.gray;
+        }
         sanityPageBackButton.image.color = Color.white;
+        sanityPageBackButton.enabled = true;
     }
 
     public void ShowSettings()
     {
         SetActivePanel(settingsPanelCanvasGroup);
-        settingsImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        settingsImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
         trackersImage.color = Color.white;
         qolImage.color = Color.white;
+        settingsButton.enabled = false;
+        trackersButton.enabled = true;
+        qolButton.enabled = true;
     }
 
     public void ShowTrackers()
     {
         SetActivePanel(trackersPanelCanvasGroup);
-        trackersImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        trackersImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
         settingsImage.color = Color.white;
         qolImage.color = Color.white;
+        trackersButton.enabled = false;
+        settingsButton.enabled = true;
+        qolButton.enabled = true;
     }
 
     public void ShowQOL()
     {
         SetActivePanel(qolPanelCanvasGroup);
-        qolImage.color = new Color(0.8773585f, 0.4510947f, 0.7965153f, 1f);
+        qolImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
         settingsImage.color = Color.white;
         trackersImage.color = Color.white;
+        trackersButton.enabled = true;
+        settingsButton.enabled = true;
+        qolButton.enabled = false;
     }
 
     public void ToggleTooltips()
@@ -933,7 +1010,7 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         if (_activePanelSanity == newPanel) return;
         
-        StopAllCoroutines();
+        //StopAllCoroutines();
         StartCoroutine(FadeOut(_activePanelSanity));
         StartCoroutine(FadeIn(newPanel));
         _activePanelSanity = newPanel;
@@ -1112,16 +1189,30 @@ public class ArchipelagoMenu : MonoBehaviour
                 {
                     coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
                     coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
-                    cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
-                    cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                    if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0) {
+                        cassetteCountBackText.text = "NO";
+                        cassetteCountFrontText.text = "NO";
+                    }
+                    else
+                    {
+                        cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                        cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
+                    }
                     gardenDisabledImage.gameObject.SetActive(false);
                 }
                 else
                 {
                     coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/76";
                     coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/76";
-                    cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
-                    cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
+                    if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0) {
+                        cassetteCountBackText.text = "NO";
+                        cassetteCountFrontText.text = "NO";
+                    }
+                    else
+                    {
+                        cassetteCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
+                        cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/61";
+                    }
                     gardenDisabledImage.gameObject.SetActive(true);
                 }
             }
@@ -1469,6 +1560,63 @@ public class ArchipelagoMenu : MonoBehaviour
                 seedSfcCountFrontText.text = "X";
                 seedBathCountBackText.text = "X";
                 seedBathCountFrontText.text = "X";
+            }
+            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+                {
+                    cassettesDisabledImage.gameObject.SetActive(false);
+                    cassettesHcCountBackText.text = ItemHandler.HairballCassetteAmount + "/10";
+                    cassettesHcCountFrontText.text = ItemHandler.HairballCassetteAmount + "/10";
+                    cassettesTtCountBackText.text = ItemHandler.TurbineCassetteAmount + "/10";
+                    cassettesTtCountFrontText.text = ItemHandler.TurbineCassetteAmount + "/10";
+                    cassettesSfcCountBackText.text = ItemHandler.SalmonCassetteAmount + "/10";
+                    cassettesSfcCountFrontText.text = ItemHandler.SalmonCassetteAmount + "/10";
+                    cassettesPpCountBackText.text = ItemHandler.PoolCassetteAmount + "/10";
+                    cassettesPpCountFrontText.text = ItemHandler.PoolCassetteAmount + "/10";
+                    cassettesBathCountBackText.text = ItemHandler.BathCassetteAmount + "/10";
+                    cassettesBathCountFrontText.text = ItemHandler.BathCassetteAmount + "/10";
+                    cassettesHqCountBackText.text = ItemHandler.TadpoleCassetteAmount + "/10";
+                    cassettesHqCountFrontText.text = ItemHandler.TadpoleCassetteAmount + "/10";
+                    cassettesGgCountBackText.text = ItemHandler.GardenCassetteAmount + "/10";
+                    cassettesGgCountFrontText.text = ItemHandler.GardenCassetteAmount + "/10";
+                }
+                else
+                {
+                    cassettesDisabledImage.gameObject.SetActive(true);
+                    cassettesHcCountBackText.text = "X";
+                    cassettesHcCountFrontText.text = "X";
+                    cassettesTtCountBackText.text = "X";
+                    cassettesTtCountFrontText.text = "X";
+                    cassettesSfcCountBackText.text = "X";
+                    cassettesSfcCountFrontText.text = "X";
+                    cassettesPpCountBackText.text = "X";
+                    cassettesPpCountFrontText.text = "X";
+                    cassettesBathCountBackText.text = "X";
+                    cassettesBathCountFrontText.text = "X";
+                    cassettesHqCountBackText.text = "X";
+                    cassettesHqCountFrontText.text = "X";
+                    cassettesGgCountBackText.text = "X";
+                    cassettesGgCountFrontText.text = "X";
+                }
+            }
+            else
+            {
+                cassettesDisabledImage.gameObject.SetActive(true);
+                cassettesHcCountBackText.text = "X";
+                cassettesHcCountFrontText.text = "X";
+                cassettesTtCountBackText.text = "X";
+                cassettesTtCountFrontText.text = "X";
+                cassettesSfcCountBackText.text = "X";
+                cassettesSfcCountFrontText.text = "X";
+                cassettesPpCountBackText.text = "X";
+                cassettesPpCountFrontText.text = "X";
+                cassettesBathCountBackText.text = "X";
+                cassettesBathCountFrontText.text = "X";
+                cassettesHqCountBackText.text = "X";
+                cassettesHqCountFrontText.text = "X";
+                cassettesGgCountBackText.text = "X";
+                cassettesGgCountFrontText.text = "X";
             }
         }
         else
