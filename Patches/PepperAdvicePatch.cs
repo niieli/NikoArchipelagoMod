@@ -407,7 +407,14 @@ public class PepperAdvicePatch
                 }
                 var locations = saveManager.gameData.worldsData[worldData.worldIndex]
                     .miscFlags
-                        .Where(t => !t.StartsWith("Fischer"))
+                    .Where(t => !(
+                        t.Contains("Fischer") || 
+                        t.StartsWith("lock") || 
+                        t.Contains("Officelock") || 
+                        t.Contains("TurbineLock") || 
+                        t.Contains("mahjonglock") ||
+                        t == "1"
+                    ))
                     .Concat(saveManager.gameData.worldsData[worldData.worldIndex].coinFlags)
                     .Concat(saveManager.gameData.worldsData[worldData.worldIndex].cassetteFlags)
                     .Concat(saveManager.gameData.worldsData[worldData.worldIndex].letterFlags)

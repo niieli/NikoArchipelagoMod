@@ -424,7 +424,14 @@ public class TrainMapPatch
                 }
                 var locations = saveManager.gameData.worldsData[__instance.levelSelected]
                     .miscFlags
-                        .Where(t => !t.StartsWith("Fischer"))
+                    .Where(t => !(
+                        t.Contains("Fischer") || 
+                        t.StartsWith("lock") || 
+                        t.Contains("Officelock") || 
+                        t.Contains("TurbineLock") || 
+                        t.Contains("mahjonglock") ||
+                        t == "1"
+                    ))
                     .Concat(saveManager.gameData.worldsData[__instance.levelSelected].coinFlags)
                     .Concat(saveManager.gameData.worldsData[__instance.levelSelected].cassetteFlags)
                     .Concat(saveManager.gameData.worldsData[__instance.levelSelected].letterFlags)
