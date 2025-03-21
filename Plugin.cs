@@ -467,10 +467,15 @@ namespace NikoArchipelago
             // Sync Coins, Cassettes, Keys
             SyncValue(ref generalGameData.coinAmount, ArchipelagoClient.CoinAmount);
             SyncValue(ref generalGameData.coinAmountTotal, ArchipelagoClient.CoinAmount);
+            if (ArchipelagoClient.CoinAmount >= int.Parse(ArchipelagoData.slotData["kioskhq"].ToString()))
+            {
+                ArchipelagoClient.ElevatorRepaired = true;
+            }
             if (ArchipelagoData.slotData.ContainsKey("key_level"))
             {
                 if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
                 {
+                    ArchipelagoClient.Keysanity = true;
                     SyncValue(ref ItemHandler.HairballKeyAmount, ArchipelagoClient.HcKeyAmount - ItemHandler.UsedKeysHairball());
                     SyncValue(ref ItemHandler.TurbineKeyAmount, ArchipelagoClient.TtKeyAmount - ItemHandler.UsedKeysTurbine());
                     SyncValue(ref ItemHandler.SalmonKeyAmount, ArchipelagoClient.SfcKeyAmount - ItemHandler.UsedKeysSalmon());

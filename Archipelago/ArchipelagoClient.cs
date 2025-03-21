@@ -33,7 +33,7 @@ public class ArchipelagoClient
 
     public static int SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary,
-        HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs;
+        HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs, Keysanity, ElevatorRepaired;
 
     private static int savedItemIndex;
     private static bool stopIt;

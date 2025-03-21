@@ -315,14 +315,68 @@ public class PepperAdvicePatch
                 {
                     SnailShop[0] = 16;
                 }
-                if (ArchipelagoClient.TicketCount() > 5)
+                if (ArchipelagoClient.TicketCount() == 5)
                 {
-                    Achievements[1] = 8;
-                    Achievements[2] = 8;
-                    Achievements[3] = 8;
-                    Achievements[4] = 8;
-                    Achievements[5] = 8;
-                    Achievements[6] = 8;
+                    Achievements[1] = 4;
+                    Achievements[2] = 4;
+                    Achievements[3] = 4;
+                    Achievements[4] = 4;
+                    Achievements[5] = 4;
+                    Achievements[6] = 4;
+                } else if (ArchipelagoClient.TicketCount() >= 6)
+                {
+                    
+                    if (((ItemHandler.SalmonKeyAmount > 0 && ArchipelagoClient.Keysanity) || 
+                        (saveManager.gameData.generalGameData.keyAmount > 0 && !ArchipelagoClient.Keysanity)) 
+                        && ArchipelagoClient.ElevatorRepaired)
+                    {
+                        Achievements[1] = 7;
+                        Achievements[2] = 7;
+                        Achievements[3] = 7;
+                        Achievements[4] = 7;
+                        Achievements[5] = 7;
+                        Achievements[6] = 7; 
+                    }
+                    else
+                    {
+                        Achievements[1] = 6;
+                        Achievements[2] = 6;
+                        Achievements[3] = 6;
+                        Achievements[4] = 6;
+                        Achievements[5] = 6;
+                        Achievements[6] = 6; 
+                    }
+                    
+                }
+                if (Plugin.ArchipelagoClient.CoinAmount >= 76)
+                {
+                    switch (Achievements[1])
+                    {
+                        case 7:
+                            Achievements[1] = 8;
+                            Achievements[2] = 8;
+                            Achievements[3] = 8;
+                            Achievements[4] = 8;
+                            Achievements[5] = 8;
+                            Achievements[6] = 8;
+                            break;
+                        case 6:
+                            Achievements[1] = 7;
+                            Achievements[2] = 7;
+                            Achievements[3] = 7;
+                            Achievements[4] = 7;
+                            Achievements[5] = 7;
+                            Achievements[6] = 7;
+                            break;
+                        case 4:
+                            Achievements[1] = 5;
+                            Achievements[2] = 5;
+                            Achievements[3] = 5;
+                            Achievements[4] = 5;
+                            Achievements[5] = 5;
+                            Achievements[6] = 5;
+                            break;
+                    }
                 }
 
                 var totalLocations = coinsPerLevel[worldData.worldIndex]
