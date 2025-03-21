@@ -106,11 +106,11 @@ public class PepperAdvicePatch
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.HairballFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.HairballFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.HairballFlowerAmount != 3)
+                    if (_flowersSanity && ItemHandler.HairballFlowerAmount < 3)
                         gabi = -1;
-                    if ((_seedsSanity && ItemHandler.HairballSeedAmount != 10) && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                    if ((_seedsSanity && ItemHandler.HairballSeedAmount < 10) && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                         moomy = -1;
                     break;
                 case 2:
@@ -126,9 +126,9 @@ public class PepperAdvicePatch
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.TurbineFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.TurbineFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.TurbineFlowerAmount != 3)
+                    if (_flowersSanity && ItemHandler.TurbineFlowerAmount < 3)
                         gabi = -1;
                     break;
                 case 3:
@@ -141,15 +141,15 @@ public class PepperAdvicePatch
                     {
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price 
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1")
-                            && saveManager.gameData.generalGameData.keyAmount > 0)
+                            && saveManager.gameData.generalGameData.keyAmount < 1)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.SalmonFishAmount != 5 
+                    if (_fishingSanity && ItemHandler.SalmonFishAmount < 5 
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.SalmonFlowerAmount != 6)
+                    if (_flowersSanity && ItemHandler.SalmonFlowerAmount < 6)
                         gabi = -1;
-                    if (_seedsSanity && ItemHandler.SalmonSeedAmount != 10)
+                    if (_seedsSanity && ItemHandler.SalmonSeedAmount < 10)
                         moomy = -1;
                     break;
                 case 4:
@@ -164,9 +164,9 @@ public class PepperAdvicePatch
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.PoolFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.PoolFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.PoolFlowerAmount != 3
+                    if (_flowersSanity && ItemHandler.PoolFlowerAmount < 3
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                         gabi = -1;
                     if (saveManager.gameData.generalGameData.keyAmount < 1)
@@ -183,13 +183,13 @@ public class PepperAdvicePatch
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.BathFishAmount != 5
+                    if (_fishingSanity && ItemHandler.BathFishAmount < 5
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.BathFlowerAmount != 3 
+                    if (_flowersSanity && ItemHandler.BathFlowerAmount < 3 
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                         gabi = -1;
-                    if (_seedsSanity && ItemHandler.BathSeedAmount != 10)
+                    if (_seedsSanity && ItemHandler.BathSeedAmount < 10)
                         moomy = -1;
                     if (saveManager.gameData.generalGameData.keyAmount < 1 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                         blippyBone = -1;
@@ -205,9 +205,9 @@ public class PepperAdvicePatch
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.TadpoleFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.TadpoleFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.TadpoleFlowerAmount != 4)
+                    if (_flowersSanity && ItemHandler.TadpoleFlowerAmount < 4)
                         gabi = -1;
                     if (saveManager.gameData.generalGameData.keyAmount < 1)
                         blippyBone = -1;
@@ -315,7 +315,7 @@ public class PepperAdvicePatch
                 {
                     SnailShop[0] = 16;
                 }
-                if (ArchipelagoClient.TicketCount() >= 6)
+                if (ArchipelagoClient.TicketCount() > 5)
                 {
                     Achievements[1] = 8;
                     Achievements[2] = 8;
@@ -324,18 +324,19 @@ public class PepperAdvicePatch
                     Achievements[5] = 8;
                     Achievements[6] = 8;
                 }
+
                 var totalLocations = coinsPerLevel[worldData.worldIndex]
-                                     +levelData.lettersPerLevel[worldData.worldIndex]
-                                     +levelData.keysPerLevel[worldData.worldIndex]
-                                     +levelData.cassettesPerLevel[worldData.worldIndex]
-                                     +applesPerLevel[worldData.worldIndex]
-                                     +fishPerLevel[worldData.worldIndex]
-                                     +flowersPerLevel[worldData.worldIndex]
-                                     +seedsPerLevel[worldData.worldIndex]
-                                     +HandsomePerLevel[worldData.worldIndex]
-                                     +General[worldData.worldIndex]
-                                     +Achievements[worldData.worldIndex]
-                                     +KioskPerLevel[worldData.worldIndex]
+                                     + levelData.lettersPerLevel[worldData.worldIndex]
+                                     + levelData.keysPerLevel[worldData.worldIndex]
+                                     + levelData.cassettesPerLevel[worldData.worldIndex]
+                                     + applesPerLevel[worldData.worldIndex]
+                                     + fishPerLevel[worldData.worldIndex]
+                                     + flowersPerLevel[worldData.worldIndex]
+                                     + seedsPerLevel[worldData.worldIndex]
+                                     + HandsomePerLevel[worldData.worldIndex]
+                                     + General[worldData.worldIndex]
+                                     + Achievements[worldData.worldIndex]
+                                     + KioskPerLevel[worldData.worldIndex]
                                      +SnailShop[0];
                 switch (waveX)
                 {
@@ -346,8 +347,8 @@ public class PepperAdvicePatch
                         totalLocations += coinsPerLevelWave2[worldData.worldIndex];
                         break;
                     case 4:
-                        totalLocations += coinsPerLevelWave1[worldData.worldIndex] 
-                                         +coinsPerLevelWave2[worldData.worldIndex];
+                        totalLocations += coinsPerLevelWave1[worldData.worldIndex];
+                        totalLocations += coinsPerLevelWave2[worldData.worldIndex];
                         break;
                 }
                 var locations = saveManager.gameData.worldsData[worldData.worldIndex]
@@ -360,24 +361,37 @@ public class PepperAdvicePatch
                     .Count();
                 if (worldData.worldIndex == 0)
                 {
-                    locations += 
-                        saveManager.gameData.generalGameData.generalFlags
-                            .Count(t => t.StartsWith("Shop") || t.StartsWith($"Froggy {levelNames[worldData.worldIndex]}") 
-                                                             || t.StartsWith($"Kiosk{levelNames[worldData.worldIndex]}")
-                                                             || t.StartsWith("FROG") || t.StartsWith("LOST")
-                                                             || (!t.StartsWith("Hint") && !t.StartsWith("CL") && !t.StartsWith("Secret")
-                                                             && !t.StartsWith("EMLOYEE") && !t.StartsWith("HOPELESS") 
-                                                             && !t.StartsWith("VOLLEY") && !t.StartsWith("SNAIL") && !t.StartsWith("BOTTLED") && !t.StartsWith("Dustan")));   
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Kiosk{levelNames[worldData.worldIndex]}"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
+                        locations++;
+                    locations += saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));   
                 }
                 else
                 {
-                    locations += 
-                        saveManager.gameData.generalGameData.generalFlags
-                            .Count(t => t.StartsWith("Shop") || t.StartsWith($"Froggy {levelNames[worldData.worldIndex]}") 
-                                                             || t.StartsWith($"Kiosk{levelNames[worldData.worldIndex]}") 
-                                                             || (!t.StartsWith("Hint") && !t.StartsWith("CL") && !t.StartsWith("Secret"))
-                                                             || t.StartsWith("EMLOYEE") || t.StartsWith("FROG") || t.StartsWith("LOST") || t.StartsWith("HOPELESS") 
-                                                             || t.StartsWith("VOLLEY") || t.StartsWith("SNAIL") || t.StartsWith("BOTTLED") || t.StartsWith("Dustan"));
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Froggy {levelNames[worldData.worldIndex]}"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("Dustan"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Kiosk{levelNames[worldData.worldIndex]}"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
+                        locations++;
+                    locations += saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
                 }
                 if (worldData.worldIndex == 3 && saveManager.gameData.generalGameData.generalFlags.Contains("CL1 Obtained"))
                 {

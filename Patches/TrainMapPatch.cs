@@ -99,11 +99,11 @@ public class TrainMapPatch
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.HairballFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.HairballFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.HairballFlowerAmount != 3)
+                    if (_flowersSanity && ItemHandler.HairballFlowerAmount < 3)
                         gabi = -1;
-                    if ((_seedsSanity && ItemHandler.HairballSeedAmount != 10) && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                    if ((_seedsSanity && ItemHandler.HairballSeedAmount < 10) && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                         moomy = -1;
                     break;
                 case 2:
@@ -119,9 +119,9 @@ public class TrainMapPatch
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.TurbineFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.TurbineFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.TurbineFlowerAmount != 3)
+                    if (_flowersSanity && ItemHandler.TurbineFlowerAmount < 3)
                         gabi = -1;
                     break;
                 case 3:
@@ -134,15 +134,15 @@ public class TrainMapPatch
                     {
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price 
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1")
-                            && saveManager.gameData.generalGameData.keyAmount > 0)
+                            && saveManager.gameData.generalGameData.keyAmount < 1)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.SalmonFishAmount != 5 
+                    if (_fishingSanity && ItemHandler.SalmonFishAmount < 5 
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.SalmonFlowerAmount != 6)
+                    if (_flowersSanity && ItemHandler.SalmonFlowerAmount < 6)
                         gabi = -1;
-                    if (_seedsSanity && ItemHandler.SalmonSeedAmount != 10)
+                    if (_seedsSanity && ItemHandler.SalmonSeedAmount < 10)
                         moomy = -1;
                     break;
                 case 4:
@@ -157,9 +157,9 @@ public class TrainMapPatch
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.PoolFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.PoolFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.PoolFlowerAmount != 3
+                    if (_flowersSanity && ItemHandler.PoolFlowerAmount < 3
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                         gabi = -1;
                     if (saveManager.gameData.generalGameData.keyAmount < 1)
@@ -176,10 +176,10 @@ public class TrainMapPatch
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.BathFishAmount != 5
+                    if (_fishingSanity && ItemHandler.BathFishAmount < 5
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.BathFlowerAmount != 3 
+                    if (_flowersSanity && ItemHandler.BathFlowerAmount < 3 
                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                         gabi = -1;
                     if (_seedsSanity && ItemHandler.BathSeedAmount != 10)
@@ -198,9 +198,9 @@ public class TrainMapPatch
                         if (saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiGameObject.price)
                             mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.TadpoleFishAmount != 5)
+                    if (_fishingSanity && ItemHandler.TadpoleFishAmount < 5)
                         fischer = -1;
-                    if (_flowersSanity && ItemHandler.TadpoleFlowerAmount != 4)
+                    if (_flowersSanity && ItemHandler.TadpoleFlowerAmount < 4)
                         gabi = -1;
                     if (saveManager.gameData.generalGameData.keyAmount < 1)
                         blippyBone = -1;
@@ -376,24 +376,37 @@ public class TrainMapPatch
                     .Count();
                 if (__instance.levelSelected == 0)
                 {
-                    locations += 
-                        saveManager.gameData.generalGameData.generalFlags
-                            .Count(t => t.StartsWith("Shop") || t.StartsWith($"Froggy {levelNames[__instance.levelSelected]}") 
-                                                             || t.StartsWith($"Kiosk{levelNames[__instance.levelSelected]}")
-                                                             || t.StartsWith("FROG") || t.StartsWith("LOST")
-                                                             || (!t.StartsWith("Hint") && !t.StartsWith("CL") && !t.StartsWith("Secret")
-                                                             && !t.StartsWith("EMLOYEE") && !t.StartsWith("HOPELESS") 
-                                                             && !t.StartsWith("VOLLEY") && !t.StartsWith("SNAIL") && !t.StartsWith("BOTTLED") && !t.StartsWith("Dustan")));   
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Kiosk{levelNames[__instance.levelSelected]}"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
+                        locations++;
+                    locations += saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));   
                 }
                 else
                 {
-                    locations += 
-                        saveManager.gameData.generalGameData.generalFlags
-                            .Count(t => t.StartsWith("Shop") || t.StartsWith($"Froggy {levelNames[__instance.levelSelected]}") 
-                                                             || t.StartsWith($"Kiosk{levelNames[__instance.levelSelected]}") 
-                                                             || (!t.StartsWith("Hint") && !t.StartsWith("CL") && !t.StartsWith("Secret"))
-                                                             || t.StartsWith("EMLOYEE") || t.StartsWith("FROG") || t.StartsWith("LOST") || t.StartsWith("HOPELESS") 
-                                                             || t.StartsWith("VOLLEY") || t.StartsWith("SNAIL") || t.StartsWith("BOTTLED") || t.StartsWith("Dustan"));
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Froggy {levelNames[__instance.levelSelected]}"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("Dustan"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Kiosk{levelNames[__instance.levelSelected]}"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
+                        locations++;
+                    locations += saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
                 }
                 if (__instance.levelSelected == 3 && saveManager.gameData.generalGameData.generalFlags.Contains("CL1 Obtained"))
                 {
