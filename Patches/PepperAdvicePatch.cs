@@ -305,13 +305,13 @@ public class PepperAdvicePatch
             
             if (_locationsTextMesh != null)
             {
-                if (ArchipelagoClient.TicketCount() == 2)
+                if (ArchipelagoClient.TicketCount() == 2 && SnailShop[0] != 0)
                 {
                     SnailShop[0] = 10;
-                } else if (ArchipelagoClient.TicketCount() == 3)
+                } else if (ArchipelagoClient.TicketCount() == 3 && SnailShop[0] != 0)
                 {
                     SnailShop[0] = 14;
-                } else if (ArchipelagoClient.TicketCount() >= 4)
+                } else if (ArchipelagoClient.TicketCount() >= 4 && SnailShop[0] != 0)
                 {
                     SnailShop[0] = 16;
                 }
@@ -489,6 +489,80 @@ public class PepperAdvicePatch
         static void Postfix(scrPepperAdvice __instance)
         {
             __instance.trigger.gameObject.SetActive(false);
+            
+            if (ArchipelagoData.slotData == null) return;
+            if (ArchipelagoData.slotData.ContainsKey("applessanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0)
+                {
+                    applesPerLevel.Clear();
+                    applesPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                }
+            }
+            else
+            {
+                applesPerLevel.Clear();
+                applesPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+
+            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 0)
+                {
+                    seedsPerLevel.Clear();
+                    seedsPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                    _seedsSanity = false;
+                }
+            }
+            else
+            {
+                seedsPerLevel.Clear();
+                seedsPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 0)
+                {
+                    flowersPerLevel.Clear();
+                    flowersPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                    _flowersSanity = false;
+                }
+            }
+            else
+            {
+                flowersPerLevel.Clear();
+                flowersPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 0)
+                {
+                    fishPerLevel.Clear();
+                    fishPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                    _fishingSanity = false;
+                }
+            }
+            else
+            {
+                fishPerLevel.Clear();
+                fishPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+
+            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                { 
+                    SnailShop.Clear();
+                    SnailShop.AddRange(Enumerable.Repeat(0, 8));
+                }
+            }
+            else
+            {
+                SnailShop.Clear();
+                SnailShop.AddRange(Enumerable.Repeat(0, 8));
+            }
         }
     }
     

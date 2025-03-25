@@ -321,13 +321,13 @@ public class TrainMapPatch
             
             if (_locationsTextMesh != null)
             {
-                if (ArchipelagoClient.TicketCount() == 2)
+                if (ArchipelagoClient.TicketCount() == 2 && SnailShop[0] != 0)
                 {
                     SnailShop[0] = 10;
-                } else if (ArchipelagoClient.TicketCount() == 3)
+                } else if (ArchipelagoClient.TicketCount() == 3 && SnailShop[0] != 0)
                 {
                     SnailShop[0] = 14;
-                } else if (ArchipelagoClient.TicketCount() >= 4)
+                } else if (ArchipelagoClient.TicketCount() >= 4 && SnailShop[0] != 0)
                 {
                     SnailShop[0] = 16;
                 }

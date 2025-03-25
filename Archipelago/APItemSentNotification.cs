@@ -168,6 +168,11 @@ public class APItemSentNotification : MonoBehaviour
                     "Hairball City Seed" => Plugin.HairballSeedSprite,
                     "Salmon Creek Forest Seed" => Plugin.SalmonSeedSprite,
                     "Bathhouse Seed" => Plugin.BathSeedSprite,
+                    "Freeze Trap" => Plugin.FreezeTrapSprite,
+                    "Iron Boots Trap" => Plugin.IronBootsTrapSprite,
+                    "Whoops! Trap" => Plugin.WhoopsTrapSprite,
+                    "My Turn! Trap" => Plugin.MyTurnTrapSprite,
+                    "Speed Boost" => Plugin.SpeedBoostSprite,
                     _ => Plugin.ApProgressionSprite
                 };
                 break;
@@ -176,20 +181,21 @@ public class APItemSentNotification : MonoBehaviour
                 switch (itemName)
                 {
                     case "Time Piece" when itemGame == "A Hat in Time":
-
+                        _noteSprite.sprite = Plugin.TimePieceSprite;
                         break;
                     case "Yarn" when itemGame == "A Hat in Time":
                     {
-                        var yarnSprites = new[]
-                        {
-                            _noteSprite.sprite = Plugin.YarnSprite,
-                            _noteSprite.sprite = Plugin.Yarn2Sprite,
-                            _noteSprite.sprite = Plugin.Yarn3Sprite,
-                            _noteSprite.sprite = Plugin.Yarn4Sprite,
-                            _noteSprite.sprite = Plugin.Yarn5Sprite
-                        };
-                        var randomIndex = Random.Range(0, yarnSprites.Length);
-                        _noteSprite.sprite = yarnSprites[randomIndex];
+                        // var yarnSprites = new[]
+                        // {
+                        //     _noteSprite.sprite = Plugin.YarnSprite,
+                        //     _noteSprite.sprite = Plugin.Yarn2Sprite,
+                        //     _noteSprite.sprite = Plugin.Yarn3Sprite,
+                        //     _noteSprite.sprite = Plugin.Yarn4Sprite,
+                        //     _noteSprite.sprite = Plugin.Yarn5Sprite
+                        // };
+                        // var randomIndex = Random.Range(0, yarnSprites.Length);
+                        // _noteSprite.sprite = yarnSprites[randomIndex];
+                        _noteSprite.sprite = Plugin.YarnSprite;
                         break;
                     }
                     default:

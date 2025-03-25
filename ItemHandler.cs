@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using KinematicCharacterController.Core;
 using NikoArchipelago.Patches;
 using NikoArchipelago.Stuff;
 using UnityEngine;
@@ -593,6 +594,51 @@ public static class ItemHandler
         }
     }
     
+    public static void AddSpeedBoost(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Speed Boost from {sender}!" : "You found your Speed Boost!",
+            3f, Plugin.SpeedBoostSprite);
+        Plugin.MovementSpeedMultiplier();
+    }
+    
+    public static void AddFreezeTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Freeze Trap from {sender}!" : "You found your Freeze Trap!",
+            3f, Plugin.FreezeTrapSprite);
+        TrapManager.FreezeOn = true;
+    }
+    
+    public static void AddIronBootsTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Iron Boots Trap from {sender}!" : "You found your Iron Boots Trap!",
+            3f, Plugin.IronBootsTrapSprite);
+        TrapManager.IronBootsOn = true;
+    }
+    
+    public static void AddWhoopsTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Whoops! Trap from {sender}!" : "You found your Whoops Trap!",
+            3f, Plugin.WhoopsTrapSprite);
+        TrapManager.WhoopsOn = true;
+        MyCharacterController.instance.requestNewPosition(new Vector3(0, 450, 0));
+    }
+    
+    public static void AddMyTurnTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received My Turn! Trap from {sender}!" : "You found your My Turn Trap!",
+            3f, Plugin.MyTurnTrapSprite);
+        TrapManager.MyTurnOn = true;
+    }
     // NPCs
     // public static void AddHcNPCs(string sender, bool notify = true)
     // {

@@ -60,6 +60,7 @@ namespace NikoArchipelago
         public static string Seed;
         private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle, AssetBundleXmas;
+        public static GameObject FreezeTrap, IronBootsTrap, MyTurnTrap, WhoopsTrap;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
@@ -77,7 +78,8 @@ namespace NikoArchipelago
             HairballFlowerSprite, TurbineFlowerSprite, SalmonFlowerSprite, PoolFlowerSprite, BathFlowerSprite, TadpoleFlowerSprite,
             HairballSeedSprite, SalmonSeedSprite, BathSeedSprite,
             HairballCassetteSprite, TurbineCassetteSprite, SalmonCassetteSprite, PoolCassetteSprite, BathCassetteSprite, TadpoleCassetteSprite, GardenCassetteSprite,
-            FischerNoteSprite, GabiNoteSprite, MoomyNoteSprite, BlessleyNoteSprite;
+            FischerNoteSprite, GabiNoteSprite, MoomyNoteSprite, BlessleyNoteSprite,
+            FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite;
 
         public static GameObject ApUIGameObject, ArrowTrackerGameObject;
         public static Texture2D CassetteTexture;
@@ -214,11 +216,12 @@ namespace NikoArchipelago
                 BathKeySprite = AssetBundle.LoadAsset<Sprite>("txrBathKey");
                 TadpoleKeySprite = AssetBundle.LoadAsset<Sprite>("txrTadpoleKey");
                 TimePieceSprite = AssetBundle.LoadAsset<Sprite>("timepiece2D");
-                YarnSprite = AssetBundle.LoadAsset<Sprite>("yarn2d1");
-                Yarn2Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d2");
-                Yarn3Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d3");
-                Yarn4Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d4");
-                Yarn5Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d5");
+                YarnSprite = AssetBundle.LoadAsset<Sprite>("Yarn");
+                // YarnSprite = AssetBundle.LoadAsset<Sprite>("yarn2d1");
+                // Yarn2Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d2");
+                // Yarn3Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d3");
+                // Yarn4Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d4");
+                // Yarn5Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d5");
                 HairballFlowerSprite = AssetBundle.LoadAsset<Sprite>("HairballFlower");
                 TurbineFlowerSprite = AssetBundle.LoadAsset<Sprite>("TurbineFlower");
                 SalmonFlowerSprite = AssetBundle.LoadAsset<Sprite>("SalmonFlower");
@@ -239,6 +242,15 @@ namespace NikoArchipelago
                 GabiNoteSprite = AssetBundle.LoadAsset<Sprite>("sprFlowerNote");
                 MoomyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprHamsterNote");
                 BlessleyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprBugNote");
+                FreezeTrap = AssetBundle.LoadAsset<GameObject>("FreezeTrap");
+                IronBootsTrap = AssetBundle.LoadAsset<GameObject>("IronBootsTrap");
+                MyTurnTrap = AssetBundle.LoadAsset<GameObject>("MyTurnTrap");
+                WhoopsTrap = AssetBundle.LoadAsset<GameObject>("WhoopsTrap");
+                FreezeTrapSprite = AssetBundle.LoadAsset<Sprite>("Schneeflocken1");
+                IronBootsTrapSprite = AssetBundle.LoadAsset<Sprite>("TrapIronBoots");
+                MyTurnTrapSprite = AssetBundle.LoadAsset<Sprite>("imgPepper");
+                WhoopsTrapSprite = AssetBundle.LoadAsset<Sprite>("TrapWhoops");
+                SpeedBoostSprite = AssetBundle.LoadAsset<Sprite>("SpeedBoost");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -608,6 +620,25 @@ namespace NikoArchipelago
             };
         }
 
+        public static void MovementSpeedMultiplier()
+        {
+            if (!ArchipelagoClient.IsValidScene()) return;
+            float amount = ArchipelagoClient.SpeedBoostAmount;
+            if (ArchipelagoClient.SpeedBoostAmount < 0)
+            {
+                return;
+            }
+            amount++;
+            amount *= 1.15f;
+            MyCharacterController.instance.DiveSpeed += amount;
+            MyCharacterController.instance.MaxAirMoveSpeed += amount;
+            MyCharacterController.instance.JumpSpeed += (amount*0.25f);
+            MyCharacterController.instance.MaxStableMoveSpeed += amount;
+            MyCharacterController.instance.MaxWaterMoveSpeed += amount;
+
+            BepinLogger.LogInfo($"Speed Boost Applied: {amount}x");
+        }
+
         public void LogFlags()
         {
             saveDataCoinFlag.ForEach(Logger.LogInfo);
@@ -794,6 +825,19 @@ namespace NikoArchipelago
             {
                 StayOnScreen.snowflakeAmount = snowAmount;
                 Logger.LogInfo($"Snowflake Amount: {StayOnScreen.snowflakeAmount}");
+            }
+            
+            if (GUI.Button(new Rect(16, 380, 100, 20), "Freeze Trap"))
+            {
+                TrapManager.instance.ActivateTrap("Freeze", 10f);
+            }
+            if (GUI.Button(new Rect(16, 400, 100, 20), "Iron Boots Trap"))
+            {
+                TrapManager.instance.ActivateTrap("Iron Boots", 10f);
+            }
+            if (GUI.Button(new Rect(16, 420, 100, 20), "My Turn! Trap"))
+            {
+                TrapManager.instance.ActivateTrap("My Turn!", 30f);
             }
         }
 

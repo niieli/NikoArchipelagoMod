@@ -59,16 +59,17 @@ public class APItemObtainer
                         case "Yarn" 
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            var yarnTextures = new[]
-                            {
-                                Plugin.YarnSprite.texture,
-                                Plugin.Yarn2Sprite.texture,
-                                Plugin.Yarn3Sprite.texture,
-                                Plugin.Yarn4Sprite.texture,
-                                Plugin.Yarn5Sprite.texture
-                            };
-                            var randomIndex = Random.Range(0, yarnTextures.Length);
-                            __instance.txrCoin = yarnTextures[randomIndex];
+                            // var yarnTextures = new[]
+                            // {
+                            //     Plugin.YarnSprite.texture,
+                            //     Plugin.Yarn2Sprite.texture,
+                            //     Plugin.Yarn3Sprite.texture,
+                            //     Plugin.Yarn4Sprite.texture,
+                            //     Plugin.Yarn5Sprite.texture
+                            // };
+                            // var randomIndex = Random.Range(0, yarnTextures.Length);
+                            // __instance.txrCoin = yarnTextures[randomIndex];
+                            __instance.txrCoin = Plugin.YarnSprite.texture;
                             break;
                         }
                         default:
@@ -353,16 +354,17 @@ public class APItemObtainer
                         case "Yarn" 
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            var yarnTextures = new[]
-                            {
-                                Plugin.YarnSprite.texture,
-                                Plugin.Yarn2Sprite.texture,
-                                Plugin.Yarn3Sprite.texture,
-                                Plugin.Yarn4Sprite.texture,
-                                Plugin.Yarn5Sprite.texture
-                            };
-                            var randomIndex = Random.Range(0, yarnTextures.Length);
-                            __instance.txrCassette = yarnTextures[randomIndex];
+                            // var yarnTextures = new[]
+                            // {
+                            //     Plugin.YarnSprite.texture,
+                            //     Plugin.Yarn2Sprite.texture,
+                            //     Plugin.Yarn3Sprite.texture,
+                            //     Plugin.Yarn4Sprite.texture,
+                            //     Plugin.Yarn5Sprite.texture
+                            // };
+                            // var randomIndex = Random.Range(0, yarnTextures.Length);
+                            // __instance.txrCassette = yarnTextures[randomIndex];
+                            __instance.txrCassette = Plugin.YarnSprite.texture;
                             break;
                         }
                         default:

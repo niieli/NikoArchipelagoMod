@@ -271,7 +271,16 @@ public static class KioskCost
                     "SUPER IMPORTANT",
                     "like a good deal",
                     "very important trust me",
-                    "like the best item"
+                    "like the best item",
+                    "This is a 1-Time Offer!",
+                    "You Need This!",
+                    "RARE LOOT!",
+                    "Legendary!",
+                    "This will help… I promise",
+                    "Absolutely NOT a trap",
+                    "A MUST PICK UP!",
+                    "Collector's really like this one.. hehe",
+                    "a very funny item"
                 };
                 var randomIndex = Random.Range(0, trapStrings.Length);
                 classification = trapStrings[randomIndex];

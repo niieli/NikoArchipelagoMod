@@ -62,6 +62,8 @@ public class GameObjectChecker : MonoBehaviour
         NpcController();
         Statistics();
         StatisticsWhiteboard();
+        Plugin.MovementSpeedMultiplier();
+        TrapManager();
         //APArrowTracker();
         //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
@@ -315,6 +317,34 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
         tracker.enabled = true;
+    }
+    
+    private static void TrapManager()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var trapObject = Plugin.AssetBundle.LoadAsset<GameObject>("APTimerTrap");
+        var trapUI = Instantiate(trapObject, GameObject.Find("UI").transform, false);
+        if (trapUI == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrapManager component to APTimerTrap.");
+            return;
+        }
+        trapUI.layer = LayerMask.NameToLayer("UI");
+        trapUI.transform.SetSiblingIndex(23);
+        var apTrapManager = trapUI.transform.Find("APTrapManager")?.gameObject;
+        if (apTrapManager == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrapManager component to APTrapManager.");
+            return;
+        }
+        var trapManager = apTrapManager.AddComponent<TrapManager>();
+        if (trapManager == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrapManager component to APTrapManager.");
+        }
+
+        apTrapManager.transform.Find("TrapPanel").localPosition = new Vector3(37f, -91f, 0f);
+        //apTrapManager.transform.Find("TrapPanel").localPosition = new Vector3(88f, -91f, 0f); //TODO: Fix UiHider :)
     }
     
     private static void Statistics()

@@ -29,7 +29,8 @@ public class ArchipelagoClient
         HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount,
         HcSeedAmount, SfcSeedAmount, BathSeedAmount,
         HcFlowerAmount, TtFlowerAmount, SfcFlowerAmount, PpFlowerAmount, BathFlowerAmount, HqFlowerAmount,
-        HcCassetteAmount, TtCassetteAmount, SfcCassetteAmount, PpCassetteAmount, BathCassetteAmount, HqCassetteAmount, GgCassetteAmount;
+        HcCassetteAmount, TtCassetteAmount, SfcCassetteAmount, PpCassetteAmount, BathCassetteAmount, HqCassetteAmount, GgCassetteAmount,
+        SpeedBoostAmount;
 
     public static int SnailMoney, Apples;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary,
@@ -202,7 +203,7 @@ public class ArchipelagoClient
             Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
             Plugin.BepinLogger.LogFatal($"Current Item: {receivedItem.ItemName}");
             if (receivedItem.ItemName is "Apples" or "25 Apples" or "10 Bugs" or "Bugs" or "Letter" or "Snail Money"
-                    or "1000 Snail Money")
+                    or "1000 Snail Money" or "Freeze Trap" or "Iron Boots Trap" or "Whoops! Trap")
             {
                 Plugin.BepinLogger.LogFatal($"Skipping Item: {receivedItem.ItemName}");
             }
@@ -216,7 +217,7 @@ public class ArchipelagoClient
         savedItemIndex = GetItemIndex()+1;
         SaveItemIndex(savedItemIndex);
         
-        if (IsValidScene() && Plugin.loggedIn)
+        if (IsValidScene() && Plugin.loggedIn && scrTransitionManager.instance.state == scrTransitionManager.States.idle)
         {
             GiveItem(receivedItem);
         }
@@ -438,6 +439,22 @@ public class ArchipelagoClient
                 case 598_145_444_000+58: // GGCassette
                     ItemHandler.AddGgCassette(senderName, notify);
                     GgCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Gary's Garden Cassette");
+                    break;
+                case 598_145_444_000+18: // Speed Boost
+                    ItemHandler.AddSpeedBoost(senderName, notify);
+                    SpeedBoostAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Speed Boost");
+                    break;
+                case 598_145_444_000+70: // Freeze Trap
+                    ItemHandler.AddFreezeTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+71: // Iron Boots Trap
+                    ItemHandler.AddIronBootsTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+72: // Whoops! Trap
+                    ItemHandler.AddWhoopsTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+73: // My Turn! Trap
+                    ItemHandler.AddMyTurnTrap(senderName, notify);
                     break;
             }
     }
