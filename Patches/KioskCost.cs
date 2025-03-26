@@ -12,7 +12,7 @@ public static class KioskCost
 {
     private static scrKioskManager _kioskManager;
     private static Plugin plugin;
-    private static bool _changed, _changed2, bought, avail, _answerFix;
+    private static bool _changed, _changed2, bought, avail, _answerFix, _answerFix2;
 
     [HarmonyPrefix, HarmonyPatch(typeof(levelData))]
     public static void PreFix()
@@ -86,6 +86,8 @@ public static class KioskCost
                         __instance.NPCbought.SetActive(false);
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                         __instance.textMesh.gameObject.SetActive(true);
+                        if (!scrTextbox.instance.isOn)
+                            _answerFix2 = false;
                         if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "kioskBuy")
                         {
                             if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
@@ -96,9 +98,10 @@ public static class KioskCost
                             var kioskBuy0 = 
                                 $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?"
                                 + $"\nIt seems {ItemClassification(currentBuyableLevel+12-adjustment)}...";
-                            scrTextbox.instance.conversationLocalized[0] = kioskBuy0;
-                            if (_currentBox == 0)
+                            if (_currentBox == 0 && !_answerFix2)
                             {
+                                scrTextbox.instance.conversationLocalized[0] = kioskBuy0;
+                                _answerFix2 = true;
                                 _answerFix = false;
                             }
                             if (_currentBox == 1 && !_answerFix)
@@ -138,6 +141,8 @@ public static class KioskCost
                         __instance.NPCbought.SetActive(false);
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                         __instance.textMesh.gameObject.SetActive(true);
+                        if (!scrTextbox.instance.isOn)
+                            _answerFix2 = false;
                         if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "kioskNomoney")
                         {
                             if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
@@ -150,8 +155,12 @@ public static class KioskCost
                                 $"\nIt seems {ItemClassification(currentBuyableLevel+12-adjustment)}...";
                             string noMoneyKiosk2 = 
                                 $"It will cost {levelPrice} coins to purchase.";
-                            scrTextbox.instance.conversationLocalized[0] = noMoneyKiosk0;
-                            if (_currentBox == 0) _answerFix = false;
+                            if (_currentBox == 0 && !_answerFix2)
+                            {
+                                scrTextbox.instance.conversationLocalized[0] = noMoneyKiosk0;
+                                _answerFix2 = true;
+                                _answerFix = false;
+                            }
                             if (_currentBox == 1 && !_answerFix)
                             {
                                 string[] multiworldRef = new[]
@@ -182,6 +191,8 @@ public static class KioskCost
                     __instance.NPCbought.SetActive(false);
                     __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                     __instance.textMesh.gameObject.SetActive(true);
+                    if (!scrTextbox.instance.isOn)
+                        _answerFix2 = false;
                     if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "kioskNomoney")
                     {
                         if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
@@ -194,8 +205,12 @@ public static class KioskCost
                             $"\nIt seems {ItemClassification(currentBuyableLevel+12-adjustment)}...";
                         string noMoneyKiosk2 = 
                             $"It will cost {levelPrice} coins to purchase.";
-                        scrTextbox.instance.conversationLocalized[0] = noMoneyKiosk0;
-                        if (_currentBox == 0) _answerFix = false;
+                        if (_currentBox == 0 && !_answerFix2)
+                        {
+                            scrTextbox.instance.conversationLocalized[0] = noMoneyKiosk0;
+                            _answerFix2 = true;
+                            _answerFix = false;
+                        }
                         if (_currentBox == 1 && !_answerFix)
                         {
                             string[] multiworldRef = new[]

@@ -95,28 +95,34 @@ public class TrainMapPatch
                 case 1:
                     if (CassetteCost.MitchGameObject != null)
                     {
-                        if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(1, _cassetteSanity) * 5) 
-                             || (_cassetteSanity == 0 && ItemHandler.HairballCassetteAmount < CassetteCost.MitchPrice(1)))
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                            mitch = -1;
+                        if (!saveManager.gameData.worldsData[1].coinFlags.Contains("cassetteCoin"))
+                            if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(1, _cassetteSanity) * 5) 
+                                 || (_cassetteSanity == 0 && ItemHandler.HairballCassetteAmount < CassetteCost.MitchPrice(1)))
+                                && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                                mitch = -1;
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
-                        if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(1, _cassetteSanity) * 5) 
-                             || (_cassetteSanity == 0 && ItemHandler.HairballCassetteAmount < CassetteCost.MaiPrice(1)))
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                            mai = -1;
+                        if (!saveManager.gameData.worldsData[1].coinFlags.Contains("cassetteCoin2"))
+                            if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(1, _cassetteSanity) * 5) 
+                                 || (_cassetteSanity == 0 && ItemHandler.HairballCassetteAmount < CassetteCost.MaiPrice(1)))
+                                && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                                mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.HairballFishAmount < 5)
-                        fischer = -1;
-                    if (_flowersSanity && ItemHandler.HairballFlowerAmount < 3)
-                        gabi = -1;
-                    if (_seedsSanity && ItemHandler.HairballSeedAmount < 10
-                                     && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                        moomy = -1;
-                    if (_seedsSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                        seedsPerLevel[1] = 0;
-                    else seedsPerLevel[1] = 10;
+                    if (!saveManager.gameData.worldsData[1].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && ItemHandler.HairballFishAmount < 5)
+                            fischer = -1;
+                    if (!saveManager.gameData.worldsData[1].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && ItemHandler.HairballFlowerAmount < 3)
+                            gabi = -1;
+                    if (!saveManager.gameData.worldsData[1].coinFlags.Contains("hamsterball"))
+                        if (_seedsSanity && ItemHandler.HairballSeedAmount < 10
+                                         && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                            moomy = -1;
+                    if (!saveManager.gameData.worldsData[1].coinFlags.Contains("hamsterball"))
+                        if (_seedsSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                            seedsPerLevel[1] = 0;
+                        else seedsPerLevel[1] = 10;
                     if (!saveManager.gameData.worldsData[1].miscFlags.Contains("1"))
                         if ((_keySanity && ItemHandler.HairballKeyAmount < 1) ||
                             (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
@@ -125,22 +131,26 @@ public class TrainMapPatch
                 case 2:
                     if (CassetteCost.MitchGameObject != null)
                     {
-                        if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(2, _cassetteSanity) * 5)
-                             || (_cassetteSanity == 0 && ItemHandler.TurbineCassetteAmount < CassetteCost.MitchPrice(2)))
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                            mitch = -1;
+                        if (!saveManager.gameData.worldsData[2].coinFlags.Contains("cassetteCoin"))
+                            if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(2, _cassetteSanity) * 5)
+                                 || (_cassetteSanity == 0 && ItemHandler.TurbineCassetteAmount < CassetteCost.MitchPrice(2)))
+                                && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                                mitch = -1;
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
-                        if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(2, _cassetteSanity) * 5) 
-                             || (_cassetteSanity == 0 && ItemHandler.TurbineCassetteAmount < CassetteCost.MaiPrice(2)))
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                            mai = -1;
+                        if (!saveManager.gameData.worldsData[2].coinFlags.Contains("cassetteCoin2"))
+                            if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(2, _cassetteSanity) * 5) 
+                                 || (_cassetteSanity == 0 && ItemHandler.TurbineCassetteAmount < CassetteCost.MaiPrice(2)))
+                                && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                                mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.TurbineFishAmount < 5)
-                        fischer = -1;
-                    if (_flowersSanity && ItemHandler.TurbineFlowerAmount < 3)
-                        gabi = -1;
+                    if (!saveManager.gameData.worldsData[2].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && ItemHandler.TurbineFishAmount < 5)
+                            fischer = -1;
+                    if (!saveManager.gameData.worldsData[2].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && ItemHandler.TurbineFlowerAmount < 3)
+                            gabi = -1;
                     if (!saveManager.gameData.worldsData[2].coinFlags.Contains("Dustan"))
                         if ((_keySanity && ItemHandler.TurbineKeyAmount < 1) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
                             dustan = -1;
@@ -148,29 +158,35 @@ public class TrainMapPatch
                 case 3:
                     if (CassetteCost.MitchGameObject != null)
                     {
-                        if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(3, _cassetteSanity) * 5) 
-                            || (_cassetteSanity == 0 && ItemHandler.SalmonCassetteAmount < CassetteCost.MitchPrice(3)))
-                            mitch = -1;
+                        if (!saveManager.gameData.worldsData[3].coinFlags.Contains("cassetteCoin"))
+                            if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(3, _cassetteSanity) * 5) 
+                                || (_cassetteSanity == 0 && ItemHandler.SalmonCassetteAmount < CassetteCost.MitchPrice(3)))
+                                mitch = -1;
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
-                        if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(3, _cassetteSanity) * 5)
-                             || (_cassetteSanity == 0 && ItemHandler.SalmonCassetteAmount < CassetteCost.MaiPrice(3)))
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1")
-                            && ((_keySanity && ItemHandler.SalmonKeyAmount < 1) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
-                            && !saveManager.gameData.worldsData[2].coinFlags.Contains("lock2"))
-                            mai = -1;
+                        if (!saveManager.gameData.worldsData[3].coinFlags.Contains("cassetteCoin2"))
+                            if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(3, _cassetteSanity) * 5)
+                                 || (_cassetteSanity == 0 && ItemHandler.SalmonCassetteAmount < CassetteCost.MaiPrice(3)))
+                                && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1")
+                                && ((_keySanity && ItemHandler.SalmonKeyAmount < 1) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
+                                && !saveManager.gameData.worldsData[2].coinFlags.Contains("lock2"))
+                                mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.SalmonFishAmount < 5 
-                        && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                        fischer = -1;
-                    if (_fishingSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
-                        fishPerLevel[3] = 0;
-                    else fishPerLevel[3] = 5;
-                    if (_flowersSanity && ItemHandler.SalmonFlowerAmount < 6)
-                        gabi = -1;
-                    if (_seedsSanity && ItemHandler.SalmonSeedAmount < 10)
-                        moomy = -1;
+                    if (!saveManager.gameData.worldsData[3].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && ItemHandler.SalmonFishAmount < 5 
+                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                            fischer = -1;
+                    if (!saveManager.gameData.worldsData[3].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                            fishPerLevel[3] = 0;
+                        else fishPerLevel[3] = 5;
+                    if (!saveManager.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && ItemHandler.SalmonFlowerAmount < 6)
+                            gabi = -1;
+                    if (!saveManager.gameData.worldsData[3].coinFlags.Contains("hamsterball"))
+                        if (_seedsSanity && ItemHandler.SalmonSeedAmount < 10)
+                            moomy = -1;
                     if (!saveManager.gameData.worldsData[2].coinFlags.Contains("lock2"))
                         if ((_keySanity && ItemHandler.SalmonKeyAmount < 1) ||
                             (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
@@ -179,25 +195,30 @@ public class TrainMapPatch
                 case 4:
                     if (CassetteCost.MitchGameObject != null)
                     {
-                        if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(4, _cassetteSanity) * 5)
-                             || (_cassetteSanity == 0 && ItemHandler.PoolCassetteAmount < CassetteCost.MitchPrice(4)))
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-                            mitch = -1;
+                        if (!saveManager.gameData.worldsData[4].coinFlags.Contains("cassetteCoin"))
+                            if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(4, _cassetteSanity) * 5)
+                                 || (_cassetteSanity == 0 && ItemHandler.PoolCassetteAmount < CassetteCost.MitchPrice(4)))
+                                && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                                mitch = -1;
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
-                        if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(4, _cassetteSanity) * 5) 
-                            || (_cassetteSanity == 0 && ItemHandler.PoolCassetteAmount < CassetteCost.MaiPrice(4)))
-                            mai = -1;
+                        if (!saveManager.gameData.worldsData[4].coinFlags.Contains("cassetteCoin2"))
+                            if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(4, _cassetteSanity) * 5) 
+                                || (_cassetteSanity == 0 && ItemHandler.PoolCassetteAmount < CassetteCost.MaiPrice(4)))
+                                mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.PoolFishAmount < 5)
-                        fischer = -1;
-                    if (_flowersSanity && ItemHandler.PoolFlowerAmount < 3
-                        && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-                        gabi = -1;
-                    if (_flowersSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-                        flowersPerLevel[4] = 0;
-                    else flowersPerLevel[4] = 3;
+                    if (!saveManager.gameData.worldsData[4].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && ItemHandler.PoolFishAmount < 5)
+                            fischer = -1;
+                    if (!saveManager.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && ItemHandler.PoolFlowerAmount < 3
+                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                            gabi = -1;
+                    if (!saveManager.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                            flowersPerLevel[4] = 0;
+                        else flowersPerLevel[4] = 3;
                     if (!saveManager.gameData.worldsData[4].coinFlags.Contains("arcade"))
                         if ((_keySanity && ItemHandler.PoolKeyAmount < 1) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
                             blippyBone = -1;
@@ -205,30 +226,37 @@ public class TrainMapPatch
                 case 5:
                     if (CassetteCost.MitchGameObject != null)
                     {
-                        if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(5, _cassetteSanity) * 5)
-                            || (_cassetteSanity == 0 && ItemHandler.BathCassetteAmount < CassetteCost.MitchPrice(5)))
-                            mitch = -1;
+                        if (!saveManager.gameData.worldsData[5].coinFlags.Contains("cassetteCoin"))
+                            if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(5, _cassetteSanity) * 5)
+                                || (_cassetteSanity == 0 && ItemHandler.BathCassetteAmount < CassetteCost.MitchPrice(5)))
+                                mitch = -1;
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
-                        if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(5, _cassetteSanity) * 5) 
-                            || (_cassetteSanity == 0 && ItemHandler.BathCassetteAmount < CassetteCost.MaiPrice(5)))
-                            mai = -1;
+                        if (!saveManager.gameData.worldsData[5].coinFlags.Contains("cassetteCoin2"))
+                            if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(5, _cassetteSanity) * 5) 
+                                || (_cassetteSanity == 0 && ItemHandler.BathCassetteAmount < CassetteCost.MaiPrice(5)))
+                                mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.BathFishAmount < 5
-                        && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-                        fischer = -1;
-                    if (_fishingSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-                        fishPerLevel[5] = 0;
-                    else fishPerLevel[5] = 5;
-                    if (_flowersSanity && ItemHandler.BathFlowerAmount < 3 
-                        && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-                        gabi = -1;
-                    if (_flowersSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
-                        flowersPerLevel[5] = 0;
-                    else flowersPerLevel[5] = 3;
-                    if (_seedsSanity && ItemHandler.BathSeedAmount != 10)
-                        moomy = -1;
+                    if (!saveManager.gameData.worldsData[5].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && ItemHandler.BathFishAmount < 5
+                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                            fischer = -1;
+                    if (!saveManager.gameData.worldsData[5].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                            fishPerLevel[5] = 0;
+                        else fishPerLevel[5] = 5;
+                    if (!saveManager.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && ItemHandler.BathFlowerAmount < 3 
+                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                            gabi = -1;
+                    if (!saveManager.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                            flowersPerLevel[5] = 0;
+                        else flowersPerLevel[5] = 3;
+                    if (!saveManager.gameData.worldsData[5].coinFlags.Contains("hamsterball"))
+                        if (_seedsSanity && ItemHandler.BathSeedAmount != 10)
+                            moomy = -1;
                     if (!saveManager.gameData.worldsData[5].miscFlags.Contains("arcade"))
                         if (((_keySanity && ItemHandler.BathKeyAmount < 2) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 2))
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
@@ -245,20 +273,24 @@ public class TrainMapPatch
                 case 6:
                     if (CassetteCost.MitchGameObject != null)
                     {
-                        if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(6, _cassetteSanity) * 5) 
-                            || (_cassetteSanity == 0 && ItemHandler.TadpoleCassetteAmount < CassetteCost.MitchPrice(6)))
-                            mitch = -1;
+                        if (!saveManager.gameData.worldsData[6].coinFlags.Contains("cassetteCoin"))
+                            if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(6, _cassetteSanity) * 5) 
+                                || (_cassetteSanity == 0 && ItemHandler.TadpoleCassetteAmount < CassetteCost.MitchPrice(6)))
+                                mitch = -1;
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
-                        if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(6, _cassetteSanity) * 5) 
-                            || (_cassetteSanity == 0 && ItemHandler.TadpoleCassetteAmount < CassetteCost.MaiPrice(6)))
-                            mai = -1;
+                        if (!saveManager.gameData.worldsData[6].coinFlags.Contains("cassetteCoin2"))
+                            if ((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(6, _cassetteSanity) * 5) 
+                                || (_cassetteSanity == 0 && ItemHandler.TadpoleCassetteAmount < CassetteCost.MaiPrice(6)))
+                                mai = -1;
                     }
-                    if (_fishingSanity && ItemHandler.TadpoleFishAmount < 5)
-                        fischer = -1;
-                    if (_flowersSanity && ItemHandler.TadpoleFlowerAmount < 4)
-                        gabi = -1;
+                    if (!saveManager.gameData.worldsData[6].coinFlags.Contains("fishing"))
+                        if (_fishingSanity && ItemHandler.TadpoleFishAmount < 5)
+                            fischer = -1;
+                    if (!saveManager.gameData.worldsData[6].coinFlags.Contains("flowerPuzzle"))
+                        if (_flowersSanity && ItemHandler.TadpoleFlowerAmount < 4)
+                            gabi = -1;
                     if (!saveManager.gameData.worldsData[6].coinFlags.Contains("arcade"))
                         if ((_keySanity && ItemHandler.TadpoleKeyAmount < 1) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
                             blippyBone = -1;
