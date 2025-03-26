@@ -301,15 +301,6 @@ namespace NikoArchipelago
             worldReady = true;
         }
         
-        private IEnumerator BandaidNotificationFix()
-        {
-            yield return new WaitForSeconds(6.0f);
-            if (_noteDisplayer.notificationQueue.Count > 1)
-            {
-                _noteDisplayer.notificationQueue.Clear();
-            }
-        }
-        
         public void Update()
         {
             //Logger.LogFatal("LoggedIn: " + loggedIn); Something broke somehow | Need to investigate on why it skips setting this true

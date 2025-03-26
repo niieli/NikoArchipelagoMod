@@ -137,6 +137,7 @@ public class APItemOverworld
                 { "yarn3", "Yarn3HiT" },
                 { "yarn4", "Yarn4HiT" },
                 { "yarn5", "Yarn5HiT" },
+                { "speedboost", "SpeedBoost" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -256,6 +257,7 @@ public class APItemOverworld
                         "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                         "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                         "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                        "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
@@ -485,6 +487,7 @@ public class APItemOverworld
                 { "yarn3", "Yarn3HiT" },
                 { "yarn4", "Yarn4HiT" },
                 { "yarn5", "Yarn5HiT" },
+                { "speedboost", "SpeedBoost" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -604,6 +607,7 @@ public class APItemOverworld
                         "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                         "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                         "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                        "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
@@ -824,6 +828,7 @@ public class APItemOverworld
                 { "yarn3", "Yarn3HiT" },
                 { "yarn4", "Yarn4HiT" },
                 { "yarn5", "Yarn5HiT" },
+                { "speedboost", "SpeedBoost" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -943,6 +948,7 @@ public class APItemOverworld
                         "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                         "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                         "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                        "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
@@ -1115,6 +1121,7 @@ public class APItemOverworld
                 { "yarn3", "Yarn3HiT" },
                 { "yarn4", "Yarn4HiT" },
                 { "yarn5", "Yarn5HiT" },
+                { "speedboost", "SpeedBoost" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -1234,6 +1241,7 @@ public class APItemOverworld
                         "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                         "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                         "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                        "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
@@ -1414,6 +1422,7 @@ public class APItemOverworld
                 { "yarn3", "Yarn3HiT" },
                 { "yarn4", "Yarn4HiT" },
                 { "yarn5", "Yarn5HiT" },
+                { "speedboost", "SpeedBoost" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -1565,6 +1574,7 @@ public class APItemOverworld
                                 "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                                 "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                                 "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                                "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
@@ -1686,6 +1696,7 @@ public class APItemOverworld
                                 "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                                 "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                                 "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                                "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
@@ -1823,6 +1834,7 @@ public class APItemOverworld
                 { "yarn3", "Yarn3HiT" },
                 { "yarn4", "Yarn4HiT" },
                 { "yarn5", "Yarn5HiT" },
+                { "speedboost", "SpeedBoost" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out string prefabName))
@@ -1942,6 +1954,7 @@ public class APItemOverworld
                         "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                         "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                         "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                        "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }

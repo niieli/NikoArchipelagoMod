@@ -130,7 +130,8 @@ public class Applesanity
                 { "yarn2", "Yarn2HiT" },
                 { "yarn3", "Yarn3HiT" },
                 { "yarn4", "Yarn4HiT" },
-                { "yarn5", "Yarn5HiT" }
+                { "yarn5", "Yarn5HiT" }, 
+                { "speedboost", "SpeedBoost" },
             };
 
             if (!prefabMap.TryGetValue(itemName, out var prefabName))
@@ -250,6 +251,7 @@ public class Applesanity
                         "Hairball City Seed" => CreateItemOverworld("hcseed", __instance),
                         "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                         "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
+                        "Speed Boost" => CreateItemOverworld("speedboost", __instance),
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }

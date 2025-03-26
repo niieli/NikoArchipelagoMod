@@ -147,6 +147,11 @@ public class APItemObtainer
                         "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
                         "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
                         "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
+                        "Speed Boost" => TextureAndDisplayer(Plugin.SpeedBoostSprite.texture, __instance),
+                        "Whoops! Trap" => TextureAndDisplayer(Plugin.WhoopsTrapSprite.texture, __instance),
+                        "Iron Boots Trap" => TextureAndDisplayer(Plugin.IronBootsTrapSprite.texture, __instance),
+                        "My Turn! Trap" => TextureAndDisplayer(Plugin.MyTurnTrapSprite.texture, __instance),
+                        "Freeze Trap" => TextureAndDisplayer(Plugin.FreezeTrapSprite.texture, __instance),
                         _ => Plugin.APIconSprite.texture
                     };
             }
@@ -442,6 +447,11 @@ public class APItemObtainer
                         "Hairball City Seed" => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
                         "Salmon Creek Forest Seed" => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
                         "Bathhouse Seed" => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
+                        "Speed Boost" => TextureAndDisplayer(Plugin.SpeedBoostSprite.texture, __instance),
+                        "Whoops! Trap" => TextureAndDisplayer(Plugin.WhoopsTrapSprite.texture, __instance),
+                        "Iron Boots Trap" => TextureAndDisplayer(Plugin.IronBootsTrapSprite.texture, __instance),
+                        "My Turn! Trap" => TextureAndDisplayer(Plugin.MyTurnTrapSprite.texture, __instance),
+                        "Freeze Trap" => TextureAndDisplayer(Plugin.FreezeTrapSprite.texture, __instance),
                         _ => Plugin.APIconSprite.texture
                     };
             }

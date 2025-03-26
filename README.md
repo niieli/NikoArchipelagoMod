@@ -24,10 +24,9 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 
 ## Known issues
 
-- Apples & Snail Money duplicate after reconnecting (not critical, but will work on a fix)
-- Item sent notification sometimes not updating correctly (I don't know why, maybe server issue?)
-- Dispatcher's Dialogue not reflecting the correct cost when thinking about buying (Breaks dialogue upon change with my current implementation, prob will not fix)
-
+- Connecting to another slot without restarting the game can lead to unchecked locations being sent 
+- Item Sent Notification once in a while does not show up for a location
+- Train map & Whiteboard total location count (the ap logo) not being accurate
 ## What is randomized?
 - Coins
 - Cassettes
@@ -36,7 +35,7 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 - Keys... Keysanity?!
 - Letters
 - Both Contact Lists
-  - Contact List 1 & 2 are seperate items, so you can have 2 without having the first one
+  - Contact List 1 & 2 are separate items, so you can have 2 without having the first one
   - *Visible on the in-game "tracker"* 
   - Or change via the yaml to Progressive
 - Reward from Sensei (Super Jump)
@@ -59,4 +58,8 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
 The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
-- Every APSave has a companion save file (Improve Async sessions)
+- An in-game compass pointing to locations in logic
+- Shuffle Tickets on Kiosk locations
+- Set total Coin count in the multiworld
+- Customization (& improvements) to Archipelago related UI elements 
+- that's pretty much it

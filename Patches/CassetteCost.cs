@@ -13,6 +13,9 @@ public class CassetteCost
     static bool _gaveCoin2 = false;
     static bool _changed = false;
     static int _maiPrice = 0;
+    static int _mitchPrice = 0;
+    private static int _maiPriceSafe = 0;
+    static int _mimaPrice = 0;
     private static bool _answerFix;
     public static scrCassetteBuyer MitchGameObject;
     public static scrCassetteBuyer MaiGameObject;
@@ -91,6 +94,8 @@ public class CassetteCost
                         _maiIndex = _mitchIndex - 1;
                         break;
                 }
+                _mitchPrice = __instance.price;
+                _maiPriceSafe = _maiPrice;
                 if (!_textbox.isOn) _answerFix = false;
                 if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
@@ -197,6 +202,7 @@ public class CassetteCost
                     }
                 }
                 __instance.price = 5 * count;
+                _mimaPrice = __instance.price;
                 var gardenAdjustment = 0;
                 var snailShopAdjustment = 0;
                 var gardenOffset = 0;
@@ -424,6 +430,8 @@ public class CassetteCost
                         _maiIndex = _mitchIndex - 1;
                         break;
                 }
+                _mitchPrice = __instance.price;
+                _maiPriceSafe = _maiPrice;
                 if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price * 5 && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {
                     MitchGameObject.parentNotBought.SetActive(true);
@@ -606,5 +614,50 @@ public class CassetteCost
             }
             return classification;
         }
+    }
+    public static int MitchPrice(int world = 0, int sanity = 2)
+    {
+        if (ArchipelagoData.slotData == null) return 0;
+        if (sanity == 2)
+            _mitchPrice = world switch
+            {
+                1 => int.Parse(ArchipelagoData.slotData["chc1"].ToString()),
+                2 => int.Parse(ArchipelagoData.slotData["ctt1"].ToString()),
+                3 => int.Parse(ArchipelagoData.slotData["csfc1"].ToString()),
+                4 => int.Parse(ArchipelagoData.slotData["cpp1"].ToString()),
+                5 => int.Parse(ArchipelagoData.slotData["cbath1"].ToString()),
+                6 => int.Parse(ArchipelagoData.slotData["chq1"].ToString()),
+                7 => int.Parse(ArchipelagoData.slotData["cgg1"].ToString()),
+                _ => _mitchPrice
+            };
+        else if (sanity == 1)
+        {
+            _mitchPrice = _mimaPrice;
+            _mitchPrice /= 5;
+        }
+        return _mitchPrice;
+    }
+        
+    public static int MaiPrice(int world = 0, int sanity = 2)
+    {
+        if (ArchipelagoData.slotData == null) return 0;
+        if (sanity == 2)
+            _maiPriceSafe = world switch
+            {
+                1 => int.Parse(ArchipelagoData.slotData["chc2"].ToString()),
+                2 => int.Parse(ArchipelagoData.slotData["ctt2"].ToString()),
+                3 => int.Parse(ArchipelagoData.slotData["csfc2"].ToString()),
+                4 => int.Parse(ArchipelagoData.slotData["cpp2"].ToString()),
+                5 => int.Parse(ArchipelagoData.slotData["cbath2"].ToString()),
+                6 => int.Parse(ArchipelagoData.slotData["chq2"].ToString()),
+                7 => int.Parse(ArchipelagoData.slotData["cgg2"].ToString()),
+                _ => _maiPriceSafe
+            };
+        else if (sanity == 1)
+        {
+            _maiPriceSafe = _mimaPrice;
+            _maiPriceSafe /= 5;
+        }
+        return _maiPriceSafe;
     }
 }

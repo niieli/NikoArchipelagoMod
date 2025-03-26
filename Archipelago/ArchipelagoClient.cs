@@ -203,7 +203,7 @@ public class ArchipelagoClient
             Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
             Plugin.BepinLogger.LogFatal($"Current Item: {receivedItem.ItemName}");
             if (receivedItem.ItemName is "Apples" or "25 Apples" or "10 Bugs" or "Bugs" or "Letter" or "Snail Money"
-                    or "1000 Snail Money" or "Freeze Trap" or "Iron Boots Trap" or "Whoops! Trap")
+                    or "1000 Snail Money" or "Freeze Trap" or "Iron Boots Trap" or "Whoops! Trap" or "My Turn! Trap")
             {
                 Plugin.BepinLogger.LogFatal($"Skipping Item: {receivedItem.ItemName}");
             }
