@@ -13,7 +13,10 @@ using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Patches;
 using NikoArchipelago.Stuff;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
@@ -34,7 +37,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.6.0";
+        public const string PluginVersion = "0.6.1";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -91,6 +94,10 @@ namespace NikoArchipelago
         private static ArchipelagoData _archipelagoData;
         private static bool _appleAmount, annoy, _onlyOnce;
         private static int _realAppleAmount;
+        private const string GithubAPIURL = "https://api.github.com/repos/niieli/NikoArchipelagoMod/releases/latest";
+        public static GameObject APUpdateNotice;
+        private string latestVersion = "";
+        private string latestReleaseUrl = "";
         
         private void Awake()
         {
@@ -263,6 +270,7 @@ namespace NikoArchipelago
             harmony.PatchAll();
             SceneManager.sceneLoaded += OnSceneLoaded;
             Logger.LogInfo("Plugin loaded and Harmony patches applied initially!");
+            StartCoroutine(CheckForUpdate());
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -275,6 +283,76 @@ namespace NikoArchipelago
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             harmony.UnpatchSelf();
+        }
+        
+        private IEnumerator CheckForUpdate()
+        {
+            yield return new WaitUntil(ArchipelagoClient.IsValidScene);
+            using (UnityWebRequest request = UnityWebRequest.Get(GithubAPIURL))
+            {
+                request.SetRequestHeader("User-Agent", "Unity-BepInEx-UpdateChecker");
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    string json = request.downloadHandler.text;
+                    latestVersion = ExtractJsonValue(json, "tag_name");
+                    latestReleaseUrl = ExtractJsonValue(json, "html_url");
+
+                    if (!string.IsNullOrEmpty(latestVersion) && latestVersion != PluginVersion)
+                    {
+                        Logger.LogMessage("Found a new update! " + latestVersion);
+                        SpawnUpdateNotice();
+                    }
+                }
+                else
+                {
+                    Logger.LogError("Failed to check for updates.");
+                }
+            }
+        }
+
+        private string ExtractJsonValue(string json, string key)
+        {
+            int startIndex = json.IndexOf($"\"{key}\":\"", StringComparison.Ordinal) + key.Length + 4;
+            if (startIndex > key.Length + 3)
+            {
+                int endIndex = json.IndexOf("\"", startIndex, StringComparison.Ordinal);
+                return json.Substring(startIndex, endIndex - startIndex).Trim();
+            }
+            return string.Empty;
+        }
+
+        private void SpawnUpdateNotice()
+        {
+            var apUpdateNoticePrefab = AssetBundle.LoadAsset<GameObject>("APUpdateNotice");
+            APUpdateNotice = Instantiate(apUpdateNoticePrefab, GameObject.Find("UI").transform, false);
+            if (APUpdateNotice == null)
+            {
+                BepinLogger.LogError("Failed to instantiate APUpdateNotice prefab.");
+                return;
+            }
+            APUpdateNotice.layer = LayerMask.NameToLayer("UI");
+            APUpdateNotice.transform.SetSiblingIndex(30);
+            APUpdateNotice.transform.Find("Panel/VersionBack").gameObject.GetComponent<TextMeshProUGUI>().text 
+                = "Version: "+latestVersion;
+            APUpdateNotice.transform.Find("Panel/VersionFront").gameObject.GetComponent<TextMeshProUGUI>().text 
+                = "Version: "+latestVersion;
+            var dismiss = APUpdateNotice.transform.Find("Panel/Dismiss").gameObject.GetComponent<Button>();
+            dismiss.onClick.AddListener(DestroyNotice);
+            var download = APUpdateNotice.transform.Find("Panel/Download").gameObject.GetComponent<Button>();
+            download.onClick.AddListener(DownloadUpdate);
+            APUpdateNotice.SetActive(false);
+        }
+
+        private void DestroyNotice()
+        {
+            Destroy(APUpdateNotice);
+        }
+
+        private void DownloadUpdate()
+        {
+            Application.OpenURL(latestReleaseUrl);
         }
         
         private IEnumerator CheckGameSaveManager()
