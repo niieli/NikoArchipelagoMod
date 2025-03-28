@@ -12,9 +12,10 @@ Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archip
 
 ## Connecting
 
-After loading into the game open the settings and then click on the Archipelago icon in the middle of the screen and adjust everything to your liking.
+After loading into the game open the menu and then click on the Archipelago icon in the middle of the screen and adjust everything to your liking.
 
-![image](https://github.com/user-attachments/assets/42516bb4-d568-4cb3-a0df-63912e682063)
+![image](https://github.com/user-attachments/assets/c3d67e7f-723a-4dbf-a10d-ac25dabb97fd)
+
 
 Then click 'Connect' and you should load into Home with a blank save. 
 
