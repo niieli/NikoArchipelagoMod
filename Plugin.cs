@@ -944,7 +944,7 @@ namespace NikoArchipelago
             }
             else
             {
-                GUI.Label(new Rect(30, 70, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
+                GUI.Label(new Rect(19, 70, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
             }
 
             foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)
