@@ -122,10 +122,11 @@ public class TrapManager : MonoBehaviour
         {
             timerText.text = timeRemaining.ToString("F1") + "s";
             timerTextShadow.text = timeRemaining.ToString("F1") + "s";
-            yield return new WaitForSeconds(0.1f);
-            timeRemaining -= 0.1f;
+            yield return null;
+            timeRemaining -= Time.deltaTime;
         }
-        
+        timerText.text = "0.0s";
+        timerTextShadow.text = "0.0s";
         RemoveTrap(trapName);
     }
 
@@ -146,16 +147,18 @@ public class TrapManager : MonoBehaviour
     
     private static IEnumerator Freeze(float duration)
     {
-        duration += 1f;
         MyCharacterController.instance.blockMovement = true;
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
         MyCharacterController.instance.blockMovement = false;
         Plugin.BepinLogger.LogInfo("Freeze Trap ended.");
     }
 
     private static IEnumerator IronBoots(float duration)
     {
-        duration += 1f;
         var diveCancelHopSpeed = MyCharacterController.instance.DiveCancelHopSpeed;
         var diveSpeed = MyCharacterController.instance.DiveSpeed;
         var diveUpwardsSpeed = MyCharacterController.instance.DiveUpwardsSpeed;
@@ -174,7 +177,11 @@ public class TrapManager : MonoBehaviour
         MyCharacterController.instance.WallJumpSpeed = 8.75f;
         MyCharacterController.instance.WallUpwardsJumpSpeed = 8.75f;
 
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
 
         MyCharacterController.instance.DiveSpeed = diveSpeed;
         MyCharacterController.instance.DiveUpwardsSpeed = diveUpwardsSpeed;
@@ -188,35 +195,38 @@ public class TrapManager : MonoBehaviour
     }
     private static IEnumerator MyTurn(float duration)
     {
-        duration += 1f;
+        var waitTime = 0f;
         while (duration > 0)
         {
-            float randomX = UnityEngine.Random.Range(-35f, 35f);
-            float randomZ = UnityEngine.Random.Range(-35f, 35f);
-            Vector3 randomVelocity = new Vector3(randomX, 0, randomZ);
+            if (waitTime < 0)
+            {
+                float randomX = UnityEngine.Random.Range(-35f, 35f);
+                float randomZ = UnityEngine.Random.Range(-35f, 35f);
+                Vector3 randomVelocity = new Vector3(randomX, 0, randomZ);
 
-            MyCharacterController.instance.requestAddVelocity(randomVelocity);
-            Plugin.BepinLogger.LogInfo($"Applied Velocity: {randomVelocity}");
+                MyCharacterController.instance.requestAddVelocity(randomVelocity);
+                Plugin.BepinLogger.LogInfo($"Applied Velocity: {randomVelocity}");
             
-            var shouldJump = UnityEngine.Random.value > 0.4f;
-            if (shouldJump)
-            {
-                var _jumpRequestedField = typeof(MyCharacterController).GetField("_jumpRequested", BindingFlags.NonPublic | BindingFlags.Instance);
-                _jumpRequestedField.SetValue(MyCharacterController.instance, true);
-                Plugin.BepinLogger.LogInfo("Player Jumped!");
+                var shouldJump = UnityEngine.Random.value > 0.4f;
+                if (shouldJump)
+                {
+                    var _jumpRequestedField = typeof(MyCharacterController).GetField("_jumpRequested", BindingFlags.NonPublic | BindingFlags.Instance);
+                    _jumpRequestedField.SetValue(MyCharacterController.instance, true);
+                    Plugin.BepinLogger.LogInfo("Player Jumped!");
+                }
+            
+                var shouldDive = UnityEngine.Random.value > 0.25f;
+                if (shouldDive)
+                {
+                    MyCharacterController.instance._diveRequested = true;
+                    Plugin.BepinLogger.LogInfo("Player Dived!");
+                }
+            
+                waitTime = UnityEngine.Random.Range(0f, 3.5f);
             }
-            
-            var shouldDive = UnityEngine.Random.value > 0.25f;
-            if (shouldDive)
-            {
-                MyCharacterController.instance._diveRequested = true;
-                Plugin.BepinLogger.LogInfo("Player Dived!");
-            }
-            
-            float waitTime = UnityEngine.Random.Range(0f, 3.5f);
-            duration -= waitTime;
-        
-            yield return new WaitForSeconds(waitTime);
+            yield return null;
+            duration -= Time.deltaTime;
+            waitTime -= Time.deltaTime;
         }
         Plugin.BepinLogger.LogInfo("My Turn! Trap ended.");
     }
