@@ -356,11 +356,15 @@ public class GameObjectChecker : MonoBehaviour
         var mapStatsFlowers = Plugin.AssetBundle.LoadAsset<GameObject>("Statsflowers");
         var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("Statsseeds");
         var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("Statslocations");
+        var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("Statssnailshop");
         Instantiate(mapStatsApples, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFish, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFlowers, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsSeeds, GameObject.Find("Statistics").transform, false);
-        Instantiate(mapStatsLocations, GameObject.Find("Statistics").transform, false);
+        var snailshop = Instantiate(mapStatsSnailShop, GameObject.Find("Statistics").transform, false);
+        var achievements = Instantiate(mapStatsLocations, GameObject.Find("Statistics").transform, false);
+        snailshop.transform.localPosition = new Vector3(390f, -238f, 0f);
+        achievements.transform.localPosition = new Vector3(390f, -158f, 0f);
         Plugin.BepinLogger.LogInfo("Added new stats to Statistics.");
     }
     
@@ -373,11 +377,13 @@ public class GameObjectChecker : MonoBehaviour
         var mapStatsFlowers = Plugin.AssetBundle.LoadAsset<GameObject>("StatsflowersBoard");
         var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("StatsseedsBoard");
         var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("StatslocationsBoard");
+        var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("StatssnailshopBoard");
         var apple = Instantiate(mapStatsApples, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var fish = Instantiate(mapStatsFish, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var flower = Instantiate(mapStatsFlowers, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var seed = Instantiate(mapStatsSeeds, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var location = Instantiate(mapStatsLocations, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var snailShop = Instantiate(mapStatsSnailShop, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
 
         apple.transform.localPosition = new Vector3(95f, -121f, 0f);
         apple.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -386,8 +392,10 @@ public class GameObjectChecker : MonoBehaviour
         flower.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         seed.transform.localPosition = new Vector3(95f, -320f, 0f);
         seed.transform.Find("Image").transform.localRotation = Quaternion.Euler(0f, 0f, 331f);
-        location.transform.localPosition = new Vector3(-144f, -447f, -0f);
+        location.transform.localPosition = new Vector3(-230f, -456f, 0f);
         location.transform.localScale = new Vector3(0.8166f, 0.8166f, 1.0166f);
+        snailShop.transform.localPosition = new Vector3(-54f, -456f, 0f);
+        snailShop.transform.localScale = new Vector3(0.8166f, 0.8166f, 1.0166f);
         if (GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys") != null)
         {
             var keys = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys");

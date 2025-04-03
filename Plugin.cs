@@ -90,7 +90,7 @@ namespace NikoArchipelago
         public static Dictionary<string, object> SlotData;
         private CancellationTokenSource _cancellationTokenSource = new();
         private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
-        public static bool ChristmasEvent, NoXmasEvent;
+        public static bool ChristmasEvent, NoXmasEvent, NoAntiCheese;
         private static ArchipelagoData _archipelagoData;
         private static bool _appleAmount, annoy, _onlyOnce;
         private static int _realAppleAmount;
@@ -140,6 +140,7 @@ namespace NikoArchipelago
             {
                 NoXmasEvent = true;
             }
+            NoAntiCheese = false;
             GameOptions.MasterVolume = mas;
             GameOptions.EnvVolume = env;
             GameOptions.MusicVolume = mus;
@@ -907,6 +908,11 @@ namespace NikoArchipelago
             if (GUI.Button(new Rect(16, 420, 100, 20), "My Turn! Trap"))
             {
                 TrapManager.instance.ActivateTrap("My Turn!", 30f);
+            }
+            if (GUI.Button(new Rect(16, 450, 110, 20), "No Anti-Cheese"))
+            {
+                NoAntiCheese = true;
+                APSendNote("Disabled Anti-Cheese...", 7f, ApFillerSprite);
             }
         }
 

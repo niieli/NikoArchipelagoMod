@@ -16,6 +16,7 @@ public class PepperAdvicePatch
     private static TextMeshProUGUI _flowersTextMesh;
     private static TextMeshProUGUI _seedsTextMesh;
     private static TextMeshProUGUI _locationsTextMesh;
+    private static TextMeshProUGUI _snailShopTextMesh;
 
     private static bool _fishingSanity = true;
     private static bool _flowersSanity = true;
@@ -397,7 +398,69 @@ public class PepperAdvicePatch
             
             if (_locationsTextMesh != null)
             {
-                if (ArchipelagoClient.TicketCount() == 2 && SnailShop[0] != 0)
+                if (ArchipelagoClient.TicketCount() < 5)
+                {
+                    Achievements[0] = 2;
+                } else if (ArchipelagoClient.TicketCount() == 5)
+                {
+                    Achievements[0] = 4;
+                } else if (ArchipelagoClient.TicketCount() >= 6)
+                {
+                    
+                    if (((ItemHandler.SalmonKeyAmount > 0 && ArchipelagoClient.Keysanity) || 
+                        (saveManager.gameData.generalGameData.keyAmount > 0 && !ArchipelagoClient.Keysanity)) 
+                        && ArchipelagoClient.ElevatorRepaired)
+                    {
+                        Achievements[0] = 7;
+                    }
+                    else
+                    {
+                        Achievements[0] = 6;
+                    }
+                    
+                }
+                if (Plugin.ArchipelagoClient.CoinAmount >= 76)
+                {
+                    Achievements[0] = Achievements[0] switch
+                    {
+                        7 => 8,
+                        6 => 7,
+                        4 => 5,
+                        _ => Achievements[0]
+                    };
+                }
+
+                var totalLocations = Achievements[0];
+                var locations = 0;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
+                    locations++;
+                _locationsTextMesh.text = locations + " / " + totalLocations;
+            }
+            else
+            {
+                Plugin.BepinLogger.LogError("_locationsTextMesh is null!");
+                _locationsTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatslocationsBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
+            }
+            
+            if (_snailShopTextMesh != null)
+            {
+                if (ArchipelagoClient.TicketCount() == 1 && SnailShop[0] != 0)
+                {
+                    SnailShop[0] = 5;
+                }
+                else if (ArchipelagoClient.TicketCount() == 2 && SnailShop[0] != 0)
                 {
                     SnailShop[0] = 10;
                 } else if (ArchipelagoClient.TicketCount() == 3 && SnailShop[0] != 0)
@@ -407,168 +470,13 @@ public class PepperAdvicePatch
                 {
                     SnailShop[0] = 16;
                 }
-                if (ArchipelagoClient.TicketCount() == 5)
-                {
-                    Achievements[1] = 4;
-                    Achievements[2] = 4;
-                    Achievements[3] = 4;
-                    Achievements[4] = 4;
-                    Achievements[5] = 4;
-                    Achievements[6] = 4;
-                } else if (ArchipelagoClient.TicketCount() >= 6)
-                {
-                    
-                    if (((ItemHandler.SalmonKeyAmount > 0 && ArchipelagoClient.Keysanity) || 
-                        (saveManager.gameData.generalGameData.keyAmount > 0 && !ArchipelagoClient.Keysanity)) 
-                        && ArchipelagoClient.ElevatorRepaired)
-                    {
-                        Achievements[1] = 7;
-                        Achievements[2] = 7;
-                        Achievements[3] = 7;
-                        Achievements[4] = 7;
-                        Achievements[5] = 7;
-                        Achievements[6] = 7; 
-                    }
-                    else
-                    {
-                        Achievements[1] = 6;
-                        Achievements[2] = 6;
-                        Achievements[3] = 6;
-                        Achievements[4] = 6;
-                        Achievements[5] = 6;
-                        Achievements[6] = 6; 
-                    }
-                    
-                }
-                if (Plugin.ArchipelagoClient.CoinAmount >= 76)
-                {
-                    switch (Achievements[1])
-                    {
-                        case 7:
-                            Achievements[1] = 8;
-                            Achievements[2] = 8;
-                            Achievements[3] = 8;
-                            Achievements[4] = 8;
-                            Achievements[5] = 8;
-                            Achievements[6] = 8;
-                            break;
-                        case 6:
-                            Achievements[1] = 7;
-                            Achievements[2] = 7;
-                            Achievements[3] = 7;
-                            Achievements[4] = 7;
-                            Achievements[5] = 7;
-                            Achievements[6] = 7;
-                            break;
-                        case 4:
-                            Achievements[1] = 5;
-                            Achievements[2] = 5;
-                            Achievements[3] = 5;
-                            Achievements[4] = 5;
-                            Achievements[5] = 5;
-                            Achievements[6] = 5;
-                            break;
-                    }
-                }
-
-                var totalLocations = coinsPerLevel[worldData.worldIndex]
-                                     + levelData.lettersPerLevel[worldData.worldIndex]
-                                     + levelData.keysPerLevel[worldData.worldIndex]
-                                     + levelData.cassettesPerLevel[worldData.worldIndex]
-                                     + applesPerLevel[worldData.worldIndex]
-                                     + fishPerLevel[worldData.worldIndex]
-                                     + flowersPerLevel[worldData.worldIndex]
-                                     + seedsPerLevel[worldData.worldIndex]
-                                     + HandsomePerLevel[worldData.worldIndex]
-                                     + General[worldData.worldIndex]
-                                     + Achievements[worldData.worldIndex]
-                                     + KioskPerLevel[worldData.worldIndex]
-                                     +SnailShop[0];
-                switch (waveX)
-                {
-                    case 1:
-                        totalLocations += coinsPerLevelWave1[worldData.worldIndex];
-                        break;
-                    case 2:
-                        totalLocations += coinsPerLevelWave2[worldData.worldIndex];
-                        break;
-                    case 4:
-                        totalLocations += coinsPerLevelWave1[worldData.worldIndex];
-                        totalLocations += coinsPerLevelWave2[worldData.worldIndex];
-                        break;
-                }
-                var locations = saveManager.gameData.worldsData[worldData.worldIndex]
-                    .miscFlags
-                    .Where(t => !(
-                        t.Contains("Fischer") || 
-                        t.StartsWith("lock") || 
-                        t.Contains("Officelock") || 
-                        t.Contains("TurbineLock") || 
-                        t.Contains("mahjonglock") ||
-                        t == "1"
-                    ))
-                    .Concat(saveManager.gameData.worldsData[worldData.worldIndex].coinFlags)
-                    .Concat(saveManager.gameData.worldsData[worldData.worldIndex].cassetteFlags)
-                    .Concat(saveManager.gameData.worldsData[worldData.worldIndex].letterFlags)
-                    .Concat(saveManager.gameData.worldsData[worldData.worldIndex].fishFlags)
-                    .Count();
-                if (worldData.worldIndex == 0)
-                {
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Kiosk{levelNames[worldData.worldIndex]}"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
-                        locations++;
-                    locations += saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));   
-                }
-                else
-                {
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Froggy {levelNames[worldData.worldIndex]}"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("Dustan"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains($"Kiosk{levelNames[worldData.worldIndex]}"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
-                        locations++;
-                    locations += saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
-                }
-                if (worldData.worldIndex == 3 && saveManager.gameData.generalGameData.generalFlags.Contains("CL1 Obtained"))
-                {
-                    locations++;
-                }
-
-                if (worldData.worldIndex == 6)
-                {
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("CL2 Obtained"))
-                    {
-                        locations++;
-                    }
-
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("SecretMove Obtained"))
-                    {
-                        locations++;
-                    }
-                }
-                _locationsTextMesh.text = locations + " / " + totalLocations;
+                var shop = saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
+                _snailShopTextMesh.text = shop + " / " + SnailShop[0];
             }
             else
             {
-                Plugin.BepinLogger.LogError("_locationsTextMesh is null!");
-                _locationsTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatslocationsBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
+                Plugin.BepinLogger.LogError("_snailShopTextMesh is null!");
+                _snailShopTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatssnailshopBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
             }
 
             return false; // Skip original method

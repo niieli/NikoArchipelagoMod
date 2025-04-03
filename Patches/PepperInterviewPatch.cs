@@ -42,7 +42,7 @@ public class PepperInterviewPatch
             instance.postInterview.SetActive(true);
             instance.postInterview.transform.Find("Pepper/TextboxTrigger")?.gameObject.SetActive(false);
             instance.interview.SetActive(false);
-            yield return new WaitUntil(() => GameObject.Find("Working"));
+            yield return new WaitUntil(() => GameObject.Find("Working") || Plugin.NoAntiCheese);
             instance.interview.SetActive(true);
             Plugin.BepinLogger.LogInfo("Elevator has been repaired! Goal is now accessible");
         }
