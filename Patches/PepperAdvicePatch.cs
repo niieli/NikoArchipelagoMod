@@ -60,10 +60,10 @@ public class PepperAdvicePatch
             { 1, 6, 6, 10, 6, 9, 10, 0 };
 
         private static readonly List<int> coinsPerLevelWave1 = new()
-            { 0, 4, 3, 3, 0, 0, 0, 0 };
+            { 0, 5, 3, 3, 0, 0, 0, 0 };
 
         private static readonly List<int> coinsPerLevelWave2 = new()
-            { 0, 4, 2, 3, 4, 5, 0, 0 };
+            { 0, 3, 2, 3, 4, 5, 0, 0 };
         private static StringBuilder _coinsStringBuilder = new(16);
         private static StringBuilder _cassettesStringBuilder = new(16);
         private static StringBuilder _lettersStringBuilder = new(16);
