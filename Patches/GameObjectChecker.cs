@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
@@ -11,6 +13,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace NikoArchipelago.Patches;
 
@@ -27,7 +30,9 @@ public class GameObjectChecker : MonoBehaviour
     public static GameObject APMenu;
     private static bool _sentNote, _sentNote2, _sentNote3, _sentNote4, _sentNote5, 
         _sentNote6, _sentNote7, _sentNote8, _sentNote9, _sentNote10, _sentNote11, _sentNote12, _sentNote13, _sentNote14,
-        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19;
+        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix;
+
+    private static List<string> _hatPlayerNames = [];
     private void Start()
     {
         Plugin.BepinLogger.LogDebug("GameObjectChecker started!");
@@ -65,6 +70,7 @@ public class GameObjectChecker : MonoBehaviour
         Plugin.MovementSpeedMultiplier();
         TrapManager();
         FixApplePlacement();
+        HatPlayers();
         //APArrowTracker();
         //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
@@ -405,6 +411,10 @@ public class GameObjectChecker : MonoBehaviour
         var cassettes = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/cassettes");
         cassettes.transform.localPosition = new Vector3(-392f, -423f, 0f);
         Plugin.BepinLogger.LogInfo("Added new stats to Whiteboard.");
+        if (SceneManager.GetActiveScene().name != "Public Pool") return;
+        var canvas = GameObject.Find("Pepper/Whiteboard/Canvas");
+        canvas.transform.localPosition = new Vector3(0f, 1.208f, 0.2f);
+        Plugin.BepinLogger.LogInfo("Fixed Public Pool Whiteboard.");
     }
     
     private static void NpcController()
@@ -534,6 +544,36 @@ public class GameObjectChecker : MonoBehaviour
         {
             t.levelSelected = 0;
         }
+    }
+
+    private static void HatKidEasterEgg()
+    {
+        if (SceneManager.GetActiveScene().name != "Public Pool") return;
+        var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
+        int _currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
+        if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "hatkid" && !_hatKidFix)
+        {
+            if (_hatPlayerNames.Count != 0)
+            {
+                scrTextbox.instance.characterName = _hatPlayerNames[Random.Range(0, _hatPlayerNames.Count)];
+                _hatKidFix = true;
+            }
+        }
+        else if (!scrTextbox.instance.isOn)
+        {
+            _hatKidFix = false;
+        }
+    }
+
+    private static void HatPlayers()
+    {
+        if (SceneManager.GetActiveScene().name != "Public Pool") return;
+        for(int i = 0; i < ArchipelagoClient._session.Players.AllPlayers.Count(); i++)
+            if (ArchipelagoClient._session.Players.GetPlayerInfo(i).Game == "A Hat in Time")
+            {
+                _hatPlayerNames.Add(ArchipelagoClient._session.Players.GetPlayerInfo(i).Name);
+            }
+        _hatPlayerNames.ForEach(Plugin.BepinLogger.LogInfo);
     }
     
     private static void AssignDisplayers()
@@ -731,6 +771,7 @@ public class GameObjectChecker : MonoBehaviour
 
     public void Update()
     {
+        HatKidEasterEgg();
         if (GameInput.GetButtonDown("Pause") && MenuHelpers.Menus.Count > 0)
         {
             Cursor.visible = false;
