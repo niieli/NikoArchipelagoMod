@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
 
@@ -11,19 +12,27 @@ public class KeyRemover
     {
         private static bool _obtaining;
         [HarmonyPrefix]
-        static void Prefix(scrKey __instance)
+        static bool Prefix(scrKey __instance)
         {
-            if (_obtaining || !__instance.trigger.foundPlayer()) return;
+            if (_obtaining || !__instance.trigger.foundPlayer()) return false;
             __instance.StartCoroutine(ObtainKeyModified(__instance));
+            Object.Instantiate(__instance.audioOneshot).GetComponent<scrAudioOneShot>().setup(__instance.sndGet, 0.6f, 1f);
+            return false;
         }
         private static IEnumerator ObtainKeyModified(scrKey instance)
         {
             _obtaining = true;
+            instance.trigger.enabled = false;
+            Object.Destroy(instance.quads);
             if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(instance.flag) || !scrWorldSaveDataContainer.instance.miscFlags.Contains(instance.flag))
             {
-                scrGameSaveManager.instance.gameData.generalGameData.keyAmount--;
+                //scrGameSaveManager.instance.gameData.generalGameData.keyAmount--;
+                scrWorldSaveDataContainer.instance.keyAmount++;
+                scrWorldSaveDataContainer.instance.miscFlags.Add(instance.flag);
                 scrWorldSaveDataContainer.instance.SaveWorld();
+                TrackerDisplayerPatch.KeyUI.visible = false;
             }
+            Object.Destroy(instance.gameObject);
             yield return null;
         }
     }
