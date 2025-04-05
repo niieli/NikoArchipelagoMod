@@ -111,19 +111,20 @@ public static class KioskCost
                             }
                             if (_currentBox == 3)
                             {
-                                if (GameInput.GetButtonDown("Action"))
+                                scrTextbox.instance.conversationLocalized[3] = "That is fantastic! ##fx1; ##end;";
+                                if (!bought)
                                 {
-                                    if (!bought)
-                                    {
-                                        Plugin.BepinLogger.LogInfo($"Kiosk in {currentScene} has been bought.");
-                                        bought = true;
-                                    }
+                                    Plugin.BepinLogger.LogInfo($"Kiosk in {currentScene} has been bought.");
+                                    bought = true;
+                                }
 
-                                    if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
-                                    {
-                                        scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
-                                    }
-                                    _hasBought = true;
+                                if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
+                                {
+                                    scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
+                                }
+                                _hasBought = true;
+                                if (!scrTextbox.instance.isOn)
+                                {
                                     __instance.NPCbought.SetActive(true);
                                     __instance.NPCbuy.SetActive(false);
                                     __instance.textMesh.text = "Bought!";

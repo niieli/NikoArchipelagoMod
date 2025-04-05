@@ -23,6 +23,7 @@ public class KeyRemover
         {
             _obtaining = true;
             instance.trigger.enabled = false;
+            var waitFor = 2f;
             Object.Destroy(instance.quads);
             if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(instance.flag) || !scrWorldSaveDataContainer.instance.miscFlags.Contains(instance.flag))
             {
@@ -30,10 +31,14 @@ public class KeyRemover
                 scrWorldSaveDataContainer.instance.keyAmount++;
                 scrWorldSaveDataContainer.instance.miscFlags.Add(instance.flag);
                 scrWorldSaveDataContainer.instance.SaveWorld();
-                TrackerDisplayerPatch.KeyUI.visible = false;
             }
+            while (waitFor > 0)
+            {
+                yield return null;
+                waitFor -= Time.deltaTime;
+            }
+            _obtaining = false;
             Object.Destroy(instance.gameObject);
-            yield return null;
         }
     }
 }
