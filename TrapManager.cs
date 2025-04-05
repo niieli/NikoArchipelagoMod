@@ -6,6 +6,7 @@ using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NikoArchipelago;
 
@@ -21,6 +22,7 @@ public class TrapManager : MonoBehaviour
     private Dictionary<string, GameObject> activeTraps = new Dictionary<string, GameObject>();
     private GameObject trapUI;
     private static scrUIhider uiHider;
+    private static readonly int Timer = Animator.StringToHash("Timer");
 
     private void Awake()
     {
@@ -96,9 +98,29 @@ public class TrapManager : MonoBehaviour
                 StartCoroutine(ReverseControls(duration));
                 break;
         }
+        //StartCoroutine(AnimateItemIn());
+        // var animator = trapUI.GetComponent<Animator>();
+        // animator.SetFloat(Timer, duration);
         StartCoroutine(UpdateTrapTimer(trapUI, trapName, duration));
 
         activeTraps[trapName] = trapUI;
+    }
+    
+    private IEnumerator AnimateItemIn()
+    {
+        yield return null;
+        trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = false;
+
+        float duration = 1f;
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = true;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().GetComponent<RectTransform>());
     }
 
     private IEnumerator UpdateTrapTimer(GameObject trap, string trapName, float duration)
@@ -124,9 +146,13 @@ public class TrapManager : MonoBehaviour
             timerTextShadow.text = timeRemaining.ToString("F1") + "s";
             yield return null;
             timeRemaining -= Time.deltaTime;
+            // trapUI.GetComponent<Animator>().SetFloat(Timer, timeRemaining);
+            // if (timeRemaining < 1)
+            //     trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = false;
         }
         timerText.text = "0.0s";
         timerTextShadow.text = "0.0s";
+        //trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = true;
         RemoveTrap(trapName);
     }
 
