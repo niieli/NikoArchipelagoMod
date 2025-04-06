@@ -18,9 +18,9 @@ public class PepperAdvicePatch
     private static TextMeshProUGUI _locationsTextMesh;
     private static TextMeshProUGUI _snailShopTextMesh;
 
-    private static bool _fishingSanity = true;
-    private static bool _flowersSanity = true;
-    private static bool _seedsSanity = true;
+    private static bool _fishingSanity = true, _fishingSanityLocation = true;
+    private static bool _flowersSanity = true, _flowersSanityLocation = true;
+    private static bool _seedsSanity = true, _seedsSanityLocation = true;
     private static bool _keySanity = true;
     private static int _cassetteSanity = 2;
     
@@ -104,18 +104,32 @@ public class PepperAdvicePatch
                     if (CassetteCost.MitchGameObject != null)
                     {
                         if (!saveManager.gameData.worldsData[1].coinFlags.Contains("cassetteCoin"))
+                        {
                             if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(1, _cassetteSanity) * 5) 
                                  || (_cassetteSanity == 0 && ItemHandler.HairballCassetteAmount < CassetteCost.MitchPrice(1)))
                                 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                                 mitch = -1;
+                        } else if (saveManager.gameData.worldsData[1].coinFlags.Contains("cassetteCoin")
+                                   && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
+                            mitch = 1;
+                        }
+                            
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
                         if (!saveManager.gameData.worldsData[1].coinFlags.Contains("cassetteCoin2"))
+                        {
                             if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(1, _cassetteSanity) * 5) 
                                  || (_cassetteSanity == 0 && ItemHandler.HairballCassetteAmount < CassetteCost.MaiPrice(1)))
                                 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                                 mai = -1;
+                        } else if (saveManager.gameData.worldsData[1].coinFlags.Contains("cassetteCoin2") 
+                                   && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
+                            mai = 1;
+                        }
+                            
                     }
                     if (!saveManager.gameData.worldsData[1].coinFlags.Contains("fishing"))
                         if (_fishingSanity && ItemHandler.HairballFishAmount < 5)
@@ -123,14 +137,31 @@ public class PepperAdvicePatch
                     if (!saveManager.gameData.worldsData[1].coinFlags.Contains("flowerPuzzle"))
                         if (_flowersSanity && ItemHandler.HairballFlowerAmount < 3)
                             gabi = -1;
+
+                    // Seedsanity
                     if (!saveManager.gameData.worldsData[1].coinFlags.Contains("hamsterball"))
+                    {
                         if (_seedsSanity && ItemHandler.HairballSeedAmount < 10
                                          && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                             moomy = -1;
-                    if (!saveManager.gameData.worldsData[1].coinFlags.Contains("hamsterball"))
-                        if (_seedsSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                    } else if (saveManager.gameData.worldsData[1].coinFlags.Contains("hamsterball") 
+                               && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                    {
+                        moomy = 1;
+                    }
+                    
+                    if (_seedsSanityLocation)
+                    {
+                        if (saveManager.gameData.worldsData[1].miscFlags.Count(t => t.StartsWith("Seed")) > 0
+                            && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
+                            seedsPerLevel[1] = saveManager.gameData.worldsData[1].miscFlags.Count(t => t.StartsWith("Seed"));
+                        } else if (!saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
                             seedsPerLevel[1] = 0;
-                        else seedsPerLevel[1] = 10;
+                        } else seedsPerLevel[1] = 10;
+                    }
+                    
                     if (!saveManager.gameData.worldsData[1].miscFlags.Contains("1"))
                         if ((_keySanity && ItemHandler.HairballKeyAmount < 1) ||
                             (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
@@ -140,18 +171,32 @@ public class PepperAdvicePatch
                     if (CassetteCost.MitchGameObject != null)
                     {
                         if (!saveManager.gameData.worldsData[2].coinFlags.Contains("cassetteCoin"))
+                        {
                             if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(2, _cassetteSanity) * 5)
                                  || (_cassetteSanity == 0 && ItemHandler.TurbineCassetteAmount < CassetteCost.MitchPrice(2)))
                                 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                                 mitch = -1;
+                        } else if (saveManager.gameData.worldsData[2].coinFlags.Contains("cassetteCoin")
+                                   && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
+                            mitch = 1;
+                        }
+                            
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
                         if (!saveManager.gameData.worldsData[2].coinFlags.Contains("cassetteCoin2"))
+                        {
                             if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(2, _cassetteSanity) * 5) 
                                  || (_cassetteSanity == 0 && ItemHandler.TurbineCassetteAmount < CassetteCost.MaiPrice(2)))
                                 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                                 mai = -1;
+                        } else if (saveManager.gameData.worldsData[2].coinFlags.Contains("cassetteCoin2")
+                                   && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
+                            mai = 1;
+                        }
+                            
                     }
                     if (!saveManager.gameData.worldsData[2].coinFlags.Contains("fishing"))
                         if (_fishingSanity && ItemHandler.TurbineFishAmount < 5)
@@ -174,28 +219,50 @@ public class PepperAdvicePatch
                     if (CassetteCost.MaiGameObject != null)
                     {
                         if (!saveManager.gameData.worldsData[3].coinFlags.Contains("cassetteCoin2"))
+                        {
                             if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MaiPrice(3, _cassetteSanity) * 5)
                                  || (_cassetteSanity == 0 && ItemHandler.SalmonCassetteAmount < CassetteCost.MaiPrice(3)))
                                 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1")
                                 && ((_keySanity && ItemHandler.SalmonKeyAmount < 1) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
                                 && !saveManager.gameData.worldsData[2].coinFlags.Contains("lock2"))
                                 mai = -1;
+                        } else if (saveManager.gameData.worldsData[3].coinFlags.Contains("cassetteCoin2") 
+                                   && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
+                            mai = 1;
+                        }
                     }
+                    
+                    // Fishsanity
                     if (!saveManager.gameData.worldsData[3].coinFlags.Contains("fishing"))
-                        if (_fishingSanity && ItemHandler.SalmonFishAmount < 5 
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                    {
+                        if (_fishingSanity && ItemHandler.SalmonFishAmount < 5
+                                           && saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
                             fischer = -1;
-                    if (!saveManager.gameData.worldsData[3].coinFlags.Contains("fishing"))
-                        if (_fishingSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                    }
+                    else if (saveManager.gameData.worldsData[3].coinFlags.Contains("fishing") 
+                             && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        fischer = 1;
+                    
+                    if (_fishingSanityLocation)
+                    {
+                        if (saveManager.gameData.worldsData[3].fishFlags.Count > 0 
+                            && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
+                            fishPerLevel[3] = saveManager.gameData.worldsData[3].fishFlags.Count;
+                        } else if (!saveManager.gameData.generalGameData.generalFlags.Contains("APWave1"))
+                        {
                             fishPerLevel[3] = 0;
-                        else fishPerLevel[3] = 5;
+                        } else fishPerLevel[3] = 5;
+                    }
+                    
                     if (!saveManager.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle"))
                         if (_flowersSanity && ItemHandler.SalmonFlowerAmount < 6)
                             gabi = -1;
                     if (!saveManager.gameData.worldsData[3].coinFlags.Contains("hamsterball"))
                         if (_seedsSanity && ItemHandler.SalmonSeedAmount < 10)
                             moomy = -1;
-                    if (!saveManager.gameData.worldsData[2].coinFlags.Contains("lock2"))
+                    if (!saveManager.gameData.worldsData[3].miscFlags.Contains("lock2") || !saveManager.gameData.worldsData[3].letterFlags.Contains("letter9"))
                         if ((_keySanity && ItemHandler.SalmonKeyAmount < 1) ||
                             (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
                             adjustLetter = -1;
@@ -204,10 +271,17 @@ public class PepperAdvicePatch
                     if (CassetteCost.MitchGameObject != null)
                     {
                         if (!saveManager.gameData.worldsData[4].coinFlags.Contains("cassetteCoin"))
+                        {
                             if (((_cassetteSanity is 2 or 1 && saveManager.gameData.generalGameData.cassetteAmount < CassetteCost.MitchPrice(4, _cassetteSanity) * 5)
                                  || (_cassetteSanity == 0 && ItemHandler.PoolCassetteAmount < CassetteCost.MitchPrice(4)))
                                 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                                 mitch = -1;
+                        } else if (saveManager.gameData.worldsData[4].coinFlags.Contains("cassetteCoin") 
+                                   && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        {
+                            mitch = 1;
+                        }
+                            
                     }
                     if (CassetteCost.MaiGameObject != null)
                     {
@@ -219,14 +293,30 @@ public class PepperAdvicePatch
                     if (!saveManager.gameData.worldsData[4].coinFlags.Contains("fishing"))
                         if (_fishingSanity && ItemHandler.PoolFishAmount < 5)
                             fischer = -1;
+                    
+                    // Flowersanity
                     if (!saveManager.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle"))
-                        if (_flowersSanity && ItemHandler.PoolFlowerAmount < 3
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                    {
+                        if (_flowersSanity && ItemHandler.PoolFlowerAmount < 3 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                             gabi = -1;
-                    if (!saveManager.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle"))
-                        if (_flowersSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                    } else if (saveManager.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle")
+                               && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                    {
+                        gabi = 1;
+                    }
+
+                    if (_flowersSanityLocation)
+                    {
+                        if (saveManager.gameData.worldsData[4].miscFlags.Count(t => t.StartsWith("FPuzzle")) > 0
+                            && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        {
+                            flowersPerLevel[4] = saveManager.gameData.worldsData[4].miscFlags.Count(t => t.StartsWith("FPuzzle"));
+                        } else if (!saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        {
                             flowersPerLevel[4] = 0;
-                        else flowersPerLevel[4] = 3;
+                        } else flowersPerLevel[4] = 3;
+                    }
+                    
                     if (!saveManager.gameData.worldsData[4].coinFlags.Contains("arcade"))
                         if ((_keySanity && ItemHandler.PoolKeyAmount < 1) || (!_keySanity && saveManager.gameData.generalGameData.keyAmount < 1))
                             blippyBone = -1;
@@ -246,22 +336,53 @@ public class PepperAdvicePatch
                                 || (_cassetteSanity == 0 && ItemHandler.BathCassetteAmount < CassetteCost.MaiPrice(5)))
                                 mai = -1;
                     }
+
+                    // Fishsanity
                     if (!saveManager.gameData.worldsData[5].coinFlags.Contains("fishing"))
+                    {
                         if (_fishingSanity && ItemHandler.BathFishAmount < 5
                             && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                             fischer = -1;
-                    if (!saveManager.gameData.worldsData[5].coinFlags.Contains("fishing"))
-                        if (_fishingSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                    }
+                    else if (saveManager.gameData.worldsData[5].coinFlags.Contains("fishing") 
+                             && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        fischer = 1;
+                    
+                    if (_fishingSanityLocation)
+                    {
+                        if (saveManager.gameData.worldsData[5].fishFlags.Count > 0 
+                            && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        {
+                            fishPerLevel[5] = saveManager.gameData.worldsData[5].fishFlags.Count;
+                        } else if (!saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        {
                             fishPerLevel[5] = 0;
-                        else fishPerLevel[5] = 5;
+                        } else fishPerLevel[5] = 5;
+                    }
+
+                    // Flowersanity
                     if (!saveManager.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle"))
-                        if (_flowersSanity && ItemHandler.BathFlowerAmount < 3 
-                            && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                    {
+                        if (_flowersSanity && ItemHandler.BathFlowerAmount < 3 && saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
                             gabi = -1;
-                    if (!saveManager.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle"))
-                        if (_flowersSanity && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                    } else if (saveManager.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle")
+                               && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                    {
+                        gabi = 1;
+                    }
+
+                    if (_flowersSanityLocation)
+                    {
+                        if (saveManager.gameData.worldsData[5].miscFlags.Count(t => t.StartsWith("FPuzzle")) > 0
+                            && !saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        {
+                            flowersPerLevel[5] = saveManager.gameData.worldsData[5].miscFlags.Count(t => t.StartsWith("FPuzzle"));
+                        } else if (!saveManager.gameData.generalGameData.generalFlags.Contains("APWave2"))
+                        {
                             flowersPerLevel[5] = 0;
-                        else flowersPerLevel[5] = 3;
+                        } else flowersPerLevel[5] = 3;
+                    }
+                        
                     if (!saveManager.gameData.worldsData[5].coinFlags.Contains("hamsterball"))
                         if (_seedsSanity && ItemHandler.BathSeedAmount != 10)
                             moomy = -1;
@@ -398,55 +519,62 @@ public class PepperAdvicePatch
             
             if (_locationsTextMesh != null)
             {
-                if (ArchipelagoClient.TicketCount() < 5)
+                if (Achievements[0] != 0)
                 {
-                    Achievements[0] = 2;
-                } else if (ArchipelagoClient.TicketCount() == 5)
-                {
-                    Achievements[0] = 4;
-                } else if (ArchipelagoClient.TicketCount() >= 6)
-                {
+                    if (ArchipelagoClient.TicketCount() < 5)
+                    {
+                        Achievements[0] = 2;
+                    } else if (ArchipelagoClient.TicketCount() == 5)
+                    {
+                        Achievements[0] = 4;
+                    } else if (ArchipelagoClient.TicketCount() >= 6)
+                    {
                     
-                    if (((ItemHandler.SalmonKeyAmount > 0 && ArchipelagoClient.Keysanity) || 
-                        (saveManager.gameData.generalGameData.keyAmount > 0 && !ArchipelagoClient.Keysanity)) 
-                        && ArchipelagoClient.ElevatorRepaired)
-                    {
-                        Achievements[0] = 7;
-                    }
-                    else
-                    {
-                        Achievements[0] = 6;
-                    }
+                        if (((ItemHandler.SalmonKeyAmount > 0 && ArchipelagoClient.Keysanity) || 
+                             (saveManager.gameData.generalGameData.keyAmount > 0 && !ArchipelagoClient.Keysanity)) 
+                            && ArchipelagoClient.ElevatorRepaired)
+                        {
+                            Achievements[0] = 7;
+                        }
+                        else
+                        {
+                            Achievements[0] = 6;
+                        }
                     
-                }
-                if (Plugin.ArchipelagoClient.CoinAmount >= 76)
-                {
-                    Achievements[0] = Achievements[0] switch
+                    }
+                    if (Plugin.ArchipelagoClient.CoinAmount >= 76)
                     {
-                        7 => 8,
-                        6 => 7,
-                        4 => 5,
-                        _ => Achievements[0]
-                    };
+                        Achievements[0] = Achievements[0] switch
+                        {
+                            7 => 8,
+                            6 => 7,
+                            4 => 5,
+                            _ => Achievements[0]
+                        };
+                    }
+                    var totalLocations = Achievements[0];
+                    var locations = 0;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
+                        locations++;
+                    if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
+                        locations++;
+                    _locationsTextMesh.text = locations + " / " + totalLocations;
                 }
-
-                var totalLocations = Achievements[0];
-                var locations = 0;
-                if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
-                    locations++;
-                if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
-                    locations++;
-                if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
-                    locations++;
-                if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
-                    locations++;
-                if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
-                    locations++;
-                if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
-                    locations++;
-                if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
-                    locations++;
-                _locationsTextMesh.text = locations + " / " + totalLocations;
+                else
+                {
+                    _locationsTextMesh.text = "X";
+                }
+                
             }
             else
             {
@@ -456,22 +584,29 @@ public class PepperAdvicePatch
             
             if (_snailShopTextMesh != null)
             {
-                if (ArchipelagoClient.TicketCount() == 1 && SnailShop[0] != 0)
+                if (SnailShop[0] != 0)
                 {
-                    SnailShop[0] = 5;
+                    if (ArchipelagoClient.TicketCount() == 1)
+                    {
+                        SnailShop[0] = 5;
+                    }
+                    else if (ArchipelagoClient.TicketCount() == 2)
+                    {
+                        SnailShop[0] = 10;
+                    } else if (ArchipelagoClient.TicketCount() == 3)
+                    {
+                        SnailShop[0] = 14;
+                    } else if (ArchipelagoClient.TicketCount() >= 4)
+                    {
+                        SnailShop[0] = 16;
+                    }
+                    var shop = saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
+                    _snailShopTextMesh.text = shop + " / " + SnailShop[0];
                 }
-                else if (ArchipelagoClient.TicketCount() == 2 && SnailShop[0] != 0)
+                else
                 {
-                    SnailShop[0] = 10;
-                } else if (ArchipelagoClient.TicketCount() == 3 && SnailShop[0] != 0)
-                {
-                    SnailShop[0] = 14;
-                } else if (ArchipelagoClient.TicketCount() >= 4 && SnailShop[0] != 0)
-                {
-                    SnailShop[0] = 16;
+                    _snailShopTextMesh.text = "X";
                 }
-                var shop = saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
-                _snailShopTextMesh.text = shop + " / " + SnailShop[0];
             }
             else
             {
@@ -512,9 +647,11 @@ public class PepperAdvicePatch
                     seedsPerLevel.Clear();
                     seedsPerLevel.AddRange(Enumerable.Repeat(0, 8));
                     _seedsSanity = false;
+                    _seedsSanityLocation = false;
                 } else if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 1)
                 {
                     _seedsSanity = false;
+                    _seedsSanityLocation = true;
                 }
             }
             else
@@ -522,6 +659,7 @@ public class PepperAdvicePatch
                 seedsPerLevel.Clear();
                 seedsPerLevel.AddRange(Enumerable.Repeat(0, 8));
                 _seedsSanity = false;
+                _seedsSanityLocation = false;
             }
             
             if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
@@ -531,9 +669,11 @@ public class PepperAdvicePatch
                     flowersPerLevel.Clear();
                     flowersPerLevel.AddRange(Enumerable.Repeat(0, 8));
                     _flowersSanity = false;
+                    _flowersSanityLocation = false;
                 }else if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 1)
                 {
                     _flowersSanity = false;
+                    _flowersSanityLocation = true;
                 }
             }
             else
@@ -541,6 +681,7 @@ public class PepperAdvicePatch
                 flowersPerLevel.Clear();
                 flowersPerLevel.AddRange(Enumerable.Repeat(0, 8));
                 _flowersSanity = false;
+                _flowersSanityLocation = false;
             }
             
             if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
@@ -550,9 +691,11 @@ public class PepperAdvicePatch
                     fishPerLevel.Clear();
                     fishPerLevel.AddRange(Enumerable.Repeat(0, 8));
                     _fishingSanity = false;
-                }else if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 1)
+                    _fishingSanityLocation = false;
+                } else if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 1)
                 {
-                    _seedsSanity = false;
+                    _fishingSanity = false;
+                    _fishingSanityLocation = true;
                 }
             }
             else
@@ -560,6 +703,7 @@ public class PepperAdvicePatch
                 fishPerLevel.Clear();
                 fishPerLevel.AddRange(Enumerable.Repeat(0, 8));
                 _fishingSanity = false;
+                _fishingSanityLocation = false;
             }
 
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
@@ -605,6 +749,20 @@ public class PepperAdvicePatch
             else
             {
                 _cassetteSanity = -1;
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("achievements"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["achievements"].ToString()) == 2)
+                { 
+                    Achievements.Clear();
+                    Achievements.AddRange(Enumerable.Repeat(0, 8));
+                }
+            }
+            else
+            {
+                Achievements.Clear();
+                Achievements.AddRange(Enumerable.Repeat(0, 8));
             }
         }
     }

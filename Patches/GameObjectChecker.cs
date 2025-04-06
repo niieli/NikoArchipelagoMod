@@ -713,7 +713,7 @@ public class GameObjectChecker : MonoBehaviour
         }
 
         if (ItemHandler.SalmonSeedAmount >= 10 && !_sentNote2 && ArchipelagoClient.Ticket3
-            && !scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle")
+            && !scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("hamsterball")
             && SceneManager.GetActiveScene().name != "Salmon Creek Forest")
         {
             Plugin.APSendNote("You gathered all 10 Seeds from Salmon Creek Forest! Come get your reward!", 6.5f,
@@ -722,7 +722,7 @@ public class GameObjectChecker : MonoBehaviour
         }
 
         if (ItemHandler.BathSeedAmount >= 10 && !_sentNote3 && ArchipelagoClient.Ticket5
-            && !scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle")
+            && !scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("hamsterball")
             && SceneManager.GetActiveScene().name != "The Bathhouse")
         {
             Plugin.APSendNote("You gathered all 10 Seeds from Bathhouse! Come get your reward!", 6.5f,
