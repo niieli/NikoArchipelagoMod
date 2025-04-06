@@ -300,7 +300,10 @@ namespace NikoArchipelago
                     latestVersion = ExtractJsonValue(json, "tag_name");
                     latestReleaseUrl = ExtractJsonValue(json, "html_url");
 
-                    if (!string.IsNullOrEmpty(latestVersion) && latestVersion != PluginVersion)
+                    if (!string.IsNullOrEmpty(latestVersion) &&
+                        Version.TryParse(latestVersion, out var latest) &&
+                        Version.TryParse(PluginVersion, out var current) &&
+                        latest > current)
                     {
                         Logger.LogMessage("Found a new update! " + latestVersion);
                         SpawnUpdateNotice();
