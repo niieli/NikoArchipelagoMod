@@ -92,31 +92,37 @@ public class TrapManager : MonoBehaviour
                 Plugin.BepinLogger.LogInfo("Instantiating WhoopsTrap");
                 trapUI = Instantiate(trapWhoops, trapListUI);
                 break;
-            case "Reverse Controls":
-                Plugin.BepinLogger.LogInfo("Instantiating ReverseControlsTrap");
+            case "Zero Gravity":
+                Plugin.BepinLogger.LogInfo("Instantiating ZeroGravityTrap");
                 trapUI = Instantiate(trapWhoops, trapListUI);
-                StartCoroutine(ReverseControls(duration));
+                StartCoroutine(ZeroGravity(duration));
                 break;
         }
-        //StartCoroutine(AnimateItemIn());
-        // var animator = trapUI.GetComponent<Animator>();
-        // animator.SetFloat(Timer, duration);
+        StartCoroutine(AnimateItemIn(trapUI));
+        var animator = trapUI.GetComponent<Animator>();
+        animator.SetFloat(Timer, duration);
         StartCoroutine(UpdateTrapTimer(trapUI, trapName, duration));
 
         activeTraps[trapName] = trapUI;
     }
     
-    private IEnumerator AnimateItemIn()
+    private IEnumerator AnimateItemIn(GameObject trap)
     {
+        var canvasGroup = trap.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f;
         yield return null;
         trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = false;
 
-        float duration = 1f;
+        float duration = 0.2f;
         float t = 0f;
         while (t < duration)
         {
             t += Time.deltaTime;
             yield return null;
+            if (t > 0.05f)
+            {
+                canvasGroup.alpha = 1;
+            }
         }
 
         trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = true;
@@ -125,17 +131,6 @@ public class TrapManager : MonoBehaviour
 
     private IEnumerator UpdateTrapTimer(GameObject trap, string trapName, float duration)
     {
-        // var hider = trap.gameObject.AddComponent<scrUIhider>();
-        // if (hider != null)
-        // {
-        //     var reference = GameObject.Find("UI/Apple Displayer").GetComponent<scrUIhider>();
-        //     hider.useAlphaCurve = reference.useAlphaCurve;
-        //     hider.alphaCurve = reference.alphaCurve;
-        //     hider.animationCurve = reference.animationCurve;
-        //     hider.duration = 0.75f;
-        //     hider.hideOffset = new Vector3(-225, 0, 0);
-        // }
-        // hider.Show(duration-.25f);
         var timerTextShadow = trap.transform.Find("Timer/TextShadow").GetComponent<TextMeshProUGUI>();
         var timerText = trap.transform.Find("Timer/TextFront").GetComponent<TextMeshProUGUI>();
 
@@ -146,13 +141,13 @@ public class TrapManager : MonoBehaviour
             timerTextShadow.text = timeRemaining.ToString("F1") + "s";
             yield return null;
             timeRemaining -= Time.deltaTime;
-            // trapUI.GetComponent<Animator>().SetFloat(Timer, timeRemaining);
-            // if (timeRemaining < 1)
-            //     trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = false;
+            trap.GetComponent<Animator>().SetFloat(Timer, timeRemaining);
+            if (timeRemaining < 0.2f)
+                trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = false;
         }
         timerText.text = "0.0s";
         timerTextShadow.text = "0.0s";
-        //trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = true;
+        trapListUI.gameObject.GetComponent<VerticalLayoutGroup>().enabled = true;
         RemoveTrap(trapName);
     }
 
@@ -257,22 +252,15 @@ public class TrapManager : MonoBehaviour
         Plugin.BepinLogger.LogInfo("My Turn! Trap ended.");
     }
     
-    private static IEnumerator ReverseControls(float duration)
+    private static IEnumerator ZeroGravity(float duration)
     {
-        PlayerCharacterInputs playerInputs;
+        
         while (duration > 0)
         {
-            playerInputs.MoveAxisRight = 0;
-            if (playerInputs.MoveAxisRight > 0)
-            {
-                Plugin.BepinLogger.LogInfo("Left or Right has been pressed");
-            }
-            float waitTime = 0.1f;
-            duration -= waitTime;
-        
-            yield return new WaitForSeconds(waitTime);
+            yield return null;
+            duration -= Time.deltaTime;
         }
-        Plugin.BepinLogger.LogInfo("Reversed Controls Trap ended.");
+        Plugin.BepinLogger.LogInfo("Zero Gravity Trap ended.");
     }
     
 }
