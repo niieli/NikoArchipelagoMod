@@ -17,7 +17,7 @@ public class Applesanity
     {
         private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrApple, Dictionary<string, GameObject>> InstanceItemsCache = new();
-
+        
         private static GameObject CreateItemPrefab(string prefabName, scrApple instance)
         {
             // Ensure per-instance cache exists
@@ -157,16 +157,6 @@ public class Applesanity
                         case "Yarn"
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            // var yarnTextures = new[]
-                            // {
-                            //     CreateItemOverworld("yarn", __instance),
-                            //     CreateItemOverworld("yarn2", __instance),
-                            //     CreateItemOverworld("yarn3", __instance),
-                            //     CreateItemOverworld("yarn4", __instance),
-                            //     CreateItemOverworld("yarn5", __instance),
-                            // };
-                            // var randomIndex = Random.Range(0, yarnTextures.Length);
-                            // __instance.quad = yarnTextures[randomIndex];
                             __instance.quad = CreateItemOverworld("yarn", __instance);
                             break;
                         }
@@ -266,11 +256,60 @@ public class Applesanity
             noSpam = true;
         }
 
+        public static Dictionary<scrApple, int> appleIDs = new();
+        public static int nextAppleID = 1;
+
+        private static bool Prefix(scrApple __instance)
+        {
+            // scrApple[] allApples = Resources.FindObjectsOfTypeAll<scrApple>();
+            //
+            // foreach (var apple in allApples)
+            // {
+            //     if (!appleIDs.ContainsKey(apple))
+            //     {
+            //         appleIDs[apple] = nextAppleID++;
+            //         Plugin.BepinLogger.LogInfo($"Assigned ID {appleIDs[apple]} to: {apple.gameObject.name} (Active: {apple.gameObject.activeInHierarchy})");
+            //     }
+            // }
+            var maxAppleID = 999;
+            if (SceneManager.GetActiveScene().name == "Hairball City")
+            {
+                maxAppleID = ApplesanityTrigger.appleCountHC;
+            } else if (SceneManager.GetActiveScene().name == "Trash Kingdom")
+            {
+                maxAppleID = ApplesanityTrigger.appleCountTT;
+            }else if (SceneManager.GetActiveScene().name == "Salmon Creek Forest")
+            {
+                maxAppleID = ApplesanityTrigger.appleCountSCF;
+            }else if (SceneManager.GetActiveScene().name == "Public Pool")
+            {
+                maxAppleID = ApplesanityTrigger.appleCountPP;
+            }else if (SceneManager.GetActiveScene().name == "The Bathhouse")
+            {
+                maxAppleID = ApplesanityTrigger.appleCountBath;
+            }else if (SceneManager.GetActiveScene().name == "Tadpole inc")
+            {
+                maxAppleID = ApplesanityTrigger.appleCountHQ;
+            }
+
+            if (maxAppleID < nextAppleID) return true;
+            if (!appleIDs.ContainsKey(__instance))
+            {
+                appleIDs[__instance] = nextAppleID++;
+                //Plugin.BepinLogger.LogInfo($"Assigned Apple CustomID: {appleIDs[__instance]} to {__instance.gameObject.name}");
+            }
+            return true;
+        }
+
         private static void Postfix(scrApple __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
-            var flag = __instance.name;
-            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag) || !flag.StartsWith("Apple Float"))
+            if (!appleIDs.ContainsKey(__instance))
+            {
+                return;
+            }
+            var flag = "Apple" + appleIDs[__instance];
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag))
             {
                 return;
             }
@@ -328,7 +367,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutSFCApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 289 - adjustment + idkAdjustment;
+                    var offset = 290 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
@@ -336,7 +375,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutPPApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 375 - adjustment + idkAdjustment;
+                    var offset = 416 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
@@ -344,7 +383,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutBathApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 443 - adjustment + idkAdjustment;
+                    var offset = 510 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
@@ -352,7 +391,7 @@ public class Applesanity
                 {
                     var list = Locations.ScoutHQApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 510 - adjustment + idkAdjustment;
+                    var offset = 582 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
@@ -363,16 +402,74 @@ public class Applesanity
     [HarmonyPatch(typeof(scrApple), "GetCollected")]
     public static class ApplesanityTrigger
     {
+        public static int appleCountHC = 32;
+        public static int appleCountTT = 33;
+        public static int appleCountSCF = 126;
+        public static int appleCountPP = 94;
+        public static int appleCountBath = 72;
+        public static int appleCountHQ = 14;
         private static void Postfix(scrApple __instance)
         {
-            if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.name) && __instance.name.StartsWith("Apple Float"))
+            if (!ApplesanityStart.appleIDs.ContainsKey(__instance))
+            {
+                return;
+            }
+            var flag = "Apple" + ApplesanityStart.appleIDs[__instance];
+            if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(flag))
             {
                 scrAppleDisplayer.show = false;
-                scrWorldSaveDataContainer.instance.miscFlags.Add(__instance.name);
+                scrWorldSaveDataContainer.instance.miscFlags.Add(flag);
                 scrGameSaveManager.instance.gameData.generalGameData.appleAmount--;
                 scrGameSaveManager.instance.SaveGame();
                 scrWorldSaveDataContainer.instance.SaveWorld();
             }
+        }
+
+        private static bool ValidIDRange(scrApple instance)
+        {
+            if (SceneManager.GetActiveScene().name == "Hairball City")
+            {
+                if (ApplesanityStart.appleIDs[instance] <= appleCountHC)
+                {
+                    return true;
+                }
+            } else
+            if (SceneManager.GetActiveScene().name == "Trash Kingdom")
+            {
+                if (ApplesanityStart.appleIDs[instance] <= appleCountTT)
+                {
+                    return true;
+                }
+            }else
+            if (SceneManager.GetActiveScene().name == "Salmon Creek Forest")
+            {
+                if (ApplesanityStart.appleIDs[instance] <= appleCountSCF)
+                {
+                    return true;
+                }
+            }else
+            if (SceneManager.GetActiveScene().name == "Public Pool")
+            {
+                if (ApplesanityStart.appleIDs[instance] <= appleCountPP)
+                {
+                    return true;
+                }
+            }else
+            if (SceneManager.GetActiveScene().name == "The Bathhouse")
+            {
+                if (ApplesanityStart.appleIDs[instance] <= appleCountBath)
+                {
+                    return true;
+                }
+            }else
+            if (SceneManager.GetActiveScene().name == "Tadpole inc")
+            {
+                if (ApplesanityStart.appleIDs[instance] <= appleCountHQ)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

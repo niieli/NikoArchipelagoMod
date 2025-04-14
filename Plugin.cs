@@ -20,6 +20,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
+using Object = UnityEngine.Object;
 
 namespace NikoArchipelago
 {
@@ -61,9 +62,8 @@ namespace NikoArchipelago
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
         public static bool loggedIn, Compatibility, SaveEstablished, PlayerFound;
         public static string Seed;
-        private static scrGameSaveManager _gameSaveManagerStatic;
         public static AssetBundle AssetBundle, AssetBundleXmas;
-        public static GameObject FreezeTrap, IronBootsTrap, MyTurnTrap, WhoopsTrap;
+        public static GameObject FreezeTrap, IronBootsTrap, MyTurnTrap, WhoopsTrap, GravityTrap;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
@@ -77,12 +77,12 @@ namespace NikoArchipelago
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
             SnailMoneySprite, BugSprite, GgSprite, GoalBadSprite,
             ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite,
-            TimePieceSprite, YarnSprite, Yarn2Sprite, Yarn3Sprite, Yarn4Sprite, Yarn5Sprite,
+            TimePieceSprite, YarnSprite,
             HairballFlowerSprite, TurbineFlowerSprite, SalmonFlowerSprite, PoolFlowerSprite, BathFlowerSprite, TadpoleFlowerSprite,
             HairballSeedSprite, SalmonSeedSprite, BathSeedSprite,
             HairballCassetteSprite, TurbineCassetteSprite, SalmonCassetteSprite, PoolCassetteSprite, BathCassetteSprite, TadpoleCassetteSprite, GardenCassetteSprite,
             FischerNoteSprite, GabiNoteSprite, MoomyNoteSprite, BlessleyNoteSprite,
-            FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite;
+            FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite, GravityTrapSprite;
 
         public static GameObject ApUIGameObject, ArrowTrackerGameObject;
         public static Texture2D CassetteTexture;
@@ -150,7 +150,6 @@ namespace NikoArchipelago
             {
                 Logger.LogInfo($"Found Pre-DLC version {Application.unityVersion} ! - Using compatibility...");
                 Compatibility = true;
-                //AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets2");
             }
             else
             {
@@ -225,11 +224,6 @@ namespace NikoArchipelago
                 TadpoleKeySprite = AssetBundle.LoadAsset<Sprite>("txrTadpoleKey");
                 TimePieceSprite = AssetBundle.LoadAsset<Sprite>("timepiece2D");
                 YarnSprite = AssetBundle.LoadAsset<Sprite>("Yarn");
-                // YarnSprite = AssetBundle.LoadAsset<Sprite>("yarn2d1");
-                // Yarn2Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d2");
-                // Yarn3Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d3");
-                // Yarn4Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d4");
-                // Yarn5Sprite = AssetBundle.LoadAsset<Sprite>("yarn2d5");
                 HairballFlowerSprite = AssetBundle.LoadAsset<Sprite>("HairballFlower");
                 TurbineFlowerSprite = AssetBundle.LoadAsset<Sprite>("TurbineFlower");
                 SalmonFlowerSprite = AssetBundle.LoadAsset<Sprite>("SalmonFlower");
@@ -259,6 +253,8 @@ namespace NikoArchipelago
                 MyTurnTrapSprite = AssetBundle.LoadAsset<Sprite>("imgPepper");
                 WhoopsTrapSprite = AssetBundle.LoadAsset<Sprite>("TrapWhoops");
                 SpeedBoostSprite = AssetBundle.LoadAsset<Sprite>("SpeedBoost");
+                GravityTrap = AssetBundle.LoadAsset<GameObject>("GravityTrap");
+                GravityTrapSprite = AssetBundle.LoadAsset<Sprite>("BuzzNote");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -368,7 +364,6 @@ namespace NikoArchipelago
             }
             Logger.LogInfo("GameSaveManager is not null.");
             gameSaveManager = scrGameSaveManager.instance;
-            _gameSaveManagerStatic = scrGameSaveManager.instance;
             saveReady = true;
         }
 
@@ -902,7 +897,7 @@ namespace NikoArchipelago
             
             if (GUI.Button(new Rect(16, 380, 100, 20), "Freeze Trap"))
             {
-                TrapManager.instance.ActivateTrap("Freeze", 10f);
+                TrapManager.instance.ActivateTrap("Zero Gravity", 30f);
             }
             if (GUI.Button(new Rect(16, 400, 100, 20), "Iron Boots Trap"))
             {
@@ -916,6 +911,36 @@ namespace NikoArchipelago
             {
                 NoAntiCheese = true;
                 APSendNote("Disabled Anti-Cheese...", 7f, ApFillerSprite);
+            }
+            if (GUI.Button(new Rect(16, 480, 100, 20), "Apples"))
+            {
+                // scrApple[] apples = GameObject.FindObjectsByType<scrApple>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+                // foreach (var apple in apples)
+                // {
+                //     int uniqueID = apple.GetInstanceID();
+                //     Logger.LogFatal($"GameObject Name: {apple.name} | Apple Position: {apple.transform.position} |" +
+                //                     $"New Apple Flag: {apple.transform.position.magnitude} | GameObject Active: {apple.gameObject.activeInHierarchy}");
+                // }
+                
+                // GameObject[] apples = GameObject.FindGameObjectsWithTag("Apple");
+                // foreach (GameObject apple in apples)
+                // {
+                //     int uniqueID = apple.GetInstanceID();
+                //     Logger.LogFatal($"GameObject Name: {apple.name} | Apple Instance ID: {uniqueID} | GameObject Active: {apple.gameObject.activeInHierarchy}");
+                // }
+
+                foreach (var keyValuePair in Applesanity.ApplesanityStart.appleIDs)
+                {
+                    if (keyValuePair.Key != null)
+                    {
+                        Logger.LogFatal($"Apples: {keyValuePair.Key} - {keyValuePair.Value} | Flag: Apple{keyValuePair.Value} " +
+                                        $"| ID: {keyValuePair.Value} | Active: {keyValuePair.Key.gameObject.activeInHierarchy}");
+                    }
+                    else
+                    {
+                        Applesanity.ApplesanityStart.appleIDs.Remove(keyValuePair.Key);
+                    }
+                }
             }
         }
 

@@ -284,10 +284,10 @@ public class CassetteCost
                         seedAdjustment = 30;
                 if (!ArchipelagoData.slotData.ContainsKey("applessanity"))
                     if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0)
-                        applessAdjustment = 296;
+                        applessAdjustment = 370;
                 var adjustment = gardenAdjustment + snailShopAdjustment + seedAdjustment + applessAdjustment;
                 var offset = 14 - gardenOffset;
-                var scoutId = 521 + (count-1) - adjustment;
+                var scoutId = 596 + (count-1) - adjustment;
                 _mitchIndex = -1 + count;
                 if (scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount >= __instance.price && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                 {

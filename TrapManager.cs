@@ -13,11 +13,12 @@ namespace NikoArchipelago;
 public class TrapManager : MonoBehaviour
 {
     public static TrapManager instance;
-    public static bool FreezeOn, IronBootsOn, MyTurnOn, WhoopsOn, ReversedControlsOn;
+    public static bool FreezeOn, IronBootsOn, MyTurnOn, WhoopsOn, GravityOn;
     public GameObject trapFreeze = Plugin.FreezeTrap; 
     public GameObject trapIronBoots = Plugin.IronBootsTrap;
     public GameObject trapMyTurn = Plugin.MyTurnTrap;
     public GameObject trapWhoops = Plugin.WhoopsTrap;
+    public GameObject trapGravity = Plugin.GravityTrap;
     public Transform trapListUI; 
     private Dictionary<string, GameObject> activeTraps = new Dictionary<string, GameObject>();
     private GameObject trapUI;
@@ -58,10 +59,10 @@ public class TrapManager : MonoBehaviour
             WhoopsOn = false;
             ActivateTrap("Whoops!", 5f);
         }
-        if (ReversedControlsOn)
+        if (GravityOn)
         {
-            ReversedControlsOn = false;
-            ActivateTrap("Reverse Controls", 50f);
+            GravityOn = false;
+            ActivateTrap("Zero Gravity", 12.5f);
         }
     }
 
@@ -93,8 +94,8 @@ public class TrapManager : MonoBehaviour
                 trapUI = Instantiate(trapWhoops, trapListUI);
                 break;
             case "Zero Gravity":
-                Plugin.BepinLogger.LogInfo("Instantiating ZeroGravityTrap");
-                trapUI = Instantiate(trapWhoops, trapListUI);
+                Plugin.BepinLogger.LogInfo("Instantiating GravityTrap");
+                trapUI = Instantiate(trapGravity, trapListUI);
                 StartCoroutine(ZeroGravity(duration));
                 break;
         }
@@ -254,13 +255,34 @@ public class TrapManager : MonoBehaviour
     
     private static IEnumerator ZeroGravity(float duration)
     {
-        
+        var jump = MyCharacterController.instance.JumpSpeed;
+        var airMove = MyCharacterController.instance.MaxAirMoveSpeed;
+        var airAcc = MyCharacterController.instance.AirAccelerationSpeed;
+        var gravityField = typeof(MyCharacterController).GetField("Gravity", BindingFlags.NonPublic | BindingFlags.Instance);
+        gravityField.SetValue(MyCharacterController.instance, new Vector3(0f, 0.5f, 0f));
+        MyCharacterController.instance.JumpSpeed = 0.15f;
+        MyCharacterController.instance.MaxAirMoveSpeed = 1f;
+        MyCharacterController.instance.AirAccelerationSpeed = 0.15f;
         while (duration > 0)
         {
             yield return null;
             duration -= Time.deltaTime;
         }
+        MyCharacterController.instance.JumpSpeed = jump;
+        MyCharacterController.instance.AirAccelerationSpeed = airAcc;
+        MyCharacterController.instance.MaxAirMoveSpeed = airMove;
+        gravityField.SetValue(MyCharacterController.instance, new Vector3(0f, -30f, 0f));
         Plugin.BepinLogger.LogInfo("Zero Gravity Trap ended.");
+    }
+    
+    private static IEnumerator BadEyeSight(float duration)
+    {
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
+        Plugin.BepinLogger.LogInfo("Bad Eye Sight ended.");
     }
     
 }

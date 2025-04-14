@@ -639,6 +639,14 @@ public static class ItemHandler
             3f, Plugin.MyTurnTrapSprite);
         TrapManager.MyTurnOn = true;
     }
+    public static void AddGravityTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gravity Trap from {sender}!" : "You found your Gravity Trap!",
+            3f, Plugin.GravityTrapSprite);
+        TrapManager.GravityOn = true;
+    }
     // NPCs
     // public static void AddHcNPCs(string sender, bool notify = true)
     // {

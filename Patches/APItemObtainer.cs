@@ -170,8 +170,8 @@ public class APItemObtainer
             {
                 Skip(__instance);
                 __instance.Invoke("Die", 0f);
-                MyCharacterController.instance.state = MyCharacterController.States.Normal;
                 MyCharacterController.instance._diveConsumed = false;
+                MyCharacterController.instance.state = MyCharacterController.States.Normal;
             }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;

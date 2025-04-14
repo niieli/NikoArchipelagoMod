@@ -50,6 +50,8 @@ public class GameObjectChecker : MonoBehaviour
         _sentNote = _sentNote2 = _sentNote3 = _sentNote4 = _sentNote5 =  
             _sentNote6 = _sentNote7 = _sentNote8 = _sentNote9 = _sentNote10 = _sentNote11 = _sentNote12 = _sentNote13 = _sentNote14 = 
                 _sentNote15 = _sentNote16 = _sentNote17 = _sentNote18 = _sentNote19 = false;
+        Applesanity.ApplesanityStart.appleIDs.Clear();
+        Applesanity.ApplesanityStart.nextAppleID = 1;
         //LocationCheck();
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
