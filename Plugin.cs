@@ -730,20 +730,13 @@ namespace NikoArchipelago
         public void KillPlayer(string cause)
         {
             ArchipelagoConsole.LogMessage(cause);
-            if (Compatibility)
-            {
-                scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel);
-            }
-            else
-            {
-                scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
-            }
-            StartCoroutine(SendNoteDelay(cause, 5.0f, 5.0f, true));
+            scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
+            StartCoroutine(SendNoteOnRespawn(cause, 5.0f, true));
         }
         
-        private IEnumerator SendNoteDelay(string text, float delay, float noteTime, bool isDeath = false)
+        private static IEnumerator SendNoteOnRespawn(string text, float noteTime, bool isDeath = false)
         {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitUntil(() => scrTransitionManager.instance.state == scrTransitionManager.States.idle);
             APSendNote(text, noteTime);
             if (isDeath)
             {
@@ -935,10 +928,6 @@ namespace NikoArchipelago
                     {
                         Logger.LogFatal($"Apples: {keyValuePair.Key} - {keyValuePair.Value} | Flag: Apple{keyValuePair.Value} " +
                                         $"| ID: {keyValuePair.Value} | Active: {keyValuePair.Key.gameObject.activeInHierarchy}");
-                    }
-                    else
-                    {
-                        Applesanity.ApplesanityStart.appleIDs.Remove(keyValuePair.Key);
                     }
                 }
             }

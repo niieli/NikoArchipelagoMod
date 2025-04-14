@@ -50,9 +50,14 @@ public class Applesanity
             var itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
             Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
-            var ogQuads = instance.transform.Find("Quad").gameObject;
+            GameObject ogQuads = null;
+            if (instance.transform.Find("Quad") != null)
+                ogQuads = instance.transform.Find("Quad").gameObject;
+            else if (instance.transform.Find("Square") != null)
+                ogQuads = instance.transform.Find("Square").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
 
+            if (ogQuads == null) return null;
             itemOverworld.transform.localPosition = Vector3.zero;
             itemQuads.transform.position = ogQuads.transform.position;
 
@@ -339,10 +344,18 @@ public class Applesanity
                     seedAdjustment = 30;
 
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment;
-            var ogQuads = __instance.transform.Find("Quad").gameObject;
+            GameObject ogQuads = null;
+            if (__instance.transform.Find("Quad") != null)
+                ogQuads = __instance.transform.Find("Quad").gameObject;
+            else if (__instance.transform.Find("Square") != null)
+                ogQuads = __instance.transform.Find("Square").gameObject;
+            if (ogQuads == null) return;
             Object.Destroy(ogQuads.gameObject);
             ogQuads.SetActive(false);
-            
+            __instance.transform.position += new Vector3(0, 0.25f, 0);
+            if (__instance.transform.Find("Particle System Sparkle") != null)
+                if (__instance.transform.Find("Particle System Sparkle").gameObject.activeInHierarchy)
+                    __instance.transform.position += new Vector3(0, 0.75f, 0);
             noSpam = false;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
@@ -357,6 +370,7 @@ public class Applesanity
                 }
                 case "Trash Kingdom":
                 {
+                    __instance.transform.position += new Vector3(0, -0.2f, 0);
                     var list = Locations.ScoutTTApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 257 - adjustment + idkAdjustment;
@@ -373,6 +387,7 @@ public class Applesanity
                 }
                 case "Public Pool":
                 {
+                    __instance.transform.position += new Vector3(0, -0.125f, 0);
                     var list = Locations.ScoutPPApplesList.ToList();
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 416 - adjustment + idkAdjustment;
@@ -393,6 +408,11 @@ public class Applesanity
                     var index = list.FindIndex(pair => pair.Value == flag);
                     var offset = 582 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
+                    if (appleIDs[__instance] == 11)
+                    {
+                        __instance.transform.position = new Vector3(111f, 3.5f, 5f);
+                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                    }
                     break;
                 }
             }

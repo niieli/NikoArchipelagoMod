@@ -25,7 +25,7 @@ public class TrainMapPatch
     private static int _cassetteSanity = 2;
     
     private static List<int> applesPerLevel = new()
-        { 0, 32, 32, 86, 68, 67, 11, 0 };
+        { 0, 32, 33, 126, 94, 72, 14, 0 };
 
     private static List<int> fishPerLevel = new()
         { 0, 5, 5, 5, 5, 5, 5, 0 };
@@ -584,7 +584,10 @@ public class TrainMapPatch
                         locations++;
                     if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
                         locations++;
-                    _locationsTextMesh.text = locations + " / " + totalLocations;
+                    if (locations > Achievements[0])
+                        _locationsTextMesh.text = locations + " / " + locations;
+                    else 
+                        _locationsTextMesh.text = locations + " / " + totalLocations;
                 }
                 else
                 {
@@ -617,7 +620,10 @@ public class TrainMapPatch
                         SnailShop[0] = 16;
                     }
                     var shop = saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
-                    _snailShopTextMesh.text = shop + " / " + SnailShop[0];
+                    if (shop > SnailShop[0])
+                        _snailShopTextMesh.text = shop + " / " + shop;
+                    else 
+                        _snailShopTextMesh.text = shop + " / " + SnailShop[0];
                 }
                 else
                 {

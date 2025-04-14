@@ -737,37 +737,48 @@ public class GameObjectChecker : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Salmon Creek Forest")
         {
-            GameObject.Find("Apple Float (63)").transform.position = new Vector3(59f, 138f, 81f);
-            GameObject.Find("Apple Float (64)").transform.position = new Vector3(54f, 138f, 82f);
-            GameObject.Find("Apple Float (65)").transform.position = new Vector3(51f, 138f, 82f);
-            GameObject.Find("Apple Float (66)").transform.position = new Vector3(48f, 138f, 83f);
-            GameObject.Find("Apple Float (67)").transform.position = new Vector3(43f, 138f, 84f);
-            GameObject.Find("Apple Float (68)").transform.position = new Vector3(40f, 138f, 85f);
-            GameObject.Find("Apple Float (69)").transform.position = new Vector3(36f, 138f, 86f);
-            GameObject.Find("Apple Float (70)").transform.position = new Vector3(32f, 138f, 86f);
-            GameObject.Find("Apple Float (71)").transform.position = new Vector3(-44f, 161f, 75f);
-            GameObject.Find("Apple Float (72)").transform.position = new Vector3(-44f, 161f, 82f);
-            GameObject.Find("Apple Float (73)").transform.position = new Vector3(-44f, 161f, 85f);
-            GameObject.Find("Apple Float (74)").transform.position = new Vector3(-79f, 137f, 0f);
-            GameObject.Find("Apple Float (75)").transform.position = new Vector3(-82f, 137f, -3f);
-            GameObject.Find("Apple Float (76)").transform.position = new Vector3(-85f, 137f, -7f);
-            GameObject.Find("Apple Float (77)").transform.position = new Vector3(-88f, 137f, -8f);
-            GameObject.Find("Apple Float (78)").transform.position = new Vector3(79f, 127f, 119f);
-            GameObject.Find("Apple Float (79)").transform.position = new Vector3(83f, 127f, 121f);
-            GameObject.Find("Apple Float (80)").transform.position = new Vector3(81f, 127f, 117f);
-            GameObject.Find("Apple Float (81)").transform.position = new Vector3(27f, 131f, 139f);
-            GameObject.Find("Apple Float (82)").transform.position = new Vector3(38f, 134f, 135f);
+            GameObject.Find("Apple Float (36)").transform.position = new Vector3(5f, 128f, 221f);
+            GameObject.Find("Apple Float (37)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (38)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (39)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (40)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (41)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (42)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (43)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (44)").transform.position += new Vector3(0, -3.5f, -5f);
+            GameObject.Find("Apple Float (45)").transform.position += new Vector3(0, -3.5f, -5f);
+            
+            GameObject.Find("Apple Float (63)").transform.position = new Vector3(59f, 137f, 81f);
+            GameObject.Find("Apple Float (64)").transform.position = new Vector3(54f, 136.5f, 82f);
+            GameObject.Find("Apple Float (65)").transform.position = new Vector3(51f, 136.5f, 82f);
+            GameObject.Find("Apple Float (66)").transform.position = new Vector3(48f, 136.5f, 83f);
+            GameObject.Find("Apple Float (67)").transform.position = new Vector3(43f, 136.5f, 84f);
+            GameObject.Find("Apple Float (68)").transform.position = new Vector3(40f, 136.5f, 85f);
+            GameObject.Find("Apple Float (69)").transform.position = new Vector3(36f, 136.5f, 86f);
+            GameObject.Find("Apple Float (70)").transform.position = new Vector3(32f, 136.5f, 86f);
+            GameObject.Find("Apple Float (71)").transform.position = new Vector3(-44f, 159f, 75f);
+            GameObject.Find("Apple Float (72)").transform.position = new Vector3(-44f, 159f, 82f);
+            GameObject.Find("Apple Float (73)").transform.position = new Vector3(-44f, 159f, 85f);
+            GameObject.Find("Apple Float (74)").transform.position = new Vector3(-79f, 135f, 0f);
+            GameObject.Find("Apple Float (75)").transform.position = new Vector3(-82f, 135f, -3f);
+            GameObject.Find("Apple Float (76)").transform.position = new Vector3(-85f, 135f, -7f);
+            GameObject.Find("Apple Float (77)").transform.position = new Vector3(-88f, 135f, -8f);
+            GameObject.Find("Apple Float (78)").transform.position = new Vector3(79f, 125f, 119f);
+            GameObject.Find("Apple Float (79)").transform.position = new Vector3(83f, 125f, 121f);
+            GameObject.Find("Apple Float (80)").transform.position = new Vector3(81f, 125f, 117f);
+            GameObject.Find("Apple Float (81)").transform.position = new Vector3(27f, 130f, 139f);
+            GameObject.Find("Apple Float (82)").transform.position = new Vector3(38f, 132.5f, 135f);
         } else if (SceneManager.GetActiveScene().name == "Tadpole inc")
         {
-            GameObject.Find("Apple Float (2)").transform.position = new Vector3(-80f, 3f, 15f);
-            GameObject.Find("Apple Float (3)").transform.position = new Vector3(-78f, 3f, 13f);
-            GameObject.Find("Apple Float (4)").transform.position = new Vector3(-83f, 3f, 17f);
-            GameObject.Find("Apple Float (5)").transform.position = new Vector3(-105f, 3f, -40f);
-            GameObject.Find("Apple Float (6)").transform.position = new Vector3(-114f, 3f, -52f);
-            GameObject.Find("Apple Float (7)").transform.position = new Vector3(-100f, 3f, -54f);
-            GameObject.Find("Apple Float (8)").transform.position = new Vector3(-68f, 3f, -69f);
-            GameObject.Find("Apple Float (9)").transform.position = new Vector3(-50f, 3f, -48f);
-            GameObject.Find("Apple Float (10)").transform.position = new Vector3(121f, 6f, -78f);
+            GameObject.Find("Apple Float (2)").transform.position = new Vector3(-80f, 2.5f, 15f);
+            GameObject.Find("Apple Float (3)").transform.position = new Vector3(-78f, 2.5f, 13f);
+            GameObject.Find("Apple Float (4)").transform.position = new Vector3(-83f, 2.5f, 17f);
+            GameObject.Find("Apple Float (5)").transform.position = new Vector3(-105f, 2.5f, -40f);
+            GameObject.Find("Apple Float (6)").transform.position = new Vector3(-114f, 2.5f, -52f);
+            GameObject.Find("Apple Float (7)").transform.position = new Vector3(-100f, 2.5f, -54f);
+            GameObject.Find("Apple Float (8)").transform.position = new Vector3(-68f, 2.5f, -69f);
+            GameObject.Find("Apple Float (9)").transform.position = new Vector3(-50f, 2.5f, -48f);
+            GameObject.Find("Apple Float (10)").transform.position = new Vector3(121f, 5.5f, -78f);
         }
     }
 
