@@ -32,7 +32,7 @@ public class GameObjectChecker : MonoBehaviour
     public static scrCursor cursor;
     private static bool _sentNote, _sentNote2, _sentNote3, _sentNote4, _sentNote5, 
         _sentNote6, _sentNote7, _sentNote8, _sentNote9, _sentNote10, _sentNote11, _sentNote12, _sentNote13, _sentNote14,
-        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix, oncePerScene;
+        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix, oncePerScene, dissmised;
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -823,6 +823,7 @@ public class GameObjectChecker : MonoBehaviour
         cursor.Visible = false;
         cursor.transform.SetParent(GameObject.Find("UI/Menu system").transform);
         NoticeStillUp = false;
+        dissmised = true;
         Destroy(WarningNotice);
     }
 
@@ -847,7 +848,7 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
-        if (!oncePerScene)
+        if (!oncePerScene && !dissmised)
         {
             ApplesanityModWarning();
             oncePerScene = true;
