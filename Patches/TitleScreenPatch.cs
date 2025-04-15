@@ -22,7 +22,18 @@ public class TitleScreenPatch
                 }
                 return false;
             }
-            
+
+            if (GameObjectChecker.NoticeStillUp)
+            {
+                __instance.startGameHider.visible = true;
+                __instance.GameTitle.color = new Color(1f, 1f, 1f, Mathf.Clamp(__instance.GameTitle.color.a + Time.deltaTime, 0.0f, 1f));
+                if (GameInput.GetButtonDown("Action"))
+                {
+                    Plugin.BepinLogger.LogFatal("Notice still up. Title screen cannot be ended.");
+                    return false;
+                }
+                return false;
+            }
             return true;
         }
     }

@@ -22,15 +22,17 @@ public class GameObjectChecker : MonoBehaviour
     private static GameObject _garyGhost, _garyGhostHome;
     private static bool _foundGhost;
     private static bool _foundCamera;
-    public static bool FirstMeeting;
+    public static bool FirstMeeting, NoticeStillUp;
     private static bool _checkedGhost;
     private static bool _spawned;
     private static bool _foundNpcs;
     private static bool _missingFrog;
     public static GameObject APMenu;
+    private static GameObject WarningNotice;
+    public static scrCursor cursor;
     private static bool _sentNote, _sentNote2, _sentNote3, _sentNote4, _sentNote5, 
         _sentNote6, _sentNote7, _sentNote8, _sentNote9, _sentNote10, _sentNote11, _sentNote12, _sentNote13, _sentNote14,
-        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix;
+        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix, oncePerScene;
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -49,7 +51,7 @@ public class GameObjectChecker : MonoBehaviour
         _missingFrog = false;
         _sentNote = _sentNote2 = _sentNote3 = _sentNote4 = _sentNote5 =  
             _sentNote6 = _sentNote7 = _sentNote8 = _sentNote9 = _sentNote10 = _sentNote11 = _sentNote12 = _sentNote13 = _sentNote14 = 
-                _sentNote15 = _sentNote16 = _sentNote17 = _sentNote18 = _sentNote19 = false;
+                _sentNote15 = _sentNote16 = _sentNote17 = _sentNote18 = _sentNote19 = oncePerScene = false;
         Applesanity.ApplesanityStart.appleIDs.Clear();
         Applesanity.ApplesanityStart.nextAppleID = 1;
         //LocationCheck();
@@ -73,6 +75,10 @@ public class GameObjectChecker : MonoBehaviour
         TrapManager();
         FixApplePlacement();
         HatPlayers();
+        if (ArchipelagoClient.IsValidScene())
+        {
+            cursor = GameObject.Find("UI/Menu system/Cursor").GetComponent<scrCursor>();
+        }
         //APArrowTracker();
         //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
@@ -782,13 +788,52 @@ public class GameObjectChecker : MonoBehaviour
         }
     }
 
+    private static void ApplesanityModWarning()
+    {
+        if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) != 1) return;
+        if (ArchipelagoData.slotData.ContainsKey("bugsanity")) return;
+        cursor.transform.SetParent(GameObject.Find("UI").transform);
+        SpawnWarningNotice();
+        NoticeStillUp = true;
+        Cursor.lockState = CursorLockMode.None;
+        cursor.Visible = true;
+    }
+    
+    private static void SpawnWarningNotice()
+    {
+        var apUpdateNoticePrefab = Plugin.AssetBundle.LoadAsset<GameObject>("APWarningNotice");
+        WarningNotice = Instantiate(apUpdateNoticePrefab, GameObject.Find("UI").transform, false);
+        if (WarningNotice == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to instantiate APWarningNotice prefab.");
+            return;
+        }
+        WarningNotice.layer = LayerMask.NameToLayer("UI");
+        WarningNotice.transform.SetSiblingIndex(30);
+        var dismiss = WarningNotice.transform.Find("Panel/Dismiss").gameObject.GetComponent<Button>();
+        dismiss.onClick.AddListener(DestroyNotice);
+        var download = WarningNotice.transform.Find("Panel/Download").gameObject.GetComponent<Button>();
+        download.onClick.AddListener(Download);
+        WarningNotice.SetActive(true);
+    }
+
+    private static void DestroyNotice()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        cursor.Visible = false;
+        cursor.transform.SetParent(GameObject.Find("UI/Menu system").transform);
+        NoticeStillUp = false;
+        Destroy(WarningNotice);
+    }
+
+    private static void Download()
+    {
+        Application.OpenURL("https://github.com/niieli/NikoArchipelagoMod/releases/tag/0.6.3");
+    }
+
     public void Update()
     {
         HatKidEasterEgg();
-        if (GameInput.GetButtonDown("Pause") && MenuHelpers.Menus.Count > 0)
-        {
-            Cursor.visible = false;
-        }
         if (Plugin.ChristmasEvent)
         {
             var t = GameObject.Find("PlayerCamera");
@@ -802,6 +847,11 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
+        if (!oncePerScene)
+        {
+            ApplesanityModWarning();
+            oncePerScene = true;
+        }
         SendReminderNote();
         if (!scrTextbox.instance.isOn)
         {

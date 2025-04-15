@@ -37,6 +37,8 @@ public class MainMenuPatch
             Plugin.APUpdateNotice.transform.SetParent(__instance.transform, false);
             Plugin.APUpdateNotice.transform.localPosition = new Vector3(0, -60, 0);
             Plugin.APUpdateNotice.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            GameObjectChecker.cursor.Visible = false;
         }
     }
 }

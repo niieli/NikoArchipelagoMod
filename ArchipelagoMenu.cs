@@ -1791,6 +1791,7 @@ public class ArchipelagoMenu : MonoBehaviour
         }
 
         Plugin.ArchipelagoClient.Connect();
+        MenuHelpers.Menus.Pop();
         Plugin.BepinLogger.LogInfo("Checking Saves...");
         // var saveName = "APSave" + "_" + ArchipelagoClient.ServerData.SlotName + "_" + ArchipelagoClient.ServerData.Uri.Replace(":", ".");
         // if (scrGameSaveManager.saveName != saveName && ArchipelagoClient.Authenticated)
