@@ -1709,6 +1709,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public void Connect()
     {
         if (pressedConnect) return;
+        GameObjectChecker.PreviousScene = "Connecting";
         pressedConnect = true;
         _serverAddress = serverAddressField.text;
         _slotName = slotNameField.text;
