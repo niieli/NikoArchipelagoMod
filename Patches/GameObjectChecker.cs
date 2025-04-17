@@ -843,7 +843,13 @@ public class GameObjectChecker : MonoBehaviour
         LoggedInstances.Clear();
         LogBatch.Clear();
         CreatedItemsCache.Clear();
+        var waitFor = 1f;
         yield return new WaitUntil(() => PreviousScene != SceneManager.GetActiveScene().name);
+        while (waitFor > 0)
+        {
+            yield return null;
+            waitFor -= Time.deltaTime;
+        }
         Plugin.BepinLogger.LogInfo("Model logs:\n"+LogBatch);
         PreviousScene = "";
     }
