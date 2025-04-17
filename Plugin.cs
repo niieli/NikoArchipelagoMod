@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading;
-using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -15,12 +13,10 @@ using NikoArchipelago.Patches;
 using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
-using Object = UnityEngine.Object;
 
 namespace NikoArchipelago
 {
@@ -357,11 +353,8 @@ namespace NikoArchipelago
         
         private IEnumerator CheckGameSaveManager()
         {
-            while (!scrGameSaveManager.instance)
-            {
-                Logger.LogError("GameSaveManager is null.");
-                yield return new WaitForSeconds(3.0f);
-            }
+            Logger.LogError("GameSaveManager is null.");
+            yield return new WaitUntil(() =>scrGameSaveManager.instance);
             Logger.LogInfo("GameSaveManager is not null.");
             gameSaveManager = scrGameSaveManager.instance;
             saveReady = true;
@@ -369,11 +362,8 @@ namespace NikoArchipelago
 
         private IEnumerator CheckWorldSaveManager()
         {
-            while (!scrWorldSaveDataContainer.instance)
-            {
-                Logger.LogError("WorldSaveDataContainer is null.");
-                yield return new WaitForSeconds(3.0f);
-            }
+            Logger.LogError("WorldSaveDataContainer is null.");
+            yield return new WaitUntil(() =>scrWorldSaveDataContainer.instance);
             Logger.LogInfo("WorldSaveDataContainer is not null.");
             worldReady = true;
         }
@@ -517,6 +507,7 @@ namespace NikoArchipelago
         {
             while (!loggedIn)
             {
+                var duration = 5f;
                 if (!annoy && ArchipelagoClient.IsValidScene())
                 {
                     BepinLogger.LogWarning("You have disconnected from the server.");
@@ -528,14 +519,23 @@ namespace NikoArchipelago
                     AchievementPopup.instance.audioSource.volume = 0.35f;
                     annoy = true;
                 }
-                yield return new WaitForSeconds(5f);
+                while (duration > 0)
+                {
+                    yield return null;
+                    duration -= Time.deltaTime;
+                }
                 annoy = false;
             }
         }
         
         private static IEnumerator SyncState()
         {
-            yield return new WaitForSeconds(4f);
+            var duration = 4f;
+            while (duration > 0)
+            {
+                yield return null;
+                duration -= Time.deltaTime;
+            }
             var generalGameData = scrGameSaveManager.instance.gameData.generalGameData;
             void SyncValue<T>(ref T gameDataValue, T clientValue)
             {
@@ -640,8 +640,6 @@ namespace NikoArchipelago
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
             SyncValue(ref ItemHandler.Garden, ArchipelagoClient.TicketGary);
-            //ArchipelagoClient._session.DataStorage["Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
-            //ArchipelagoClient._session.DataStorage["SnailMoney"] = scrGameSaveManager.instance.gameData.generalGameData.snailSteps;
             if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
             {
                 foreach (var t in ArchipelagoClient.queuedItems2)
@@ -688,25 +686,6 @@ namespace NikoArchipelago
             };
         }
 
-        public static void MovementSpeedMultiplier()
-        {
-            if (!ArchipelagoClient.IsValidScene()) return;
-            float amount = ArchipelagoClient.SpeedBoostAmount;
-            if (ArchipelagoClient.SpeedBoostAmount < 0)
-            {
-                return;
-            }
-            amount++;
-            amount *= 1.15f;
-            MyCharacterController.instance.DiveSpeed += amount;
-            MyCharacterController.instance.MaxAirMoveSpeed += amount;
-            MyCharacterController.instance.JumpSpeed += (amount*0.25f);
-            MyCharacterController.instance.MaxStableMoveSpeed += amount;
-            MyCharacterController.instance.MaxWaterMoveSpeed += amount;
-
-            BepinLogger.LogInfo($"Speed Boost Applied: {amount}x");
-        }
-
         public void LogFlags()
         {
             saveDataCoinFlag.ForEach(Logger.LogInfo);
@@ -740,7 +719,7 @@ namespace NikoArchipelago
             APSendNote(text, noteTime);
             if (isDeath)
             {
-                //Add grace period
+                //Add a grace period
             }
         }
         

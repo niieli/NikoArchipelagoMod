@@ -46,37 +46,61 @@ public class ShowDisplayers
     private static IEnumerator ShowCoinDisplayer(float duration)
     {
         CoinDisplayerGameObject.visible = true;
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
         CoinDisplayerGameObject.visible = false;
     }
     private static IEnumerator ShowCassetteDisplayer(float duration)
     {
         CassetteDisplayerGameObject.visible = true;
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
         CassetteDisplayerGameObject.visible = false;
     }
     private static IEnumerator ShowTicketDisplayer(float duration)
     {
         TrackerDisplayerPatch.TicketUI.visible = true;
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
         TrackerDisplayerPatch.TicketUI.visible = false;
     }
     private static IEnumerator ShowAppleDisplayer(float duration)
     {
         AppleDisplayerUIhider.visible = true;
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
         AppleDisplayerUIhider.visible = false;
     }
     private static IEnumerator ShowBugDisplayer(float duration)
     {
         BugDisplayerUIhider.visible = true;
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
         BugDisplayerUIhider.visible = false;
     }
     private static IEnumerator ShowKeyDisplayer(float duration)
     {
         KeyDisplayerUIhider.visible = true;
-        yield return new WaitForSeconds(duration);
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
         KeyDisplayerUIhider.visible = false;
     }
 }

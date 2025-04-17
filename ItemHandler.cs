@@ -600,7 +600,7 @@ public static class ItemHandler
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Speed Boost from {sender}!" : "You found your Speed Boost!",
             3f, Plugin.SpeedBoostSprite);
-        Plugin.MovementSpeedMultiplier();
+        MovementSpeed.MovementSpeedMultiplier();
     }
     
     public static void AddFreezeTrap(string sender, bool notify = true)

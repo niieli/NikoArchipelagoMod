@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using KinematicCharacterController.Core;
@@ -33,6 +34,10 @@ public class GameObjectChecker : MonoBehaviour
     private static bool _sentNote, _sentNote2, _sentNote3, _sentNote4, _sentNote5, 
         _sentNote6, _sentNote7, _sentNote8, _sentNote9, _sentNote10, _sentNote11, _sentNote12, _sentNote13, _sentNote14,
         _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix, oncePerScene, dissmised;
+    public static readonly HashSet<int> LoggedInstances = [];
+    public static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
+    public static readonly StringBuilder LogBatch = new();
+    public static string PreviousScene = "";
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -43,6 +48,7 @@ public class GameObjectChecker : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        StartCoroutine(ModelLogging());
         FirstMeeting = false;
         _checkedGhost = false;
         _spawned = false;
@@ -71,7 +77,7 @@ public class GameObjectChecker : MonoBehaviour
         NpcController();
         Statistics();
         StatisticsWhiteboard();
-        Plugin.MovementSpeedMultiplier();
+        MovementSpeed.MovementSpeedMultiplier();
         TrapManager();
         FixApplePlacement();
         HatPlayers();
@@ -832,8 +838,20 @@ public class GameObjectChecker : MonoBehaviour
         Application.OpenURL("https://github.com/niieli/NikoArchipelagoMod/releases/tag/0.6.3");
     }
 
+    private static IEnumerator ModelLogging()
+    {
+        LoggedInstances.Clear();
+        LogBatch.Clear();
+        CreatedItemsCache.Clear();
+        yield return new WaitUntil(() => PreviousScene != SceneManager.GetActiveScene().name);
+        Plugin.BepinLogger.LogInfo(LogBatch.ToString());
+        PreviousScene = "";
+    }
+
     public void Update()
     {
+        if (PreviousScene == "")
+            PreviousScene = SceneManager.GetActiveScene().name;
         HatKidEasterEgg();
         if (Plugin.ChristmasEvent)
         {
@@ -848,6 +866,11 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
+        if (scrNotificationDisplayer.instance.notificationQueue.Count > 0)
+        {
+            scrNotificationDisplayer.instance.avatar.enabled = false;
+            scrNotificationDisplayer.instance.avatar.enabled = true;
+        }
         if (!oncePerScene && !dissmised)
         {
             ApplesanityModWarning();

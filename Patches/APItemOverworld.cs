@@ -18,12 +18,11 @@ public class APItemOverworld
     [HarmonyPatch(typeof(scrCassette), "Start")]
     public static class CassetteTexturePatch
     {
-        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrCassette, Dictionary<string, GameObject>> InstanceItemsCache = new();
 
         private static GameObject CreateItemPrefab(string prefabName, scrCassette instance)
         {
-            // Ensure per-instance cache exists
+            // Ensure a per-instance cache exists
             if (!InstanceItemsCache.ContainsKey(instance))
             {
                 InstanceItemsCache[instance] = new Dictionary<string, GameObject>();
@@ -37,7 +36,7 @@ public class APItemOverworld
                 return cachedItem;
             }
 
-            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            if (!GameObjectChecker.CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
             {
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
@@ -46,7 +45,7 @@ public class APItemOverworld
                     return null;
                 }
 
-                CreatedItemsCache[prefabName] = prefab;
+                GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
                 Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
@@ -163,16 +162,6 @@ public class APItemOverworld
                         case "Yarn"
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            // var yarnTextures = new[]
-                            // {
-                            //     CreateItemOverworld("yarn", __instance),
-                            //     CreateItemOverworld("yarn2", __instance),
-                            //     CreateItemOverworld("yarn3", __instance),
-                            //     CreateItemOverworld("yarn4", __instance),
-                            //     CreateItemOverworld("yarn5", __instance),
-                            // };
-                            // var randomIndex = Random.Range(0, yarnTextures.Length);
-                            // __instance.quad = yarnTextures[randomIndex];
                             __instance.quads = CreateItemOverworld("yarn", __instance);
                             break;
                         }
@@ -261,19 +250,17 @@ public class APItemOverworld
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
-
-            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
-                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                       + "\nLocation: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                       + "\nLocationID: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
         }
         
         private static void Postfix(scrCassette __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
+            var flagField = AccessTools.Field(typeof(scrCassette), "flag");
+            var flag = (string)flagField.GetValue(__instance);
+            if (scrWorldSaveDataContainer.instance.cassetteFlags.Contains(flag) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
+            {
+                return;
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
@@ -299,76 +286,83 @@ public class APItemOverworld
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             Object.Destroy(ogQuads.gameObject);
 
-            var flagField = AccessTools.Field(typeof(scrCassette), "flag");
-            var flag = (string)flagField.GetValue(__instance);
+            
 
+            var index = 0;
+            var offset = 0;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
                 case "Hairball City":
                 {
                     var list = Locations.ScoutHCCassetteList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    int offset = 101 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 101 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Trash Kingdom":
                 {
                     var list = Locations.ScoutTTCassetteList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    int offset = 111 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 111 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Salmon Creek Forest":
                 {
                     var list = Locations.ScoutSFCCassetteList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    int offset = 121 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 121 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Public Pool":
                 {
                     var list = Locations.ScoutPPCassetteList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    int offset = 132 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 132 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "The Bathhouse":
                 {
                     var list = Locations.ScoutBathCassetteList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    int offset = 142 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 142 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Tadpole inc":
                 {
                     var list = Locations.ScoutHQCassetteList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    int offset = 152 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 152 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "GarysGarden":
                 {
                     var list = Locations.ScoutGardenCassetteList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    const int offset = 162;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 162;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
             }
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                .AppendLine($"Index: {index}, Offset: {offset}, Flag: {flag}")
+                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"Model: {__instance.quads.name}");
         }
     }
 
     [HarmonyPatch(typeof(scrCoin), "Start")]
     public static class CoinTexturePatch
     {
-        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrCoin, Dictionary<string, GameObject>> InstanceItemsCache = new();
 
         private static GameObject CreateItemPrefab(string prefabName, scrCoin instance)
@@ -387,7 +381,7 @@ public class APItemOverworld
                 return cachedItem;
             }
 
-            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            if (!GameObjectChecker.CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
             {
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
@@ -396,7 +390,7 @@ public class APItemOverworld
                     return null;
                 }
 
-                CreatedItemsCache[prefabName] = prefab;
+                GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
                 Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
@@ -513,16 +507,6 @@ public class APItemOverworld
                         case "Yarn"
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            // var yarnTextures = new[]
-                            // {
-                            //     CreateItemOverworld("yarn", __instance),
-                            //     CreateItemOverworld("yarn2", __instance),
-                            //     CreateItemOverworld("yarn3", __instance),
-                            //     CreateItemOverworld("yarn4", __instance),
-                            //     CreateItemOverworld("yarn5", __instance),
-                            // };
-                            // var randomIndex = Random.Range(0, yarnTextures.Length);
-                            // __instance.quad = yarnTextures[randomIndex];
                             __instance.quads = CreateItemOverworld("yarn", __instance);
                             break;
                         }
@@ -611,19 +595,15 @@ public class APItemOverworld
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
-
-            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
-                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                       + "\nLocation: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                       + "\nLocationID: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
         }
         
         private static void Postfix(scrCoin __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
+            if (scrWorldSaveDataContainer.instance.coinFlags.Contains(__instance.myFlag) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
+            {
+                return;
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
@@ -649,65 +629,73 @@ public class APItemOverworld
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
 
+            var index = 0;
+            var offset = 0;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
                 case "Hairball City":
                 {
                     var list = Locations.ScoutHCCoinList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    int offset = 36 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.myFlag);
+                    offset = 36 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Trash Kingdom":
                 {
                     var list = Locations.ScoutTTCoinList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    int offset = 49 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.myFlag);
+                    offset = 49 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Salmon Creek Forest":
                 {
                     var list = Locations.ScoutSFCCoinList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    int offset = 58 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.myFlag);
+                    offset = 58 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Public Pool":
                 {
                     var list = Locations.ScoutPPCoinList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    int offset = 72 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.myFlag);
+                    offset = 72 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "The Bathhouse":
                 {
                     var list = Locations.ScoutBathCoinList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    int offset = 80 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.myFlag);
+                    offset = 80 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Tadpole inc":
                 {
                     var list = Locations.ScoutHQCoinList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.myFlag);
-                    int offset = 92 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.myFlag);
+                    offset = 92 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
             }
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                .AppendLine($"Index: {index}, Offset: {offset}, Flag: {__instance.myFlag}")
+                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"Model: {__instance.quads.name}");
         }
     }
 
     [HarmonyPatch(typeof(scrKey), "Start")]
     public static class KeyTexturePatch
     {
-        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrKey, Dictionary<string, GameObject>> InstanceItemsCache = new();
 
         private static GameObject CreateItemPrefab(string prefabName, scrKey instance)
@@ -727,7 +715,7 @@ public class APItemOverworld
                 return cachedItem;
             }
 
-            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            if (!GameObjectChecker.CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
             {
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
@@ -736,7 +724,7 @@ public class APItemOverworld
                     return null;
                 }
 
-                CreatedItemsCache[prefabName] = prefab;
+                GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
                 Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
@@ -854,16 +842,6 @@ public class APItemOverworld
                         case "Yarn"
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            // var yarnTextures = new[]
-                            // {
-                            //     CreateItemOverworld("yarn", __instance),
-                            //     CreateItemOverworld("yarn2", __instance),
-                            //     CreateItemOverworld("yarn3", __instance),
-                            //     CreateItemOverworld("yarn4", __instance),
-                            //     CreateItemOverworld("yarn5", __instance),
-                            // };
-                            // var randomIndex = Random.Range(0, yarnTextures.Length);
-                            // __instance.quad = yarnTextures[randomIndex];
                             __instance.quads = CreateItemOverworld("yarn", __instance);
                             break;
                         }
@@ -952,19 +930,15 @@ public class APItemOverworld
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
-
-            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
-                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                       + "\nLocation: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                       + "\nLocationID: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
         }
 
         private static void Postfix(scrKey __instance)
         {
             if (!ArchipelagoMenu.kalmi) return;
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.flag) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
+            {
+                return;
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
@@ -994,13 +968,19 @@ public class APItemOverworld
             var index = list.FindIndex(pair => pair.Value == __instance.flag);
             int offset = 172 - adjustment;
             PlaceModel(index, offset, __instance);
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                .AppendLine($"Index: {index}, Offset: {offset}, Flag: {__instance.flag}")
+                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"Model: {__instance.quads.name}");
         }
     }
     
     [HarmonyPatch(typeof(scrEnvelope), "Start")]
     public static class LetterTexturePatch
     {
-        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrEnvelope, Dictionary<string, GameObject>> InstanceItemsCache = new();
 
         private static GameObject CreateItemPrefab(string prefabName, scrEnvelope instance)
@@ -1020,7 +1000,7 @@ public class APItemOverworld
                 return cachedItem;
             }
 
-            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            if (!GameObjectChecker.CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
             {
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
@@ -1029,7 +1009,7 @@ public class APItemOverworld
                     return null;
                 }
 
-                CreatedItemsCache[prefabName] = prefab;
+                GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
                 Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
@@ -1147,16 +1127,6 @@ public class APItemOverworld
                         case "Yarn"
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            // var yarnTextures = new[]
-                            // {
-                            //     CreateItemOverworld("yarn", __instance),
-                            //     CreateItemOverworld("yarn2", __instance),
-                            //     CreateItemOverworld("yarn3", __instance),
-                            //     CreateItemOverworld("yarn4", __instance),
-                            //     CreateItemOverworld("yarn5", __instance),
-                            // };
-                            // var randomIndex = Random.Range(0, yarnTextures.Length);
-                            // __instance.quad = yarnTextures[randomIndex];
                             __instance.quads = CreateItemOverworld("yarn", __instance);
                             break;
                         }
@@ -1245,19 +1215,15 @@ public class APItemOverworld
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
-
-            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
-                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                       + "\nLocation: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                       + "\nLocationID: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
         }
 
         private static void Postfix(scrEnvelope __instance)
         {
             if (!ArchipelagoMenu.kalmi) return;
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.myLetter.key) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
+            {
+                return;
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
@@ -1288,6 +1254,13 @@ public class APItemOverworld
                 var index = list.FindIndex(pair => pair.Value == __instance.myLetter.key);
                 int offset = 181 - adjustment;
                 PlaceModel(index, offset, __instance);
+                GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+                GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                    .AppendLine($"Index: {index}, Offset: {offset}, Flag: {__instance.myLetter.key}")
+                    .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                    .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                    .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                    .AppendLine($"Model: {__instance.quads.name}");
             }
             catch (ArgumentOutOfRangeException e)
             {
@@ -1301,7 +1274,6 @@ public class APItemOverworld
     [HarmonyPatch(typeof(scrList), "Start")]
     public static class ContactListTexturePatch
     {
-        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrList, Dictionary<string, GameObject>> InstanceItemsCache = new();
 
         private static GameObject CreateItemPrefab(string prefabName, scrList instance)
@@ -1321,7 +1293,7 @@ public class APItemOverworld
                 return cachedItem;
             }
 
-            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            if (!GameObjectChecker.CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
             {
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
@@ -1330,7 +1302,7 @@ public class APItemOverworld
                     return null;
                 }
 
-                CreatedItemsCache[prefabName] = prefab;
+                GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
                 Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
@@ -1437,6 +1409,10 @@ public class APItemOverworld
         private static void Postfix(scrList __instance)
         {
             if (!ArchipelagoMenu.kalmi) return;
+            if (GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
+            {
+                return;
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
@@ -1481,16 +1457,6 @@ public class APItemOverworld
                                 case "Yarn"
                                     when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quads = yarnTextures[randomIndex];
                                     __instance.quads = CreateItemOverworld("yarn", __instance);
                                     break;
                                 }
@@ -1578,12 +1544,13 @@ public class APItemOverworld
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+                    GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                        .AppendLine($"Index: {index}, Offset: {offset}, Flag: CL1 Obtained")
+                        .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                        .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                        .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                        .AppendLine($"Model: {__instance.quads.name}");
                     break;
                 }
                 case "Tadpole inc":
@@ -1603,16 +1570,6 @@ public class APItemOverworld
                                 case "Yarn"
                                     when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                                 {
-                                    // var yarnTextures = new[]
-                                    // {
-                                    //     CreateItemOverworld("yarn", __instance),
-                                    //     CreateItemOverworld("yarn2", __instance),
-                                    //     CreateItemOverworld("yarn3", __instance),
-                                    //     CreateItemOverworld("yarn4", __instance),
-                                    //     CreateItemOverworld("yarn5", __instance),
-                                    // };
-                                    // var randomIndex = Random.Range(0, yarnTextures.Length);
-                                    // __instance.quads = yarnTextures[randomIndex];
                                     __instance.quads = CreateItemOverworld("yarn", __instance);
                                     break;
                                 }
@@ -1700,12 +1657,13 @@ public class APItemOverworld
                                 _ => CreateItemOverworld("apProg", __instance)
                             };
                     }
-                    Plugin.BepinLogger.LogInfo("Item: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                                        + "\nLocation: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                                        + "\nLocationID: " +
-                                                        ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
-                    Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
+                    GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+                    GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                        .AppendLine($"Index: {index}, Offset: {offset}, Flag: CL2 Obtained")
+                        .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                        .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                        .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                        .AppendLine($"Model: {__instance.quads.name}");
                     break;
                 }
             }
@@ -1715,7 +1673,6 @@ public class APItemOverworld
     [HarmonyPatch(typeof(scrSunflowerSeed), "Start")]
     public static class SunflowerSeedTexturePatch
     {
-        private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrSunflowerSeed, Dictionary<string, GameObject>> InstanceItemsCache = new();
 
         private static GameObject CreateItemPrefab(string prefabName, scrSunflowerSeed instance)
@@ -1734,7 +1691,7 @@ public class APItemOverworld
                 return cachedItem;
             }
 
-            if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
+            if (!GameObjectChecker.CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
             {
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
@@ -1743,7 +1700,7 @@ public class APItemOverworld
                     return null;
                 }
 
-                CreatedItemsCache[prefabName] = prefab;
+                GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
                 Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
@@ -1958,19 +1915,15 @@ public class APItemOverworld
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
-
-            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
-                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                       + "\nLocation: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                       + "\nLocationID: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
         }
         
         private static void Postfix(scrSunflowerSeed __instance)
         {
             if (!ArchipelagoMenu.cacmi) return;
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.name) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
+            {
+                return;
+            }
             var gardenAdjustment = 0;
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
@@ -1998,35 +1951,44 @@ public class APItemOverworld
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
 
+            var index = 0;
+            var offset = 0;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
                 case "Hairball City":
                 {
                     var list = Locations.ScoutHCSeedsList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.name);
-                    int offset = 195 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.name);
+                    offset = 195 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Salmon Creek Forest":
                 {
                     var list = Locations.ScoutSFCSeedsList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.name);
-                    int offset = 205 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.name);
+                    offset = 205 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "The Bathhouse":
                 {
                     var list = Locations.ScoutBathSeedsList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == __instance.name);
-                    int offset = 215 - adjustment;
+                    index = list.FindIndex(pair => pair.Value == __instance.name);
+                    offset = 215 - adjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
             }
             __instance.quads.transform.localScale = new Vector3(1.15f, 1f, 1);
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                .AppendLine($"Index: {index}, Offset: {offset}, Flag: {__instance.name}")
+                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"Model: {__instance.quads.name}");
         }
     }
 }

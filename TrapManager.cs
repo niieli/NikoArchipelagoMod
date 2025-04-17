@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -179,7 +180,7 @@ public class TrapManager : MonoBehaviour
         Plugin.BepinLogger.LogInfo("Freeze Trap ended.");
     }
 
-    private static IEnumerator IronBoots(float duration)
+    private IEnumerator IronBoots(float duration)
     {
         var diveCancelHopSpeed = MyCharacterController.instance.DiveCancelHopSpeed;
         var diveSpeed = MyCharacterController.instance.DiveSpeed;
@@ -214,6 +215,10 @@ public class TrapManager : MonoBehaviour
         MyCharacterController.instance.WallJumpSpeed = wallJumpSpeed;
         MyCharacterController.instance.WallUpwardsJumpSpeed = wallUpwardsJumpSpeed;
         Plugin.BepinLogger.LogInfo("Iron Boots Trap ended.");
+        if (!activeTraps.ContainsKey("Zero Gravity"))
+        {
+            MovementSpeed.MovementSpeedMultiplier();
+        }
     }
     private static IEnumerator MyTurn(float duration)
     {
@@ -253,7 +258,7 @@ public class TrapManager : MonoBehaviour
         Plugin.BepinLogger.LogInfo("My Turn! Trap ended.");
     }
     
-    private static IEnumerator ZeroGravity(float duration)
+    private IEnumerator ZeroGravity(float duration)
     {
         var jump = MyCharacterController.instance.JumpSpeed;
         var airMove = MyCharacterController.instance.MaxAirMoveSpeed;
@@ -273,6 +278,10 @@ public class TrapManager : MonoBehaviour
         MyCharacterController.instance.MaxAirMoveSpeed = airMove;
         gravityField.SetValue(MyCharacterController.instance, new Vector3(0f, -30f, 0f));
         Plugin.BepinLogger.LogInfo("Zero Gravity Trap ended.");
+        if (!activeTraps.ContainsKey("Iron Boots"))
+        {
+            MovementSpeed.MovementSpeedMultiplier();
+        }
     }
     
     private static IEnumerator BadEyeSight(float duration)

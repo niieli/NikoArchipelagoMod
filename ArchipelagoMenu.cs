@@ -4,6 +4,7 @@ using BepInEx;
 using KinematicCharacterController.Core;
 using Newtonsoft.Json;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Patches;
 using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
@@ -1700,6 +1701,8 @@ public class ArchipelagoMenu : MonoBehaviour
         {
             SaveSettings(data);
         }
+
+        GameObjectChecker.PreviousScene = "Reload";
         scrTrainManager.instance.UseTrain(scrGameSaveManager.instance.gameData.generalGameData.currentLevel, false);
     }
 

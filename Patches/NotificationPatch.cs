@@ -32,9 +32,6 @@ public class NotificationPatch
                     {
                         // Bypass localization and use the raw key as text
                         __instance.textMesh.text = currentNotification.key;
-                        __instance.avatar.sprite = currentNotification.avatar;
-                        __instance.avatar.enabled = false;
-                        __instance.avatar.enabled = true;
                     }
                 }
             }

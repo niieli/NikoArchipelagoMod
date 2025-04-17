@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using NikoArchipelago.Archipelago;
@@ -11,7 +12,6 @@ namespace NikoArchipelago.Patches;
 
 public class Applesanity
 {
-    private static bool noSpam;
     [HarmonyPatch(typeof(scrApple), "Start")]
     public static class ApplesanityStart
     {
@@ -250,15 +250,6 @@ public class Applesanity
                         _ => CreateItemOverworld("apProg", __instance)
                     };
             }
-
-            Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
-            Plugin.BepinLogger.LogInfo("-------------------------------------------------" 
-                                       + "\nItem: " + ArchipelagoClient.ScoutedLocations[index + offset].ItemName
-                                       + "\nLocation: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationName
-                                       + "\nLocationID: " +
-                                       ArchipelagoClient.ScoutedLocations[index + offset].LocationId);
-            noSpam = true;
         }
 
         public static Dictionary<scrApple, int> appleIDs = new();
@@ -314,7 +305,7 @@ public class Applesanity
                 return;
             }
             var flag = "Apple" + appleIDs[__instance];
-            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag))
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
             {
                 return;
             }
@@ -356,15 +347,16 @@ public class Applesanity
             if (__instance.transform.Find("Particle System Sparkle") != null)
                 if (__instance.transform.Find("Particle System Sparkle").gameObject.activeInHierarchy)
                     __instance.transform.position += new Vector3(0, 0.75f, 0);
-            noSpam = false;
+            var index = 0;
+            var offset = 0;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
                 case "Hairball City":
                 {
                     var list = Locations.ScoutHCApplesList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 225 - adjustment + idkAdjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 225 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
@@ -372,16 +364,16 @@ public class Applesanity
                 {
                     __instance.transform.position += new Vector3(0, -0.2f, 0);
                     var list = Locations.ScoutTTApplesList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 257 - adjustment + idkAdjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 257 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Salmon Creek Forest":
                 {
                     var list = Locations.ScoutSFCApplesList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 290 - adjustment + idkAdjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 290 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
@@ -389,24 +381,24 @@ public class Applesanity
                 {
                     __instance.transform.position += new Vector3(0, -0.125f, 0);
                     var list = Locations.ScoutPPApplesList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 416 - adjustment + idkAdjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 416 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "The Bathhouse":
                 {
                     var list = Locations.ScoutBathApplesList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 510 - adjustment + idkAdjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 510 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Tadpole inc":
                 {
                     var list = Locations.ScoutHQApplesList.ToList();
-                    var index = list.FindIndex(pair => pair.Value == flag);
-                    var offset = 582 - adjustment + idkAdjustment;
+                    index = list.FindIndex(pair => pair.Value == flag);
+                    offset = 582 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
                     if (appleIDs[__instance] == 11)
                     {
@@ -416,6 +408,13 @@ public class Applesanity
                     break;
                 }
             }
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                .AppendLine($"Index: {index}, Offset: {offset}, FlagID: Apple{appleIDs[__instance]}")
+                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
+                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
+                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"Model: {__instance.quad.name}");
         }
     }
 
