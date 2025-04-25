@@ -10,6 +10,7 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using NikoArchipelago.Patches;
 using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Archipelago;
@@ -197,14 +198,15 @@ public class ArchipelagoClient
 
         if (ServerData.Index <= GetItemIndex())
         {
-            Plugin.BepinLogger.LogInfo($"helper index: {helper.Index}");
-            Plugin.BepinLogger.LogInfo($"Server index: {ServerData.Index}");
-            Plugin.BepinLogger.LogInfo($"Flag index: {GetItemIndex()}");
-            Plugin.BepinLogger.LogFatal($"Current Item: {receivedItem.ItemName}");
+            GameObjectChecker.LogPastItemsBatch.AppendLine("-------------------------------------------------")
+                .AppendLine($"helper index: {helper.Index}")
+                .AppendLine($"Server index: {ServerData.Index}")
+                .AppendLine($"Flag index: {GetItemIndex()}")
+                .AppendLine($"Current Item: {receivedItem.ItemName}");
             if (receivedItem.ItemName is "Apples" or "25 Apples" or "10 Bugs" or "Bugs" or "Letter" or "Snail Money"
                     or "1000 Snail Money" or "Freeze Trap" or "Iron Boots Trap" or "Whoops! Trap" or "My Turn! Trap" or "Gravity Trap")
             {
-                Plugin.BepinLogger.LogFatal($"Skipping Item: {receivedItem.ItemName}");
+                GameObjectChecker.LogPastItemsBatch.AppendLine($"Skipping Item: {receivedItem.ItemName}");
             }
             else
             {
@@ -579,6 +581,21 @@ public class ArchipelagoClient
                 matchedLocation = mimaLocation;
                 flagType = "MiMa";
             }
+            else if (Locations.ChatsanityLevelLocations.TryGetValue(location, out var chatLevelLocation))
+            {
+                matchedLocation = chatLevelLocation;
+                flagType = "ChatLevel";
+            }
+            else if (Locations.ChatsanityLevelGarysGardenLocations.TryGetValue(location, out var gardenChatLevelLocation))
+            {
+                matchedLocation = gardenChatLevelLocation;
+                flagType = "GardenChatLevel";
+            }
+            else if (Locations.ChatsanityNikoThoughtsLocations.TryGetValue(location, out var thougtLocation))
+            {
+                matchedLocation = thougtLocation;
+                flagType = "Thought";
+            }
             
             ServerData.CheckedLocations.Add(location);
             if (matchedLocation != null)
@@ -611,7 +628,7 @@ public class ArchipelagoClient
                 if (!worldsData[level].cassetteFlags.Contains(flag))
                     worldsData[level].cassetteFlags.Add(flag);
                 break;
-            case "SunflowerSeed" or "Flowerbed" or "Apple":
+            case "SunflowerSeed" or "Flowerbed" or "Apple" or "Thought" or "ChatLevel":
                 if (!worldsData[level].miscFlags.Contains(flag))
                     worldsData[level].miscFlags.Add(flag);
                 break;
@@ -661,6 +678,17 @@ public class ArchipelagoClient
                 {
                     if (!worldsData[7].cassetteFlags.Contains(flag))
                         worldsData[7].cassetteFlags.Add(flag);
+                }
+                catch (Exception e)
+                {
+                    Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
+                }
+                break;
+            case "GardenChatLevel":
+                try
+                {
+                    if (!worldsData[7].miscFlags.Contains(flag))
+                        worldsData[7].miscFlags.Add(flag);
                 }
                 catch (Exception e)
                 {

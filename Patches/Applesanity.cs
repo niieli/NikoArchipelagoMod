@@ -317,6 +317,8 @@ public class Applesanity
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("applessanity")) return;
             if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0) return;
+            var currentscene = SceneManager.GetActiveScene().name;
+            if (currentscene == "Home") return; // Do not interact with apples in home, will need to be removed/checked for conditions.
             __instance.enabled = true;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
                 if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
@@ -349,7 +351,6 @@ public class Applesanity
                     __instance.transform.position += new Vector3(0, 0.75f, 0);
             var index = 0;
             var offset = 0;
-            var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
             {
                 case "Hairball City":

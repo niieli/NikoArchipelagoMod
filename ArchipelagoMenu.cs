@@ -297,6 +297,12 @@ public class ArchipelagoMenu : MonoBehaviour
     public CanvasGroup sanityPanel1CanvasGroup;
     public CanvasGroup sanityPanel2CanvasGroup;
     public CanvasGroup sanityPanel3CanvasGroup;
+    public Image checkedHcKeysImage;
+    public Image checkedTtKeysImage;
+    public Image checkedScfKeysImage;
+    public Image checkedPpKeysImage;
+    public Image checkedBathKeysImage;
+    public Image checkedHqKeysImage;
     
     //SanityPage2
     public GameObject seedsPanel;
@@ -340,6 +346,8 @@ public class ArchipelagoMenu : MonoBehaviour
     public Image boughtBathSeedsImage;
     public Button sanityPageBackButton;
     public Button sanityPageForwardButton;
+    
+    // SanityPage3
     public GameObject cassettesPanel;
     public TextMeshProUGUI cassettesHcCountBackText;
     public TextMeshProUGUI cassettesHcCountFrontText;
@@ -360,6 +368,35 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip cassettesDisabledTooltip;
     public TooltipTrigger cassettesTrigger;
     public Tooltip cassettesTooltip;
+    public Image cassettesMitchHairballImage;
+    public Image cassettesMaiHairballImage;
+    public Image cassettesMitchTurbineImage;
+    public Image cassettesMaiTurbineImage;
+    public Image cassettesMitchSalmonImage;
+    public Image cassettesMaiSalmonImage;
+    public Image cassettesMitchPoolImage;
+    public Image cassettesMaiPoolImage;
+    public Image cassettesMitchBathImage;
+    public Image cassettesMaiBathImage;
+    public Image cassettesMitchTadpoleImage;
+    public Image cassettesMaiTadpoleImage;
+    public Image cassettesMitchGardenImage;
+    public Image cassettesMaiGardenImage;
+    
+    private bool _mitchHairballDone;
+    private bool _maiHairballDone;
+    private bool _mitchTurbineDone;
+    private bool _maiTurbineDone;
+    private bool _mitchSalmonDone;
+    private bool _maiSalmonDone;
+    private bool _mitchPoolDone;
+    private bool _maiPoolDone;
+    private bool _mitchBathDone;
+    private bool _maiBathDone;
+    private bool _mitchTadpoleDone;
+    private bool _maiTadpoleDone;
+    private bool _mitchGardenDone;
+    private bool _maiGardenDone;
     
     public void Start()
     {
@@ -469,6 +506,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskHcBackText = kioskAndTicketPanel.transform.Find("TicketHairballBack/CostHairball/Cost").GetComponent<TextMeshProUGUI>();
         keyHcCountBackText = keysPanel.transform.Find("HCKeyCount/Back").GetComponent<TextMeshProUGUI>();
         keyHcCountFrontText = keysPanel.transform.Find("HCKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        checkedHcKeysImage = keysPanel.transform.Find("HCChecked").gameObject.GetComponent<Image>();
         fishHcCountBackText = fishPanel.transform.Find("HCFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishHcCountFrontText = fishPanel.transform.Find("HCFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtHcFishImage = fishPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
@@ -482,6 +520,8 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHcSeedsImage = seedsPanel.transform.Find("HCComplete").gameObject.GetComponent<Image>();
         cassettesHcCountBackText = cassettesPanel.transform.Find("HCCassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassettesHcCountFrontText = cassettesPanel.transform.Find("HCCassetteCount/Front").GetComponent<TextMeshProUGUI>();
+        cassettesMitchHairballImage = cassettesPanel.transform.Find("HCCassetteCount/Mitch").GetComponent<Image>();
+        cassettesMaiHairballImage = cassettesPanel.transform.Find("HCCassetteCount/Mai").GetComponent<Image>();
         // Turbine
         ticketTtImage = kioskAndTicketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
         boughtTtImage = ticketTtImage.transform.Find("Bought").GetComponent<Image>();
@@ -492,6 +532,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskTtBackText = kioskAndTicketPanel.transform.Find("TicketTurbineBack/CostTurbine/Cost").GetComponent<TextMeshProUGUI>();
         keyTtCountBackText = keysPanel.transform.Find("TTKeyCount/Back").GetComponent<TextMeshProUGUI>();
         keyTtCountFrontText = keysPanel.transform.Find("TTKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        checkedTtKeysImage = keysPanel.transform.Find("TTChecked").gameObject.GetComponent<Image>();
         fishTtCountBackText = fishPanel.transform.Find("TTFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishTtCountFrontText = fishPanel.transform.Find("TTFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtTtFishImage = fishPanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
@@ -502,6 +543,8 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtTtFlowersImage = flowersPanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
         cassettesTtCountBackText = cassettesPanel.transform.Find("TTCassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassettesTtCountFrontText = cassettesPanel.transform.Find("TTCassetteCount/Front").GetComponent<TextMeshProUGUI>();
+        cassettesMitchTurbineImage = cassettesPanel.transform.Find("TTCassetteCount/Mitch").GetComponent<Image>();
+        cassettesMaiTurbineImage = cassettesPanel.transform.Find("TTCassetteCount/Mai").GetComponent<Image>();
         // Salmon
         ticketSfcImage = kioskAndTicketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
         boughtSfcImage = ticketSfcImage.transform.Find("Bought").GetComponent<Image>();
@@ -512,6 +555,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskSfcBackText = kioskAndTicketPanel.transform.Find("TicketSalmonBack/CostSalmon/Cost").GetComponent<TextMeshProUGUI>();
         keySfcCountBackText = keysPanel.transform.Find("SFCKeyCount/Back").GetComponent<TextMeshProUGUI>();
         keySfcCountFrontText = keysPanel.transform.Find("SFCKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        checkedScfKeysImage = keysPanel.transform.Find("SCFChecked").gameObject.GetComponent<Image>();
         fishSfcCountBackText = fishPanel.transform.Find("SFCFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishSfcCountFrontText = fishPanel.transform.Find("SFCFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtScfFishImage = fishPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
@@ -525,6 +569,8 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtScfSeedsImage = seedsPanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
         cassettesSfcCountBackText = cassettesPanel.transform.Find("SCFCassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassettesSfcCountFrontText = cassettesPanel.transform.Find("SCFCassetteCount/Front").GetComponent<TextMeshProUGUI>();
+        cassettesMitchSalmonImage = cassettesPanel.transform.Find("SCFCassetteCount/Mitch").GetComponent<Image>();
+        cassettesMaiSalmonImage = cassettesPanel.transform.Find("SCFCassetteCount/Mai").GetComponent<Image>();
         // Pool
         ticketPpImage = kioskAndTicketPanel.transform.Find("TicketPool").GetComponent<Image>();
         boughtPpImage = ticketPpImage.transform.Find("Bought").GetComponent<Image>();
@@ -535,6 +581,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskPpBackText = kioskAndTicketPanel.transform.Find("TicketPoolBack/CostPool/Cost").GetComponent<TextMeshProUGUI>();
         keyPpCountBackText = keysPanel.transform.Find("PPKeyCount/Back").GetComponent<TextMeshProUGUI>();
         keyPpCountFrontText = keysPanel.transform.Find("PPKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        checkedPpKeysImage = keysPanel.transform.Find("PPChecked").gameObject.GetComponent<Image>();
         fishPpCountBackText = fishPanel.transform.Find("PPFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishPpCountFrontText = fishPanel.transform.Find("PPFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtPpFishImage = fishPanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
@@ -545,6 +592,8 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtPpFlowersImage = flowersPanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
         cassettesPpCountBackText = cassettesPanel.transform.Find("PPCassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassettesPpCountFrontText = cassettesPanel.transform.Find("PPCassetteCount/Front").GetComponent<TextMeshProUGUI>();
+        cassettesMitchPoolImage = cassettesPanel.transform.Find("PPCassetteCount/Mitch").GetComponent<Image>();
+        cassettesMaiPoolImage = cassettesPanel.transform.Find("PPCassetteCount/Mai").GetComponent<Image>();
         // Bath
         ticketBathImage = kioskAndTicketPanel.transform.Find("TicketBath").GetComponent<Image>();
         boughtBathImage = ticketBathImage.transform.Find("Bought").GetComponent<Image>();
@@ -555,6 +604,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskBathBackText = kioskAndTicketPanel.transform.Find("TicketBathBack/CostBath/Cost").GetComponent<TextMeshProUGUI>();
         keyBathCountBackText = keysPanel.transform.Find("BATHKeyCount/Back").GetComponent<TextMeshProUGUI>();
         keyBathCountFrontText = keysPanel.transform.Find("BATHKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        checkedBathKeysImage = keysPanel.transform.Find("BATHChecked").gameObject.GetComponent<Image>();
         fishBathCountBackText = fishPanel.transform.Find("BATHFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishBathCountFrontText = fishPanel.transform.Find("BATHFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtBathFishImage = fishPanel.transform.Find("BATHComplete").gameObject.GetComponent<Image>();
@@ -568,6 +618,8 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtBathSeedsImage = seedsPanel.transform.Find("BathComplete").gameObject.GetComponent<Image>();
         cassettesBathCountBackText = cassettesPanel.transform.Find("BathCassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassettesBathCountFrontText = cassettesPanel.transform.Find("BathCassetteCount/Front").GetComponent<TextMeshProUGUI>();
+        cassettesMitchBathImage = cassettesPanel.transform.Find("BathCassetteCount/Mitch").GetComponent<Image>();
+        cassettesMaiBathImage = cassettesPanel.transform.Find("BathCassetteCount/Mai").GetComponent<Image>();
         // Tadpole
         ticketHqImage = kioskAndTicketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
         boughtHqImage = ticketHqImage.transform.Find("Bought").GetComponent<Image>();
@@ -578,6 +630,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskHqBackText = kioskAndTicketPanel.transform.Find("TicketTadpoleBack/CostTadpole/Cost").GetComponent<TextMeshProUGUI>();
         keyHqCountBackText = keysPanel.transform.Find("HQKeyCount/Back").GetComponent<TextMeshProUGUI>();
         keyHqCountFrontText = keysPanel.transform.Find("HQKeyCount/Front").GetComponent<TextMeshProUGUI>();
+        checkedHqKeysImage = keysPanel.transform.Find("HQChecked").gameObject.GetComponent<Image>();
         fishHqCountBackText = fishPanel.transform.Find("HQFishCount/Back").GetComponent<TextMeshProUGUI>();
         fishHqCountFrontText = fishPanel.transform.Find("HQFishCount/Front").GetComponent<TextMeshProUGUI>();
         boughtHqFishImage = fishPanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
@@ -588,6 +641,8 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHqFlowersImage = flowersPanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
         cassettesHqCountBackText = cassettesPanel.transform.Find("HQCassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassettesHqCountFrontText = cassettesPanel.transform.Find("HQCassetteCount/Front").GetComponent<TextMeshProUGUI>();
+        cassettesMitchTadpoleImage = cassettesPanel.transform.Find("HQCassetteCount/Mitch").GetComponent<Image>();
+        cassettesMaiTadpoleImage = cassettesPanel.transform.Find("HQCassetteCount/Mai").GetComponent<Image>();
         // Misc
         ticketGgImage = kioskAndTicketPanel.transform.Find("TicketGarden").GetComponent<Image>();
         mitchGardenImage = ticketGgImage.transform.Find("Mitch").GetComponent<Image>();
@@ -597,6 +652,8 @@ public class ArchipelagoMenu : MonoBehaviour
         ticketCl2Image = informationPanel.transform.Find("ContactList2").GetComponent<Image>();
         cassettesGgCountBackText = cassettesPanel.transform.Find("GGCassetteCount/Back").GetComponent<TextMeshProUGUI>();
         cassettesGgCountFrontText = cassettesPanel.transform.Find("GGCassetteCount/Front").GetComponent<TextMeshProUGUI>();
+        cassettesMitchGardenImage = cassettesPanel.transform.Find("GGCassetteCount/Mitch").GetComponent<Image>();
+        cassettesMaiGardenImage = cassettesPanel.transform.Find("GGCassetteCount/Mai").GetComponent<Image>();
         
         keyCountBackText = informationPanel.transform.Find("KeyCount/Back").GetComponent<TextMeshProUGUI>();
         keyCountFrontText = informationPanel.transform.Find("KeyCount/Front").GetComponent<TextMeshProUGUI>();
@@ -825,6 +882,12 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtHcSeedsImage.enabled = false;
         boughtScfSeedsImage.enabled = false;
         boughtBathSeedsImage.enabled = false;
+        checkedHcKeysImage.enabled = false;
+        checkedTtKeysImage.enabled = false;
+        checkedScfKeysImage.enabled = false;
+        checkedPpKeysImage.enabled = false;
+        checkedBathKeysImage.enabled = false;
+        checkedHqKeysImage.enabled = false;
         
         // Lights
         if (Plugin.ChristmasEvent && !Plugin.NoXmasEvent)
@@ -1071,16 +1134,35 @@ public class ArchipelagoMenu : MonoBehaviour
                     keyCountFrontText.text = "NO";
                     keyHcCountBackText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
                     keyHcCountFrontText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
+                    if (ItemHandler.UsedKeysHairball() == 1)
+                        checkedHcKeysImage.enabled = true;
                     keyTtCountBackText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
                     keyTtCountFrontText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
+                    if (ItemHandler.UsedKeysTurbine() == 1)
+                        checkedTtKeysImage.enabled = true;
                     keySfcCountBackText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
                     keySfcCountFrontText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
+                    if (ItemHandler.UsedKeysSalmon() == 1)
+                        checkedScfKeysImage.enabled = true;
                     keyPpCountBackText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
                     keyPpCountFrontText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
+                    if (ItemHandler.UsedKeysPool() == 1)
+                        checkedPpKeysImage.enabled = true;
                     keyBathCountBackText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
                     keyBathCountFrontText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
+                    if (ItemHandler.UsedKeysBath() == 1)
+                    {
+                        checkedBathKeysImage.enabled = true;
+                        checkedBathKeysImage.color = new Color(0.6698113f, 0.6698113f, 0.6698113f, 0.7647059f);
+                    } else if (ItemHandler.UsedKeysBath() == 2)
+                    {
+                        checkedBathKeysImage.enabled = true;
+                        checkedBathKeysImage.color = Color.white;
+                    }
                     keyHqCountBackText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
                     keyHqCountFrontText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
+                    if (ItemHandler.UsedKeysHairball() == 1)
+                        checkedHqKeysImage.enabled = true;
                 }
                 else
                 {
@@ -1355,52 +1437,31 @@ public class ArchipelagoMenu : MonoBehaviour
                     {
                         case 1:
                             mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
-                            // mitchHairballText.enabled = false;
-                            // mitchHairballShadowText.enabled = false;
-                            // boughtMitchHairballImage.enabled = true;
-                            // mitchHairballCassetteImage.enabled = false;
+                            _mitchHairballDone = true;
                             break;
                         case 2:
                             mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
-                            // mitchTurbineText.enabled = false;
-                            // mitchTurbineShadowText.enabled = false;
-                            // boughtMitchTurbineImage.enabled = true;
-                            // mitchTurbineCassetteImage.enabled = false;
+                            _mitchTurbineDone = true;
                             break;
                         case 3:
                             mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
-                            // mitchSalmonText.enabled = false;
-                            // mitchSalmonShadowText.enabled = false;
-                            // boughtMitchSalmonImage.enabled = true;
-                            // mitchSalmonCassetteImage.enabled = false;
+                            _mitchSalmonDone = true;
                             break;
                         case 4:
                             mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
-                            // mitchPoolText.enabled = false;
-                            // mitchPoolShadowText.enabled = false;
-                            // boughtMitchPoolImage.enabled = true;
-                            // mitchPoolCassetteImage.enabled = false;
+                            _mitchPoolDone = true;
                             break;
                         case 5:
                             mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
-                            // mitchBathText.enabled = false;
-                            // mitchBathShadowText.enabled = false;
-                            // boughtMitchBathImage.enabled = true;
-                            // mitchBathCassetteImage.enabled = false;
+                            _mitchBathDone = true;
                             break;
                         case 6:
                             mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
-                            // mitchTadpoleText.enabled = false;
-                            // mitchTadpoleShadowText.enabled = false;
-                            // boughtMitchTadpoleImage.enabled = true;
-                            // mitchTadpoleCassetteImage.enabled = false;
+                            _mitchTadpoleDone = true;
                             break;
                         case 7:
                             mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
-                            // mitchGardenText.enabled = false;
-                            // mitchGardenShadowText.enabled = false;
-                            // boughtMitchGardenImage.enabled = true;
-                            // mitchGardenCassetteImage.enabled = false;
+                            _mitchGardenDone = true;
                             break;
                     }
                 }
@@ -1410,52 +1471,31 @@ public class ArchipelagoMenu : MonoBehaviour
                     {
                         case 1:
                             maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
-                            // maiHairballText.enabled = false;
-                            // maiHairballShadowText.enabled = false;
-                            // boughtMaiHairballImage.enabled = true;
-                            // maiHairballCassetteImage.enabled = false;
+                            _maiHairballDone = true;
                             break;
                         case 2:
                             maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
-                            // maiTurbineText.enabled = false;
-                            // maiTurbineShadowText.enabled = false;
-                            // boughtMaiTurbineImage.enabled = true;
-                            // maiTurbineCassetteImage.enabled = false;
+                            _maiTurbineDone = true;
                             break;
                         case 3:
                             maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
-                            // maiSalmonText.enabled = false;
-                            // maiSalmonShadowText.enabled = false;
-                            // boughtMaiSalmonImage.enabled = true;
-                            // maiSalmonCassetteImage.enabled = false;
+                            _maiSalmonDone = true;
                             break;
                         case 4:
                             maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
-                            // maiPoolText.enabled = false;
-                            // maiPoolShadowText.enabled = false;
-                            // boughtMaiPoolImage.enabled = true;
-                            // maiPoolCassetteImage.enabled = false;
+                            _maiPoolDone = true;
                             break;
                         case 5:
                             maiBathImage.color = new Color(1f, 1f, 1f, 1f);
-                            // maiBathText.enabled = false;
-                            // maiBathShadowText.enabled = false;
-                            // boughtMaiBathImage.enabled = true;
-                            // maiBathCassetteImage.enabled = false;
+                            _maiBathDone = true;
                             break;
                         case 6:
                             maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
-                            // maiTadpoleText.enabled = false;
-                            // maiTadpoleShadowText.enabled = false;
-                            // boughtMaiTadpoleImage.enabled = true;
-                            // maiTadpoleCassetteImage.enabled = false;
+                            _maiTadpoleDone = true;
                             break;
                         case 7:
                             maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
-                            // maiGardenText.enabled = false;
-                            // maiGardenShadowText.enabled = false;
-                            // boughtMaiGardenImage.enabled = true;
-                            // maiGardenCassetteImage.enabled = false;
+                            _maiGardenDone = true;
                             break;
                     }
                 }
@@ -1569,18 +1609,46 @@ public class ArchipelagoMenu : MonoBehaviour
                     cassettesDisabledImage.gameObject.SetActive(false);
                     cassettesHcCountBackText.text = ItemHandler.HairballCassetteAmount + "/10";
                     cassettesHcCountFrontText.text = ItemHandler.HairballCassetteAmount + "/10";
+                    if (_mitchHairballDone)
+                        cassettesMitchHairballImage.color = Color.white;
+                    if (_maiHairballDone)
+                        cassettesMaiHairballImage.color = Color.white;
                     cassettesTtCountBackText.text = ItemHandler.TurbineCassetteAmount + "/10";
                     cassettesTtCountFrontText.text = ItemHandler.TurbineCassetteAmount + "/10";
+                    if (_mitchTurbineDone)
+                        cassettesMitchTurbineImage.color = Color.white;
+                    if (_maiTurbineDone)
+                        cassettesMaiTurbineImage.color = Color.white;
                     cassettesSfcCountBackText.text = ItemHandler.SalmonCassetteAmount + "/10";
                     cassettesSfcCountFrontText.text = ItemHandler.SalmonCassetteAmount + "/10";
+                    if (_mitchSalmonDone)
+                        cassettesMitchSalmonImage.color = Color.white;
+                    if (_maiSalmonDone)
+                        cassettesMaiSalmonImage.color = Color.white;
                     cassettesPpCountBackText.text = ItemHandler.PoolCassetteAmount + "/10";
                     cassettesPpCountFrontText.text = ItemHandler.PoolCassetteAmount + "/10";
+                    if (_mitchPoolDone)
+                        cassettesMitchPoolImage.color = Color.white;
+                    if (_maiPoolDone)
+                        cassettesMaiPoolImage.color = Color.white;
                     cassettesBathCountBackText.text = ItemHandler.BathCassetteAmount + "/10";
                     cassettesBathCountFrontText.text = ItemHandler.BathCassetteAmount + "/10";
+                    if (_mitchBathDone)
+                        cassettesMitchBathImage.color = Color.white;
+                    if (_maiBathDone)
+                        cassettesMaiBathImage.color = Color.white;
                     cassettesHqCountBackText.text = ItemHandler.TadpoleCassetteAmount + "/10";
                     cassettesHqCountFrontText.text = ItemHandler.TadpoleCassetteAmount + "/10";
+                    if (_mitchTadpoleDone)
+                        cassettesMitchTadpoleImage.color = Color.white;
+                    if (_maiTadpoleDone)
+                        cassettesMaiTadpoleImage.color = Color.white;
                     cassettesGgCountBackText.text = ItemHandler.GardenCassetteAmount + "/10";
                     cassettesGgCountFrontText.text = ItemHandler.GardenCassetteAmount + "/10";
+                    if (_mitchGardenDone)
+                        cassettesMitchGardenImage.color = Color.white;
+                    if (_maiGardenDone)
+                        cassettesMaiGardenImage.color = Color.white;
                 }
                 else
                 {
@@ -1826,15 +1894,6 @@ public class ArchipelagoMenu : MonoBehaviour
         //         StartCoroutine(FirstLoginFix());
         //     }
         // }
-    }
-
-    private static IEnumerator FirstLoginFix()
-    {
-        yield return new WaitUntil(ArchipelagoClient.IsValidScene);
-        //ArchipelagoClient.Connect();
-        Plugin.APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 6F);
-        Plugin.loggedIn = true; 
-        //ArchipelagoClient.CheckReceivedItems();
     }
 
     private class SavedData

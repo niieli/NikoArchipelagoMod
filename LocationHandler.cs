@@ -10,7 +10,9 @@ namespace NikoArchipelago;
 public class LocationHandler : MonoBehaviour
 {
     private static long baseID = 598_145_444_000;
-    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, garyIndex, garyIndex2, fishIndex, genIndex, frogIndex, kioskIndex, shopIndex, mimaIndex;
+    private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, 
+        garyIndex, garyIndex2, fishIndex, genIndex, 
+        frogIndex, kioskIndex, shopIndex, mimaIndex, garyMiscIndex;
     private static bool _errored, _errored2, _sent;
     private static List<bool> shopFlagsList = [..new bool[16]];
     public static ReadOnlyCollection<long> CheckedLocations;
@@ -58,7 +60,9 @@ public class LocationHandler : MonoBehaviour
             {
                 var relevantLocations = Locations.KeyLocations.Concat(Locations.SunflowerSeedsLocations)
                     .Concat(Locations.FlowerbedsLocations)
-                    .Concat(Locations.ApplesanityLocations);
+                    .Concat(Locations.ApplesanityLocations)
+                    .Concat(Locations.ChatsanityLevelLocations)
+                    .Concat(Locations.ChatsanityNikoThoughtsLocations);
                 foreach (var locationEntry in relevantLocations.Where(locationEntry => 
                              locationEntry.Value.Level == currentLevel && miscFlag[miscIndex] == locationEntry.Value.Flag))
                 {
@@ -139,6 +143,19 @@ public class LocationHandler : MonoBehaviour
             else if (casFlag.Count > garyIndex2)
             {
                 garyIndex2 = 0;
+            }
+            if (miscFlag.Count > garyMiscIndex)
+            {
+                foreach (var locationEntry in Locations.ChatsanityLevelGarysGardenLocations.Where(locationEntry => 
+                             worldsData[7].miscFlags[garyMiscIndex] == locationEntry.Value.Flag)) 
+                {
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                }
+                garyMiscIndex++;
+            }
+            else if (garyMiscIndex > miscFlag.Count)
+            {
+                garyMiscIndex = 0;
             }
         }
         catch (ArgumentOutOfRangeException ex)

@@ -17,12 +17,14 @@ public class TrainMapPatch
     private static TextMeshProUGUI _seedsTextMesh;
     private static TextMeshProUGUI _locationsTextMesh;
     private static TextMeshProUGUI _snailShopTextMesh;
+    private static TextMeshProUGUI _chatsanityLevelTextMesh;
 
     private static bool _fishingSanity = true, _fishingSanityLocation = true;
     private static bool _flowersSanity = true, _flowersSanityLocation = true;
     private static bool _seedsSanity = true, _seedsSanityLocation = true;
     private static bool _keySanity = true;
     private static int _cassetteSanity = 2;
+    private static bool _chatsanityLevel = true;
     
     private static List<int> applesPerLevel = new()
         { 0, 32, 33, 126, 94, 72, 14, 0 };
@@ -50,6 +52,9 @@ public class TrainMapPatch
     
     private static List<int> SnailShop = new()
         { 5 };
+    
+    private static List<int> ChatsanityLevel = new()
+        { 37, 41, 35, 46, 37, 44, 38, 16 };
     
     private static readonly List<string> levelNames = new()
         { "Home", "Hairball City", "Trash Kingdom", "Salmon Creek Forest", "Public Pool", "The Bathhouse", "Tadpole inc" };
@@ -636,6 +641,17 @@ public class TrainMapPatch
                 _snailShopTextMesh = __instance.transform.Find("Visuals/Statistics/Statssnailshop(Clone)/text").GetComponent<TextMeshProUGUI>();
             }
             
+            if (_chatsanityLevelTextMesh != null)
+            {
+                var chats = saveManager.gameData.worldsData[__instance.levelSelected].miscFlags.Count(t => t.StartsWith("CHAT"));
+                _chatsanityLevelTextMesh.text = chats + " / " + ChatsanityLevel[__instance.levelSelected];
+            }
+            else
+            {
+                Plugin.BepinLogger.LogError("_chatsanityLevelTextMesh is null!");
+                _chatsanityLevelTextMesh = __instance.transform.Find("Visuals/Statistics/Statschatsanity(Clone)/text").GetComponent<TextMeshProUGUI>();
+            }
+            
             return false; // Skip original method
         }
     }
@@ -783,6 +799,20 @@ public class TrainMapPatch
             {
                 Achievements.Clear();
                 Achievements.AddRange(Enumerable.Repeat(0, 8));
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("chatsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 0)
+                { 
+                    ChatsanityLevel.Clear();
+                    ChatsanityLevel.AddRange(Enumerable.Repeat(0, 8));
+                }
+            }
+            else
+            {
+                ChatsanityLevel.Clear();
+                ChatsanityLevel.AddRange(Enumerable.Repeat(0, 8));
             }
         }
     }

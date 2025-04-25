@@ -33,10 +33,11 @@ public class GameObjectChecker : MonoBehaviour
     public static scrCursor cursor;
     private static bool _sentNote, _sentNote2, _sentNote3, _sentNote4, _sentNote5, 
         _sentNote6, _sentNote7, _sentNote8, _sentNote9, _sentNote10, _sentNote11, _sentNote12, _sentNote13, _sentNote14,
-        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix, oncePerScene, dissmised;
+        _sentNote15, _sentNote16, _sentNote17, _sentNote18, _sentNote19, _hatKidFix, oncePerScene, dissmised, onLogin;
     public static readonly HashSet<int> LoggedInstances = [];
     public static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
     public static readonly StringBuilder LogBatch = new();
+    public static readonly StringBuilder LogPastItemsBatch = new();
     public static string PreviousScene = "";
 
     private static List<string> _hatPlayerNames = [];
@@ -44,6 +45,7 @@ public class GameObjectChecker : MonoBehaviour
     {
         Plugin.BepinLogger.LogDebug("GameObjectChecker started!");
         SceneManager.sceneLoaded += OnSceneLoaded;
+        onLogin = false;
     }
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -86,7 +88,6 @@ public class GameObjectChecker : MonoBehaviour
             cursor = GameObject.Find("UI/Menu system/Cursor").GetComponent<scrCursor>();
         }
         //APArrowTracker();
-        //ArchipelagoClient._session.DataStorage[Scope.Slot, "Apples"] = scrGameSaveManager.instance.gameData.generalGameData.appleAmount;
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
         {
             Plugin.newFile = false;
@@ -377,14 +378,17 @@ public class GameObjectChecker : MonoBehaviour
         var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("Statsseeds");
         var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("Statslocations");
         var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("Statssnailshop");
+        var mapStatschatsanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statschatsanity");
         Instantiate(mapStatsApples, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFish, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFlowers, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsSeeds, GameObject.Find("Statistics").transform, false);
+        var chatsanity = Instantiate(mapStatschatsanity, GameObject.Find("Statistics").transform, false);
         var snailshop = Instantiate(mapStatsSnailShop, GameObject.Find("Statistics").transform, false);
         var achievements = Instantiate(mapStatsLocations, GameObject.Find("Statistics").transform, false);
         snailshop.transform.localPosition = new Vector3(390f, -238f, 0f);
         achievements.transform.localPosition = new Vector3(390f, -158f, 0f);
+        chatsanity.transform.localPosition = new Vector3(452f, -316f, 0f);
         Plugin.BepinLogger.LogInfo("Added new stats to Statistics.");
     }
     
@@ -398,12 +402,14 @@ public class GameObjectChecker : MonoBehaviour
         var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("StatsseedsBoard");
         var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("StatslocationsBoard");
         var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("StatssnailshopBoard");
+        var mapStatschatsanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatschatsanityBoard");
         var apple = Instantiate(mapStatsApples, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var fish = Instantiate(mapStatsFish, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var flower = Instantiate(mapStatsFlowers, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var seed = Instantiate(mapStatsSeeds, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var location = Instantiate(mapStatsLocations, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var snailShop = Instantiate(mapStatsSnailShop, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var chatsanity = Instantiate(mapStatschatsanity, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
 
         apple.transform.localPosition = new Vector3(95f, -121f, 0f);
         apple.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -416,14 +422,16 @@ public class GameObjectChecker : MonoBehaviour
         location.transform.localScale = new Vector3(0.8166f, 0.8166f, 1.0166f);
         snailShop.transform.localPosition = new Vector3(-54f, -456f, 0f);
         snailShop.transform.localScale = new Vector3(0.8166f, 0.8166f, 1.0166f);
+        chatsanity.transform.localPosition = new Vector3(-118f, -386f, 0f);
+        chatsanity.transform.localScale = new Vector3(0.6648f, 0.6648f, 0.6648f);
         if (GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys") != null)
         {
             var keys = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys");
-            keys.transform.localPosition = new Vector3(-165f, -288f, 0f);
-            keys.transform.localScale = new Vector3(0.7158f, 0.7158f, 0.85f);
+            keys.transform.localPosition = new Vector3(-179f, -270f, 0f);
+            keys.transform.localScale = new Vector3(0.6158f, 0.6158f, 0f);
         }
         var cassettes = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/cassettes");
-        cassettes.transform.localPosition = new Vector3(-392f, -423f, 0f);
+        cassettes.transform.localPosition = new Vector3(-431f, -423f, 0f);
         Plugin.BepinLogger.LogInfo("Added new stats to Whiteboard.");
         if (SceneManager.GetActiveScene().name != "Public Pool") return;
         var canvas = GameObject.Find("Pepper/Whiteboard/Canvas");
@@ -434,8 +442,8 @@ public class GameObjectChecker : MonoBehaviour
     private static void NpcController()
     {
         if (ArchipelagoData.slotData == null) return;
-        if (!ArchipelagoData.slotData.ContainsKey("npcsanity")) return;
-        if (int.Parse(ArchipelagoData.slotData["npcsanity"].ToString()) == 0) return;
+        if (!ArchipelagoData.slotData.ContainsKey("chatsanity")) return;
+        if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 0) return;
         if (!ArchipelagoClient.IsValidScene()) return;
         var apTrackerUI = new GameObject("NPCController");
         var tracker = apTrackerUI.AddComponent<NpcController>();
@@ -845,6 +853,11 @@ public class GameObjectChecker : MonoBehaviour
         CreatedItemsCache.Clear();
         var waitFor = 1f;
         yield return new WaitUntil(() => PreviousScene != SceneManager.GetActiveScene().name);
+        if (!onLogin && Plugin.loggedIn)
+        {
+            Plugin.BepinLogger.LogInfo("Item Logs:\n"+LogPastItemsBatch);
+            onLogin = true;
+        }
         while (waitFor > 0)
         {
             yield return null;
