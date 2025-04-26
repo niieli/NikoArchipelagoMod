@@ -1131,7 +1131,7 @@ public class Locations
         { BaseID + 1406, new Location(BaseID + 1406, "nikoSCF", 2) },
         { BaseID + 1407, new Location(BaseID + 1407, "nikoTTTown", 2) },
         { BaseID + 1408, new Location(BaseID + 1408, "nikoTTCollider", 2) },
-        { BaseID + 1409, new Location(BaseID + 1409, "nikoSpaceFrogs", 2) },
+        { BaseID + 1409, new Location(BaseID + 1409, "nikoSpacefrogs", 2) },
         { BaseID + 1410, new Location(BaseID + 1410, "nikoTTGate", 2) },
         
         // Salmon Creek Forest

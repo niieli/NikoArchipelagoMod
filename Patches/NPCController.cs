@@ -98,7 +98,7 @@ public class NpcController : MonoBehaviour
             "nikoBHMaintain", "nikoBHNinja", "nikoBHEcho", "nikoBHGold", "nikoBHHaiku", "nikoBHMainBuilding", "nikoBHButton",
             "nikoPPVape","nikoBall" , "nikoPPBath", "nikoPP2D", "nikoPink",
             "nikoSCRocks", "nikoMoneySmell", "nikoSCFall",
-            "nikoTTHaring","nikoSCF", "nikoTTTown", "nikoTTCollider", "nikoSpaceFrogs", "nikoTTGate",
+            "nikoTTHaring","nikoSCF", "nikoTTTown", "nikoTTCollider", "nikoSpacefrogs", "nikoTTGate",
             "nikoHBCStatue", "nikoHBCSnack", "nikoHBCSticky", "nikoHBCHarbor", "nikoHBCBench"
         ];
     }

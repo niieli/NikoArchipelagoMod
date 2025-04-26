@@ -376,6 +376,36 @@ public class Applesanity
                     index = list.FindIndex(pair => pair.Value == flag);
                     offset = 290 - adjustment + idkAdjustment;
                     PlaceModel(index, offset, __instance);
+                    if (appleIDs[__instance] == 74 || appleIDs[__instance] == 106 || appleIDs[__instance] == 120)
+                    {
+                        __instance.transform.position += new Vector3(0, 0.5f, 0);
+                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                    }
+                    if (appleIDs[__instance] == 75)
+                    {
+                        __instance.transform.position = new Vector3(27.5f, 130.3f, 139.6f);
+                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                    }
+                    if (appleIDs[__instance] == 92)
+                    {
+                        __instance.transform.position = new Vector3(38.8f, 133.5f, 135.4f);
+                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                    }
+                    if (appleIDs[__instance] == 52 || appleIDs[__instance] == 42 || appleIDs[__instance] == 35 || appleIDs[__instance] == 55 || appleIDs[__instance] == 59 || appleIDs[__instance] == 115)
+                    {
+                        __instance.transform.position += new Vector3(0, 0.3f, 0);
+                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                    }
+                    if (appleIDs[__instance] == 38)
+                    {
+                        __instance.transform.position -= new Vector3(0, 0.3f, 0);
+                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                    }
+                    if (appleIDs[__instance] == 111 || appleIDs[__instance] == 83 || appleIDs[__instance] == 32)
+                    {
+                        __instance.transform.position += new Vector3(0, 0.8f, 0);
+                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                    }
                     break;
                 }
                 case "Public Pool":

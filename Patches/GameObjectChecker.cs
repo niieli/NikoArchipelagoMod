@@ -428,7 +428,7 @@ public class GameObjectChecker : MonoBehaviour
         {
             var keys = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys");
             keys.transform.localPosition = new Vector3(-179f, -270f, 0f);
-            keys.transform.localScale = new Vector3(0.6158f, 0.6158f, 0f);
+            keys.transform.localScale = new Vector3(0.6158f, 0.6158f, 0.1f);
         }
         var cassettes = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/cassettes");
         cassettes.transform.localPosition = new Vector3(-431f, -423f, 0f);
