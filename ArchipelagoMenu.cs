@@ -69,10 +69,10 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip kalmiTooltip;
     public TooltipTrigger kalmiTrigger;
     public GameObject kalmiHighlight;
-    public Toggle itemSentToggle;
-    public Tooltip itemSentTooltip;
-    public TooltipTrigger itemSentTrigger;
-    public GameObject itemSentHighlight;
+    [FormerlySerializedAs("itemSentToggle")] public Toggle apNotificationsToggle;
+    [FormerlySerializedAs("itemSentTooltip")] public Tooltip apNotificationsTooltip;
+    [FormerlySerializedAs("itemSentTrigger")] public TooltipTrigger apNotificationsTrigger;
+    [FormerlySerializedAs("itemSentHighlight")] public GameObject apNotificationsHighlight;
     public Toggle cassetteSpoilerToggle;
     public Tooltip cassetteSpoilerTooltip;
     public TooltipTrigger cassetteSpoilerTrigger;
@@ -106,7 +106,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _cassetteSpoiler;
     private static bool _cacmi;
     private static bool _kalmi;
-    private static bool _itemSent;
+    private static bool _apNotifications;
     private static bool _contactList;
     private static bool _status;
     //private static bool _trackerKey;
@@ -116,6 +116,9 @@ public class ArchipelagoMenu : MonoBehaviour
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
+    public static string Host;
+    public static string SlotName;
+    public static bool RememberMe;
     public static bool Hints;
     public static bool ShopHints;
     public static bool Chat;
@@ -125,7 +128,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool cacmi;
     public static bool kalmi;
     public static bool contactList;
-    public static bool itemSent;
+    public static bool APNotifications;
     public static bool status;
     public static bool CassetteSpoiler;
     //public static bool TrackerKey;
@@ -143,7 +146,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public CanvasGroup settingsPanelCanvasGroup;
     public CanvasGroup trackersPanelCanvasGroup;
     public CanvasGroup qolPanelCanvasGroup;
-    public float fadeDuration = 0.5f;
+    public float fadeDuration = 0.35f;
 
     private CanvasGroup _activePanel;    
     public Button settingsButton;
@@ -694,10 +697,11 @@ public class ArchipelagoMenu : MonoBehaviour
         shopHintsTooltip = shopHintsToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         shopHintsTrigger = shopHintsToggle.gameObject.AddComponent<TooltipTrigger>();
         shopHintsHighlight = shopHintsToggle.transform.Find("Highlight").gameObject;
-        itemSentToggle = settingsPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
-        itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
-        itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
-        itemSentHighlight = itemSentToggle.transform.Find("Highlight").gameObject;
+        apNotificationsToggle = settingsPanel.transform.Find("ItemSent").gameObject.GetComponent<Toggle>();
+        apNotificationsTooltip = apNotificationsToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        apNotificationsTrigger = apNotificationsToggle.gameObject.AddComponent<TooltipTrigger>();
+        apNotificationsHighlight = apNotificationsToggle.transform.Find("Highlight").gameObject;
+        apNotificationsToggle.gameObject.AddComponent<NotificationPreview>();
         statusToggle = settingsPanel.transform.Find("Status").gameObject.GetComponent<Toggle>();
         statusTooltip = statusToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         statusTrigger = statusToggle.gameObject.AddComponent<TooltipTrigger>();
@@ -768,26 +772,26 @@ public class ArchipelagoMenu : MonoBehaviour
         if (connectButton == null) Plugin.BepinLogger.LogError("ConnectButton is null!");
         if (versionText == null) Plugin.BepinLogger.LogError("VersionText is null!");
 
-        _serverAddress = serverAddressField.text;
-        _slotName = slotNameField.text;
-        password = passwordField.text;
-        _rememberMe = rememberMeToggle.isOn;
-        _chat = chatToggle.isOn;
-        _hints = hintsToggle.isOn;
-        _shopHints = shopHintsToggle.isOn;
-        _ticket = ticketToggle.isOn;
-        _kiosk = kioskToggle.isOn;
-        _kioskSpoiler = kioskSpoilerToggle.isOn;
-        _cacmi = cacmiToggle.isOn;
-        _itemSent = itemSentToggle.isOn;
-        _contactList = contactListToggle.isOn;
-        _status = statusToggle.isOn;
-        //_trackerKey = trackerKeyToggle.isOn;
-        _tooltips = tooltipsToggle.isOn;
-        _seasonalThemes = seasonalThemesToggle.isOn;
-        _skipPickup = skipPickupToggle.isOn;
         hideOnce = false;
-        LoadData();
+        SavedData.Instance.LoadSettings();
+        serverAddressField.text = SavedData.Instance.Host;
+        slotNameField.text = SavedData.Instance.SlotName;
+        rememberMeToggle.isOn = SavedData.Instance.RememberMe;
+        chatToggle.isOn = SavedData.Instance.Chat;
+        hintsToggle.isOn = SavedData.Instance.Hint;
+        shopHintsToggle.isOn = SavedData.Instance.ShopHints;
+        ticketToggle.isOn = SavedData.Instance.Ticket;
+        kioskToggle.isOn = SavedData.Instance.Kiosk;
+        kioskSpoilerToggle.isOn = SavedData.Instance.KioskSpoiler;
+        cacmiToggle.isOn = SavedData.Instance.CACMI;
+        kalmiToggle.isOn = SavedData.Instance.KALMI;
+        cassetteSpoilerToggle.isOn = SavedData.Instance.CassetteSpoiler;
+        apNotificationsToggle.isOn = SavedData.Instance.APNotifications;
+        contactListToggle.isOn = SavedData.Instance.ContactList;
+        statusToggle.isOn = SavedData.Instance.Status;
+        tooltipsToggle.isOn = SavedData.Instance.Tooltips;
+        seasonalThemesToggle.isOn = SavedData.Instance.SeasonalThemes;
+        skipPickupToggle.isOn = SavedData.Instance.SkipPickup;
 
         versionText.text = "Version "+Plugin.PluginVersion;
         formPanel.SetActive(false);
@@ -813,7 +817,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskSpoilerTrigger.tooltip = kioskSpoilerTooltip;
         cacmiTrigger.tooltip = cacmiTooltip;
         kalmiTrigger.tooltip = kalmiTooltip;
-        itemSentTrigger.tooltip = itemSentTooltip;
+        apNotificationsTrigger.tooltip = apNotificationsTooltip;
         contactListTrigger.tooltip = contactListTooltip;
         statusTrigger.tooltip = statusTooltip;
         debugTrigger.tooltip = debugTooltip;
@@ -829,7 +833,6 @@ public class ArchipelagoMenu : MonoBehaviour
         flowersTrigger.tooltip = flowersTooltip;
         cassettesDisabledTrigger.tooltip = cassettesDisabledTooltip;
         cassettesTrigger.tooltip = cassettesTooltip;
-        //trackerKeyTrigger.tooltip = trackerKeyTooltip;
         tooltipsTrigger.tooltip = tooltipsTooltip;
         cassetteSpoilerTrigger.tooltip = cassetteSpoilerTooltip;
         seasonalThemesTrigger.tooltip = seasonalThemesTooltip;
@@ -839,7 +842,7 @@ public class ArchipelagoMenu : MonoBehaviour
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
         hintsToggle.gameObject.AddComponent<Highlighter>().highlightPanel = hintsHighlight;
         shopHintsToggle.gameObject.AddComponent<Highlighter>().highlightPanel = shopHintsHighlight;
-        itemSentToggle.gameObject.AddComponent<Highlighter>().highlightPanel = itemSentHighlight;
+        apNotificationsToggle.gameObject.AddComponent<Highlighter>().highlightPanel = apNotificationsHighlight;
         statusToggle.gameObject.AddComponent<Highlighter>().highlightPanel = statusHighlight;
         ticketToggle.gameObject.AddComponent<Highlighter>().highlightPanel = ticketHighlight;
         kioskToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kioskHighlight;
@@ -847,7 +850,6 @@ public class ArchipelagoMenu : MonoBehaviour
         contactListToggle.gameObject.AddComponent<Highlighter>().highlightPanel = contactListHighlight;
         cacmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cacmiHighlight;
         kalmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kalmiHighlight;
-        //trackerKeyToggle.gameObject.AddComponent<Highlighter>().highlightPanel = trackerKeyHighlight;
         cassetteSpoilerToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cassetteSpoilerHighlight;
         skipPickupToggle.gameObject.AddComponent<Highlighter>().highlightPanel = skipPickupHighlight;
         
@@ -1033,7 +1035,7 @@ public class ArchipelagoMenu : MonoBehaviour
 
     public void ToggleTooltips()
     {
-        if (tooltipsToggle.isOn && hideOnce) return;
+        if (tooltipsToggle.isOn && !hideOnce) return;
         settingsTooltip.gameObject.SetActive(false);
         trackersTooltip.gameObject.SetActive(false);
         qolTooltip.gameObject.SetActive(false);
@@ -1046,7 +1048,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kioskSpoilerTooltip.gameObject.SetActive(false);
         cacmiTooltip.gameObject.SetActive(false);
         kalmiTooltip.gameObject.SetActive(false);
-        itemSentTooltip.gameObject.SetActive(false);
+        apNotificationsTooltip.gameObject.SetActive(false);
         contactListTooltip.gameObject.SetActive(false);
         statusTooltip.gameObject.SetActive(false);
         reloadTooltip.gameObject.SetActive(false);
@@ -1054,7 +1056,6 @@ public class ArchipelagoMenu : MonoBehaviour
         fishDisabledTooltip.gameObject.SetActive(false);
         seedsDisabledTooltip.gameObject.SetActive(false);
         flowersDisabledTooltip.gameObject.SetActive(false);
-        //trackerKeyTooltip.gameObject.SetActive(false);
         tooltipsTooltip.gameObject.SetActive(false);
         cassetteSpoilerTooltip.gameObject.SetActive(false);
         skipPickupTooltip.gameObject.SetActive(false);
@@ -1717,10 +1718,9 @@ public class ArchipelagoMenu : MonoBehaviour
         _kioskSpoiler = kioskSpoilerToggle.isOn;
         _cacmi = cacmiToggle.isOn;
         _kalmi = kalmiToggle.isOn;
-        _itemSent = itemSentToggle.isOn;
+        _apNotifications = apNotificationsToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
-        //_trackerKey = trackerKeyToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
         _seasonalThemes = seasonalThemesToggle.isOn;
@@ -1733,41 +1733,48 @@ public class ArchipelagoMenu : MonoBehaviour
         KioskSpoiler = _kioskSpoiler;
         cacmi = _cacmi;
         kalmi = _kalmi;
-        itemSent = _itemSent;
+        APNotifications = _apNotifications;
         contactList = _contactList;
         status = _status;
-        //TrackerKey = _trackerKey;
         Tooltips = _tooltips;
         CassetteSpoiler = _cassetteSpoiler;
         hideOnce = _tooltips;
         SeasonalThemes = _seasonalThemes;
         SkipPickup = _skipPickup;
         
-        SavedData data = new SavedData
-        {
-            Host = ArchipelagoClient.ServerData.Uri,
-            SlotName = ArchipelagoClient.ServerData.SlotName,
-            RememberMe = _rememberMe,
-            Chat = _chat,
-            Hint = _hints,
-            ShopHints = _shopHints,
-            Ticket = _ticket,
-            Kiosk = _kiosk,
-            KioskSpoiler = _kioskSpoiler,
-            CACMI = _cacmi,
-            KALMI = _kalmi,
-            ItemSent = _itemSent,
-            ContactList = _contactList,
-            Status = _status,
-            //Key = _trackerKey,
-            Tooltips = _tooltips,
-            CassetteSpoiler = _cassetteSpoiler,
-            SeasonalThemes =  _seasonalThemes,
-            SkipPickup = _skipPickup,
-        };
+        SavedData.Instance.Host = _serverAddress;
+        SavedData.Instance.SlotName = _slotName;
+        SavedData.Instance.RememberMe = _rememberMe;
+        SavedData.Instance.Chat = _chat;
+        SavedData.Instance.Hint = _hints;
+        SavedData.Instance.ShopHints = _shopHints;
+        SavedData.Instance.Ticket = _ticket;
+        SavedData.Instance.Kiosk = _kiosk;
+        SavedData.Instance.KioskSpoiler = _kioskSpoiler;
+        SavedData.Instance.CACMI = _cacmi;
+        SavedData.Instance.KALMI = _kalmi;
+        SavedData.Instance.APNotifications = _apNotifications;
+        SavedData.Instance.ContactList = _contactList;
+        SavedData.Instance.Status = _status;
+        SavedData.Instance.Tooltips = _tooltips;
+        SavedData.Instance.CassetteSpoiler = _cassetteSpoiler;
+        SavedData.Instance.SeasonalThemes = _seasonalThemes;
+        SavedData.Instance.SkipPickup = _skipPickup;
+        // SavedData.Instance.NotificationBoxColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxColor);
+        // SavedData.Instance.NotificationBoxHintColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxHintColor);
+        // SavedData.Instance.NotificationAccentColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationAccentColor);
+        SavedData.Instance.NotificationProgColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationProgColor);
+        SavedData.Instance.NotificationUsefulColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationUsefulColor);
+        SavedData.Instance.NotificationTrapColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTrapColor);
+        SavedData.Instance.NotificationFillerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationFillerColor);
+        SavedData.Instance.NotificationTimerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTimerColor);
+        SavedData.Instance.NotificationPlayerNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationPlayerNameColor);
+        SavedData.Instance.NotificationItemNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationItemNameColor);
+        SavedData.Instance.NotificationHintStateColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationHintStateColor);
+        SavedData.Instance.NotificationLocationNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationLocationNameColor);
         if (_rememberMe)
         {
-            SaveSettings(data);
+            SavedData.Instance.SaveSettings();
         }
 
         GameObjectChecker.PreviousScene = "Reload";
@@ -1791,13 +1798,15 @@ public class ArchipelagoMenu : MonoBehaviour
         _kioskSpoiler = kioskSpoilerToggle.isOn;
         _cacmi = cacmiToggle.isOn;
         _kalmi = kalmiToggle.isOn;
-        _itemSent = itemSentToggle.isOn;
+        _apNotifications = apNotificationsToggle.isOn;
         _contactList = contactListToggle.isOn;
         _status = statusToggle.isOn;
-        //_trackerKey = trackerKeyToggle.isOn;
         _skipPickup = skipPickupToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
+        Host = _serverAddress;
+        SlotName = _slotName;
+        RememberMe = _rememberMe;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1806,10 +1815,9 @@ public class ArchipelagoMenu : MonoBehaviour
         KioskSpoiler = _kioskSpoiler;
         cacmi = _cacmi;
         kalmi = _kalmi;
-        itemSent = _itemSent;
+        APNotifications = _apNotifications;
         contactList = _contactList;
         status = _status;
-        //TrackerKey = _trackerKey;
         Tooltips = _tooltips;
         CassetteSpoiler = _cassetteSpoiler;
         _seasonalThemes = seasonalThemesToggle.isOn;
@@ -1831,35 +1839,43 @@ public class ArchipelagoMenu : MonoBehaviour
         Plugin.BepinLogger.LogInfo($"Kiosk Tracker: {_kiosk}");
         Plugin.BepinLogger.LogInfo($"Hide Cost: {_kioskSpoiler}");
         Plugin.BepinLogger.LogInfo($"CACMI: {_cacmi}");
-        Plugin.BepinLogger.LogInfo($"Item Sent: {_itemSent}");
+        Plugin.BepinLogger.LogInfo($"Item Sent: {_apNotifications}");
         Plugin.BepinLogger.LogInfo($"Contact List: {_contactList}");
         Plugin.BepinLogger.LogInfo($"Status: {_status}");
         
-        SavedData data = new SavedData
-        {
-            Host = _serverAddress,
-            SlotName = _slotName,
-            RememberMe = _rememberMe,
-            Chat = _chat,
-            Hint = _hints,
-            ShopHints = _shopHints,
-            Ticket = _ticket,
-            Kiosk = _kiosk,
-            KioskSpoiler = _kioskSpoiler,
-            CACMI = _cacmi,
-            KALMI = _kalmi,
-            ItemSent = _itemSent,
-            ContactList = _contactList,
-            Status = _status,
-            //Key = _trackerKey,
-            Tooltips = _tooltips,
-            CassetteSpoiler = _cassetteSpoiler,
-            SeasonalThemes = _seasonalThemes,
-            SkipPickup = _skipPickup,
-        };
+        SavedData.Instance.Host = _serverAddress;
+        SavedData.Instance.SlotName = _slotName;
+        SavedData.Instance.RememberMe = _rememberMe;
+        SavedData.Instance.Chat = _chat;
+        SavedData.Instance.Hint = _hints;
+        SavedData.Instance.ShopHints = _shopHints;
+        SavedData.Instance.Ticket = _ticket;
+        SavedData.Instance.Kiosk = _kiosk;
+        SavedData.Instance.KioskSpoiler = _kioskSpoiler;
+        SavedData.Instance.CACMI = _cacmi;
+        SavedData.Instance.KALMI = _kalmi;
+        SavedData.Instance.APNotifications = _apNotifications;
+        SavedData.Instance.ContactList = _contactList;
+        SavedData.Instance.Status = _status;
+        SavedData.Instance.Tooltips = _tooltips;
+        SavedData.Instance.CassetteSpoiler = _cassetteSpoiler;
+        SavedData.Instance.SeasonalThemes = _seasonalThemes;
+        SavedData.Instance.SkipPickup = _skipPickup;
+        // SavedData.Instance.NotificationBoxColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxColor);
+        // SavedData.Instance.NotificationBoxHintColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxHintColor);
+        // SavedData.Instance.NotificationAccentColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationAccentColor);
+        SavedData.Instance.NotificationProgColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationProgColor);
+        SavedData.Instance.NotificationUsefulColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationUsefulColor);
+        SavedData.Instance.NotificationTrapColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTrapColor);
+        SavedData.Instance.NotificationFillerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationFillerColor);
+        SavedData.Instance.NotificationTimerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTimerColor);
+        SavedData.Instance.NotificationPlayerNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationPlayerNameColor);
+        SavedData.Instance.NotificationItemNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationItemNameColor);
+        SavedData.Instance.NotificationHintStateColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationHintStateColor);
+        SavedData.Instance.NotificationLocationNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationLocationNameColor);
         if (_rememberMe)
         {
-            SaveSettings(data);
+            SavedData.Instance.SaveSettings();
         }
 
         Plugin.ArchipelagoClient.Connect();
@@ -1894,88 +1910,6 @@ public class ArchipelagoMenu : MonoBehaviour
         //         StartCoroutine(FirstLoginFix());
         //     }
         // }
-    }
-
-    private class SavedData
-    {
-        public string Host { get; set; } = _serverAddress;
-        public string SlotName { get; set; } = _slotName;
-        public bool RememberMe { get; set; } = _rememberMe;
-        public bool Chat { get; set; } = _chat;
-        public bool ShopHints { get; set; } = _shopHints;
-        public bool Hint { get; set; } = _hints;
-        public bool Ticket { get; set; } = _ticket;
-        public bool Kiosk { get; set; } = _kiosk;
-        public bool KioskSpoiler { get; set; } = _kioskSpoiler;
-        public bool CACMI { get; set; } = _cacmi;
-        public bool ItemSent { get; set; } = _itemSent;
-        public bool ContactList { get; set; } = _contactList;
-        public bool Status { get; set; } = _status;
-        //public bool Key { get; set; } = _trackerKey;
-        public bool Tooltips { get; set; } = _tooltips;
-        public bool KALMI { get; set; } = _kalmi;
-        public bool CassetteSpoiler { get; set; } = _cassetteSpoiler;
-        public bool SeasonalThemes { get; set; } = _seasonalThemes;
-        public bool SkipPickup { get; set; } = _skipPickup;
-    }
-
-    private void LoadData()
-    {
-        if (File.Exists(jsonFilePath))
-        {
-            string json = File.ReadAllText(jsonFilePath);
-            SavedData savedData = JsonConvert.DeserializeObject<SavedData>(json);
-            serverAddressField.text = savedData.Host;
-            slotNameField.text = savedData.SlotName;
-            rememberMeToggle.isOn = savedData.RememberMe;
-            chatToggle.isOn = savedData.Chat;
-            hintsToggle.isOn = savedData.Hint;
-            shopHintsToggle.isOn = savedData.ShopHints;
-            kioskToggle.isOn = savedData.Kiosk;
-            ticketToggle.isOn = savedData.Ticket;
-            kioskSpoilerToggle.isOn = savedData.KioskSpoiler;
-            cacmiToggle.isOn = savedData.CACMI;
-            kalmiToggle.isOn = savedData.KALMI;
-            itemSentToggle.isOn = savedData.ItemSent;
-            contactListToggle.isOn = savedData.ContactList;
-            statusToggle.isOn = savedData.Status;
-            //trackerKeyToggle.isOn = savedData.Key;
-            tooltipsToggle.isOn = savedData.Tooltips;
-            cassetteSpoilerToggle.isOn = savedData.CassetteSpoiler;
-            hideOnce = savedData.Tooltips;
-            seasonalThemesToggle.isOn = savedData.SeasonalThemes;
-            skipPickupToggle.isOn = savedData.SkipPickup;
-            Plugin.BepinLogger.LogInfo("Loaded saved settings.");
-        }
-        else
-        {
-            serverAddressField.text = "archipelago.gg:";
-            slotNameField.text = "Player1";
-            rememberMeToggle.isOn = true;
-            chatToggle.isOn = true;
-            hintsToggle.isOn = true;
-            shopHintsToggle.isOn = true;
-            kioskToggle.isOn = true;
-            ticketToggle.isOn = true;
-            kioskSpoilerToggle.isOn = true;
-            cacmiToggle.isOn = true;
-            itemSentToggle.isOn = true;
-            contactListToggle.isOn = true;
-            statusToggle.isOn = true;
-            //trackerKeyToggle.isOn = true;
-            tooltipsToggle.isOn = false;
-            hideOnce = false;
-            kalmiToggle.isOn = true;
-            cassetteSpoilerToggle.isOn = true;
-            seasonalThemesToggle.isOn = true;
-            skipPickupToggle.isOn = true;
-        }
-    }
-
-    private void SaveSettings(SavedData data)
-    {
-        string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(jsonFilePath, jsonData);
     }
 }
 

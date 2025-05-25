@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -15,8 +16,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
+using Random = UnityEngine.Random;
 
 namespace NikoArchipelago
 {
@@ -34,7 +37,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.6.3";
+        public const string PluginVersion = "0.7.0";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -59,7 +62,10 @@ namespace NikoArchipelago
         public static bool loggedIn, Compatibility, SaveEstablished, PlayerFound;
         public static string Seed;
         public static AssetBundle AssetBundle, AssetBundleXmas;
-        public static GameObject FreezeTrap, IronBootsTrap, MyTurnTrap, WhoopsTrap, GravityTrap;
+        public static GameObject TrapFreeze, TrapIronBoots, TrapMyTurn, TrapWhoops, TrapGravity,
+            ItemNotification, HintNotification,
+            TrapWide, TrapHome, TrapJumpingJacks, TrapPhoneCall, TrapTiny,
+            NoticeBonkHelmet, NoticeSodaCan, NoticeParasol, NoticeAC, NoticeSwimCourse;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
@@ -71,15 +77,20 @@ namespace NikoArchipelago
             HandsomeSprite, LostSprite, SuperJumpSprite,
             SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
             HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
-            SnailMoneySprite, BugSprite, GgSprite, GoalBadSprite,
+            SnailMoneySprite, BugsSprite, GgSprite, GoalBadSprite,
             ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite,
             TimePieceSprite, YarnSprite,
             HairballFlowerSprite, TurbineFlowerSprite, SalmonFlowerSprite, PoolFlowerSprite, BathFlowerSprite, TadpoleFlowerSprite,
             HairballSeedSprite, SalmonSeedSprite, BathSeedSprite,
             HairballCassetteSprite, TurbineCassetteSprite, SalmonCassetteSprite, PoolCassetteSprite, BathCassetteSprite, TadpoleCassetteSprite, GardenCassetteSprite,
             FischerNoteSprite, GabiNoteSprite, MoomyNoteSprite, BlessleyNoteSprite,
-            FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite, GravityTrapSprite;
+            FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite, GravityTrapSprite,
+            PhoneCallTrapSprite, JumpingJacksTrapSprite, WideTrapSprite, HomeTrapSprite, TinyTrapSprite,
+            PartyTicketSprite, BonkHelmetSprite, BugNetSprite, SodaRepairSprite, ParasolRepairSprite, SwimCourseSprite, TextboxItemSprite, ACRepairSprite;
 
+        public static Material ProgNotificationTexture, UsefulNotificationTexture, FillerNotificationTexture, TrapNotificationTexture;
+        public static GameObject SparksParticleSystem;
+        public static GameObject NotifcationCanvas;
         public static GameObject ApUIGameObject, ArrowTrackerGameObject;
         public static Texture2D CassetteTexture;
         public static Image APLogoImage; 
@@ -94,6 +105,7 @@ namespace NikoArchipelago
         public static GameObject APUpdateNotice;
         private string latestVersion = "";
         private string latestReleaseUrl = "";
+        public static GameObject BasicBlock;
         
         private void Awake()
         {
@@ -113,6 +125,7 @@ namespace NikoArchipelago
                 Directory.CreateDirectory(ArchipelagoFolderPath);
                 Logger.LogInfo("Archipelago folder created.");
             }
+            SavedData.Instance.LoadSettings();
         }
 
         public void Load()
@@ -195,7 +208,7 @@ namespace NikoArchipelago
                 HqSprite = AssetBundle.LoadAsset<Sprite>("TrainTadpole");
                 GgSprite = AssetBundle.LoadAsset<Sprite>("GarysGarden");
                 SnailMoneySprite = AssetBundle.LoadAsset<Sprite>("SnailMoney");
-                BugSprite = AssetBundle.LoadAsset<Sprite>("Butterfly");
+                BugsSprite = AssetBundle.LoadAsset<Sprite>("BugBundle");
                 ApProgressionSprite = AssetBundle.LoadAsset<Sprite>("ApProgression");
                 ApUsefulSprite = AssetBundle.LoadAsset<Sprite>("ApUseful");
                 ApFillerSprite = AssetBundle.LoadAsset<Sprite>("ApFiller");
@@ -240,24 +253,63 @@ namespace NikoArchipelago
                 GabiNoteSprite = AssetBundle.LoadAsset<Sprite>("sprFlowerNote");
                 MoomyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprHamsterNote");
                 BlessleyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprBugNote");
-                FreezeTrap = AssetBundle.LoadAsset<GameObject>("FreezeTrap");
-                IronBootsTrap = AssetBundle.LoadAsset<GameObject>("IronBootsTrap");
-                MyTurnTrap = AssetBundle.LoadAsset<GameObject>("MyTurnTrap");
-                WhoopsTrap = AssetBundle.LoadAsset<GameObject>("WhoopsTrap");
+                TrapFreeze = AssetBundle.LoadAsset<GameObject>("TrapFreeze");
+                TrapIronBoots = AssetBundle.LoadAsset<GameObject>("TrapIronBoots");
+                TrapMyTurn = AssetBundle.LoadAsset<GameObject>("TrapMyTurn");
+                TrapWhoops = AssetBundle.LoadAsset<GameObject>("TrapWhoops");
                 FreezeTrapSprite = AssetBundle.LoadAsset<Sprite>("Schneeflocken1");
                 IronBootsTrapSprite = AssetBundle.LoadAsset<Sprite>("TrapIronBoots");
                 MyTurnTrapSprite = AssetBundle.LoadAsset<Sprite>("imgPepper");
                 WhoopsTrapSprite = AssetBundle.LoadAsset<Sprite>("TrapWhoops");
                 SpeedBoostSprite = AssetBundle.LoadAsset<Sprite>("SpeedBoost");
-                GravityTrap = AssetBundle.LoadAsset<GameObject>("GravityTrap");
+                TrapGravity = AssetBundle.LoadAsset<GameObject>("TrapGravity");
                 GravityTrapSprite = AssetBundle.LoadAsset<Sprite>("BuzzNote");
+                ProgNotificationTexture = AssetBundle.LoadAsset<Material>("APProgressionNotificationMaterial");
+                UsefulNotificationTexture = AssetBundle.LoadAsset<Material>("APUsefulNotificationMaterial");
+                FillerNotificationTexture = AssetBundle.LoadAsset<Material>("APFillerNotificationMaterial");
+                TrapNotificationTexture = AssetBundle.LoadAsset<Material>("APTrapNotificationMaterial");
+                ItemNotification = AssetBundle.LoadAsset<GameObject>("ItemNotification");
+                HintNotification = AssetBundle.LoadAsset<GameObject>("HintNotification");
+                TrapHome = AssetBundle.LoadAsset<GameObject>("TrapHome");
+                TrapWide = AssetBundle.LoadAsset<GameObject>("TrapWideHappy");
+                TrapJumpingJacks = AssetBundle.LoadAsset<GameObject>("TrapJumpingJacks");
+                TrapPhoneCall = AssetBundle.LoadAsset<GameObject>("TrapPhoneCall");
+                HomeTrapSprite = AssetBundle.LoadAsset<Sprite>("TrainHome");
+                WideTrapSprite = AssetBundle.LoadAsset<Sprite>("WideTrap");
+                JumpingJacksTrapSprite = AssetBundle.LoadAsset<Sprite>("JumpingJacksTrap");
+                PhoneCallTrapSprite = AssetBundle.LoadAsset<Sprite>("NikoPhone");
+                TinyTrapSprite = AssetBundle.LoadAsset<Sprite>("TinyTrap");
+                SparksParticleSystem = AssetBundle.LoadAsset<GameObject>("Sparks");
+                PartyTicketSprite = AssetBundle.LoadAsset<Sprite>("PartyInvitation");
+                BonkHelmetSprite = AssetBundle.LoadAsset<Sprite>("BonkHelmet");
+                BugNetSprite = AssetBundle.LoadAsset<Sprite>("BugNet");
+                SodaRepairSprite = AssetBundle.LoadAsset<Sprite>("SodaCanRepair");
+                ParasolRepairSprite = AssetBundle.LoadAsset<Sprite>("ParasolRepair");
+                SwimCourseSprite = AssetBundle.LoadAsset<Sprite>("SwimCourse");
+                TextboxItemSprite = AssetBundle.LoadAsset<Sprite>("TextboxItem");
+                ACRepairSprite = AssetBundle.LoadAsset<Sprite>("ACRepair");
+                TrapTiny = AssetBundle.LoadAsset<GameObject>("TrapTiny");
+                NoticeBonkHelmet = AssetBundle.LoadAsset<GameObject>("NoticeBonkHelmet");
+                NoticeSodaCan = AssetBundle.LoadAsset<GameObject>("NoticeSodaCan");
+                NoticeParasol = AssetBundle.LoadAsset<GameObject>("NoticeParasol");
+                NoticeSwimCourse = AssetBundle.LoadAsset<GameObject>("NoticeSwimCourse");
+                NoticeAC = AssetBundle.LoadAsset<GameObject>("NoticeAC");
+                BasicBlock = AssetBundle.LoadAsset<GameObject>("BasicBlock");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
             gameObjectChecker.AddComponent<GameObjectChecker>();
+            NotifcationCanvas = new GameObject("NotificationCanvas");
+            var notecanva = NotifcationCanvas.AddComponent<Canvas>();
+            NotifcationCanvas.AddComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            notecanva.renderMode = RenderMode.ScreenSpaceOverlay;
+            notecanva.sortingOrder = 9;
+            AddNotificationManager(NotifcationCanvas.transform);
+            AddTrapManager(NotifcationCanvas.transform);
             // ArrowTrackerGameObject = new GameObject("APArrowTracker");
             // ArrowTrackerGameObject.AddComponent<ArrowTrackerManager>();
             // DontDestroyOnLoad(ArrowTrackerGameObject);
+            DontDestroyOnLoad(NotifcationCanvas);
             DontDestroyOnLoad(gameObjectChecker);
             harmony = new Harmony(PluginGuid);
             harmony.PatchAll();
@@ -349,6 +401,28 @@ namespace NikoArchipelago
         private void DownloadUpdate()
         {
             Application.OpenURL(latestReleaseUrl);
+        }
+        
+        private void AddNotificationManager(Transform parent)
+        {
+            var noteObject = AssetBundle.LoadAsset<GameObject>("APItemNotification");
+            var noteUI = Instantiate(noteObject, parent, false);
+            noteUI.layer = LayerMask.NameToLayer("UI");
+            var apNotificationManager = noteUI.transform.Find("APNotificationManager").gameObject;
+            var notificationManager = apNotificationManager.AddComponent<NotificationManager>();
+            notificationManager.enabled = true;
+        }
+        
+        private void AddTrapManager(Transform parent)
+        {
+            var trapObject = AssetBundle.LoadAsset<GameObject>("APTimerTrap");
+            var trapUI = Instantiate(trapObject, parent, false);
+            trapUI.layer = LayerMask.NameToLayer("UI");
+            var apTrapManager = trapUI.transform.Find("APTrapManager").gameObject;
+            var trapManager = apTrapManager.AddComponent<TrapManager>();
+            trapManager.enabled = true;
+            trapUI.transform.position = new Vector3(102f, 1001f, 0);
+            trapUI.transform.localScale = new Vector3(0.85f, 0.85f, 1);
         }
         
         private IEnumerator CheckGameSaveManager()
@@ -464,6 +538,7 @@ namespace NikoArchipelago
                 if (!MyCharacterController.instance.blockMovementInput && !SaveEstablished)
                 {
                     SaveEstablished = true;
+                    Logger.LogInfo("\n"+GameObjectChecker.LogFlags);
                     Logger.LogMessage("Save file safety check finished!");
                 }
                 if (loggedSuccess) return;
@@ -688,12 +763,15 @@ namespace NikoArchipelago
 
         public void LogFlags()
         {
-            saveDataCoinFlag.ForEach(Logger.LogInfo);
-            saveDataCassetteFlag.ForEach(Logger.LogInfo);
-            saveDataFishFlag.ForEach(Logger.LogInfo);
-            saveDataMiscFlag.ForEach(Logger.LogInfo);
-            saveDataLetterFlag.ForEach(Logger.LogInfo);
-            saveDataGeneralFlag.ForEach(Logger.LogInfo);
+            GameObjectChecker.LogFlags.Clear();
+            saveDataCoinFlag.ForEach(flag => GameObjectChecker.LogFlags.AppendLine($"CoinFlag: {flag}"));
+            saveDataCassetteFlag.ForEach(flag => GameObjectChecker.LogFlags.AppendLine($"CassetteFlag: {flag}"));
+            saveDataFishFlag.ForEach(flag => GameObjectChecker.LogFlags.AppendLine($"FishFlag: {flag}"));
+            saveDataMiscFlag.ForEach(flag => GameObjectChecker.LogFlags.AppendLine($"MiscFlag: {flag}"));
+            saveDataLetterFlag.ForEach(flag => GameObjectChecker.LogFlags.AppendLine($"LetterFlag: {flag}"));
+            saveDataGeneralFlag.ForEach(flag => GameObjectChecker.LogFlags.AppendLine($"GeneralFlag: {flag}"));
+            Logger.LogInfo(GameObjectChecker.LogFlags);
+            GameObjectChecker.LogFlags.Clear();
         }
         
         public static void APSendNote(string note, float time, Sprite sprite = null)
@@ -749,7 +827,7 @@ namespace NikoArchipelago
         {
             if (flagList.Count > flagIndex)
             {
-                Logger.LogInfo($"New {flagType} Flag! '{flagList[flagIndex]}'");
+                GameObjectChecker.LogFlags.AppendLine($"New {flagType} Flag! '{flagList[flagIndex]}'");
                 flagIndex++;
             }
             else if (flagIndex > flagList.Count)
@@ -869,15 +947,15 @@ namespace NikoArchipelago
             
             if (GUI.Button(new Rect(16, 380, 100, 20), "Freeze Trap"))
             {
-                TrapManager.instance.ActivateTrap("Zero Gravity", 30f);
+                TrapManager.instance.ActivateTrap("Home", 30f);
             }
             if (GUI.Button(new Rect(16, 400, 100, 20), "Iron Boots Trap"))
             {
-                TrapManager.instance.ActivateTrap("Iron Boots", 10f);
+                TrapManager.instance.ActivateTrap("Wide", 30f);
             }
             if (GUI.Button(new Rect(16, 420, 100, 20), "My Turn! Trap"))
             {
-                TrapManager.instance.ActivateTrap("My Turn!", 30f);
+                TrapManager.instance.ActivateTrap("Jumping Jacks", 30f);
             }
             if (GUI.Button(new Rect(16, 450, 110, 20), "No Anti-Cheese"))
             {
@@ -909,6 +987,36 @@ namespace NikoArchipelago
                                         $"| ID: {keyValuePair.Value} | Active: {keyValuePair.Key.gameObject.activeInHierarchy}");
                     }
                 }
+                foreach (var keyValuePair in Bugsanity.bugIDs)
+                {
+                    if (keyValuePair.Key != null)
+                    {
+                        Logger.LogFatal($"Bugs: {keyValuePair.Key} - {keyValuePair.Value} | Flag: Bug{keyValuePair.Value} " +
+                                        $"| ID: {keyValuePair.Value} | Active: {keyValuePair.Key.gameObject.activeInHierarchy}");
+                    }
+                }
+            }
+            if (GUI.Button(new Rect(16, 500, 100, 20), "TestNote1"))
+            {
+                var notification = new APNotification(false, "TestItem", "YourMom", "THE MOOOOON", 
+                    ItemFlags.None, 5f, null, null, FishSprite);
+                NotificationManager.AddNewNotification.Enqueue(notification);
+            }
+            if (GUI.Button(new Rect(16, 520, 100, 20), "TestNote2"))
+            {
+                var notification = new APNotification(false, "Crazy Shiny Item", "nieli", "Hairball City - Handsome Frog (Chatsanity)", 
+                    ItemFlags.Advancement, 5f, null, null, CoinSprite);
+                NotificationManager.AddNewNotification.Enqueue(notification);
+            }
+            if (GUI.Button(new Rect(16, 540, 100, 20), "TestNote3"))
+            {
+                var notification = new APNotification(true, "Crazy Shiny Item", "nieli", "Hairball City - Handsome Frog (Chatsanity)", 
+                    ItemFlags.Trap, 5f, null, null, WhoopsTrapSprite, "Not Found");
+                NotificationManager.AddNewNotification.Enqueue(notification);
+            }
+            if (GUI.Button(new Rect(16, 560, 100, 20), "MsgLength"))
+            {
+                TrapManager.PhoneOn = true;
             }
         }
 

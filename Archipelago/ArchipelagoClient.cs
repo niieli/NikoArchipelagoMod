@@ -33,8 +33,9 @@ public class ArchipelagoClient
         HcCassetteAmount, TtCassetteAmount, SfcCassetteAmount, PpCassetteAmount, BathCassetteAmount, HqCassetteAmount, GgCassetteAmount;
 
     public static int SpeedBoostAmount;
-    public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary,
-        HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs, Keysanity, ElevatorRepaired;
+    public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary, TicketParty,
+        HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs, Keysanity, ElevatorRepaired, 
+        BonkPermitAcquired, BugnetAcquired, SodaRepairAcquired, ParasolRepairAcquired, SwimmingAcquired, TextboxAcquired, acRepairAcquired;
 
     private static int savedItemIndex;
     private static bool stopIt;
@@ -69,6 +70,7 @@ public class ArchipelagoClient
         _session.Items.ItemReceived += OnItemReceived;
         _session.Socket.ErrorReceived += OnSessionErrorReceived;
         _session.Socket.SocketClosed += OnSessionSocketClosed;
+        _session.Socket.PacketReceived += OnPacketReceived;
     }
 
     /// <summary>
@@ -170,6 +172,24 @@ public class ArchipelagoClient
         APItemSentNotification.SentItem(message);
     }
 
+    private void OnPacketReceived(ArchipelagoPacketBase archipelagoPacketBase)
+    {
+        if (archipelagoPacketBase is HintPrintJsonPacket hintPrintJsonPacket)
+        {
+            var hintStatus = hintPrintJsonPacket.Data.FirstOrDefault(p => (p.Type == JsonMessagePartType.HintStatus));
+            if (hintStatus != null)
+            {
+                APItemSentNotification.GetHintStatus(hintStatus.HintStatus);
+                Plugin.BepinLogger.LogInfo($"Hint Status Packet: {hintStatus.HintStatus}");
+            }
+        }
+        Plugin.BepinLogger.LogInfo($"Received packet: {archipelagoPacketBase.GetType().Name}");
+    }
+
+    private void SendPacket()
+    {
+        
+    }
 
     public void SendMessage(string message)
     {
@@ -388,30 +408,6 @@ public class ArchipelagoClient
                     ItemHandler.AddHqFlower(senderName, notify);
                     HqFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Flower");
                     break;
-                // case 598_145_444_000+46: // HC NPCs
-                //     ItemHandler.AddHcNPCs(senderName, notify);
-                //     HcNPCs = true;
-                //     break;
-                // case 598_145_444_000+47: // TT NPCs
-                //     ItemHandler.AddTtNPCs(senderName, notify);
-                //     TtNPCs = true;
-                //     break;
-                // case 598_145_444_000+48: // SFC NPCs
-                //     ItemHandler.AddSfcNPCs(senderName, notify);
-                //     SfcNPCs = true;
-                //     break;
-                // case 598_145_444_000+49: // PP NPCs
-                //     ItemHandler.AddPpNPCs(senderName, notify);
-                //     PpNPCs = true;
-                //     break;
-                // case 598_145_444_000+50: // Bath NPCs
-                //     ItemHandler.AddBathNPCs(senderName, notify);
-                //     BathNPCs = true;
-                //     break;
-                // case 598_145_444_000+51: // HQ NPCs
-                //     ItemHandler.AddHqNPCs(senderName, notify);
-                //     HqNPCs = true;
-                //     break;
                 case 598_145_444_000+52: // HCCassette
                     ItemHandler.AddHcCassette(senderName, notify);
                     HcCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Cassette");
@@ -458,6 +454,50 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000+74: // Gravity Trap
                     ItemHandler.AddGravityTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+75: // Home Trap
+                    ItemHandler.AddHomeTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+76: // W I D E Trap
+                    ItemHandler.AddWideTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+77: // Phone Trap
+                    ItemHandler.AddPhoneTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+78: // Tiny Trap
+                    ItemHandler.AddTinyTrap(senderName, notify);
+                    break;
+                case 598_145_444_000+80: // Party Invitation
+                    ItemHandler.AddPartyInvitation(item, notify);
+                    TicketParty = true;
+                    break;
+                case 598_145_444_000+101: // Bonk Helmet
+                    ItemHandler.AddSafetyHelmet(item, notify);
+                    BonkPermitAcquired = true;
+                    break;
+                case 598_145_444_000+102: // Bug net
+                    ItemHandler.AddBugNet(item, notify);
+                    BugnetAcquired = true;
+                    break;
+                case 598_145_444_000+103: // Soda Repair
+                    ItemHandler.AddSodaRepair(item, notify);
+                    SodaRepairAcquired = true;
+                    break;
+                case 598_145_444_000+104: // Parasol Repair
+                    ItemHandler.AddParasolRepair(item, notify);
+                    ParasolRepairAcquired = true;
+                    break;
+                case 598_145_444_000+105: // Swim Course
+                    ItemHandler.AddSwimCourse(item, notify);
+                    SwimmingAcquired = true;
+                    break;
+                case 598_145_444_000+106: // Textbox
+                    ItemHandler.AddTextboxItem(item, notify);
+                    TextboxAcquired = true;
+                    break;
+                case 598_145_444_000+107: // AC Repair
+                    ItemHandler.AddACRepair(item, notify);
+                    acRepairAcquired = true;
                     break;
             }
     }
@@ -596,6 +636,11 @@ public class ArchipelagoClient
                 matchedLocation = thougtLocation;
                 flagType = "Thought";
             }
+            else if (Locations.BugsanityLocations.TryGetValue(location, out var bugLocation))
+            {
+                matchedLocation = bugLocation;
+                flagType = "Bug";
+            }
             
             ServerData.CheckedLocations.Add(location);
             if (matchedLocation != null)
@@ -628,7 +673,7 @@ public class ArchipelagoClient
                 if (!worldsData[level].cassetteFlags.Contains(flag))
                     worldsData[level].cassetteFlags.Add(flag);
                 break;
-            case "SunflowerSeed" or "Flowerbed" or "Apple" or "Thought" or "ChatLevel":
+            case "SunflowerSeed" or "Flowerbed" or "Apple" or "Thought" or "ChatLevel" or "Bug":
                 if (!worldsData[level].miscFlags.Contains(flag))
                     worldsData[level].miscFlags.Add(flag);
                 break;

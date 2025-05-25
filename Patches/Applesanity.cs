@@ -18,7 +18,7 @@ public class Applesanity
         private static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
         private static readonly Dictionary<scrApple, Dictionary<string, GameObject>> InstanceItemsCache = new();
         
-        private static GameObject CreateItemPrefab(string prefabName, scrApple instance)
+        private static GameObject CreateItemPrefab(string prefabName, scrApple instance, float speed = 6f)
         {
             // Ensure per-instance cache exists
             if (!InstanceItemsCache.ContainsKey(instance))
@@ -66,7 +66,7 @@ public class Applesanity
             if (itemQuads.GetComponent<scrUIwobble>() == null)
             {
                 var wobble = itemQuads.AddComponent<scrUIwobble>();
-                wobble.wobbleSpeed = 6f;
+                wobble.wobbleSpeed = speed;
                 wobble.wobbleAngle = 5f;
             }
 
@@ -76,76 +76,15 @@ public class Applesanity
             return itemOverworld;
         }
 
-        private static GameObject CreateItemOverworld(string itemName, scrApple instance)
+        private static GameObject CreateItemOverworld(string itemName, scrApple instance, float speed = 6f)
         {
-            var prefabMap = new Dictionary<string, string>
-            {
-                { "apProg", "APProgressive" },
-                { "apUseful", "APUseful" },
-                { "apFiller", "APFiller" },
-                { "apTrap", "APTrap" },
-                { "apTrap1", "APTrap1" },
-                { "apTrap2", "APTrap2" },
-                { "coin", "Coin" },
-                { "cassette", "Cassette" },
-                { "key", "Key" },
-                { "contactList", "ContactList" },
-                { "apples", "Apples" },
-                { "snailMoney", "SnailMoney" },
-                { "letter", "Letter" },
-                { "bugs", "Bugs" },
-                { "hcfish", "HairballFish" },
-                { "ttfish", "TurbineFish" },
-                { "scffish", "SalmonFish" },
-                { "ppfish", "PoolFish" },
-                { "bathfish", "BathFish" },
-                { "hqfish", "TadpoleFish" },
-                { "hckey", "HairballKey" },
-                { "ttkey", "TurbineKey" },
-                { "scfkey", "SalmonKey" },
-                { "ppkey", "PoolKey" },
-                { "bathkey", "BathKey" },
-                { "hqkey", "TadpoleKey" },
-                { "hcflower", "HairballFlower" },
-                { "ttflower", "TurbineFlower" },
-                { "scfflower", "SalmonFlower" },
-                { "ppflower", "PoolFlower" },
-                { "bathflower", "BathFlower" },
-                { "hqflower", "TadpoleFlower" },
-                { "hccassette", "HairballCassette" },
-                { "ttcassette", "TurbineCassette" },
-                { "scfcassette", "SalmonCassette" },
-                { "ppcassette", "PoolCassette" },
-                { "bathcassette", "BathCassette" },
-                { "hqcassette", "TadpoleCassette" },
-                { "gardencassette", "GardenCassette" },
-                { "hcseed", "HairballSeed" },
-                { "scfseed", "SalmonSeed" },
-                { "bathseed", "BathSeed" },
-                { "superJump", "SuperJump" },
-                { "hairballCity", "HairballCity" },
-                { "turbineTown", "TurbineTown" },
-                { "salmonCreekForest", "SalmonCreekForest" },
-                { "publicPool", "PublicPool" },
-                { "bathhouse", "Bathhouse" },
-                { "tadpoleHQ", "TadpoleHQ" },
-                { "garysGarden", "GarysGarden" },
-                { "timepiece", "TimePieceHiT" },
-                { "yarn", "YarnHiT" },
-                { "yarn2", "Yarn2HiT" },
-                { "yarn3", "Yarn3HiT" },
-                { "yarn4", "Yarn4HiT" },
-                { "yarn5", "Yarn5HiT" }, 
-                { "speedboost", "SpeedBoost" },
-            };
-
-            if (!prefabMap.TryGetValue(itemName, out var prefabName))
+            if (!Assets.PrefabMapping.TryGetValue(itemName, out var prefabName))
             {
                 Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
 
-            return CreateItemPrefab(prefabName, instance);
+            return CreateItemPrefab(prefabName, instance, speed);
         }
 
         private static void PlaceModel(int index, int offset, scrApple __instance)
@@ -182,12 +121,12 @@ public class Applesanity
                             {
                                 var trapTextures = new[]
                                 {
-                                    CreateItemOverworld("apTrap", __instance),
-                                    CreateItemOverworld("apTrap1", __instance),
-                                    CreateItemOverworld("apTrap2", __instance)
+                                    "apTrap",
+                                    "apTrap1",
+                                    "apTrap2"
                                 };
                                 var randomIndex = Random.Range(0, trapTextures.Length);
-                                __instance.quad = trapTextures[randomIndex];
+                                __instance.quad = CreateItemOverworld(trapTextures[randomIndex], __instance, -20f);
                             }
                             else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags
                                      .HasFlag(ItemFlags.None))
@@ -247,7 +186,17 @@ public class Applesanity
                         "Salmon Creek Forest Seed" => CreateItemOverworld("scfseed", __instance),
                         "Bathhouse Seed" => CreateItemOverworld("bathseed", __instance),
                         "Speed Boost" => CreateItemOverworld("speedboost", __instance),
-                        _ => CreateItemOverworld("apProg", __instance)
+                        "Party Invitation" => CreateItemOverworld("partyTicket", __instance),
+                        "Safety Helmet" => CreateItemOverworld("bonkHelmet", __instance),
+                        "Bug Net" => CreateItemOverworld("bugNet", __instance),
+                        "Soda Repair" => CreateItemOverworld("sodaRepair", __instance),
+                        "Parasol Repair" => CreateItemOverworld("parasolRepair", __instance),
+                        "Swim Course" => CreateItemOverworld("swimCourse", __instance),
+                        "Textbox" => CreateItemOverworld("textbox", __instance),
+                        "AC Repair" => CreateItemOverworld("acRepair", __instance),
+                        _ when ArchipelagoClient.ScoutedLocations[index + offset].ItemName.EndsWith("Trap") => 
+                            CreateItemOverworld(Assets.RandomProgTrap(), __instance, -20f),
+                        _ => CreateItemOverworld("apProg", __instance),
                     };
             }
         }

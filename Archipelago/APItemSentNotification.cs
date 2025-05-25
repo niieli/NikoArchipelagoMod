@@ -1,128 +1,130 @@
-﻿using Archipelago.MultiClient.Net.Enums;
+﻿using System.Collections;
+using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
-using TMPro;
+using Archipelago.MultiClient.Net.MessageLog.Parts;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace NikoArchipelago.Archipelago;
 
-public class APItemSentNotification : MonoBehaviour
+public static class APItemSentNotification
 {
-    public static GameObject noteBox;
-    public static GameObject noteShadowBox;
-    public static Image noteBoxImage;
-    public static Image noteShadowBoxImage;
-    private static TextMeshProUGUI _noteText;
-    private static Image _noteSprite;
-    private static scrUIhider _uiHider;
-    private static scrUIhider _uiHiderShadow;
-    private static Color DefaultShadowNoteColor;
-
-    public void Start()
+    public static bool hintCommand;
+    private static string _hintStatus;
+    public static void GetHintStatus(HintStatus? hintStatus)
     {
-        noteBox = transform.Find("ItemSent")?.gameObject;
-        noteBoxImage = transform.Find("ItemSent")?.GetComponent<Image>();
-        noteShadowBox = transform.Find("ItemSentShadow")?.gameObject;
-        noteShadowBoxImage = transform.Find("ItemSentShadow")?.GetComponent<Image>();
-        _noteText = transform.Find("ItemSent/Text")?.GetComponent<TextMeshProUGUI>();
-        _noteSprite = transform.Find("ItemSent/Sprite")?.GetComponent<Image>();
-
-        if (noteBox == null) Plugin.BepinLogger.LogError("ItemSent is null");
-        if (_noteText == null) Plugin.BepinLogger.LogError("Text is null");
-        if (noteShadowBox == null) Plugin.BepinLogger.LogError("noteShadowBox is null!");
-        if (_noteSprite == null) Plugin.BepinLogger.LogError("Couldn't find Sprite!");
-        
-        DefaultShadowNoteColor = noteShadowBoxImage.color;
-        
-        _uiHider = transform.Find("ItemSent")?.gameObject.AddComponent<scrUIhider>();
-        _uiHiderShadow = transform.Find("ItemSentShadow")?.gameObject.AddComponent<scrUIhider>();
-        if (_uiHider != null)
-        {
-            var reference = GameObject.Find("UI/Apple Displayer").GetComponent<scrUIhider>();
-            _uiHider.useAlphaCurve = reference.useAlphaCurve;
-            _uiHider.alphaCurve = reference.alphaCurve;
-            _uiHider.animationCurve = reference.animationCurve;
-            _uiHider.duration = 0.75f;
-            _uiHider.hideOffset = new Vector3(0, -150, 0);
-            _uiHiderShadow.useAlphaCurve = _uiHider.useAlphaCurve;
-            _uiHiderShadow.alphaCurve = _uiHider.alphaCurve;
-            _uiHiderShadow.animationCurve = _uiHider.animationCurve;
-            _uiHiderShadow.duration = 0.75f;
-            _uiHiderShadow.hideOffset = new Vector3(0, -150, 0);
-        }
+        _hintStatus = hintStatus.ToString();
     }
-
-    private static void Clear()
-    {
-        if (_noteText != null)
-        {
-            _noteText.text = "";
-            _noteText.fontSize = 26;
-            _noteText.enableAutoSizing = true;
-        }
-        noteShadowBoxImage.color = DefaultShadowNoteColor;
-    }
-
     public static void SentItem(LogMessage message)
     {
-        Clear();
-        if (!ArchipelagoMenu.itemSent) return;
+        if (!ArchipelagoMenu.APNotifications) return;
+        
+        bool isHint = false;
+        string itemName = "";
+        string playerName = "";
+        string locationName = "";
+        ItemFlags itemFlags = ItemFlags.None;
+        float duration = 3f;
+        Color? backgroundColor = null;
+        Color? durationColor = null;
+        Sprite icon = null;
+        string hintState = null;
         switch (message)
         {
-            case HintItemSendLogMessage hintLogMessage:
-                var receiverHint = hintLogMessage.Receiver;
-                var networkItem = hintLogMessage.Item;
-                var found = hintLogMessage.IsFound;
-                noteBoxImage.color = new Color32(172, 174, 255, 255);
-                if (hintLogMessage.IsSenderTheActivePlayer)
+            case HintItemSendLogMessage hintItemSendLogMessage:
+            {
+                if ((message.ToString().Contains("(avoid)") || hintItemSendLogMessage.IsFound) && hintCommand)
                 {
-                    SetSprite(networkItem.ItemGame, networkItem.ItemName, networkItem.Flags);
-                    
-                    var obtained = found ? "Found" : "Not Found";
-                    _noteText.text = $"[Hint]: {receiverHint.Name}'s {networkItem.ItemName} is at {networkItem.LocationName}.\n({obtained})";
-                    _uiHider.Show(3.25f);
-                    _uiHiderShadow.Show(3.25f);
+                    Plugin.BepinLogger.LogInfo("Skipped Notification for Hint Item Send Log Message: " + message + "");
+                    return;
                 }
-                break;
-            case ItemSendLogMessage itemSendLogMessage: 
-                var receiver = itemSendLogMessage.Receiver.Name;
-                var itemName = itemSendLogMessage.Item.ItemName;
-                var itemGame = itemSendLogMessage.Item.ItemGame;
-                var itemFlag = itemSendLogMessage.Item.Flags;
-                var itemLocation = itemSendLogMessage.Item.LocationName;
-                noteBoxImage.color = Color.white;
-                if (itemSendLogMessage.IsSenderTheActivePlayer)
+                isHint = true;
+                if (message.ToString().Contains("(avoid)"))
+                    hintState = "Avoid";                    
+                else if (message.ToString().Contains("(unspecified)"))
+                    hintState = "Unspecified";
+                else if (message.ToString().Contains("(priority)"))
+                    hintState = "Priority";
+                else if (message.ToString().Contains("(no priority)"))
+                    hintState = "Non-Priority";
+                else hintState = hintItemSendLogMessage.IsFound ? "Found" : "Not Found";
+                //TODO: Change to PrintJsonPacket or wait till hintstatus is actually callable from a HINTMESSAGE?!?!
+                //If changed to PrintJsonPacket, remove the bool within ArchipelagoConsole.cs
+                
+                itemName = hintItemSendLogMessage.Item.ItemName;
+                playerName = hintItemSendLogMessage.Receiver.Name;
+                locationName = hintItemSendLogMessage.Item.LocationName;
+                itemFlags = hintItemSendLogMessage.Item.Flags;
+                // var hint = ArchipelagoClient._session.DataStorage.GetHints()[ArchipelagoClient._session.DataStorage.GetHints().Length];
+                // Plugin.BepinLogger.LogInfo($"Item Name: {hintItemSendLogMessage.Item.ItemName} " +
+                //                            $"| Receiving Player: {hintItemSendLogMessage.Receiver.Name} | " +
+                //                            $"Hint Name: {ArchipelagoClient._session.Items.GetItemName(hint.ItemId, 
+                //                                ArchipelagoClient._session.Players.GetPlayerInfo(hint.ReceivingPlayer).Game)} | " +
+                //                            $"Hint Receiving Player: {ArchipelagoClient._session.Players.GetPlayerInfo(hint.ReceivingPlayer).Name} | " +
+                //                            $"Hint Status: {hint.Status.ToString()}");
+                duration = 5f;
+                if (itemFlags.HasFlag(ItemFlags.Advancement))
                 {
-                    SetSprite(itemGame, itemName, itemFlag);
-
-                    _noteText.text = $"You sent {itemName} to {receiver}!\n({itemLocation})";
-                    if (itemFlag.HasFlag(ItemFlags.Advancement))
-                    {
-                        noteShadowBoxImage.color = new Color32(249, 138, 255, 255);
-                    } else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
-                    {
-                        noteShadowBoxImage.color = new Color32(116, 109, 255, 255);
-                    } else if (itemFlag.HasFlag(ItemFlags.Trap))
-                    {
-                        noteShadowBoxImage.color = new Color32(255, 192, 105, 255);
-                    } else if (itemFlag.HasFlag(ItemFlags.None))
-                    {
-                        noteShadowBoxImage.color = new Color32(152, 152, 152, 255);
-                    }
-                    _uiHider.Show(3.25f);
-                    _uiHiderShadow.Show(3.25f);
+                    backgroundColor = new Color(0.976f, 0.54f, 1, 0.72f);
+                } else if (itemFlags.HasFlag(ItemFlags.NeverExclude))
+                {
+                    backgroundColor = new Color(0.46f, 0.427f, 1, 0.72f);
+                } else if (itemFlags.HasFlag(ItemFlags.Trap))
+                {
+                    backgroundColor = new Color(1, 0.75f, 0.41f, 0.72f);
+                } else if (itemFlags.HasFlag(ItemFlags.None))
+                {
+                    backgroundColor = new Color(0.6f, 0.6f, 0.6f, 1);
                 }
+                else
+                {
+                    backgroundColor = new Color(1, 0.54f, 0.76f, 0.72f);
+                }
+                durationColor = new Color(0.486f, 0.60f, 1, 0.79f);
+                icon = SetSprite(hintItemSendLogMessage.Item.ItemGame, hintItemSendLogMessage.Item.ItemName, hintItemSendLogMessage.Item.Flags);
                 break;
+            }
+            case ItemSendLogMessage itemSendLogMessage:
+                itemName = itemSendLogMessage.Item.ItemName;
+                playerName = itemSendLogMessage.Receiver.Name;
+                locationName = itemSendLogMessage.Item.LocationName;
+                itemFlags = itemSendLogMessage.Item.Flags;
+                duration = 3.5f;
+                //if(Some Custom Data from SaveData)
+                if (itemFlags.HasFlag(ItemFlags.Advancement))
+                {
+                    backgroundColor = new Color(0.976f, 0.54f, 1, 0.72f);
+                } else if (itemFlags.HasFlag(ItemFlags.NeverExclude))
+                {
+                    backgroundColor = new Color(0.46f, 0.427f, 1, 0.72f);
+                } else if (itemFlags.HasFlag(ItemFlags.Trap))
+                {
+                    backgroundColor = new Color(1, 0.75f, 0.41f, 0.72f);
+                } else if (itemFlags.HasFlag(ItemFlags.None))
+                {
+                    backgroundColor = new Color(0.6f, 0.6f, 0.6f, 1);
+                }
+                else
+                {
+                    backgroundColor = new Color(1, 0.54f, 0.76f, 0.72f);
+                }
+                durationColor = new Color(0.486f, 0.60f, 1, 0.79f);
+                icon = SetSprite(itemSendLogMessage.Item.ItemGame, itemSendLogMessage.Item.ItemName, itemSendLogMessage.Item.Flags);
+                break;
+            default:
+                return;
         }
+        var notification = new APNotification(isHint, itemName, playerName, locationName, itemFlags, duration, backgroundColor, durationColor, icon, hintState);
+        NotificationManager.AddNewNotification.Enqueue(notification);
     }
 
-    private static void SetSprite(string itemGame, string itemName, ItemFlags itemFlag)
+    private static Sprite SetSprite(string itemGame, string itemName, ItemFlags itemFlag)
     {
+        Sprite sprite;
         switch (itemGame)
         {
             case "Here Comes Niko!":
-                _noteSprite.sprite = itemName switch
+                sprite = itemName switch
                 {
                     "Coin" => Plugin.CoinSprite,
                     "Cassette" => Plugin.CassetteSprite,
@@ -130,7 +132,7 @@ public class APItemSentNotification : MonoBehaviour
                     "Super Jump" => Plugin.SuperJumpSprite,
                     "Letter" => Plugin.LetterSprite,
                     "Snail Money" or "1000 Snail Dollar" => Plugin.SnailMoneySprite,
-                    "Bugs" or "10 Bugs" => Plugin.BugSprite,
+                    "Bugs" or "10 Bugs" => Plugin.BugsSprite,
                     "Apples" or "25 Apples" => Plugin.ApplesSprite,
                     "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite,
                     "Gary's Garden Ticket" => Plugin.GgSprite,
@@ -173,6 +175,19 @@ public class APItemSentNotification : MonoBehaviour
                     "Whoops! Trap" => Plugin.WhoopsTrapSprite,
                     "My Turn! Trap" => Plugin.MyTurnTrapSprite,
                     "Speed Boost" => Plugin.SpeedBoostSprite,
+                    "Home Trap" => Plugin.HomeTrapSprite,
+                    "W I D E Trap" => Plugin.WideTrapSprite,
+                    "Phone Trap" => Plugin.PhoneCallTrapSprite,
+                    "Tiny Trap" => Plugin.TinyTrapSprite,
+                    "Gravity Trap" => Plugin.GravityTrapSprite,
+                    "Party Invitation" => Plugin.PartyTicketSprite,
+                    "Safety Helmet" => Plugin.BonkHelmetSprite,
+                    "Bug Net" => Plugin.BugNetSprite,
+                    "Soda Repair" => Plugin.SodaRepairSprite,
+                    "Parasol Repair" => Plugin.ParasolRepairSprite,
+                    "Swim Course" => Plugin.SwimCourseSprite,
+                    "Textbox" => Plugin.TextboxItemSprite,
+                    "AC Repair" => Plugin.ACRepairSprite,
                     _ => Plugin.ApProgressionSprite
                 };
                 break;
@@ -181,51 +196,41 @@ public class APItemSentNotification : MonoBehaviour
                 switch (itemName)
                 {
                     case "Time Piece" when itemGame == "A Hat in Time":
-                        _noteSprite.sprite = Plugin.TimePieceSprite;
+                        sprite = Plugin.TimePieceSprite;
                         break;
                     case "Yarn" when itemGame == "A Hat in Time":
                     {
-                        // var yarnSprites = new[]
-                        // {
-                        //     _noteSprite.sprite = Plugin.YarnSprite,
-                        //     _noteSprite.sprite = Plugin.Yarn2Sprite,
-                        //     _noteSprite.sprite = Plugin.Yarn3Sprite,
-                        //     _noteSprite.sprite = Plugin.Yarn4Sprite,
-                        //     _noteSprite.sprite = Plugin.Yarn5Sprite
-                        // };
-                        // var randomIndex = Random.Range(0, yarnSprites.Length);
-                        // _noteSprite.sprite = yarnSprites[randomIndex];
-                        _noteSprite.sprite = Plugin.YarnSprite;
+                        sprite = Plugin.YarnSprite;
                         break;
                     }
                     default:
                     {
                         if (itemFlag.HasFlag(ItemFlags.Advancement))
                         {
-                            _noteSprite.sprite = Plugin.ApProgressionSprite;
+                            sprite = Plugin.ApProgressionSprite;
                         }
                         else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
                         {
-                            _noteSprite.sprite = Plugin.ApUsefulSprite;
+                            sprite = Plugin.ApUsefulSprite;
                         }
                         else if (itemFlag.HasFlag(ItemFlags.Trap))
                         {
                             var trapSprites = new[]
                             {
-                                _noteSprite.sprite = Plugin.ApTrapSprite,
-                                _noteSprite.sprite = Plugin.ApTrap2Sprite,
-                                _noteSprite.sprite = Plugin.ApTrap3Sprite
+                                Plugin.ApTrapSprite,
+                                Plugin.ApTrap2Sprite,
+                                Plugin.ApTrap3Sprite
                             };
                             var randomIndex = Random.Range(0, trapSprites.Length);
-                            _noteSprite.sprite = trapSprites[randomIndex];
+                            sprite = trapSprites[randomIndex];
                         }
                         else if (itemFlag.HasFlag(ItemFlags.None))
                         {
-                            _noteSprite.sprite = Plugin.ApFillerSprite;
+                            sprite = Plugin.ApFillerSprite;
                         }
                         else
                         {
-                            _noteSprite.sprite = Plugin.ApProgressionSprite;
+                            sprite = Plugin.ApProgressionSprite;
                         }
 
                         break;
@@ -235,5 +240,7 @@ public class APItemSentNotification : MonoBehaviour
                 break;
             }
         }
+
+        return sprite;
     }
 }

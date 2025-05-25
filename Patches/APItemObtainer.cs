@@ -59,16 +59,6 @@ public class APItemObtainer
                         case "Yarn" 
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            // var yarnTextures = new[]
-                            // {
-                            //     Plugin.YarnSprite.texture,
-                            //     Plugin.Yarn2Sprite.texture,
-                            //     Plugin.Yarn3Sprite.texture,
-                            //     Plugin.Yarn4Sprite.texture,
-                            //     Plugin.Yarn5Sprite.texture
-                            // };
-                            // var randomIndex = Random.Range(0, yarnTextures.Length);
-                            // __instance.txrCoin = yarnTextures[randomIndex];
                             __instance.txrCoin = Plugin.YarnSprite.texture;
                             break;
                         }
@@ -109,7 +99,7 @@ public class APItemObtainer
                         "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                         "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
                         "Apples" or "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                        "Bugs" or "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                        "Bugs" or "10 Bugs" => TextureAndDisplayer(Plugin.BugsSprite.texture, __instance, "Bugs"),
                         "Snail Money" or "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                         "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                         "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
@@ -152,6 +142,19 @@ public class APItemObtainer
                         "Iron Boots Trap" => TextureAndDisplayer(Plugin.IronBootsTrapSprite.texture, __instance),
                         "My Turn! Trap" => TextureAndDisplayer(Plugin.MyTurnTrapSprite.texture, __instance),
                         "Freeze Trap" => TextureAndDisplayer(Plugin.FreezeTrapSprite.texture, __instance),
+                        "Home Trap" => TextureAndDisplayer(Plugin.HomeTrapSprite.texture, __instance),
+                        "W I D E Trap" => TextureAndDisplayer(Plugin.WideTrapSprite.texture, __instance),
+                        "Phone Trap" => TextureAndDisplayer(Plugin.PhoneCallTrapSprite.texture, __instance),
+                        "Tiny Trap" => TextureAndDisplayer(Plugin.TinyTrapSprite.texture, __instance),
+                        "Gravity Trap" => TextureAndDisplayer(Plugin.GravityTrapSprite.texture, __instance),
+                        "Party Invitation" => TextureAndDisplayer(Plugin.PartyTicketSprite.texture, __instance),
+                        "Safety Helmet" => TextureAndDisplayer(Plugin.BonkHelmetSprite.texture, __instance),
+                        "Bug Net" => TextureAndDisplayer(Plugin.BugNetSprite.texture, __instance),
+                        "Soda Repair" => TextureAndDisplayer(Plugin.SodaRepairSprite.texture, __instance),
+                        "Parasol Repair" => TextureAndDisplayer(Plugin.ParasolRepairSprite.texture, __instance),
+                        "Swim Course" => TextureAndDisplayer(Plugin.SwimCourseSprite.texture, __instance),
+                        "Textbox" => TextureAndDisplayer(Plugin.TextboxItemSprite.texture, __instance),
+                        "AC Repair" => TextureAndDisplayer(Plugin.ACRepairSprite.texture, __instance),
                         _ => Plugin.APIconSprite.texture
                     };
             }
@@ -301,6 +304,7 @@ public class APItemObtainer
         private static void Skip(scrObtainCoin __instance)
         {
             var audio = __instance.GetComponent<AudioSource>();
+            __instance.transform.position = MyCharacterController.instance.transform.position;
             if (scrWorldSaveDataContainer.instance.coinFlags.Contains(__instance.myFlag)) return;
             audio.Play();
             scrWorldSaveDataContainer.instance.coinFlags.Add(__instance.myFlag);
@@ -409,7 +413,7 @@ public class APItemObtainer
                         "Cassette" => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
                         "Key" => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
                         "Apples" or "25 Apples" => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                        "Bugs" or "10 Bugs" => TextureAndDisplayer(Plugin.BugSprite.texture, __instance, "Bugs"),
+                        "Bugs" or "10 Bugs" => TextureAndDisplayer(Plugin.BugsSprite.texture, __instance, "Bugs"),
                         "Snail Money" or "1000 Snail Dollar" => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
                         "Contact List 1" or "Contact List 2" or "Progressive Contact List" => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
                         "Hairball City Ticket" => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
@@ -452,6 +456,19 @@ public class APItemObtainer
                         "Iron Boots Trap" => TextureAndDisplayer(Plugin.IronBootsTrapSprite.texture, __instance),
                         "My Turn! Trap" => TextureAndDisplayer(Plugin.MyTurnTrapSprite.texture, __instance),
                         "Freeze Trap" => TextureAndDisplayer(Plugin.FreezeTrapSprite.texture, __instance),
+                        "Home Trap" => TextureAndDisplayer(Plugin.HomeTrapSprite.texture, __instance),
+                        "W I D E Trap" => TextureAndDisplayer(Plugin.WideTrapSprite.texture, __instance),
+                        "Phone Trap" => TextureAndDisplayer(Plugin.PhoneCallTrapSprite.texture, __instance),
+                        "Tiny Trap" => TextureAndDisplayer(Plugin.TinyTrapSprite.texture, __instance),
+                        "Gravity Trap" => TextureAndDisplayer(Plugin.GravityTrapSprite.texture, __instance),
+                        "Party Invitation" => TextureAndDisplayer(Plugin.PartyTicketSprite.texture, __instance),
+                        "Safety Helmet" => TextureAndDisplayer(Plugin.BonkHelmetSprite.texture, __instance),
+                        "Bug Net" => TextureAndDisplayer(Plugin.BugNetSprite.texture, __instance),
+                        "Soda Repair" => TextureAndDisplayer(Plugin.SodaRepairSprite.texture, __instance),
+                        "Parasol Repair" => TextureAndDisplayer(Plugin.ParasolRepairSprite.texture, __instance),
+                        "Swim Course" => TextureAndDisplayer(Plugin.SwimCourseSprite.texture, __instance),
+                        "Textbox" => TextureAndDisplayer(Plugin.TextboxItemSprite.texture, __instance),
+                        "AC Repair" => TextureAndDisplayer(Plugin.ACRepairSprite.texture, __instance),
                         _ => Plugin.APIconSprite.texture
                     };
             }
@@ -560,6 +577,7 @@ public class APItemObtainer
         private static void Skip(scrObtainCassette __instance)
         {
             var audio = __instance.GetComponent<AudioSource>();
+            __instance.transform.position = MyCharacterController.instance.transform.position;
             if (scrWorldSaveDataContainer.instance.cassetteFlags.Contains(__instance.flag)) return;
             audio.Play();
             scrWorldSaveDataContainer.instance.cassetteFlags.Add(__instance.flag);

@@ -13,6 +13,7 @@ public class NpcController : MonoBehaviour
     public GameObject NpcGameObject;
     private string[] home, hairball, turbine, salmon, pool, bathhouse, tadpole, garden, niko;
     private static readonly HashSet<string> LoggedConversations = [];
+    public static bool IsGlobal = false;
     private void Start()
     {
         currentScene = SceneManager.GetActiveScene().name;
@@ -55,7 +56,7 @@ public class NpcController : MonoBehaviour
             "CHATbunkid3", "CHATbunkid4", "CHATbundad", "CHATbunmom", "CHATWoodisch", "CHATScarefrog", "CHATTreeMan", 
             "CHATMelissa", "CHATStijn", "CHATpepperMain", "CHATArcadeBone", "CHATArcade",
             "CHATSerschel", "CHATLouist", "CHATGabi", "CHATBlessley", "CHATFischer", "CHATDustan", "CHATTravis",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer"
         ];
         
         pool = ["CHATculley", "CHAThatkid", "CHATfrogFloaty", "CHATFizzy", "CHATtownGull2", "CHATtownGull3",
@@ -74,7 +75,7 @@ public class NpcController : MonoBehaviour
             "CHATmahjongFrog", "CHATVlogFrog", "CHATtbhMonty", "CHATArcadeBone", "CHATArcade", "CHATUnderhero",
             "CHATTravis", "CHATSerschel", "CHATLouist", "CHATGabi", 
             "CHATBlessley", "CHATFischer", "CHATDustan",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer", "CHATMoomy"
         ];
         
         tadpole = ["CHATmonthFrog", "CHATMelissaStijn", "CHATfrogSushi", "CHATricky", 
@@ -105,427 +106,444 @@ public class NpcController : MonoBehaviour
 
     private void Update()
     {
-        switch (currentScene)
+        if (!IsGlobal)
         {
-            case "Home":
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "FetchInfo" or "FetchInfoPost")
-                        conversation = "FetchInfo";
-                    if (conversation is "FetchPost" or "FetchQuest" or "FetchReward")
-                        conversation = "FetchQuest";
-                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
-                        conversation = "Kiosk";
-                    
-                    if (!niko.Contains(conversation))
-                        conversation = "CHAT"+conversation;
+            switch (currentScene)
+            {
+                case "Home":
+                    if (scrTextbox.instance.isOn)
+                    {
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "FetchInfo" or "FetchInfoPost")
+                            conversation = "FetchInfo";
+                        if (conversation is "FetchPost" or "FetchQuest" or "FetchReward")
+                            conversation = "FetchQuest";
+                        if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
+                            conversation = "Kiosk";
+                        
+                        if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
 
-                    if ((home.Contains(conversation) || niko.Contains(conversation)) 
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
-                    {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if ((home.Contains(conversation) || niko.Contains(conversation)) 
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!home.Contains(conversation) && !LoggedConversations.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                    else if (!home.Contains(conversation) && !LoggedConversations.Contains(conversation))
+                    break;
+                case "Hairball City":
+                    //NpcGameObject.SetActive(ArchipelagoClient.HcNPCs);
+                    if (scrTextbox.instance.isOn)
                     {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
+                            conversation = "ArcadeBone";
+                        if (conversation is "ArcadeQuest" or "ArcadePost")
+                            conversation = "Arcade";
+                        if (conversation is "SerschelSearch" or "SerschelHappy")
+                            conversation = "Serschel";
+                        if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
+                            conversation = "Louist";
+                        if (conversation is "MoomyQuest" or "MoomyReward" or "MoomyPost")
+                            conversation = "Moomy";
+                        if (conversation is "graffitiQuestMelissa" or "graffitiRewardMelissa")
+                            conversation = "Melissa";
+                        if (conversation is "graffitiQuestStijn" or "graffitiRewardStijn")
+                            conversation = "Stijn";
+                        if (conversation is "graffitiQuestNina" or "graffitiPostNina" 
+                            or "graffitiTooFewNina" or "graffitiRewardNina")
+                            conversation = "Nina";
+                        if (conversation is "GamerQuest" or "GamerReward" or "GamerPost")
+                            conversation = "Gamer";
+                        if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
+                            conversation = "Gabi";
+                        if (conversation is "BugQuest" or "BugPost" or "BugReward")
+                            conversation = "Blessley";
+                        if (conversation is "FischerAll" or "fish0" 
+                            or "fish1" or "fish2" or "fish3" or "fish4"
+                            or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
+                            conversation = "Fischer";
+                        if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
+                            conversation = "Dustan";
+                        if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
+                            conversation = "Travis";
+                        if (conversation is "hbcGunter" or "hbcGunter1" or "hbcGunter2"
+                            or "hbcGunter3" or "hbcGunterEnd" or "hbcGunterDown")
+                            conversation = "Gunter";
+                        if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
+                            conversation = "Kiosk";
+                        if (conversation is "CassetteCoinCantBuy" 
+                            or "CassetteCoinNotBought" 
+                            or "CassetteCoinBought")
+                            conversation = "Mitch";
+                        if (conversation is "CassetteCoinCantBuy2" 
+                            or "CassetteCoinNotBought2" 
+                            or "CassetteCoinBought2")
+                            conversation = "Mai";
+                        
+                        if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
+                        
+                        if ((hairball.Contains(conversation) || niko.Contains(conversation))
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!hairball.Contains(conversation) && niko.Contains(conversation) && !LoggedConversations.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                }
-                break;
-            case "Hairball City":
-                //NpcGameObject.SetActive(ArchipelagoClient.HcNPCs);
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
-                        conversation = "ArcadeBone";
-                    if (conversation is "ArcadeQuest" or "ArcadePost")
-                        conversation = "Arcade";
-                    if (conversation is "SerschelSearch" or "SerschelHappy")
-                        conversation = "Serschel";
-                    if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
-                        conversation = "Louist";
-                    if (conversation is "MoomyQuest" or "MoomyReward" or "MoomyPost")
-                        conversation = "Moomy";
-                    if (conversation is "graffitiQuestMelissa" or "graffitiRewardMelissa")
-                        conversation = "Melissa";
-                    if (conversation is "graffitiQuestStijn" or "graffitiRewardStijn")
-                        conversation = "Stijn";
-                    if (conversation is "graffitiQuestNina" or "graffitiPostNina" 
-                        or "graffitiTooFewNina" or "graffitiRewardNina")
-                        conversation = "Nina";
-                    if (conversation is "GamerQuest" or "GamerReward" or "GamerPost")
-                        conversation = "Gamer";
-                    if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
-                        conversation = "Gabi";
-                    if (conversation is "BugQuest" or "BugPost" or "BugReward")
-                        conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0" 
-                        or "fish1" or "fish2" or "fish3" or "fish4"
-                        or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
-                        conversation = "Fischer";
-                    if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
-                        conversation = "Dustan";
-                    if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
-                        conversation = "Travis";
-                    if (conversation is "hbcGunter" or "hbcGunter1" or "hbcGunter2"
-                        or "hbcGunter3" or "hbcGunterEnd" or "hbcGunterDown")
-                        conversation = "Gunter";
-                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
-                        conversation = "Kiosk";
-                    if (conversation is "CassetteCoinCantBuy" 
-                        or "CassetteCoinNotBought" 
-                        or "CassetteCoinBought")
-                        conversation = "Mitch";
-                    if (conversation is "CassetteCoinCantBuy2" 
-                        or "CassetteCoinNotBought2" 
-                        or "CassetteCoinBought2")
-                        conversation = "Mai";
-                    
-                    if (!niko.Contains(conversation))
-                        conversation = "CHAT"+conversation;
-                    
-                    if ((hairball.Contains(conversation)  || niko.Contains(conversation))
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                    break;
+                case "Trash Kingdom":
+                    //NpcGameObject.SetActive(ArchipelagoClient.TtNPCs);
+                    if (scrTextbox.instance.isOn)
                     {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
-                    }
-                    else if (!hairball.Contains(conversation) && niko.Contains(conversation) && !LoggedConversations.Contains(conversation))
-                    {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
-                    }
-                }
-                break;
-            case "Trash Kingdom":
-                //NpcGameObject.SetActive(ArchipelagoClient.TtNPCs);
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "dragonPost")
-                        conversation = "dragon";
-                    if (conversation is "pellyPost" or "pellyQuest" or "pellyReward")
-                        conversation = "Pelly";
-                    if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
-                        conversation = "ArcadeBone";
-                    if (conversation is "ArcadeQuest" or "ArcadePost")
-                        conversation = "Arcade";
-                    if (conversation is "SerschelSearch" or "SerschelHappy")
-                        conversation = "Serschel";
-                    if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
-                        conversation = "Louist";
-                    if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
-                        conversation = "Gabi";
-                    if (conversation is "BugQuest" or "BugPost" or "BugReward")
-                        conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0" 
-                        or "fish1" or "fish2" or "fish3" or "fish4"
-                        or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
-                        conversation = "Fischer";
-                    if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
-                        conversation = "Dustan";
-                    if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
-                        conversation = "Travis";
-                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
-                        conversation = "Kiosk";
-                    if (conversation is "CassetteCoinCantBuy" 
-                        or "CassetteCoinNotBought" 
-                        or "CassetteCoinBought")
-                        conversation = "Mitch";
-                    if (conversation is "CassetteCoinCantBuy2" 
-                        or "CassetteCoinNotBought2" 
-                        or "CassetteCoinBought2")
-                        conversation = "Mai";
-                    
-                    if (!niko.Contains(conversation))
-                        conversation = "CHAT"+conversation;
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "dragonPost")
+                            conversation = "dragon";
+                        if (conversation is "pellyPost" or "pellyQuest" or "pellyReward")
+                            conversation = "Pelly";
+                        if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
+                            conversation = "ArcadeBone";
+                        if (conversation is "ArcadeQuest" or "ArcadePost")
+                            conversation = "Arcade";
+                        if (conversation is "SerschelSearch" or "SerschelHappy")
+                            conversation = "Serschel";
+                        if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
+                            conversation = "Louist";
+                        if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
+                            conversation = "Gabi";
+                        if (conversation is "BugQuest" or "BugPost" or "BugReward")
+                            conversation = "Blessley";
+                        if (conversation is "FischerAll" or "fish0" 
+                            or "fish1" or "fish2" or "fish3" or "fish4"
+                            or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
+                            conversation = "Fischer";
+                        if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
+                            conversation = "Dustan";
+                        if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
+                            conversation = "Travis";
+                        if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
+                            conversation = "Kiosk";
+                        if (conversation is "CassetteCoinCantBuy" 
+                            or "CassetteCoinNotBought" 
+                            or "CassetteCoinBought")
+                            conversation = "Mitch";
+                        if (conversation is "CassetteCoinCantBuy2" 
+                            or "CassetteCoinNotBought2" 
+                            or "CassetteCoinBought2")
+                            conversation = "Mai";
+                        
+                        if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
 
-                    if ((turbine.Contains(conversation) || niko.Contains(conversation))
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
-                    {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if ((turbine.Contains(conversation) || niko.Contains(conversation))
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!turbine.Contains(conversation) && !niko.Contains(conversation) && !conversation.StartsWith("trapConv")  && !LoggedConversations.Contains(conversation))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                    else if (!turbine.Contains(conversation) && !niko.Contains(conversation) && !LoggedConversations.Contains(conversation))
+                    break;
+                case "Salmon Creek Forest":
+                    //NpcGameObject.SetActive(ArchipelagoClient.SfcNPCs);
+                    if (scrTextbox.instance.isOn)
                     {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
-                    }
-                }
-                break;
-            case "Salmon Creek Forest":
-                //NpcGameObject.SetActive(ArchipelagoClient.SfcNPCs);
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "melissaCarry" or "melissaPre")
-                        conversation = "Melissa";
-                    if (conversation is "stijnQuest" or "stijnPost")
-                        conversation = "Stijn";
-                    if (conversation is "tree1" or "tree2" or "tree3" 
-                        or "tree4" or "tree5" or "treeEnd" or "treePost")
-                        conversation = "TreeMan";
-                    if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
-                        conversation = "ArcadeBone";
-                    if (conversation is "ArcadeQuest" or "ArcadePost")
-                        conversation = "Arcade";
-                    if (conversation is "SerschelSearch" or "SerschelHappy")
-                        conversation = "Serschel";
-                    if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
-                        conversation = "Louist";
-                    if (conversation is "GamerQuest" or "GamerReward" or "GamerPost")
-                        conversation = "Gamer";
-                    if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
-                        conversation = "Gabi";
-                    if (conversation is "BugQuest" or "BugPost" or "BugReward")
-                        conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0" 
-                        or "fish1" or "fish2" or "fish3" or "fish4"
-                        or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
-                        conversation = "Fischer";
-                    if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
-                        conversation = "Dustan";
-                    if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
-                        conversation = "Travis";
-                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
-                        conversation = "Kiosk";
-                    if (conversation is "CassetteCoinCantBuy" 
-                        or "CassetteCoinNotBought" 
-                        or "CassetteCoinBought")
-                        conversation = "Mitch";
-                    if (conversation is "CassetteCoinCantBuy2" 
-                        or "CassetteCoinNotBought2" 
-                        or "CassetteCoinBought2")
-                        conversation = "Mai";
-                    
-                    if (!niko.Contains(conversation))
-                        conversation = "CHAT"+conversation;
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "melissaCarry" or "melissaPre")
+                            conversation = "Melissa";
+                        if (conversation is "stijnQuest" or "stijnPost")
+                            conversation = "Stijn";
+                        if (conversation is "tree1" or "tree2" or "tree3" 
+                            or "tree4" or "tree5" or "treeEnd" or "treePost")
+                            conversation = "TreeMan";
+                        if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
+                            conversation = "ArcadeBone";
+                        if (conversation is "ArcadeQuest" or "ArcadePost")
+                            conversation = "Arcade";
+                        if (conversation is "SerschelSearch" or "SerschelHappy")
+                            conversation = "Serschel";
+                        if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
+                            conversation = "Louist";
+                        if (conversation is "GamerQuest" or "GamerReward" or "GamerPost")
+                            conversation = "Gamer";
+                        if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
+                            conversation = "Gabi";
+                        if (conversation is "BugQuest" or "BugPost" or "BugReward")
+                            conversation = "Blessley";
+                        if (conversation is "FischerAll" or "fish0" 
+                            or "fish1" or "fish2" or "fish3" or "fish4"
+                            or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
+                            conversation = "Fischer";
+                        if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
+                            conversation = "Dustan";
+                        if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
+                            conversation = "Travis";
+                        if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
+                            conversation = "Kiosk";
+                        if (conversation is "CassetteCoinCantBuy" 
+                            or "CassetteCoinNotBought" 
+                            or "CassetteCoinBought")
+                            conversation = "Mitch";
+                        if (conversation is "CassetteCoinCantBuy2" 
+                            or "CassetteCoinNotBought2" 
+                            or "CassetteCoinBought2")
+                            conversation = "Mai";
+                        if (conversation is "MoomyQuest" or "MoomyReward" or "MoomyPost")
+                            conversation = "Moomy";
+                        
+                        if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
 
-                    if ((salmon.Contains(conversation) || niko.Contains(conversation))
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
-                    {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if ((salmon.Contains(conversation) || niko.Contains(conversation))
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!salmon.Contains(conversation) && !niko.Contains(conversation) && !conversation.StartsWith("trapConv")  && !LoggedConversations.Contains(conversation))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                    else if (!salmon.Contains(conversation) && !niko.Contains(conversation) && !LoggedConversations.Contains(conversation))
+                    break;
+                case "Public Pool":
+                    //NpcGameObject.SetActive(ArchipelagoClient.PpNPCs);
+                    if (scrTextbox.instance.isOn)
                     {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
-                    }
-                }
-                break;
-            case "Public Pool":
-                //NpcGameObject.SetActive(ArchipelagoClient.PpNPCs);
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "culleyPost")
-                        conversation = "culley";
-                    if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
-                        conversation = "ArcadeBone";
-                    if (conversation is "ArcadeQuest" or "ArcadePost")
-                        conversation = "Arcade";
-                    if (conversation is "detectiveQuest" or "detectivePost" or "detectiveReward")
-                        conversation = "Detective";
-                    if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
-                        conversation = "Gabi";
-                    if (conversation is "BugQuest" or "BugPost" or "BugReward")
-                        conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0" 
-                        or "fish1" or "fish2" or "fish3" or "fish4"
-                        or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
-                        conversation = "Fischer";
-                    if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
-                        conversation = "Travis";
-                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
-                        conversation = "Kiosk";
-                    if (conversation is "CassetteCoinCantBuy" 
-                        or "CassetteCoinNotBought" 
-                        or "CassetteCoinBought")
-                        conversation = "Mitch";
-                    if (conversation is "CassetteCoinCantBuy2" 
-                        or "CassetteCoinNotBought2" 
-                        or "CassetteCoinBought2")
-                        conversation = "Mai";
-                    
-                    if (!niko.Contains(conversation))
-                        conversation = "CHAT"+conversation;
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "culleyPost")
+                            conversation = "culley";
+                        if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
+                            conversation = "ArcadeBone";
+                        if (conversation is "ArcadeQuest" or "ArcadePost")
+                            conversation = "Arcade";
+                        if (conversation is "detectiveQuest" or "detectivePost" or "detectiveReward")
+                            conversation = "Detective";
+                        if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
+                            conversation = "Gabi";
+                        if (conversation is "BugQuest" or "BugPost" or "BugReward")
+                            conversation = "Blessley";
+                        if (conversation is "FischerAll" or "fish0" 
+                            or "fish1" or "fish2" or "fish3" or "fish4"
+                            or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
+                            conversation = "Fischer";
+                        if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
+                            conversation = "Travis";
+                        if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
+                            conversation = "Kiosk";
+                        if (conversation is "CassetteCoinCantBuy" 
+                            or "CassetteCoinNotBought" 
+                            or "CassetteCoinBought")
+                            conversation = "Mitch";
+                        if (conversation is "CassetteCoinCantBuy2" 
+                            or "CassetteCoinNotBought2" 
+                            or "CassetteCoinBought2")
+                            conversation = "Mai";
+                        
+                        if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
 
-                    if ((pool.Contains(conversation) || niko.Contains(conversation))
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
-                    {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if ((pool.Contains(conversation) || niko.Contains(conversation))
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!pool.Contains(conversation) && !niko.Contains(conversation) && !conversation.StartsWith("trapConv")  && !LoggedConversations.Contains(conversation))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                    else if (!pool.Contains(conversation) && !niko.Contains(conversation) && !LoggedConversations.Contains(conversation))
+                    break;
+                case "The Bathhouse":
+                    //NpcGameObject.SetActive(ArchipelagoClient.BathNPCs);
+                    if (scrTextbox.instance.isOn)
                     {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
-                    }
-                }
-                break;
-            case "The Bathhouse":
-                //NpcGameObject.SetActive(ArchipelagoClient.BathNPCs);
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "graffitiQuestMelissa" or "graffitiRewardMelissa")
-                        conversation = "Melissa";
-                    if (conversation is "graffitiQuestStijn" or "graffitiRewardStijn")
-                        conversation = "Stijn";
-                    if (conversation is "graffitiQuestNina" or "graffitiPostNina" 
-                        or "graffitiTooFewNina" or "graffitiRewardNina")
-                        conversation = "Nina";
-                    if (conversation is "snowFrogPost")
-                        conversation = "snowFrog";
-                    if (conversation is "pennyQuest" or "pennyPost" or "pennyPre")
-                        conversation = "penny";
-                    if (conversation is "paulQuest" or "paulPost" or "paulPre" 
-                        or "paulPanic" or "paulReward")
-                        conversation = "paul";
-                    if (conversation is "tippyQuest" or "tippyPost")
-                        conversation = "tippy";
-                    if (conversation is "poppyQuest" or "poppyPost")
-                        conversation = "poppy";
-                    if (conversation is "gashadokuroPost" or "gashadokuroQuest")
-                        conversation = "gashadokuro";
-                    if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
-                        conversation = "ArcadeBone";
-                    if (conversation is "ArcadeQuest" or "ArcadePost")
-                        conversation = "Arcade";
-                    if (conversation is "GamerQuest" or "GamerReward" or "GamerPost")
-                        conversation = "Gamer";
-                    if (conversation is "SerschelSearch" or "SerschelHappy")
-                        conversation = "Serschel";
-                    if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
-                        conversation = "Louist";
-                    if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
-                        conversation = "Gabi";
-                    if (conversation is "BugQuest" or "BugPost" or "BugReward")
-                        conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0" 
-                        or "fish1" or "fish2" or "fish3" or "fish4"
-                        or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
-                        conversation = "Fischer";
-                    if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
-                        conversation = "Dustan";
-                    if (conversation is "tbhTravis" or "tbhTravisWin" or "tbhTravisWon")
-                        conversation = "Travis";
-                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
-                        conversation = "Kiosk";
-                    if (conversation is "CassetteCoinCantBuy" 
-                        or "CassetteCoinNotBought" 
-                        or "CassetteCoinBought")
-                        conversation = "Mitch";
-                    if (conversation is "CassetteCoinCantBuy2" 
-                        or "CassetteCoinNotBought2" 
-                        or "CassetteCoinBought2")
-                        conversation = "Mai";
-                    
-                    if (!niko.Contains(conversation))
-                        conversation = "CHAT"+conversation;
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "graffitiQuestMelissa" or "graffitiRewardMelissa")
+                            conversation = "Melissa";
+                        if (conversation is "graffitiQuestStijn" or "graffitiRewardStijn")
+                            conversation = "Stijn";
+                        if (conversation is "graffitiQuestNina" or "graffitiPostNina" 
+                            or "graffitiTooFewNina" or "graffitiRewardNina")
+                            conversation = "Nina";
+                        if (conversation is "snowFrogPost")
+                            conversation = "snowFrog";
+                        if (conversation is "pennyQuest" or "pennyPost" or "pennyPre")
+                            conversation = "penny";
+                        if (conversation is "paulQuest" or "paulPost" or "paulPre" 
+                            or "paulPanic" or "paulReward")
+                            conversation = "paul";
+                        if (conversation is "tippyQuest" or "tippyPost")
+                            conversation = "tippy";
+                        if (conversation is "poppyQuest" or "poppyPost")
+                            conversation = "poppy";
+                        if (conversation is "gashadokuroPost" or "gashadokuroQuest")
+                            conversation = "gashadokuro";
+                        if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
+                            conversation = "ArcadeBone";
+                        if (conversation is "ArcadeQuest" or "ArcadePost")
+                            conversation = "Arcade";
+                        if (conversation is "GamerQuest" or "GamerReward" or "GamerPost")
+                            conversation = "Gamer";
+                        if (conversation is "SerschelSearch" or "SerschelHappy")
+                            conversation = "Serschel";
+                        if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
+                            conversation = "Louist";
+                        if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
+                            conversation = "Gabi";
+                        if (conversation is "BugQuest" or "BugPost" or "BugReward")
+                            conversation = "Blessley";
+                        if (conversation is "FischerAll" or "fish0" 
+                            or "fish1" or "fish2" or "fish3" or "fish4"
+                            or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
+                            conversation = "Fischer";
+                        if (conversation is "DustanPost" or "DustanReward" or "DustanFirstTime")
+                            conversation = "Dustan";
+                        if (conversation is "tbhTravis" or "tbhTravisWin" or "tbhTravisWon")
+                            conversation = "Travis";
+                        if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
+                            conversation = "Kiosk";
+                        if (conversation is "CassetteCoinCantBuy" 
+                            or "CassetteCoinNotBought" 
+                            or "CassetteCoinBought")
+                            conversation = "Mitch";
+                        if (conversation is "CassetteCoinCantBuy2" 
+                            or "CassetteCoinNotBought2" 
+                            or "CassetteCoinBought2")
+                            conversation = "Mai";
+                        if (conversation is "MoomyQuest" or "MoomyReward" or "MoomyPost")
+                            conversation = "Moomy";
+                        
+                        if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
 
-                    if ((bathhouse.Contains(conversation) || niko.Contains(conversation))
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
-                    {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if ((bathhouse.Contains(conversation) || niko.Contains(conversation))
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!bathhouse.Contains(conversation) && !niko.Contains(conversation) && !conversation.StartsWith("trapConv")  && !LoggedConversations.Contains(conversation))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                    else if (!bathhouse.Contains(conversation) && !niko.Contains(conversation) && !LoggedConversations.Contains(conversation))
+                    break;
+                case "Tadpole inc":
+                    //NpcGameObject.SetActive(ArchipelagoClient.HqNPCs);
+                    if (scrTextbox.instance.isOn)
                     {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
-                    }
-                }
-                break;
-            case "Tadpole inc":
-                //NpcGameObject.SetActive(ArchipelagoClient.HqNPCs);
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "monthFrogPre" or "monthFrogPost")
-                        conversation = "monthFrog";
-                    if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
-                        conversation = "ArcadeBone";
-                    if (conversation is "ArcadeQuest" or "ArcadePost")
-                        conversation = "Arcade";
-                    if (conversation is "king1" or "king2" or "kingPost")
-                        conversation = "King";
-                    if (conversation is "SerschelSearch" or "SerschelHappy")
-                        conversation = "Serschel";
-                    if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
-                        conversation = "Louist";
-                    if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
-                        conversation = "Gabi";
-                    if (conversation is "BugQuest" or "BugPost" or "BugReward")
-                        conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0" 
-                        or "fish1" or "fish2" or "fish3" or "fish4"
-                        or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
-                        conversation = "Fischer";
-                    if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
-                        conversation = "Travis";
-                    if (conversation is "masterNotEnough" or "masterBuy" or "masterBought")
-                        conversation = "Master";
-                    if (conversation is "elevatorNoMoney" or "elevatorBuy" or "elevatorBought")
-                        conversation = "Elevator";
-                    if (conversation is "CassetteCoinCantBuy" 
-                        or "CassetteCoinNotBought" 
-                        or "CassetteCoinBought")
-                        conversation = "Mitch";
-                    if (conversation is "CassetteCoinCantBuy2" 
-                        or "CassetteCoinNotBought2" 
-                        or "CassetteCoinBought2")
-                        conversation = "Mai";
-                    if (conversation is "VlogFrogMonth")
-                        conversation = "VlogFrog";
-                    
-                    if (!niko.Contains(conversation))
-                        conversation = "CHAT"+conversation;
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "monthFrogPre" or "monthFrogPost")
+                            conversation = "monthFrog";
+                        if (conversation is "ArcadeBoneQuest" or "ArcadeBonePost")
+                            conversation = "ArcadeBone";
+                        if (conversation is "ArcadeQuest" or "ArcadePost")
+                            conversation = "Arcade";
+                        if (conversation is "king1" or "king2" or "kingPost")
+                            conversation = "King";
+                        if (conversation is "SerschelSearch" or "SerschelHappy")
+                            conversation = "Serschel";
+                        if (conversation is "LouistLost" or "LouistReward" or "LouistPost")
+                            conversation = "Louist";
+                        if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward")
+                            conversation = "Gabi";
+                        if (conversation is "BugQuest" or "BugPost" or "BugReward")
+                            conversation = "Blessley";
+                        if (conversation is "FischerAll" or "fish0" 
+                            or "fish1" or "fish2" or "fish3" or "fish4"
+                            or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
+                            conversation = "Fischer";
+                        if (conversation is "hbcTravis" or "hbcTravisWin" or "hbcTravisWon")
+                            conversation = "Travis";
+                        if (conversation is "masterNotEnough" or "masterBuy" or "masterBought")
+                            conversation = "Master";
+                        if (conversation is "elevatorNoMoney" or "elevatorBuy" or "elevatorBought")
+                            conversation = "Elevator";
+                        if (conversation is "CassetteCoinCantBuy" 
+                            or "CassetteCoinNotBought" 
+                            or "CassetteCoinBought")
+                            conversation = "Mitch";
+                        if (conversation is "CassetteCoinCantBuy2" 
+                            or "CassetteCoinNotBought2" 
+                            or "CassetteCoinBought2")
+                            conversation = "Mai";
+                        if (conversation is "VlogFrogMonth")
+                            conversation = "VlogFrog";
+                        
+                        if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
 
-                    if ((tadpole.Contains(conversation) || niko.Contains(conversation))
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
-                    {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if ((tadpole.Contains(conversation) || niko.Contains(conversation))
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!tadpole.Contains(conversation) && !niko.Contains(conversation) && !conversation.StartsWith("trapConv")  && !LoggedConversations.Contains(conversation))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                    else if (!tadpole.Contains(conversation) && !niko.Contains(conversation) && !LoggedConversations.Contains(conversation))
+                    break;
+                case "GarysGarden":
+                    if (scrTextbox.instance.isOn)
                     {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
-                    }
-                }
-                break;
-            case "GarysGarden":
-                if (scrTextbox.instance.isOn)
-                {
-                    var conversation = scrTextbox.instance.conversation;
-                    if (conversation is "CassetteCoinCantBuy" 
-                        or "CassetteCoinNotBought" 
-                        or "CassetteCoinBought")
-                        conversation = "Mitch";
-                    if (conversation is "CassetteCoinCantBuy2" 
-                        or "CassetteCoinNotBought2" 
-                        or "CassetteCoinBought2")
-                        conversation = "Mai";
-                    if (conversation is "Gary0" or "Gary1" 
-                        or "Gary2" or "Gary3" or "Gary4" 
-                        or "Gary5" or "Gary6" or "Gary7" 
-                        or "Gary8" or "Gary9")
-                        conversation = "Gary";
-                    if (conversation is "Gary10")
-                        conversation = "Gunter";
-                    
-                    conversation = "CHAT"+conversation;
+                        var conversation = scrTextbox.instance.conversation;
+                        if (conversation is "CassetteCoinCantBuy" 
+                            or "CassetteCoinNotBought" 
+                            or "CassetteCoinBought")
+                            conversation = "Mitch";
+                        if (conversation is "CassetteCoinCantBuy2" 
+                            or "CassetteCoinNotBought2" 
+                            or "CassetteCoinBought2")
+                            conversation = "Mai";
+                        if (conversation is "Gary0" or "Gary1" 
+                            or "Gary2" or "Gary3" or "Gary4" 
+                            or "Gary5" or "Gary6" or "Gary7" 
+                            or "Gary8" or "Gary9")
+                            conversation = "Gary";
+                        if (conversation is "Gary10")
+                            conversation = "Gunter";
+                        
+                        if (!conversation.StartsWith("trapConv"))
+                            conversation = "CHAT"+conversation;
 
-                    if (garden.Contains(conversation)
-                        && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
-                    {
-                        scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if (garden.Contains(conversation)
+                            && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        }
+                        else if (!garden.Contains(conversation) && !LoggedConversations.Contains(conversation) && !conversation.StartsWith("trapConv"))
+                        {
+                            Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
+                            LoggedConversations.Add(conversation);
+                        }
                     }
-                    else if (!garden.Contains(conversation) && !LoggedConversations.Contains(conversation))
-                    {
-                        Plugin.BepinLogger.LogInfo($"Conversation not found: {conversation}");
-                        LoggedConversations.Add(conversation);
-                    }
-                }
-                break;
+                    break;
+            }
+        }
+        else
+        {
+            //TODO: Global Chatsanity
+            if (!scrTextbox.instance.isOn) return;
+            var conversation = scrTextbox.instance.conversation;
+                
+            if (!conversation.StartsWith("trapConv"))
+                conversation = "CHAT"+conversation;
         }
     }
 }

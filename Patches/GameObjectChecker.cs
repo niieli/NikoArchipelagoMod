@@ -2,18 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
+using NikoArchipelago.Trackers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace NikoArchipelago.Patches;
@@ -23,7 +21,7 @@ public class GameObjectChecker : MonoBehaviour
     private static GameObject _garyGhost, _garyGhostHome;
     private static bool _foundGhost;
     private static bool _foundCamera;
-    public static bool FirstMeeting, NoticeStillUp;
+    public static bool FirstMeeting, NoticeStillUp, ChatsanityOn;
     private static bool _checkedGhost;
     private static bool _spawned;
     private static bool _foundNpcs;
@@ -38,6 +36,7 @@ public class GameObjectChecker : MonoBehaviour
     public static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
     public static readonly StringBuilder LogBatch = new();
     public static readonly StringBuilder LogPastItemsBatch = new();
+    public static readonly StringBuilder LogFlags = new();
     public static string PreviousScene = "";
 
     private static List<string> _hatPlayerNames = [];
@@ -62,12 +61,13 @@ public class GameObjectChecker : MonoBehaviour
                 _sentNote15 = _sentNote16 = _sentNote17 = _sentNote18 = _sentNote19 = oncePerScene = false;
         Applesanity.ApplesanityStart.appleIDs.Clear();
         Applesanity.ApplesanityStart.nextAppleID = 1;
+        Bugsanity.bugIDs.Clear();
+        Bugsanity.nextBugID = 1;
         //LocationCheck();
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
         TitleScreenObject();
         InstantiateAPMenu();
-        APItemSent();
         TrackerKiosk();
         TrackerTicket();
         TrackerKey();
@@ -80,9 +80,11 @@ public class GameObjectChecker : MonoBehaviour
         Statistics();
         StatisticsWhiteboard();
         MovementSpeed.MovementSpeedMultiplier();
-        TrapManager();
         FixApplePlacement();
         HatPlayers();
+        AddSwimCourse();
+        AddTextboxPermit();
+        //Instantiate(Plugin.BasicBlock, GameObject.Find("Quests").transform);
         if (ArchipelagoClient.IsValidScene())
         {
             cursor = GameObject.Find("UI/Menu system/Cursor").GetComponent<scrCursor>();
@@ -122,6 +124,25 @@ public class GameObjectChecker : MonoBehaviour
                                         + $"Object InstanceID: {go.GetInstanceID()} |");
             count++;
         }
+    }
+
+    private static void AddSwimCourse()
+    {
+        if (ArchipelagoData.slotData == null) return;
+        if (!ArchipelagoData.slotData.ContainsKey("swimming")) return;
+        if (int.Parse(ArchipelagoData.slotData["swimming"].ToString()) == 0) return;
+        if (!ArchipelagoClient.IsValidScene()) return;
+        MyCharacterController.instance.gameObject.AddComponent<SwimCourse>();
+    }
+    
+    private static void AddTextboxPermit()
+    {
+        if (ArchipelagoData.slotData == null) return;
+        if (!ArchipelagoData.slotData.ContainsKey("textbox")) return;
+        if (int.Parse(ArchipelagoData.slotData["textbox"].ToString()) == 0) return;
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var obj = new GameObject("TextboxPermit");
+        obj.AddComponent<TextboxPermit>();
     }
     
     private static void MitchAndMaiObject()
@@ -235,32 +256,6 @@ public class GameObjectChecker : MonoBehaviour
         menu.enabled = true;
     }
     
-    private static void APItemSent()
-    {
-        if (!ArchipelagoClient.IsValidScene()) return;
-        var apItemSentUI = Plugin.AssetBundle.LoadAsset<GameObject>("APItemSent");
-        var itemSentPrefab = Instantiate(apItemSentUI, GameObject.Find("UI").transform, false);
-        if (itemSentPrefab == null)
-        {
-            Plugin.BepinLogger.LogError("Failed to instantiate apItemSentUI prefab.");
-            return;
-        }
-        itemSentPrefab.layer = LayerMask.NameToLayer("UI");
-        var manager = itemSentPrefab.transform.Find("APItemSentManager")?.gameObject;
-        if (manager == null)
-        {
-            Plugin.BepinLogger.LogError("APItemSentManager not found in the prefab.");
-            return;
-        }
-        var sentNotification = manager.AddComponent<APItemSentNotification>();
-        if (sentNotification == null)
-        {
-            Plugin.BepinLogger.LogError("Failed to add APItemSentNotification component to APItemSentManager.");
-            return;
-        }
-        sentNotification.enabled = true;
-    }
-    
     private static void TrackerTicket()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
@@ -341,34 +336,6 @@ public class GameObjectChecker : MonoBehaviour
         tracker.enabled = true;
     }
     
-    private static void TrapManager()
-    {
-        if (!ArchipelagoClient.IsValidScene()) return;
-        var trapObject = Plugin.AssetBundle.LoadAsset<GameObject>("APTimerTrap");
-        var trapUI = Instantiate(trapObject, GameObject.Find("UI").transform, false);
-        if (trapUI == null)
-        {
-            Plugin.BepinLogger.LogError("Failed to add TrapManager component to APTimerTrap.");
-            return;
-        }
-        trapUI.layer = LayerMask.NameToLayer("UI");
-        trapUI.transform.SetSiblingIndex(23);
-        var apTrapManager = trapUI.transform.Find("APTrapManager")?.gameObject;
-        if (apTrapManager == null)
-        {
-            Plugin.BepinLogger.LogError("Failed to add TrapManager component to APTrapManager.");
-            return;
-        }
-        var trapManager = apTrapManager.AddComponent<TrapManager>();
-        if (trapManager == null)
-        {
-            Plugin.BepinLogger.LogError("Failed to add TrapManager component to APTrapManager.");
-        }
-
-        apTrapManager.transform.Find("TrapPanel").localPosition = new Vector3(37f, -91f, 0f);
-        //apTrapManager.transform.Find("TrapPanel").localPosition = new Vector3(88f, -91f, 0f); //TODO: Fix UiHider :)
-    }
-    
     private static void Statistics()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
@@ -444,6 +411,7 @@ public class GameObjectChecker : MonoBehaviour
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("chatsanity")) return;
         if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 0) return;
+        if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 2) Patches.NpcController.IsGlobal = true;
         if (!ArchipelagoClient.IsValidScene()) return;
         var apTrackerUI = new GameObject("NPCController");
         var tracker = apTrackerUI.AddComponent<NpcController>();
@@ -453,6 +421,7 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
         tracker.enabled = true;
+        ChatsanityOn = true;
     }
 
     private static void APArrowTracker()
@@ -811,6 +780,7 @@ public class GameObjectChecker : MonoBehaviour
         NoticeStillUp = true;
         Cursor.lockState = CursorLockMode.None;
         cursor.Visible = true;
+        cursor.transform.SetSiblingIndex(99);
     }
     
     private static void SpawnWarningNotice()
@@ -833,8 +803,11 @@ public class GameObjectChecker : MonoBehaviour
 
     private static void DestroyNotice()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        cursor.Visible = false;
+        if (MenuHelpers.Menus.Count == 0)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            cursor.Visible = false;
+        }
         cursor.transform.SetParent(GameObject.Find("UI/Menu system").transform);
         NoticeStillUp = false;
         dissmised = true;
@@ -863,7 +836,8 @@ public class GameObjectChecker : MonoBehaviour
             yield return null;
             waitFor -= Time.deltaTime;
         }
-        Plugin.BepinLogger.LogInfo("Model logs:\n"+LogBatch);
+        if(LogBatch.Length > 0)
+            Plugin.BepinLogger.LogInfo("Model logs:\n"+LogBatch);
         PreviousScene = "";
     }
 
@@ -871,6 +845,7 @@ public class GameObjectChecker : MonoBehaviour
     {
         if (PreviousScene == "")
             PreviousScene = SceneManager.GetActiveScene().name;
+        if (!ArchipelagoClient.IsValidScene()) return;
         HatKidEasterEgg();
         if (Plugin.ChristmasEvent)
         {
@@ -889,6 +864,12 @@ public class GameObjectChecker : MonoBehaviour
         {
             scrNotificationDisplayer.instance.avatar.enabled = false;
             scrNotificationDisplayer.instance.avatar.enabled = true;
+        }
+
+        if (!dissmised && cursor.transform.parent.name == "UI")
+        {
+            cursor.Visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
         if (!oncePerScene && !dissmised)
         {
