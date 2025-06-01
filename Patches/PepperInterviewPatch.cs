@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using HarmonyLib;
+using NikoArchipelago.Archipelago;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,10 @@ public class PepperInterviewPatch
     {
         static void Postfix(scrPepperInterview __instance)
         {
+            if (GameObjectChecker.ChatsanityOn && ArchipelagoClient.TicketParty)
+            {
+                __instance.StartCoroutine(PartyTicket(__instance));
+            }
             if (SceneManager.GetActiveScene().name == "Home" && scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(__instance.flag))
             {
                 // Make Fetch Quest & Kiosk Check Unmissable
@@ -45,6 +50,29 @@ public class PepperInterviewPatch
             yield return new WaitUntil(() => GameObject.Find("Working") || Plugin.NoAntiCheese);
             instance.interview.SetActive(true);
             Plugin.BepinLogger.LogInfo("Elevator has been repaired! Goal is now accessible");
+        }
+
+        private static IEnumerator PartyTicket(scrPepperInterview instance)
+        {
+            // Party GameObject
+            instance.postInterview.SetActive(true);
+            instance.postInterview.transform.Find("Pepper Greeting Trigger").gameObject.SetActive(false);
+            instance.postInterview.transform.Find("Everyone").gameObject.SetActive(false);
+            instance.postInterview.transform.Find("Everyone Trigger").gameObject.SetActive(false);
+            instance.postInterview.transform.Find("Everyone cam").gameObject.SetActive(false);
+            instance.postInterview.transform.Find("Credits").gameObject.SetActive(false);
+            instance.postInterview.transform.Find("Radio").gameObject.SetActive(false);
+            instance.postInterview.transform.Find("Ending Screen").gameObject.SetActive(false);
+            instance.postInterview.transform.Find("Geusts/Kiosk").gameObject.SetActive(false);
+            
+            yield return new WaitUntil(() => scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(instance.flag));
+            instance.postInterview.transform.Find("Pepper Greeting Trigger").gameObject.SetActive(true);
+            instance.postInterview.transform.Find("Everyone").gameObject.SetActive(true);
+            instance.postInterview.transform.Find("Everyone Trigger").gameObject.SetActive(true);
+            instance.postInterview.transform.Find("Everyone cam").gameObject.SetActive(true);
+            instance.postInterview.transform.Find("Credits").gameObject.SetActive(true);
+            instance.postInterview.transform.Find("Radio").gameObject.SetActive(true);
+            instance.postInterview.transform.Find("Ending Screen").gameObject.SetActive(true);
         }
     }
 }

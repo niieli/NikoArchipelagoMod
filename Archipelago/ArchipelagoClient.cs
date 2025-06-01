@@ -5,11 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using Archipelago.MultiClient.Net.Converters;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using Newtonsoft.Json.Linq;
 using NikoArchipelago.Patches;
 using UnityEngine.SceneManagement;
 
@@ -40,6 +42,7 @@ public class ArchipelagoClient
     private static int savedItemIndex;
     private static bool stopIt;
     public Task _disconnectTask;
+    public static bool TrapLink { get; private set; }
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -115,7 +118,9 @@ public class ArchipelagoClient
 
             ServerData.SetupSession(success.SlotData, _session.RoomState.Seed);
             Authenticated = true;
-            deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
+            deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName, IsDeathLink());
+            if (IsTrapLink())
+                ToggleTrapLink();
 #if NET35
             session.Locations.CompleteLocationChecksAsync(null, ServerData.CheckedLocations.ToArray());
 #else
@@ -141,6 +146,19 @@ public class ArchipelagoClient
 
         ArchipelagoConsole.LogMessage(outText);
         attemptingConnection = false;
+    }
+
+    private bool IsDeathLink()
+    {
+        return int.Parse(ArchipelagoData.slotData["death_link"].ToString()) == 1;
+    }
+
+    private bool IsTrapLink()
+    {
+        if (ArchipelagoData.slotData.ContainsKey("trap_link"))
+            return int.Parse(ArchipelagoData.slotData["trap_link"].ToString()) == 1;
+        ArchipelagoConsole.LogMessage("apworld does not contain TrapLink.");
+        return false;
     }
 
     /// <summary>
@@ -174,16 +192,53 @@ public class ArchipelagoClient
 
     private void OnPacketReceived(ArchipelagoPacketBase archipelagoPacketBase)
     {
-        if (archipelagoPacketBase is HintPrintJsonPacket hintPrintJsonPacket)
+        if (archipelagoPacketBase is BouncedPacket bouncedPacket && bouncedPacket.Tags.Contains("TrapLink"))
         {
-            var hintStatus = hintPrintJsonPacket.Data.FirstOrDefault(p => (p.Type == JsonMessagePartType.HintStatus));
-            if (hintStatus != null)
-            {
-                APItemSentNotification.GetHintStatus(hintStatus.HintStatus);
-                Plugin.BepinLogger.LogInfo($"Hint Status Packet: {hintStatus.HintStatus}");
-            }
+            ReceivedTrapLink(bouncedPacket);
         }
-        Plugin.BepinLogger.LogInfo($"Received packet: {archipelagoPacketBase.GetType().Name}");
+        if (Plugin.DebugMode)
+            Plugin.BepinLogger.LogInfo($"Received packet: {archipelagoPacketBase.GetType().Name}");
+    }
+
+    public static void ToggleTrapLink()
+    {
+        TrapLink = !TrapLink;
+        if (TrapLink)
+        {
+            _session.ConnectionInfo.UpdateConnectionOptions(_session.ConnectionInfo.Tags.Concat(["TrapLink"]).ToArray());
+        }
+        else
+        {
+            _session.ConnectionInfo.UpdateConnectionOptions(_session.ConnectionInfo.Tags.Where(tag => tag != "TrapLink").ToArray());
+        }
+    }
+
+    private void ReceivedTrapLink(BouncedPacket trapLinkPacket)
+    {
+        var time = DateTime.Now;
+        var nameOfTrap = trapLinkPacket.Data["trap_name"].ToString();
+        var source = trapLinkPacket.Data["source"].ToString();
+        if (source == ServerData.SlotName) return;
+        if (TrapManager.TrapLinkMapping.ContainsKey(nameOfTrap))
+        {
+            TrapManager.TrapLinkQueue.Enqueue((nameOfTrap, source, (DateTime)time));
+        }
+    }
+
+    public static void SendTrapLink(string trapName)
+    {
+        BouncedPacket trapLinkPacket = new BouncedPacket
+        {
+            Tags = ["TrapLink"],
+            Data = new Dictionary<string, JToken>
+            {
+                { "time", (float)DateTime.Now.ToUnixTimeStamp() },
+                { "source", ServerData.SlotName },
+                { "trap_name", trapName }
+            }
+        };
+        _session.Socket.SendPacket(trapLinkPacket);
+        Plugin.BepinLogger.LogInfo("Sent TrapLink!");
     }
 
     private void SendPacket()
@@ -191,7 +246,7 @@ public class ArchipelagoClient
         
     }
 
-    public void SendMessage(string message)
+    public static void SendMessage(string message)
     {
         _session.Socket.SendPacketAsync(new SayPacket { Text = message });
     }
@@ -467,6 +522,9 @@ public class ArchipelagoClient
                 case 598_145_444_000+78: // Tiny Trap
                     ItemHandler.AddTinyTrap(senderName, notify);
                     break;
+                case 598_145_444_000+79: // Jumping Jacks Trap
+                    ItemHandler.AddJumpingJacksTrap(senderName, notify);
+                    break;
                 case 598_145_444_000+80: // Party Invitation
                     ItemHandler.AddPartyInvitation(item, notify);
                     TicketParty = true;
@@ -635,6 +693,10 @@ public class ArchipelagoClient
             {
                 matchedLocation = thougtLocation;
                 flagType = "Thought";
+            } else if (Locations.ChatsanityGlobalLocations.TryGetValue(location, out var chatGlobalLocation))
+            {
+                matchedLocation = chatGlobalLocation;
+                flagType = "ChatGlobal";
             }
             else if (Locations.BugsanityLocations.TryGetValue(location, out var bugLocation))
             {
@@ -706,6 +768,10 @@ public class ArchipelagoClient
             case "Fish":
                 if (!worldsData[level].fishFlags.Contains(flag))
                     worldsData[level].fishFlags.Add(flag);
+                break;
+            case "ChatGlobal":
+                if (!worldsData[0].miscFlags.Contains(flag))
+                    worldsData[0].miscFlags.Add(flag);
                 break;
             case "GardenCoin":
                 try

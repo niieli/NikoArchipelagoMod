@@ -65,7 +65,8 @@ namespace NikoArchipelago
         public static GameObject TrapFreeze, TrapIronBoots, TrapMyTurn, TrapWhoops, TrapGravity,
             ItemNotification, HintNotification,
             TrapWide, TrapHome, TrapJumpingJacks, TrapPhoneCall, TrapTiny,
-            NoticeBonkHelmet, NoticeSodaCan, NoticeParasol, NoticeAC, NoticeSwimCourse;
+            NoticeBonkHelmet, NoticeSodaCan, NoticeParasol, NoticeAC, NoticeSwimCourse, DeathLinkNotice, NoticeBugNet,
+            NoticePartyTicket;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
@@ -86,7 +87,8 @@ namespace NikoArchipelago
             FischerNoteSprite, GabiNoteSprite, MoomyNoteSprite, BlessleyNoteSprite,
             FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite, GravityTrapSprite,
             PhoneCallTrapSprite, JumpingJacksTrapSprite, WideTrapSprite, HomeTrapSprite, TinyTrapSprite,
-            PartyTicketSprite, BonkHelmetSprite, BugNetSprite, SodaRepairSprite, ParasolRepairSprite, SwimCourseSprite, TextboxItemSprite, ACRepairSprite;
+            PartyTicketSprite, BonkHelmetSprite, BugNetSprite, SodaRepairSprite, ParasolRepairSprite, SwimCourseSprite, TextboxItemSprite, ACRepairSprite,
+            DeathLinkSprite;
 
         public static Material ProgNotificationTexture, UsefulNotificationTexture, FillerNotificationTexture, TrapNotificationTexture;
         public static GameObject SparksParticleSystem;
@@ -294,7 +296,10 @@ namespace NikoArchipelago
                 NoticeParasol = AssetBundle.LoadAsset<GameObject>("NoticeParasol");
                 NoticeSwimCourse = AssetBundle.LoadAsset<GameObject>("NoticeSwimCourse");
                 NoticeAC = AssetBundle.LoadAsset<GameObject>("NoticeAC");
-                BasicBlock = AssetBundle.LoadAsset<GameObject>("BasicBlock");
+                DeathLinkSprite = AssetBundle.LoadAsset<Sprite>("DeathlinkSprite");
+                DeathLinkNotice = AssetBundle.LoadAsset<GameObject>("NoticeDeathLink");
+                NoticeBugNet = AssetBundle.LoadAsset<GameObject>("NoticeBugNet");
+                NoticePartyTicket = AssetBundle.LoadAsset<GameObject>("NoticePartyTicket");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -784,22 +789,6 @@ namespace NikoArchipelago
             _noteDisplayer.AddNotification(apNote);
             BepinLogger.LogMessage("Note: " + _noteDisplayer.textMesh.text);
         }
-        public void KillPlayer(string cause)
-        {
-            ArchipelagoConsole.LogMessage(cause);
-            scrTrainManager.instance.UseTrain(gameSaveManager.gameData.generalGameData.currentLevel, false);
-            StartCoroutine(SendNoteOnRespawn(cause, 5.0f, true));
-        }
-        
-        private static IEnumerator SendNoteOnRespawn(string text, float noteTime, bool isDeath = false)
-        {
-            yield return new WaitUntil(() => scrTransitionManager.instance.state == scrTransitionManager.States.idle);
-            APSendNote(text, noteTime);
-            if (isDeath)
-            {
-                //Add a grace period
-            }
-        }
         
         public void Flags()
         {
@@ -883,7 +872,7 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 240, 100, 20), "Kill"))
             {
-                KillPlayer("GETTT DEATHLINKED HEEHEH");
+                //KillPlayer("GETTT DEATHLINKED HEEHEH");
             }
             if (GUI.Button(new Rect(16, 260, 140, 20), "Item Index"))
             {
@@ -998,25 +987,29 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 500, 100, 20), "TestNote1"))
             {
-                var notification = new APNotification(false, "TestItem", "YourMom", "THE MOOOOON", 
+                var notification = new APNotification(false, "TestItem", "YourMom", "XXXGamerHDXXX", "THE MOOOOON", 
                     ItemFlags.None, 5f, null, null, FishSprite);
                 NotificationManager.AddNewNotification.Enqueue(notification);
             }
             if (GUI.Button(new Rect(16, 520, 100, 20), "TestNote2"))
             {
-                var notification = new APNotification(false, "Crazy Shiny Item", "nieli", "Hairball City - Handsome Frog (Chatsanity)", 
+                var notification = new APNotification(false, "Crazy Shiny Item", "nieli", "XXXGamerHDXXX", "Hairball City - Handsome Frog (Chatsanity)", 
                     ItemFlags.Advancement, 5f, null, null, CoinSprite);
                 NotificationManager.AddNewNotification.Enqueue(notification);
             }
             if (GUI.Button(new Rect(16, 540, 100, 20), "TestNote3"))
             {
-                var notification = new APNotification(true, "Crazy Shiny Item", "nieli", "Hairball City - Handsome Frog (Chatsanity)", 
+                var notification = new APNotification(true, "Crazy Shiny Item", "nieli", "XXXGamerHDXXX", "Hairball City - Handsome Frog (Chatsanity)", 
                     ItemFlags.Trap, 5f, null, null, WhoopsTrapSprite, "Not Found");
                 NotificationManager.AddNewNotification.Enqueue(notification);
             }
             if (GUI.Button(new Rect(16, 560, 100, 20), "MsgLength"))
             {
                 TrapManager.PhoneOn = true;
+            }
+            if (GUI.Button(new Rect(16, 580, 100, 20), "TrapLink"))
+            {
+                ArchipelagoClient.ToggleTrapLink();
             }
         }
 

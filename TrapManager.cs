@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
@@ -32,6 +33,13 @@ public class TrapManager : MonoBehaviour
     private static readonly int Timer = Animator.StringToHash("Timer");
     private readonly Dictionary<string, GameObject> activeTraps = new();
     public static readonly Dictionary<string, string> TrapConversations = new();
+    
+    // TrapLink
+    public static readonly Queue<(string, string, DateTime)> TrapLinkQueue = new();
+    public static readonly Dictionary<string, (string, float)> TrapLinkMapping = new()
+    {
+        { "Freeze Trap", ("Freeze", 5f) },
+    };
 
     private void Awake()
     {
@@ -42,17 +50,31 @@ public class TrapManager : MonoBehaviour
         Plugin.BepinLogger.LogInfo($"Loaded {TrapConversations.Count} trap conversations.");
     }
 
+    private void TrapLinkActivation()
+    {
+        if (TrapLinkQueue.Count == 0) return;
+        var trap = TrapLinkQueue.Dequeue();
+        if (trap.Item3 + TimeSpan.FromSeconds(5f) > DateTime.Now)
+        {
+            var nikoTrap = TrapLinkMapping[trap.Item1].Item1;
+            var timer = TrapLinkMapping[trap.Item1].Item2;
+            ActivateTrap(nikoTrap, timer+0.5f, trap.Item2);
+            Plugin.BepinLogger.LogInfo($"Activated {nikoTrap} via TrapLink");
+        }
+    }
+
     public void Update()
     {
+        TrapLinkActivation();
         if (FreezeOn)
         {
             FreezeOn = false;
-            ActivateTrap("Freeze", 8.5f);
+            ActivateTrap("Freeze", Random.Range(4f, 8f));
         }
         if (IronBootsOn)
         {
             IronBootsOn = false;
-            ActivateTrap("Iron Boots", 30f);
+            ActivateTrap("Iron Boots", Random.Range(8f, 30f));
         }
         if (MyTurnOn)
         {
@@ -67,13 +89,13 @@ public class TrapManager : MonoBehaviour
         if (GravityOn)
         {
             GravityOn = false;
-            ActivateTrap("Zero Gravity", 12.5f);
+            ActivateTrap("Gravity", 12.5f);
         }
         if (WideOn)
         {
             if (activeTraps.ContainsKey("Tiny")) return;
             WideOn = false;
-            ActivateTrap("Wide", Random.Range(10f, 60f));
+            ActivateTrap("W I D E", Random.Range(10f, 60f));
         }
         if (JumpingJacksOn)
         {
@@ -98,9 +120,15 @@ public class TrapManager : MonoBehaviour
         }
     }
 
-    public void ActivateTrap(string trapName, float duration)
+    public void ActivateTrap(string trapName, float duration, string source = null)
     {
-        if (activeTraps.ContainsKey(trapName)) return;
+        if (activeTraps.ContainsKey(trapName))
+        { 
+            //Plugin.BepinLogger.LogInfo($"{trapName} already active, so no extra.");
+            return;
+        }
+        if (source == null && ArchipelagoClient.TrapLink)
+            ArchipelagoClient.SendTrapLink(trapName+" Trap");
 
         Plugin.BepinLogger.LogInfo("Received Trap: " + trapName);
         Plugin.BepinLogger.LogInfo($"Activating trap {trapName} for {duration} seconds.");
@@ -127,12 +155,12 @@ public class TrapManager : MonoBehaviour
                 trapUI = Instantiate(trapWhoops, trapListFake);
                 StartCoroutine(Whoops(duration));
                 break;
-            case "Zero Gravity":
+            case "Gravity":
                 Plugin.BepinLogger.LogInfo("Instantiating GravityTrap");
                 trapUI = Instantiate(trapGravity, trapListFake);
                 StartCoroutine(ZeroGravity(duration));
                 break;
-            case "Wide":
+            case "W I D E":
                 Plugin.BepinLogger.LogInfo("Instantiating WideTrap");
                 trapUI = Instantiate(trapWide, trapListFake);
                 StartCoroutine(Wide(duration));
@@ -164,12 +192,12 @@ public class TrapManager : MonoBehaviour
             trapUI.transform.Find("TrapBox/Background").gameObject.AddComponent<ScrollingEffect>();
         var animator = trapUI.GetComponent<Animator>();
         animator.SetFloat(Timer, duration);
-        StartCoroutine(UpdateTrapTimer(trapUI, trapFake, trapName, duration));
+        StartCoroutine(UpdateTrapTimer(trapUI, trapFake, trapName, duration, source));
 
         activeTraps[trapName] = trapUI;
     }
     
-    private IEnumerator UpdateTrapTimer(GameObject trap, GameObject fake, string trapName, float duration)
+    private IEnumerator UpdateTrapTimer(GameObject trap, GameObject fake, string trapName, float duration, string source = null)
     {
         var rt = fake.GetComponent<RectTransform>();
         var timerTextShadow = trap.transform.Find("Timer/TextShadow").GetComponent<TextMeshProUGUI>();
@@ -180,6 +208,15 @@ public class TrapManager : MonoBehaviour
             var phoneDescription = RandomPhoneDescription();
             trap.transform.Find("TrapDescription/TextShadow").GetComponent<TextMeshProUGUI>().text = phoneDescription;
             trap.transform.Find("TrapDescription/TextFront").GetComponent<TextMeshProUGUI>().text = phoneDescription;
+        }
+
+        if (source != null)
+        {
+            if (trap.transform.Find("TrapDescription/TextShadow") != null)
+                trap.transform.Find("TrapDescription/TextShadow").GetComponent<TextMeshProUGUI>().text = $"from {source}";
+            if (trap.transform.Find("TrapDescription/TextFront") != null)
+                trap.transform.Find("TrapDescription/TextFront").GetComponent<TextMeshProUGUI>().text = $"from {source}";
+            trap.transform.Find("TrapLink").gameObject.SetActive(true);
         }
 
         float timeRemaining = duration;

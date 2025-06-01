@@ -22,6 +22,7 @@ public static class APItemSentNotification
         bool isHint = false;
         string itemName = "";
         string playerName = "";
+        string senderName = "";
         string locationName = "";
         ItemFlags itemFlags = ItemFlags.None;
         float duration = 3f;
@@ -53,6 +54,7 @@ public static class APItemSentNotification
                 
                 itemName = hintItemSendLogMessage.Item.ItemName;
                 playerName = hintItemSendLogMessage.Receiver.Name;
+                senderName = hintItemSendLogMessage.Sender.Name;
                 locationName = hintItemSendLogMessage.Item.LocationName;
                 itemFlags = hintItemSendLogMessage.Item.Flags;
                 // var hint = ArchipelagoClient._session.DataStorage.GetHints()[ArchipelagoClient._session.DataStorage.GetHints().Length];
@@ -114,7 +116,7 @@ public static class APItemSentNotification
             default:
                 return;
         }
-        var notification = new APNotification(isHint, itemName, playerName, locationName, itemFlags, duration, backgroundColor, durationColor, icon, hintState);
+        var notification = new APNotification(isHint, itemName, playerName, senderName, locationName, itemFlags, duration, backgroundColor, durationColor, icon, hintState);
         NotificationManager.AddNewNotification.Enqueue(notification);
     }
 

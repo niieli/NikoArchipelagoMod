@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
@@ -678,6 +679,14 @@ public static class ItemHandler
             3f, Plugin.TinyTrapSprite);
         TrapManager.TinyOn = true;
     }
+    public static void AddJumpingJacksTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Jumping Jacks Trap from {sender}!" : "You found your Jumping Jacks Trap!",
+            3f, Plugin.JumpingJacksTrapSprite);
+        TrapManager.JumpingJacksOn = true;
+    }
     public static void AddPartyInvitation(ItemInfo itemInfo, bool notify = true)
     {
         if (!notify) return;
@@ -686,6 +695,7 @@ public static class ItemHandler
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
             3f, SetSprite(itemName));
+        NotificationManager.ShowParty = true;
     }
     public static void AddSafetyHelmet(ItemInfo itemInfo, bool notify = true)
     {

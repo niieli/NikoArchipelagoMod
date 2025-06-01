@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using BepInEx;
+using KinematicCharacterController.Core;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -9,9 +10,9 @@ public class DeathLinkHandler
 {
     private static bool deathLinkEnabled;
     private string slotName;
-    private readonly DeathLinkService service;
-    private Plugin main;
+    private static DeathLinkService service;
     private readonly Queue<DeathLink> deathLinks = new();
+    private static Plugin main = new();
 
     /// <summary>
     /// instantiates our death link handler, sets up the hook for receiving death links, and enables death link if needed
@@ -35,7 +36,7 @@ public class DeathLinkHandler
     /// <summary>
     /// enables/disables death link
     /// </summary>
-    public void ToggleDeathLink()
+    public static void ToggleDeathLink()
     {
         deathLinkEnabled = !deathLinkEnabled;
 
@@ -66,7 +67,7 @@ public class DeathLinkHandler
     /// can be called when in a valid state to kill the player, dequeueing and immediately killing the player with a
     /// message if we have a death link in the queue
     /// </summary>
-    public void KillPlayer()
+    private void KillPlayer()
     {
         try
         {
@@ -75,14 +76,22 @@ public class DeathLinkHandler
             var deathLink = deathLinks.Dequeue();
             var cause = deathLink.Cause.IsNullOrWhiteSpace() ? GetDeathLinkCause(deathLink) : deathLink.Cause;
 
-            //TODO kill the player
-            main.KillPlayer(cause);
+            if (scrTransitionManager.instance.state == scrTransitionManager.States.idle)
+                Kill(cause);
             Plugin.BepinLogger.LogMessage(cause);
         }
         catch (Exception e)
         {
             Plugin.BepinLogger.LogError(e);
         }
+    }
+    
+    private static void Kill(string cause)
+    {
+        ArchipelagoConsole.LogMessage(cause);
+        NotificationManager.ShowDeathLink = true;
+        NotificationManager.DeathLinkCause = cause;
+        scrTrainManager.instance.UseTrain(scrGameSaveManager.instance.gameData.generalGameData.currentLevel, false);
     }
 
     /// <summary>

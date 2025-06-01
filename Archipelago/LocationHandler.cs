@@ -11,7 +11,7 @@ public class LocationHandler : MonoBehaviour
     private static long baseID = 598_145_444_000;
     private static int coinFlag, casIndex, miscIndex, letterIndex, achIndex, 
         garyIndex, garyIndex2, fishIndex, genIndex, 
-        frogIndex, kioskIndex, shopIndex, mimaIndex, garyMiscIndex;
+        frogIndex, kioskIndex, shopIndex, mimaIndex, garyMiscIndex, globalChatIndex;
     private static bool _errored, _errored2, _sent;
     private static List<bool> shopFlagsList = [..new bool[16]];
     public static ReadOnlyCollection<long> CheckedLocations;
@@ -29,6 +29,7 @@ public class LocationHandler : MonoBehaviour
             var genFlag = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
             var fishFlag = scrWorldSaveDataContainer.instance.fishFlags;
             var worldsData = scrGameSaveManager.instance.gameData.worldsData;
+            var globalChatFlag = scrGameSaveManager.instance.gameData.worldsData[0].miscFlags;
             if (coinsFlag.Count > coinFlag)
             {
                 foreach (var locationEntry in Locations.CoinLocations.Where(locationEntry => 
@@ -117,6 +118,19 @@ public class LocationHandler : MonoBehaviour
             else if (fishIndex > fishFlag.Count)
             {
                 fishIndex = 0;
+            }
+            if (globalChatFlag.Count > globalChatIndex)
+            {
+                foreach (var locationEntry in Locations.ChatsanityGlobalLocations.Where(locationEntry => 
+                             globalChatFlag[globalChatIndex] == locationEntry.Value.Flag))
+                {
+                    ArchipelagoClient.OnLocationChecked(locationEntry.Value.ID);
+                }
+                globalChatIndex++;
+            }
+            else if (globalChatIndex > globalChatFlag.Count)
+            {
+                globalChatIndex = 0;
             }
             if (coinsFlag.Count > garyIndex)
             {

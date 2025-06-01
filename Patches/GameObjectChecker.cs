@@ -38,6 +38,8 @@ public class GameObjectChecker : MonoBehaviour
     public static readonly StringBuilder LogPastItemsBatch = new();
     public static readonly StringBuilder LogFlags = new();
     public static string PreviousScene = "";
+    public static bool IsVisible = true;
+    private bool startedTimer = false;
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -49,7 +51,9 @@ public class GameObjectChecker : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        MenuHelpers.Menus.Clear();
         StartCoroutine(ModelLogging());
+        StartCoroutine(VisibilityTimer());
         FirstMeeting = false;
         _checkedGhost = false;
         _spawned = false;
@@ -101,11 +105,6 @@ public class GameObjectChecker : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public static void CheckGameObject(GameObject gameObject)
-    {
-        //???
-    }
-
     private static void LocationCheck()
     {
         int count = 0;
@@ -143,6 +142,30 @@ public class GameObjectChecker : MonoBehaviour
         if (!ArchipelagoClient.IsValidScene()) return;
         var obj = new GameObject("TextboxPermit");
         obj.AddComponent<TextboxPermit>();
+    }
+
+    private static IEnumerator VisibilityTimer()
+    {
+        if (ArchipelagoData.slotData == null) yield break;
+        if (!ArchipelagoData.slotData.ContainsKey("soda_cans")) yield break;
+        
+        if (int.Parse(ArchipelagoData.slotData["soda_cans"].ToString()) == 0 
+            && int.Parse(ArchipelagoData.slotData["parasols"].ToString()) == 0) yield break;
+        
+        if (!ArchipelagoClient.IsValidScene()) yield break;
+        
+        var timer = 0f;
+        const float switchTimer = 1.25f;
+        while (!ArchipelagoClient.ParasolRepairAcquired || !ArchipelagoClient.SodaRepairAcquired)
+        {
+            timer += Time.deltaTime;
+            if (timer >= switchTimer)
+            {
+                timer = 0f;
+                IsVisible = !IsVisible;
+            }
+            yield return null;
+        }
     }
     
     private static void MitchAndMaiObject()
@@ -412,6 +435,7 @@ public class GameObjectChecker : MonoBehaviour
         if (!ArchipelagoData.slotData.ContainsKey("chatsanity")) return;
         if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 0) return;
         if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 2) Patches.NpcController.IsGlobal = true;
+        if (int.Parse(ArchipelagoData.slotData["thoughtsanity"].ToString()) == 1) Patches.NpcController.Thoughtsanity = true;
         if (!ArchipelagoClient.IsValidScene()) return;
         var apTrackerUI = new GameObject("NPCController");
         var tracker = apTrackerUI.AddComponent<NpcController>();

@@ -12,6 +12,7 @@ namespace NikoArchipelago.Patches;
 
 public class Applesanity
 {
+    private static bool applesanityOn = false;
     [HarmonyPatch(typeof(scrApple), "Start")]
     public static class ApplesanityStart
     {
@@ -266,6 +267,7 @@ public class Applesanity
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("applessanity")) return;
             if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0) return;
+            applesanityOn = true;
             var currentscene = SceneManager.GetActiveScene().name;
             if (currentscene == "Home") return; // Do not interact with apples in home, will need to be removed/checked for conditions.
             __instance.enabled = true;
@@ -409,6 +411,7 @@ public class Applesanity
         public static int appleCountHQ = 14;
         private static void Postfix(scrApple __instance)
         {
+            if (!applesanityOn) return;
             if (!ApplesanityStart.appleIDs.ContainsKey(__instance))
             {
                 return;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
@@ -347,6 +348,7 @@ public class Bugsanity
     [HarmonyPatch(typeof(scrBugButterfly), "ManagedUpdate")]
     public static class BugsanityUpdatePatch
     {
+        private static bool _noticeUp;
         // private static bool Prefix(scrBugButterfly __instance)
         // {
         //     if (ArchipelagoData.slotData == null) return true;
@@ -419,10 +421,23 @@ public class Bugsanity
                 __instance.trigger.gameObject.SetActive(true);
                 return true;
             }
-            __instance.trigger.gameObject.SetActive(false);
+            if (ArchipelagoClient.BugnetAcquired) return true;
+            __instance.trigger.gameObject.SetActive(true);
+            if (__instance.trigger.foundPlayer())
+                __instance.StartCoroutine(ShowNotice());
             __instance.flightSpeed = 0.1f;
             __instance.Invoke("HandleFlightV2", 0f);
             return false;
+        }
+        
+        private static IEnumerator ShowNotice()
+        {
+            if (_noticeUp) yield break;
+            var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
+            _noticeUp = true;
+            yield return new WaitForSeconds(12.5f);
+            Object.Destroy(t);
+            _noticeUp = false;
         }
 
         private static void Postfix(scrBugButterfly __instance)
@@ -719,13 +734,17 @@ public class Bugsanity
     [HarmonyPatch(typeof(scrBugCatchable), "Update")]
     public static class BugsanityPart2UpdatePatch
     {
+        private static bool _noticeUp;
         private static bool Prefix(scrBugCatchable __instance)
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("bug_net")) return true; 
             if (int.Parse(ArchipelagoData.slotData["bug_net"].ToString()) == 0) return true;
             
-            return ArchipelagoClient.BugnetAcquired;
+            if (ArchipelagoClient.BugnetAcquired) return true;
+            if (__instance.trigger.foundPlayer())
+                __instance.StartCoroutine(ShowNotice());
+            return false;
         }
         private static void Postfix(scrBugCatchable __instance)
         {
@@ -742,6 +761,16 @@ public class Bugsanity
                 scrGameSaveManager.instance.SaveGame();
                 scrWorldSaveDataContainer.instance.SaveWorld();
             }
+        }
+
+        private static IEnumerator ShowNotice()
+        {
+            if (_noticeUp) yield break;
+            var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
+            _noticeUp = true;
+            yield return new WaitForSeconds(12.5f);
+            Object.Destroy(t);
+            _noticeUp = false;
         }
     }
     

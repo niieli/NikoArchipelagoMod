@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace NikoArchipelago.Patches;
 
-public class BreakableBlocksPatch
+public class BonkHelmet
 {
     private static bool _playedNoBonk, _noticeUp;
     private static readonly int Timer = Animator.StringToHash("Timer");
@@ -33,8 +33,10 @@ public class BreakableBlocksPatch
                     __instance.StartCoroutine(BonkNotice());
                     Plugin.BepinLogger.LogInfo("You need the Bonk Helmet to break this block!");
                 }
+
                 return false;
             }
+
             if (MyCharacterController.instance.state != MyCharacterController.States.Diving)
                 _playedNoBonk = false;
             return false;
@@ -48,6 +50,23 @@ public class BreakableBlocksPatch
             yield return new WaitForSeconds(5f);
             Object.Destroy(t);
             _noticeUp = false;
+        }
+    }
+
+    [HarmonyPatch(typeof(scrTreeQuest), "Update")]
+    public static class TreemanPatch
+    {
+        private static void Postfix(scrTreeQuest __instance)
+        {
+            if (!ArchipelagoData.slotData.ContainsKey("bonk_permit")) return;
+            if (int.Parse(ArchipelagoData.slotData["bonk_permit"].ToString()) != 1) return;
+
+            if (ArchipelagoClient.BonkPermitAcquired)
+            {
+                __instance.trigger.gameObject.SetActive(true);
+                return;
+            }
+            __instance.trigger.gameObject.SetActive(false);
         }
     }
 }

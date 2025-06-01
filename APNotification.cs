@@ -8,6 +8,7 @@ public class APNotification
     public bool IsHint { get; }
     public string ItemName { get; }
     public string PlayerName { get; }
+    public string SenderName { get; }
     public string LocationName { get; }
     public Sprite ItemIcon { get; }
     public Color BackgroundColor { get; }
@@ -20,6 +21,7 @@ public class APNotification
         bool isHint,
         string itemName,
         string playerName,
+        string senderName,
         string locationName,
         ItemFlags itemFlags,
         float duration = 3f,
@@ -31,6 +33,7 @@ public class APNotification
         IsHint = isHint;
         ItemName = itemName;
         PlayerName = playerName;
+        SenderName = senderName;
         LocationName = locationName;
         ItemFlags = itemFlags;
         ItemIcon = icon;

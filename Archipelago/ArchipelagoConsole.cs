@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
 using UnityEngine;
@@ -70,9 +71,30 @@ public class ArchipelagoConsole
         CommandText = GUI.TextField(CommandTextRect, CommandText);
         if (!CommandText.IsNullOrWhiteSpace() && GUI.Button(SendCommandButton, "Send"))
         {
-            Plugin.ArchipelagoClient.SendMessage(CommandText);
+            ArchipelagoClient.SendMessage(CommandText);
+            switch (CommandText)
+            {
+                case "/deathlink":
+                    DeathLinkHandler.ToggleDeathLink();
+                    break;
+                case "/traplink":
+                    ArchipelagoClient.ToggleTrapLink();
+                    break;
+                case "!hint":
+                    APItemSentNotification.hintCommand = true;
+                    break;
+            }
+
             CommandText = "";
+            if (APItemSentNotification.hintCommand)
+                NotificationManager.instance.StartCoroutine(HintDelay());
         }
+    }
+
+    private static IEnumerator HintDelay()
+    {
+        yield return new WaitForSeconds(3f);
+        APItemSentNotification.hintCommand = false;
     }
 
     public static void UpdateWindow()

@@ -17,14 +17,20 @@ public class HomeSpawnPatch
         {
             if (scrTrainManager.instance != null && scrTrainManager.instance.isLoadingNewScene)
                 _teleported = false;
-            if (!Plugin.newFile && SceneManager.GetActiveScene().name == "Home")
+            if (SceneManager.GetActiveScene().name != "Home") return true;
+            __instance.transform.Find("Masa Trigger").gameObject.SetActive(false);
+            if (!Plugin.newFile)
             {
                 __instance.level = 0;
             }
-
-            if (!GameObjectChecker.ChatsanityOn || ArchipelagoClient.TicketParty) return true;
-            if (!Plugin.newFile && SceneManager.GetActiveScene().name == "Home" && !_teleported)
+            if (GameObjectChecker.ChatsanityOn && ArchipelagoClient.TicketParty)
             {
+                PartyTicket(__instance);
+            }
+            if (!Plugin.newFile && !_teleported)
+            {
+                __instance.transform.Find("Move Controls").gameObject.SetActive(false);
+                __instance.transform.Find("Move Text").gameObject.SetActive(false);
                 __instance.StartCoroutine(WaitForPlayer(__instance));
                 _teleported = true;
             }
@@ -38,6 +44,23 @@ public class HomeSpawnPatch
             if (MyCharacterController.position == new Vector3(-6.7028f, 0.0997f, -5.3014f))
             {
                 __instance.enabled = false;
+            }
+        }
+
+        private static void PartyTicket(scrCheckForLevelUnlock __instance)
+        {
+            // First Time GameObject
+            __instance.transform.Find("Pepper Meeting").gameObject.SetActive(false);
+            __instance.transform.Find("Dispatcher Cam").gameObject.SetActive(false);
+            __instance.transform.Find("CameraPassiveArea").gameObject.SetActive(false);
+            __instance.transform.Find("Move Controls").gameObject.SetActive(false);
+            __instance.transform.Find("Move Text").gameObject.SetActive(false);
+            __instance.transform.Find("Masa Trigger").gameObject.SetActive(false);
+            __instance.transform.Find("Mata Meeting").gameObject.SetActive(false);
+            __instance.transform.Find("PepperCam").gameObject.SetActive(false);
+            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview"))
+            {
+                __instance.transform.gameObject.SetActive(false);
             }
         }
     }

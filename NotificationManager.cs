@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
-using Newtonsoft.Json;
+using KinematicCharacterController.Core;
 using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
@@ -24,6 +25,9 @@ public class NotificationManager : MonoBehaviour
     private readonly Queue<APNotification> _excessNotifications = new();
     public static readonly Queue<APNotification> AddNewNotification = new();
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
+    public static bool ShowDeathLink;
+    public static string DeathLinkCause;
+    public static bool ShowParty;
     
     // Notification Customization
     public static float notificationDuration = 3f;
@@ -114,6 +118,10 @@ public class NotificationManager : MonoBehaviour
     {
         while (AddNewNotification.Count > 0)
             AddNotification(AddNewNotification.Dequeue());
+        if (ShowDeathLink)
+            StartCoroutine(ShowDeathLinkNotice(DeathLinkCause));
+        if (ShowParty)
+            StartCoroutine(ShowPartyNotice());
     }
 
     public void AddNotification(APNotification notification)
@@ -174,6 +182,7 @@ public class NotificationManager : MonoBehaviour
         var itemName = note.ItemName;
         var itemIcon = note.ItemIcon;
         var playerName = note.PlayerName;
+        var senderName = note.SenderName;
         var locationName = note.LocationName;
         var bgColor = note.BackgroundColor;
         //var bgColor = notificationAccentColor; TODO: Complete Notification customization
@@ -186,7 +195,7 @@ public class NotificationManager : MonoBehaviour
         var location = notificationObject.transform.Find("LocationName").GetComponent<TextMeshProUGUI>();
         var colorBox = notificationObject.transform.Find("BoxClassification").GetComponent<Image>();
         var timer = notificationObject.transform.Find("Timer").GetComponent<Image>();
-        text.text = isHint ? $"<color=#6699FF>{playerName}</color>'s <color=#FF6666>{itemName}</color>\n<color=#B400B7>({hintState})</color>" 
+        text.text = isHint ? $"<color=#6699FF>{playerName}</color>'s <color=#FF6666>{itemName}</color> <size=22>at</size> <color=#d9f067>{senderName}</color>'s <size=22>world</size>\n<color=#B400B7>({hintState})</color>" 
             : $"<color=#B400B7></color>You sent <color=#FF6666>{itemName}</color> to <color=#6699FF>{playerName}</color>";
         
         icon.sprite = itemIcon;
@@ -218,5 +227,33 @@ public class NotificationManager : MonoBehaviour
         Destroy(notification);
         _activeNotifications.Remove(notification);
         TryShowNextFromQueue();
+    }
+    
+    private static IEnumerator ShowDeathLinkNotice(string cause)
+    {
+        ShowDeathLink = false;
+        var notice = Instantiate(Plugin.DeathLinkNotice, Plugin.NotifcationCanvas.transform);
+        notice.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = cause;
+        //yield return new WaitUntil(() => scrTransitionManager.instance.state == scrTransitionManager.States.idle);
+        yield return new WaitForSeconds(10f);
+        Destroy(notice);
+    }
+    
+    private static IEnumerator ShowPartyNotice()
+    {
+        ShowParty = false;
+        var confettiObjects = Resources.FindObjectsOfTypeAll<GameObject>()
+                .Where(go => go.name == "Confetti");
+        var confettiOg = confettiObjects.First();
+        if (confettiOg != null)
+        {
+            var confetti = Instantiate(confettiOg);
+            var pos = MyCharacterController.position;
+            pos += new Vector3(0, 2f, -3f);
+            confetti.transform.position = pos;
+        }        
+        var t = Instantiate(Plugin.NoticePartyTicket, Plugin.NotifcationCanvas.transform);
+        yield return new WaitForSeconds(12.5f);
+        Destroy(t);
     }
 }
