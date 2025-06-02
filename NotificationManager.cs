@@ -28,6 +28,7 @@ public class NotificationManager : MonoBehaviour
     public static bool ShowDeathLink;
     public static string DeathLinkCause;
     public static bool ShowParty;
+    public static bool IsUiOnScreen;
     
     // Notification Customization
     public static float notificationDuration = 3f;
@@ -122,6 +123,7 @@ public class NotificationManager : MonoBehaviour
             StartCoroutine(ShowDeathLinkNotice(DeathLinkCause));
         if (ShowParty)
             StartCoroutine(ShowPartyNotice());
+        _notificationListUICanvasGroup.alpha = IsUiOnScreen ? 0.35f : 1f;
     }
 
     public void AddNotification(APNotification notification)

@@ -37,16 +37,6 @@ public class ParasolPatch
             {
                 __instance.StartCoroutine(Notice());
             }
-            
-            // _timer += Time.deltaTime;
-            //
-            // if (_timer >= _nextToggleTime)
-            // {
-            //     _timer = 0f;
-            //     _currentState = !_currentState;
-            // }
-            //
-            // __instance.objectToAnimate.gameObject.SetActive(_currentState);
             __instance.objectToAnimate.gameObject.SetActive(GameObjectChecker.IsVisible);
             return false;
         }

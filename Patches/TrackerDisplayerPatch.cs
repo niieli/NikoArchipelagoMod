@@ -25,6 +25,8 @@ public class TrackerDisplayerPatch
             {
                 KioskUI.visible = visable;
             }
+            NotificationManager.IsUiOnScreen = visable;
+            TrapManager.IsUiOnScreen = visable;
         }
     }
 }

@@ -14,7 +14,7 @@ public class Location(long id, string flag, int level, Vector3 position = defaul
 
 public class Locations
 {
-    private const long BaseID = 598_145_444_000;
+    public const long BaseID = 598_145_444_000;
 
     public static readonly Dictionary<long, Location> CoinLocations = new()
     {

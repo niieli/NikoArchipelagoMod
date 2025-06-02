@@ -30,6 +30,8 @@ public class TrapManager : MonoBehaviour
     private Transform trapListFake;
     private GameObject trapUI;
     private GameObject trapFake;
+    private CanvasGroup canvasGroup;
+    public static bool IsUiOnScreen;
     private static readonly int Timer = Animator.StringToHash("Timer");
     private readonly Dictionary<string, GameObject> activeTraps = new();
     public static readonly Dictionary<string, string> TrapConversations = new();
@@ -45,6 +47,7 @@ public class TrapManager : MonoBehaviour
     {
         trapListUI = transform.Find("TrapPanel");
         trapListFake = transform.Find("VisualPanel");
+        canvasGroup = trapListFake.GetComponent<CanvasGroup>();
         if (instance == null) instance = this;
         AddTrapConversations();
         Plugin.BepinLogger.LogInfo($"Loaded {TrapConversations.Count} trap conversations.");
@@ -118,6 +121,7 @@ public class TrapManager : MonoBehaviour
             TinyOn = false;
             ActivateTrap("Tiny", Random.Range(10f, 60f));
         }
+        canvasGroup.alpha = IsUiOnScreen ? 0.35f : 1f;
     }
 
     public void ActivateTrap(string trapName, float duration, string source = null)
