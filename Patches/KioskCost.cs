@@ -133,6 +133,17 @@ public static class KioskCost
                                 }
                             }
                         }
+                        
+                        // Teach "Fix Frog" some math
+                        if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "elevatorBuy")
+                        {
+                            if (_currentBox == 4 && !_answerFix2)
+                            {
+                                scrTextbox.instance.conversationLocalized[4] = 
+                                    $"It'll cost {levelPrice} coins to fix. ##addinput:Bye;skip1; ##addinput:I'll pay!;skip0;";
+                                _answerFix2 = true;
+                            }
+                        }
                     }
                     else
                     {
@@ -181,6 +192,17 @@ public static class KioskCost
                                 _answerFix = true;
                             }
                             scrTextbox.instance.conversationLocalized[2] = noMoneyKiosk2;
+                        }
+                        
+                        // Teach "Fix Frog" some math
+                        if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "elevatorNoMoney")
+                        {
+                            if (_currentBox == 4 && !_answerFix2)
+                            {
+                                scrTextbox.instance.conversationLocalized[4] = 
+                                    $"It'll cost {levelPrice} coins to fix.";
+                                _answerFix2 = true;
+                            }
                         }
                     }
                 }

@@ -155,7 +155,9 @@ public class GameObjectChecker : MonoBehaviour
         if (!ArchipelagoClient.IsValidScene()) yield break;
         
         var timer = 0f;
-        const float switchTimer = 1.25f;
+        float switchTimer = 1.25f;
+        if (SceneManager.GetActiveScene().name == "Tadpole inc")
+            switchTimer = 2.75f;
         while (!ArchipelagoClient.ParasolRepairAcquired || !ArchipelagoClient.SodaRepairAcquired)
         {
             timer += Time.deltaTime;
