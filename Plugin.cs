@@ -16,10 +16,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
-using Random = UnityEngine.Random;
 
 namespace NikoArchipelago
 {

@@ -255,6 +255,13 @@ public class ArchipelagoClient
     public List<ItemInfo> queuedItems2 = [];
     private static readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
 
+    // Maybe useful for later or when I am bored and rework the whole scout thing (ScoutID Array)
+    public static ScoutedItemInfo ScoutLocation(long locationID)
+    {
+        var scout = _session.Locations.ScoutLocationsAsync(ArchipelagoMenu.Hints ? HintCreationPolicy.CreateAndAnnounce : HintCreationPolicy.None, 598_145_444_000+locationID);
+        return scout.Result[598_145_444_000+locationID];
+    }
+    
     /// <summary>
     /// we received an item so reward it here
     /// </summary>

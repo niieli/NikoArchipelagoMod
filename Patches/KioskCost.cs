@@ -37,41 +37,32 @@ public static class KioskCost
         [HarmonyPostfix]
         public static void PostFix(scrKioskManager __instance)
         {
-            var gardenAdjustment = 0;
-            var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
-            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-            {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
-                {
-                    gardenAdjustment = 2;
-                }
-            }
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
-                {
-                    cassetteAdjustment = 14;
-                    gardenAdjustment = 0;
-                }
-            var adjustment = gardenAdjustment + cassetteAdjustment;
             _kioskManager = __instance;
             var currentScene = SceneManager.GetActiveScene().name;
             var levelPriceField = AccessTools.Field(typeof(scrKioskManager), "levelPrice");
             int levelPrice = (int)levelPriceField.GetValue(_kioskManager);
-            var hasBoughtField = AccessTools.Field(typeof(scrKioskManager), "hasBought");
-            var _hasBought = (bool)hasBoughtField.GetValue(__instance);
-            var sentNoteEnoughField = AccessTools.Field(typeof(scrKioskManager), "sentNoteEnough");
-            var _sentNoteEnough = (bool)sentNoteEnoughField.GetValue(__instance);
             var buyableLevelField = AccessTools.Field(typeof(scrKioskManager), "buyableLevel");
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
-            int _currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
-    
+            int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
+            int scoutID = currentScene switch
+            {
+                "Home" => 170,
+                "Hairball City" => 171,
+                "Trash Kingdom" => 172,
+                "Salmon Creek Forest" => 173,
+                "Public Pool" => 174,
+                "The Bathhouse" => 175,
+                "Tadpole inc" => 176,
+                _ => 0
+            };
             if (buyableLevelField != null)
             {
+                if (!scrTextbox.instance.isOn)
+                    _answerFix2 = false;
                 int currentBuyableLevel = (int)buyableLevelField.GetValue(_kioskManager);
                 if (!scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
                 {
-                    _hasBought = false;
                     __instance.NPCbought.SetActive(false);
                     __instance.textMesh.gameObject.SetActive(true);
                     if (scrGameSaveManager.instance.gameData.generalGameData.coinAmount >= levelPrice)
@@ -86,30 +77,24 @@ public static class KioskCost
                         __instance.NPCbought.SetActive(false);
                         __instance.textMesh.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount.ToString() + "/" + levelPrice.ToString();
                         __instance.textMesh.gameObject.SetActive(true);
-                        if (!scrTextbox.instance.isOn)
-                            _answerFix2 = false;
                         if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "kioskBuy")
                         {
-                            if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
+                            if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
                             {
-                                ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                                 __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
                             }
-                            var kioskBuy0 = 
-                                $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12].Player}?"
-                                + $"\nIt seems {ItemClassification(currentBuyableLevel+12-adjustment)}...";
-                            if (_currentBox == 0 && !_answerFix2)
+                            if (currentBox == 0 && !_answerFix2)
                             {
-                                scrTextbox.instance.conversationLocalized[0] = kioskBuy0;
+                                scrTextbox.instance.conversationLocalized[0] = KioskConversation(scoutID);
                                 _answerFix2 = true;
                                 _answerFix = false;
                             }
-                            if (_currentBox == 1 && !_answerFix)
+                            if (currentBox == 1 && !_answerFix)
                             {
                                 scrTextbox.instance.conversationLocalized[1] = $"It will cost {levelPrice} coins to purchase. ##addinput:I'll pay!;skip1; ##addinput:No way!;skip0;";
                                 _answerFix = true;
                             }
-                            if (_currentBox == 3)
+                            if (currentBox == 3)
                             {
                                 scrTextbox.instance.conversationLocalized[3] = "That is fantastic! ##fx1; ##end;";
                                 if (!bought)
@@ -122,7 +107,6 @@ public static class KioskCost
                                 {
                                     scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add($"Kiosk{currentScene}");
                                 }
-                                _hasBought = true;
                                 if (!scrTextbox.instance.isOn)
                                 {
                                     __instance.NPCbought.SetActive(true);
@@ -137,7 +121,7 @@ public static class KioskCost
                         // Teach "Fix Frog" some math
                         if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "elevatorBuy")
                         {
-                            if (_currentBox == 4 && !_answerFix2)
+                            if (currentBox == 4 && !_answerFix2)
                             {
                                 scrTextbox.instance.conversationLocalized[4] = 
                                     $"It'll cost {levelPrice} coins to fix. ##addinput:Bye;skip1; ##addinput:I'll pay!;skip0;";
@@ -147,7 +131,6 @@ public static class KioskCost
                     }
                     else
                     {
-                        _hasBought = false;
                         __instance.NPCnomoney.SetActive(true);
                         __instance.NPCbuy.SetActive(false);
                         __instance.NPCbought.SetActive(false);
@@ -157,23 +140,19 @@ public static class KioskCost
                             _answerFix2 = false;
                         if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "kioskNomoney")
                         {
-                            if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
+                            if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
                             {
-                                ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                                 __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
                             }
-                            string noMoneyKiosk0 = 
-                                $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].Player}?" +
-                                $"\nIt seems {ItemClassification(currentBuyableLevel+12-adjustment)}...";
                             string noMoneyKiosk2 = 
                                 $"It will cost {levelPrice} coins to purchase.";
-                            if (_currentBox == 0 && !_answerFix2)
+                            if (currentBox == 0 && !_answerFix2)
                             {
-                                scrTextbox.instance.conversationLocalized[0] = noMoneyKiosk0;
+                                scrTextbox.instance.conversationLocalized[0] = KioskConversation(scoutID);
                                 _answerFix2 = true;
                                 _answerFix = false;
                             }
-                            if (_currentBox == 1 && !_answerFix)
+                            if (currentBox == 1 && !_answerFix)
                             {
                                 string[] multiworldRef = new[]
                                 {
@@ -197,7 +176,7 @@ public static class KioskCost
                         // Teach "Fix Frog" some math
                         if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "elevatorNoMoney")
                         {
-                            if (_currentBox == 4 && !_answerFix2)
+                            if (currentBox == 4 && !_answerFix2)
                             {
                                 scrTextbox.instance.conversationLocalized[4] = 
                                     $"It'll cost {levelPrice} coins to fix.";
@@ -208,7 +187,6 @@ public static class KioskCost
                 }
                 else if (scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[currentBuyableLevel] && !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
                 {
-                    _hasBought = false;
                     __instance.NPCnomoney.SetActive(true);
                     __instance.NPCbuy.SetActive(false);
                     __instance.NPCbought.SetActive(false);
@@ -218,23 +196,19 @@ public static class KioskCost
                         _answerFix2 = false;
                     if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "kioskNomoney")
                     {
-                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
+                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
                         {
-                            ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                             __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
                         }
-                        string noMoneyKiosk0 = 
-                            $"Do you want to purchase '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].Player}?" +
-                            $"\nIt seems {ItemClassification(currentBuyableLevel+12-adjustment)}...";
                         string noMoneyKiosk2 = 
                             $"It will cost {levelPrice} coins to purchase.";
-                        if (_currentBox == 0 && !_answerFix2)
+                        if (currentBox == 0 && !_answerFix2)
                         {
-                            scrTextbox.instance.conversationLocalized[0] = noMoneyKiosk0;
+                            scrTextbox.instance.conversationLocalized[0] = KioskConversation(scoutID);
                             _answerFix2 = true;
                             _answerFix = false;
                         }
-                        if (_currentBox == 1 && !_answerFix)
+                        if (currentBox == 1 && !_answerFix)
                         {
                             string[] multiworldRef = new[]
                             {
@@ -257,32 +231,26 @@ public static class KioskCost
                 }
                 else
                 {
-                    _hasBought = true;
                     __instance.NPCnomoney.SetActive(false);
                     __instance.NPCbuy.SetActive(false);
                     __instance.NPCbought.SetActive(true);
                     __instance.textMesh.text = "";
                     __instance.textMesh.gameObject.SetActive(false);
-                    _sentNoteEnough = true;
                     scrNotificationDisplayer.instance.RemoveNotification(__instance.noteEnough);
                     if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "kioskBought")
                     {
-                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)) && ArchipelagoMenu.Hints)
+                        if (!__instance.saveManager.gameData.generalGameData.generalFlags.Contains("Hint"+(currentBuyableLevel+12)))
                         {
-                            ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[currentBuyableLevel+12]);
                             __instance.saveManager.gameData.generalGameData.generalFlags.Add("Hint"+(currentBuyableLevel+12));
                         }
-                        var kioskBought0 = 
-                            $"You already bought '{ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].ItemName}' " +
-                            $"for {ArchipelagoClient.ScoutedLocations[currentBuyableLevel+12-adjustment].Player}. ##end;";
-                        scrTextbox.instance.conversationLocalized[0] = kioskBought0;
-                        if (GameInput.GetButtonDown("Action"))
+
+                        if (currentBox == 0 && !_answerFix2)
                         {
-                            scrTextbox.instance.EndConversation();
+                            scrTextbox.instance.conversationLocalized[0] = KioskConversation(scoutID);
+                            _answerFix2 = true;
                         }
                     }
                 }
-                _sentNoteEnough = true;
                 scrNotificationDisplayer.instance.RemoveNotification(__instance.noteEnough);
             }
     
@@ -291,21 +259,22 @@ public static class KioskCost
             _changed2 = true;
         }
 
-        private static string ItemClassification(int scoutID)
+        private static string KioskConversation(int scoutID, int price = 0, bool canBuy = true)
         {
             string classification;
-            if (ArchipelagoClient.ScoutedLocations[scoutID].Flags.HasFlag(ItemFlags.Advancement))
+            var scoutedItem = ArchipelagoClient.ScoutLocation(scoutID);
+            var itemName = scoutedItem.ItemName; 
+            if (scoutedItem.Flags.HasFlag(ItemFlags.Advancement))
             {
                 classification = "Important";
             }
-            else if (ArchipelagoClient.ScoutedLocations[scoutID].Flags.HasFlag(ItemFlags.NeverExclude))
+            else if (scoutedItem.Flags.HasFlag(ItemFlags.NeverExclude))
             {
                 classification = "Useful";
-            } else if (ArchipelagoClient.ScoutedLocations[scoutID].Flags.HasFlag(ItemFlags.Trap))
+            } else if (scoutedItem.Flags.HasFlag(ItemFlags.Trap))
             {
                 var trapStrings = new[]
                 {
-                    "iMpOrTaNt",
                     "SUPER IMPORTANT",
                     "like a good deal",
                     "very important trust me",
@@ -322,7 +291,43 @@ public static class KioskCost
                 };
                 var randomIndex = Random.Range(0, trapStrings.Length);
                 classification = trapStrings[randomIndex];
-            } else if (ArchipelagoClient.ScoutedLocations[scoutID].Flags.HasFlag(ItemFlags.None))
+
+                if (scoutedItem.IsReceiverRelatedToActivePlayer)
+                {
+                    var fakeNames = new[]
+                    {
+                        "Coin ?",
+                        "Coin :)",
+                        "Shiny Object",
+                        "Pon",
+                        "Cassette ?",
+                        "Coin",
+                        "Rupee",
+                        "Coin >:(",
+                        "A fabulous flower",
+                        "COIN!",
+                        "CASSETTE!",
+                        "REDACTED",
+                        "Cool Item(insert cool smiley)",
+                        "A",
+                        "Noic",
+                        "Mixtape",
+                        "Home Cassette",
+                        "Tickets for a concert",
+                    };
+                    var randomFakeName = Random.Range(0, fakeNames.Length);
+                    itemName = fakeNames[randomFakeName];
+                }
+                else
+                {
+                    var fakeNames = new[]
+                    {
+                        "Hookshot",
+                    };
+                    var randomFakeName = Random.Range(0, fakeNames.Length);
+                    //itemName = fakeNames[randomFakeName]; Not sure if I should do that, maybe later
+                }
+            } else if (scoutedItem.Flags.HasFlag(ItemFlags.None))
             {
                 classification = "Useless";
             }
@@ -330,31 +335,30 @@ public static class KioskCost
             {
                 classification = "Unknown";
             }
-            //Plugin.BepinLogger.LogInfo("Location: "+ArchipelagoClient.ScoutedLocations[scoutID].LocationName);
-            return classification;
-        }
-    }
 
-    [HarmonyPatch(typeof(scrKioskManager), "RemoveIfObtained")]
-    public static class KioskRemoveIfObtainedPatch
-    {
-        [HarmonyPostfix]
-        public static void PostFix(scrKioskManager __instance)
-        {
-            var hasBoughtField = AccessTools.Field(typeof(scrKioskManager), "hasBought");
-            var _hasBought = (bool)hasBoughtField.GetValue(__instance);
-            var buyableLevelField = AccessTools.Field(typeof(scrKioskManager), "buyableLevel");
-            int currentBuyableLevel = (int)buyableLevelField.GetValue(__instance);
-            var currentScene = SceneManager.GetActiveScene().name;
-            if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"Kiosk{currentScene}"))
+            // if (canBuy) // Maybe in future change it a bit to include price & stuff
+            // {
+            //     //ggs
+            // }
+            // else
+            // {
+            //     //ggs
+            // }
+
+            var alreadyBought =
+                scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(
+                    $"Kiosk{SceneManager.GetActiveScene().name}");
+
+            string text;
+            text = $"Do you want to purchase '{itemName}' for {scoutedItem.Player}?" +
+                   $"\nIt seems {classification}...";
+            
+            if (alreadyBought)
             {
-                _hasBought = true;
+                text = $"You already bought '{scoutedItem.ItemName}' " +
+                       $"for {scoutedItem.Player}. ##end;";
             }
-            else
-            {
-                _hasBought = false;
-            }
-                
+            return text;
         }
     }
 }
