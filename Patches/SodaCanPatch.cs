@@ -11,9 +11,6 @@ public class SodaCanPatch
     [HarmonyPatch(typeof(scrCannon), "Update")]
     public static class SodaCanPatchUpdate
     {
-        private static float _timer;
-        private static float _nextToggleTime = 8.5f;
-        private static bool _currentState = true;
         private static bool _noticeUp;
         private static bool Prefix(scrCannon __instance)
         {

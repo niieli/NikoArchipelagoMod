@@ -20,7 +20,7 @@ public class GustPatch
                 if (__instance.transform.parent.transform.parent.transform.parent.name.Contains("Train")) return true;
                 if (__instance.transform.parent.transform.parent.transform.parent.name.Contains("Elevator")) return true;
             }
-                
+            if (__instance.transform.parent.name.Contains("Water")) return true;
             if (__instance.transform.parent.transform.parent != null)
                 if (__instance.transform.parent.transform.parent.name.Contains("Train")) return true;
             

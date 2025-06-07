@@ -66,12 +66,14 @@ public class MoomyPatch
                 myMusic.Stop();
             if (__instance.hamsterball.activeSelf)
             {
+                GameObjectChecker.IsHamsterball = true;
                 handleHamsterballControls.Invoke(__instance, null);
                 actionButtonPromt.Show("hamsterballStop", true);
             }
 
             if (!__instance.hamsterball.activeSelf)
             {
+                GameObjectChecker.IsHamsterball = false;
                 if (!allSeedsCollected && scrTextbox.instance.isOn && scrTextbox.instance.conversation == "MoomyQuest")
                 {
                     if (!_answerFix)
@@ -89,8 +91,18 @@ public class MoomyPatch
                         var itemName = item.Result[currentLocationID].ItemName;
                         var itemPlayer = item.Result[currentLocationID].Player;
                         var itemFlag = item.Result[currentLocationID].Flags;
+                        string classification = "";
+                        if (itemFlag.HasFlag(ItemFlags.Advancement))
+                            classification = "Important";
+                        else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
+                            classification = "Useful";
+                        else if (itemFlag.HasFlag(ItemFlags.Trap))
+                            classification = "Super Duper Important :)";
+                        else if (itemFlag.HasFlag(ItemFlags.None))
+                            classification = "Useless";
                         textbox.conversationLocalized[1] = 
-                            $"I think <color=#6699FF>{itemPlayer}</color> would like their <color=#FF6666>{itemName}</color>! ##end;";
+                            $"I think <color=#6699FF>{itemPlayer}</color> would like their '<color=#FF6666>{itemName}</color>'!" +
+                            $"\nMy expertise tells me it's {classification}##end;";
                         _answerFix2 = true;
                     }
                 }

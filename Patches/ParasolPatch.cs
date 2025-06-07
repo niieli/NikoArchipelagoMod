@@ -11,9 +11,6 @@ public class ParasolPatch
     [HarmonyPatch(typeof(scrBouncer), "Update")]
     public static class ParasolPatchUpdate
     {
-        private static float _timer;
-        private static float _nextToggleTime = 8.5f;
-        private static bool _currentState = true;
         private static bool _noticeUp;
         private static bool Prefix(scrBouncer __instance)
         {

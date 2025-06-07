@@ -23,6 +23,10 @@ public class LocalizationPatch
             {
                 __result = trapText;
             }
+            else if (FishingPatch.FischerConversation.TryGetValue(key, out var fishText))
+            {
+                __result = fishText;
+            }
             else
             {
                 __result = _missingTextString;

@@ -40,6 +40,8 @@ public class GameObjectChecker : MonoBehaviour
     public static string PreviousScene = "";
     public static bool IsVisible = true;
     private bool startedTimer = false;
+    private Coroutine visibilityTimer;
+    public static bool IsHamsterball;
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -53,7 +55,8 @@ public class GameObjectChecker : MonoBehaviour
     {
         MenuHelpers.Menus.Clear();
         StartCoroutine(ModelLogging());
-        StartCoroutine(VisibilityTimer());
+        if (visibilityTimer != null) StopCoroutine(visibilityTimer);
+        visibilityTimer = StartCoroutine(VisibilityTimer());
         FirstMeeting = false;
         _checkedGhost = false;
         _spawned = false;
@@ -156,8 +159,6 @@ public class GameObjectChecker : MonoBehaviour
         
         var timer = 0f;
         float switchTimer = 1.25f;
-        if (SceneManager.GetActiveScene().name == "Tadpole inc")
-            switchTimer = 2.75f;
         while (!ArchipelagoClient.ParasolRepairAcquired || !ArchipelagoClient.SodaRepairAcquired)
         {
             timer += Time.deltaTime;

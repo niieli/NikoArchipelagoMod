@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
@@ -12,6 +14,21 @@ public class FishingPatch
 {
     private static string level;
     private static bool blockedLog;
+    private static string textureType = "_Texture";
+    private static bool stateStart = true;
+    private static MyCharacterController characterController;
+    private static PlayerCamera camera;
+    private static scrTextbox textbox;
+    private static scrTextboxTrigger textboxTrigger;
+    private static scrWorldSaveDataContainer worldData;
+    private static Vector3 characterShadowHomePos;
+    private static float hoptimer;
+    private static FieldInfo firstTimeTalkedBoolean;
+    public static readonly Dictionary<string, string> FischerConversation = new();
+    private static bool answerFix1, answerFix2;
+    private static string _classification, _itemName, _playerName;
+    private static int _currentScoutID;
+    
     [HarmonyPatch(typeof(scrFishingMaster), "Start")]
     public static class FishingStartPatch
     {
@@ -19,12 +36,27 @@ public class FishingPatch
         {
           FischerReady();
           var targetType = __instance.GetType();
-          FieldInfo firstTimeTalkedBoolean = targetType.GetField("firstTimeTalked", BindingFlags.NonPublic | BindingFlags.Instance);
+          firstTimeTalkedBoolean = targetType.GetField("firstTimeTalked", BindingFlags.NonPublic | BindingFlags.Instance);
           if (firstTimeTalkedBoolean != null)
           {
               firstTimeTalkedBoolean.SetValue(__instance, true);
           }
           level = SceneManager.GetActiveScene().name;
+          characterController = GameObject.FindGameObjectWithTag("CharacterController").GetComponent<MyCharacterController>();
+          camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerCamera>();
+          textbox = GameObject.FindGameObjectWithTag("Textbox").GetComponent<scrTextbox>();
+          textboxTrigger = __instance.fisherTextbox.GetComponent<scrTextboxTrigger>();
+          worldData = GameObject.FindGameObjectWithTag("WorldMaster").GetComponent<scrWorldSaveDataContainer>();
+          characterShadowHomePos = __instance.characterShadow.transform.localPosition;
+          FischerConversation.Clear();
+          FischerConversation.
+            Add("FishsanityFinal", $"##nameFischer;##talkerimg1;##nikoimg9;You got all 5 {level} fish! ##newbox;##nikoimg6;As promised you will get (Item) for (Player)!");
+          FischerConversation.
+            Add("FishsanityNotEnough", $"##nameFischer;##talkerimg2;##nikoimg4;You need 5 (level name + fish) to get my reward##newbox;##nikoimg7;My reward is (item) for (Player) I heard it's (Classification)");
+          FischerConversation.
+            Add("FishsanityObtained", $"##nameFischer;##talkerimg1;##nikoimg3;You already obtained my (Item) for (Player)!");
+          FischerConversation.
+            Add("FishsanityFishing", $"##nameFischer;##talkerimg1;##nikoimg3;You found all fish 5!\nNow you need to catch the remaining Fish!");
         }
     }
     private static void FischerReady()
@@ -36,7 +68,6 @@ public class FishingPatch
     [HarmonyPatch(typeof(scrFishingMaster), "Update")]
     public static class FishingUpdatePatch
     {
-        private static MethodInfo _checkIfLastFishMethod;
         private static int _currentFishCount;
         private static string _currentLevelName;
 
@@ -46,43 +77,349 @@ public class FishingPatch
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("fishsanity")) return true;
             if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) != 2) return true;
-            var textboxTrigger = Traverse.Create(__instance).Field("textboxTrigger").GetValue<scrTextboxTrigger>();
-            var textbox = Traverse.Create(__instance).Field("textbox").GetValue<scrTextbox>();
-            var gotCoin = Traverse.Create(__instance).Field("gotCoin").GetValue<bool>();
+            var pullupAnimationStartPoint = (Vector3)AccessTools.Field(typeof(scrFishingMaster), "pullupAnimationStartPoint").GetValue(__instance);
+            var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
+            int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
             bool allFishCollected = CheckAllFish(level);
-            if (scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count
-                && scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
+            __instance.pullupAnimationDuration = 4f;
+
+            if (__instance.finalConversation && !__instance.gotCoin)
+              textboxTrigger.ChangeIcon(scrTextboxTrigger.IconType.reward, true);
+            else if ((textboxTrigger.conversation == __instance.idleConverstation 
+                      || textboxTrigger.conversation == "FishsanityNotEnough" || textboxTrigger.conversation == "FishsanityFishing") &&
+                     __instance.state == scrFishingMaster.States.Inactive)
+              textboxTrigger.ChangeIcon(scrTextboxTrigger.IconType.quest, true);
+            else
+              textboxTrigger.ChangeIcon(scrTextboxTrigger.IconType.talk, false);
+            if ((bool)firstTimeTalkedBoolean.GetValue(__instance) && (!textbox.isOn || textbox.isDying) &&
+                __instance.startTrigger.foundPlayer() && __instance.state == scrFishingMaster.States.Inactive &&
+                (textboxTrigger.conversation == __instance.idleConverstation ||
+                 textboxTrigger.conversation == __instance.noCatchConversation ||
+                 textboxTrigger.conversation == __instance.oldCatchConversation ||
+                 textboxTrigger.conversation == "FishsanityObtained" ||
+                 textboxTrigger.conversation == "FishsanityNotEnough" ||
+                 textboxTrigger.conversation == "FishsanityFinal" ||
+                 textboxTrigger.conversation == "FishsanityFishing"))
             {
-                __instance.gotCoin = true;
-                return true;
+              if (__instance.state != scrFishingMaster.States.Fishing)
+                stateStart = true;
+              __instance.state = scrFishingMaster.States.Fishing;
             }
-            if (scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf && !textbox.isOn)
+
+            if (!textboxTrigger.isNewConversation)
+              firstTimeTalkedBoolean.SetValue(__instance, true);
+            if (textbox.isOn & !textbox.isDying)
             {
-                if (!allFishCollected)
+              if (__instance.state == scrFishingMaster.States.Fishing)
+              {
+                var gameObject = UnityEngine.Object.Instantiate<GameObject>(__instance.audioOneShot);
+                gameObject.transform.position = MyCharacterController.position;
+                gameObject.GetComponent<scrAudioOneShot>().setup(__instance.audioClipsEnd, 0.4f, Random.Range(0.5f, 1.5f));
+                __instance.animator.SetTexture(__instance.txrFisherIdle);
+                __instance.animatorArray.SetAnimationStrip(__instance.txrFisherIdle.name);
+                __instance.StartCoroutine("HideVignette");
+              }
+
+              __instance.state = scrFishingMaster.States.Inactive;
+            }
+
+            if (!__instance.areaTrigger.foundPlayer() && characterController.Motor.GroundingStatus.IsStableOnGround)
+            {
+              if (__instance.state == scrFishingMaster.States.Fishing)
+              {
+                var gameObject = UnityEngine.Object.Instantiate<GameObject>(__instance.audioOneShot);
+                gameObject.transform.position = MyCharacterController.position;
+                gameObject.GetComponent<scrAudioOneShot>().setup(__instance.audioClipsEnd, 0.4f, Random.Range(0.5f, 1.5f));
+                __instance.animator.SetTexture(__instance.txrFisherIdle);
+                __instance.animatorArray.SetAnimationStrip(__instance.txrFisherIdle.name);
+                __instance.StartCoroutine("HideVignette");
+              }
+
+              __instance.state = scrFishingMaster.States.Inactive;
+            }
+
+            if (__instance.state == scrFishingMaster.States.Inactive && stateStart)
+            {
+              __instance.characterShadow.transform.localPosition = characterShadowHomePos;
+              stateStart = false;
+            }
+
+            if (__instance.state == scrFishingMaster.States.Fishing)
+            {
+              if (stateStart)
+              {
+                var gameObject = UnityEngine.Object.Instantiate<GameObject>(__instance.audioOneShot);
+                gameObject.transform.position = MyCharacterController.position;
+                gameObject.GetComponent<scrAudioOneShot>().setup(__instance.audioClipsStart, 0.4f, Random.Range(0.5f, 1.5f));
+                stateStart = false;
+                __instance.HUD.Show(4f);
+                __instance.StartCoroutine("ShowVignette");
+                __instance.fisherNewFish.GetComponent<Renderer>().sharedMaterial.SetTexture(textureType, __instance.txrEmpty);
+              }
+
+              if ((UnityEngine.Object)__instance.animator.GetTexture() != (UnityEngine.Object)__instance.txrFisherFishing)
+                __instance.animatorArray.SetAnimationStrip(__instance.txrFisherFishing.name);
+              if ((UnityEngine.Object)__instance.animator.GetTexture() != (UnityEngine.Object)__instance.txrFisherFishing)
+                __instance.animatorArray.SetAnimationStrip(__instance.txrFisherFishing.name);
+              if (characterController.state == MyCharacterController.States.Swimming)
+              {
+                __instance.currentFish = -1;
+                for (var index = 0; index < __instance.fishLocations.Count; ++index)
+                  if (__instance.fishLocations[index].foundPlayer())
+                    __instance.currentFish = index;
+                __instance.state = scrFishingMaster.States.Pullup;
+                stateStart = true;
+              }
+            }
+
+            if (__instance.state == scrFishingMaster.States.Fishing || __instance.state == scrFishingMaster.States.Pullup)
+            {
+              __instance.line.enabled = true;
+              __instance.line.SetPosition(0, __instance.lineStart.position);
+              __instance.line.SetPosition(1, MyCharacterController.position + new Vector3(0.0f, 0.5f, 0.0f));
+              if (__instance.state == scrFishingMaster.States.Pullup)
+                __instance.line.SetPosition(1, __instance.hook.transform.position);
+            }
+            else
+            {
+              __instance.line.enabled = false;
+            }
+
+            if (__instance.state == scrFishingMaster.States.Pullup)
+            {
+              var flag = true;
+              if (stateStart)
+              {
+                __instance.Invoke("checkIfLastFish", 0f);
+                pullupAnimationStartPoint = MyCharacterController.position;
+                __instance.pullupAnimationTimer = 0.0f;
+                __instance.animator.SetTexture(__instance.txrFisherPulling);
+                __instance.animatorArray.SetAnimationStrip(__instance.txrFisherPulling.name);
+                __instance.StartCoroutine("HideVignette");
+                var gameObject = UnityEngine.Object.Instantiate<GameObject>(__instance.audioOneShot);
+                gameObject.transform.position = MyCharacterController.position;
+                gameObject.GetComponent<scrAudioOneShot>().setup(__instance.audioClipsPullUp, 1f, 1f);
+                characterController.blockMovementInput = true;
+                characterController.state = MyCharacterController.States.Normal;
+                characterController.requestNewVelocity(new Vector3(0.0f, 0.0f, 0.0f));
+                characterController.Motor.ForceUnground();
+                characterController.playerAnimationManager.meshRenderer.enabled = false;
+                __instance.hook.SetActive(true);
+                __instance.hook.transform.position = pullupAnimationStartPoint;
+                camera._targetVerticalAngle = 0.0f;
+                camera.RequestSmooth();
+                camera.SlerpEverything(4f);
+                if (__instance.currentFish >= 0)
                 {
-                    textbox.camIndex = 2;
-                    if (blockedLog) return false;
-                    Plugin.BepinLogger.LogInfo($"Reward blocked: Need all 5 fish of {level}");
-                    blockedLog = true;
-                    return false;
+                  __instance.hookFish.GetComponent<scrAnimateTextureArray>()
+                    .SetAnimationStripAndName(__instance.fishTextures[__instance.currentFish].name);
                 }
+                else
+                {
+                  __instance.currentNonFish = Random.Range(0, __instance.noCatchTextures.Count - 1);
+                  __instance.hookFish.GetComponent<scrAnimateTextureArray>()
+                    .SetAnimationStripAndName(__instance.noCatchTextures[__instance.currentNonFish].name);
+                }
+
+                stateStart = false;
+              }
+
+              __instance.pullupAnimationTimer += Time.deltaTime / __instance.pullupAnimationDuration;
+              __instance.hook.transform.position = new Vector3(
+                pullupAnimationStartPoint.x +
+                (__instance.pullupAnimationEndPoint.transform.position.x - pullupAnimationStartPoint.x) *
+                __instance.pullupAnimationLateral.Evaluate(__instance.pullupAnimationTimer),
+                pullupAnimationStartPoint.y +
+                (__instance.pullupAnimationEndPoint.transform.position.y - pullupAnimationStartPoint.y) *
+                __instance.pullupAnimationVertical.Evaluate(__instance.pullupAnimationTimer),
+                pullupAnimationStartPoint.z +
+                (__instance.pullupAnimationEndPoint.transform.position.z - pullupAnimationStartPoint.z) *
+                __instance.pullupAnimationLateral.Evaluate(__instance.pullupAnimationTimer));
+              __instance.hook.transform.LookAt(camera.transform);
+              characterController.transform.position = __instance.pullupAnimationEndPoint.transform.position;
+              characterController.requestNewPosition(__instance.pullupAnimationEndPoint.transform.position);
+              characterController.blockMovement = true;
+              __instance.characterShadow.transform.position = __instance.hook.transform.position;
+              if ((double)__instance.pullupAnimationTimer >= 1.0)
+              {
+                __instance.characterShadow.transform.localPosition = characterShadowHomePos;
+                characterController.blockMovement = false;
+                characterController.requestNewVelocity(new Vector3(0.0f, 1f, 0.0f));
+                characterController.playerAnimationManager.DoFlip(1f, 4f, false);
+                if (__instance.currentFish >= 0)
+                {
+                  if (!textbox.isOn)
+                    __instance.animatorArray.SetAnimationStrip(__instance.txrFisherGotFish.name);
+                  __instance.fisherNewFish.SetActive(true);
+                  __instance.fisherNewFish.GetComponent<Renderer>().sharedMaterial
+                    .SetTexture(textureType, __instance.fishTextures[__instance.currentFish]);
+                  textboxTrigger.conversation = __instance.oldCatchConversation;
+                  textboxTrigger.isNewConversation = true;
+                  for (var index = 0; index < worldData.fishFlags.Count; ++index)
+                    if (worldData.fishFlags[index] == "fish" + __instance.currentFish.ToString())
+                      flag = false;
+                  if (flag)
+                  {
+                    worldData.fishFlags.Add("fish" + __instance.currentFish.ToString());
+                    worldData.SaveWorld();
+                    textboxTrigger.conversation = "fish" + __instance.currentFish.ToString();
+                    __instance.seaFish[__instance.currentFish].JumpFreely = false;
+                    __instance.HUD.Show(4f);
+                    var gameObject = UnityEngine.Object.Instantiate<GameObject>(__instance.audioOneShot);
+                    gameObject.transform.position = MyCharacterController.position;
+                    gameObject.GetComponent<scrAudioOneShot>().setup(__instance.audioClipsNewFish, 1f, 1f);
+                    __instance.animator.SetTexture(__instance.txrFisherGotFish);
+                    __instance.animatorArray.SetAnimationStrip(__instance.txrFisherGotFish.name);
+                    textboxTrigger.Initiate();
+                  }
+                }
+                else
+                {
+                  if (!textbox.isOn)
+                    __instance.animatorArray.SetAnimationStrip(__instance.txrFisherGotWeird.name);
+                  textboxTrigger.conversation = __instance.noCatchConversation;
+                  textboxTrigger.isNewConversation = true;
+                  __instance.fisherNewFish.SetActive(true);
+                  __instance.fisherNewFish.GetComponent<Renderer>().sharedMaterial
+                    .SetTexture(textureType, __instance.noCatchTextures[__instance.currentNonFish]);
+                }
+
+                if (!textbox.isOn || textbox.isDying)
+                  characterController.blockMovementInput = false;
+                characterController.state = MyCharacterController.States.Normal;
+                characterController.Motor.ForceUnground();
+                characterController.playerAnimationManager.meshRenderer.enabled = true;
+                __instance.hook.SetActive(false);
+                __instance.Invoke("checkIfLastFish", 0f);
+                __instance.state = scrFishingMaster.States.Inactive;
+                stateStart = true;
+              }
             }
-            else if (!allFishCollected && scrWorldSaveDataContainer.instance.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf
-                     && textbox.isOn && textbox.characterName is "Fischer" or "フィッシャー" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
+
+            if (!textboxTrigger.isNewConversation && !textbox.isOn)
             {
-                textbox.camIndex = 2;
-                textbox.textMesh.text = $"You need all 5 Fish of {_currentLevelName} to obtain my reward!\nYou have {_currentFishCount}/5 for this level!";
-                textbox.textMesh.maxVisibleCharacters = 99;
-                if (GameInput.GetButtonDown("Action"))
-                    textbox.EndConversation();
-                return false;
-            } 
-            if (scrWorldSaveDataContainer.instance.fishFlags.Count < __instance.fishLocations.Count && scrWorldSaveDataContainer.instance.coinFlags.Contains("fishing"))
-            {
-                __instance.gotCoin = false;
-                return true;
+              __instance.animator.SetTexture(__instance.txrFisherIdle);
+              __instance.animatorArray.SetAnimationStrip(__instance.txrFisherIdle.name);
+              __instance.fisherNewFish.SetActive(false);
+              textboxTrigger.conversation = "FishsanityFishing";
+              if (!allFishCollected)
+                textboxTrigger.conversation = "FishsanityNotEnough";
+              textboxTrigger.isNewConversation = true;
+              textboxTrigger.conversationStarted = false;
+              __instance.gotCoin = false;
             }
-            return true;
+
+            if (!textbox.isOn)
+            {
+              answerFix1 = false;
+              answerFix2 = false;
+            }
+            
+            if (textbox.isOn && textbox.conversation == "FishsanityNotEnough")
+            {
+              textbox.canWaklaway = true;
+              if (currentBox == 0 && !answerFix1)
+              {
+                textbox.conversationLocalized[0] = $"You need 5 {_currentLevelName} fish to get my reward.\nYou currently found {_currentFishCount}/5!";
+                answerFix1 = true;
+              }
+
+              if (currentBox == 1 && !answerFix2)
+              {
+                FishScout(_currentScoutID);
+                textbox.conversationLocalized[1] = $"My reward is '{_itemName}' for {_playerName} I heard it's {_classification}!";
+                answerFix2 = true;
+              }
+            }
+            
+            if (textbox.isOn && textbox.conversation == "FishsanityFinal")
+            {
+              textbox.canWaklaway = true;
+              if (currentBox == 0 && !answerFix1)
+              {
+                textbox.conversationLocalized[0] = $"You got all 5 {_currentLevelName} fish!";
+                answerFix1 = true;
+              }
+
+              if (currentBox == 1 && !answerFix2)
+              {
+                FishScout(_currentScoutID, false);
+                textbox.conversationLocalized[1] = $"As promised you will get '{_itemName}' for {_playerName}!";
+                answerFix2 = true;
+              }
+            }
+            
+            if (textbox.isOn && textbox.conversation == "FishsanityObtained")
+            {
+              textbox.canWaklaway = true;
+              if (currentBox == 0 && !answerFix1)
+              {
+                FishScout(_currentScoutID, false);
+                textbox.conversationLocalized[0] = $"You already obtained my '{_itemName}' for {_playerName}!";
+                answerFix1 = true;
+              }
+            }
+
+            if (worldData.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf &&
+                !textbox.isOn && allFishCollected)
+            {
+              if (!__instance.finalConversation)
+              {
+                __instance.fisherNewFish.SetActive(false);
+                textboxTrigger.conversation = "FishsanityFinal";
+                textboxTrigger.isNewConversation = true;
+                textboxTrigger.conversationStarted = false;
+                __instance.finalConversation = true;
+              }
+
+              for (var index = 0; index < worldData.coinFlags.Count; ++index)
+                if (worldData.coinFlags[index] == "fishing")
+                  __instance.gotCoin = true;
+            }
+
+            if (textbox.isOn && textbox.conversation == "FishsanityFinal" && textbox.isDying)
+            {
+              if (!__instance.gotCoin)
+              {
+                UnityEngine.Object.Instantiate<GameObject>(__instance.coinObtainer).GetComponent<scrObtainCoin>().myFlag =
+                  "fishing";
+                __instance.gotCoin = true;
+              }
+            }
+
+            if (__instance.gotCoin && allFishCollected)
+            {
+              textboxTrigger.conversation = "FishsanityObtained";
+            }
+              
+            if (__instance.gotCoin && !textbox.isOn && __instance.state == scrFishingMaster.States.Inactive)
+            {
+              hoptimer += Time.deltaTime / 1.5f;
+              if (hoptimer > 2.0)
+              {
+                hoptimer = 0.0f;
+                __instance.hopper.Hop();
+                __instance.animator.SetTexture(__instance.txrFisherDance);
+                __instance.animator.SetFrameDuration(1.5f);
+                __instance.animatorArray.SetAnimationStrip(__instance.txrFisherDance.name);
+                __instance.animatorArray.SetFrameDuration(1.5f);
+                if (__instance.animator.frame == 0)
+                {
+                  __instance.animator.SetFrameNumber(1);
+                  __instance.animatorArray.FrameOffset = 1;
+                }
+                else
+                {
+                  __instance.animator.SetFrameNumber(0);
+                  __instance.animatorArray.FrameOffset = 0;
+                }
+              }
+            }
+
+            __instance.animatorArray.transform.eulerAngles =
+              new Vector3(0.0f, camera.transform.eulerAngles.y, 0.0f);
+            
+            return false;
         }
 
     private static bool CheckAllFish(string currentLevel)
@@ -93,26 +430,32 @@ public class FishingPatch
                 case "Hairball City":
                     amountOfFish = ItemHandler.HairballFishAmount;
                     _currentLevelName = "Hairball City";
+                    _currentScoutID = 7;
                     break;
                 case "Trash Kingdom":
                     amountOfFish = ItemHandler.TurbineFishAmount;
                     _currentLevelName = "Turbine Town";
+                    _currentScoutID = 17;
                     break;
                 case "Salmon Creek Forest":
                     amountOfFish = ItemHandler.SalmonFishAmount;
                     _currentLevelName = "Salmon Creek Forest";
+                    _currentScoutID = 40;
                     break;
                 case "Public Pool":
                     amountOfFish = ItemHandler.PoolFishAmount;
                     _currentLevelName = "Public Pool";
+                    _currentScoutID = 48;
                     break;
                 case "The Bathhouse":
                     amountOfFish = ItemHandler.BathFishAmount;
                     _currentLevelName = "Bathhouse";
+                    _currentScoutID = 63;
                     break;
                 case "Tadpole inc":
                     amountOfFish = ItemHandler.TadpoleFishAmount;
                     _currentLevelName = "Tadpole HQ";
+                    _currentScoutID = 72;
                     break;
                 default:
                     return false;
@@ -121,4 +464,85 @@ public class FishingPatch
             return amountOfFish >= 5;
         }
     }
+    
+    private static void FishScout(int scoutID, bool hint = true)
+        {
+            string classification;
+            var scoutedItem = ArchipelagoClient.ScoutLocation(scoutID, hint);
+            var itemName = scoutedItem.ItemName; 
+            if (scoutedItem.Flags.HasFlag(ItemFlags.Advancement))
+            {
+                classification = "Important";
+            }
+            else if (scoutedItem.Flags.HasFlag(ItemFlags.NeverExclude))
+            {
+                classification = "Useful";
+            } else if (scoutedItem.Flags.HasFlag(ItemFlags.Trap))
+            {
+                var trapStrings = new[]
+                {
+                    "SUPER IMPORTANT",
+                    "like a good deal",
+                    "very important trust me",
+                    "like the best item",
+                    "a 1-Time Offer!",
+                    "one of those 'You Need This!' items",
+                    "RARE LOOT!",
+                    "Legendary!",
+                    "very helpful... I promise!",
+                    "Absolutely NOT a trap",
+                    "A MUST PICK UP!",
+                    "loved among collector's... hehe",
+                    "a very funny item"
+                };
+                var randomIndex = Random.Range(0, trapStrings.Length);
+                classification = trapStrings[randomIndex];
+
+                if (scoutedItem.IsReceiverRelatedToActivePlayer)
+                {
+                    var fakeNames = new[]
+                    {
+                        "Coin ?",
+                        "Coin :)",
+                        "Shiny Object",
+                        "Pon",
+                        "Cassette ?",
+                        "Coin",
+                        "Rupee",
+                        "Coin >:(",
+                        "A fabulous flower",
+                        "COIN!",
+                        "CASSETTE!",
+                        "REDACTED",
+                        "Cool Item(insert cool smiley)",
+                        "A",
+                        "Noic",
+                        "Mixtape",
+                        "Home Cassette",
+                        "Tickets for a concert",
+                    };
+                    var randomFakeName = Random.Range(0, fakeNames.Length);
+                    itemName = fakeNames[randomFakeName];
+                }
+                else
+                {
+                    var fakeNames = new[]
+                    {
+                        "Hookshot",
+                    };
+                    var randomFakeName = Random.Range(0, fakeNames.Length);
+                    //itemName = fakeNames[randomFakeName]; Not sure if I should do that, maybe later
+                }
+            } else if (scoutedItem.Flags.HasFlag(ItemFlags.None))
+            {
+                classification = "Useless";
+            }
+            else
+            {
+              classification = "Unknown";
+            }
+            _classification = classification;
+            _itemName = itemName;
+            _playerName = scoutedItem.Player.Name;
+        }
 }
