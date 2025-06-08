@@ -1760,18 +1760,6 @@ public class ArchipelagoMenu : MonoBehaviour
         SavedData.Instance.CassetteSpoiler = _cassetteSpoiler;
         SavedData.Instance.SeasonalThemes = _seasonalThemes;
         SavedData.Instance.SkipPickup = _skipPickup;
-        // SavedData.Instance.NotificationBoxColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxColor);
-        // SavedData.Instance.NotificationBoxHintColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxHintColor);
-        // SavedData.Instance.NotificationAccentColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationAccentColor);
-        SavedData.Instance.NotificationProgColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationProgColor);
-        SavedData.Instance.NotificationUsefulColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationUsefulColor);
-        SavedData.Instance.NotificationTrapColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTrapColor);
-        SavedData.Instance.NotificationFillerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationFillerColor);
-        SavedData.Instance.NotificationTimerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTimerColor);
-        SavedData.Instance.NotificationPlayerNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationPlayerNameColor);
-        SavedData.Instance.NotificationItemNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationItemNameColor);
-        SavedData.Instance.NotificationHintStateColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationHintStateColor);
-        SavedData.Instance.NotificationLocationNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationLocationNameColor);
         if (_rememberMe)
         {
             SavedData.Instance.SaveSettings();
@@ -1861,18 +1849,6 @@ public class ArchipelagoMenu : MonoBehaviour
         SavedData.Instance.CassetteSpoiler = _cassetteSpoiler;
         SavedData.Instance.SeasonalThemes = _seasonalThemes;
         SavedData.Instance.SkipPickup = _skipPickup;
-        // SavedData.Instance.NotificationBoxColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxColor);
-        // SavedData.Instance.NotificationBoxHintColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationBoxHintColor);
-        // SavedData.Instance.NotificationAccentColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationAccentColor);
-        SavedData.Instance.NotificationProgColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationProgColor);
-        SavedData.Instance.NotificationUsefulColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationUsefulColor);
-        SavedData.Instance.NotificationTrapColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTrapColor);
-        SavedData.Instance.NotificationFillerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationFillerColor);
-        SavedData.Instance.NotificationTimerColor = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationTimerColor);
-        SavedData.Instance.NotificationPlayerNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationPlayerNameColor);
-        SavedData.Instance.NotificationItemNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationItemNameColor);
-        SavedData.Instance.NotificationHintStateColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationHintStateColor);
-        SavedData.Instance.NotificationLocationNameColor = ColorUtility.ToHtmlStringRGB(NotificationManager.notificationLocationNameColor);
         if (_rememberMe)
         {
             SavedData.Instance.SaveSettings();

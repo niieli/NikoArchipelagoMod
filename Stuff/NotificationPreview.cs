@@ -15,12 +15,14 @@ public class NotificationPreview : MonoBehaviour
     private TextMeshProUGUI redValue, redValueShadow, greenValue, 
         greenValueShadow, blueValue, blueValueShadow, durationValue, durationValueShadow;
     private Color tempItemColor, tempPlayerColor, tempHintItemColor, tempHintPlayerColor, tempHintStateColor,
-        tempProgColor, tempUsefulColor, tempTrapColor, tempFillerColor, tempTimerColor;
+        tempProgColor, tempUsefulColor, tempTrapColor, tempFillerColor, tempTimerColor, tempHintSenderColor;
     private Button applyButton, closeButton, openButton, resetButton;
     private GameObject panel, panelPrevention;
     private Image noteMaterial, noteHintMaterial, noteIcon, noteHintIcon;
     private bool isHint;
     private ScrollingEffect noteScrollEffect, noteHintScrollEffect;
+    private readonly SavedData.NotificationColors tempColors = new();
+    private float tempDuration;
 
     private void Start()
     {
@@ -86,11 +88,13 @@ public class NotificationPreview : MonoBehaviour
         rSlider.value = tempProgColor.r;
         gSlider.value = tempProgColor.g;
         bSlider.value = tempProgColor.b;
-    }
-
-    private void Update()
-    {
-
+        previewTimerColor.color = tempColors.timerColor;
+        previewText.text = $"<color=#B400B7></color>You sent <color=#{ColorUtility.ToHtmlStringRGB(tempColors.itemColor)}>Important Item</color> to " +
+                           $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.playerNameColor)}>Frog King</color>";
+        previewHintText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.playerNameColor)}>Frog King</color>'s " +
+                               $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.itemColor)}>Important Item</color> " +
+                               $"<size=22>at</size> <color=#{ColorUtility.ToHtmlStringRGB(tempColors.hintSenderColor)}>Assistant #22</color>'s <size=22>world</size>\n" +
+                               $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.hintStateColor)}>(Priority)</color>";
     }
 
     private void UpdateColorPreview(float _)
@@ -140,10 +144,11 @@ public class NotificationPreview : MonoBehaviour
                 previewHintTimerColor.color = c;
                 tempTimerColor = c;
                 previewTimerColor.color = c;
+                UpdatePreview(tempDuration);
                 break;
-            case 5 when isHint:
-                dropdownNotification.value = 0;
-                break;
+            // case 5 when isHint: // For the time being not needed
+            //     dropdownNotification.value = 0;
+            //     break;
             case 5:
             {
                 //Item Color
@@ -152,9 +157,9 @@ public class NotificationPreview : MonoBehaviour
                                    $"<color=#{ColorUtility.ToHtmlStringRGB(tempPlayerColor)}>Frog King</color>";
                 break;
             }
-            case 6 when isHint:
-                dropdownNotification.value = 0;
-                break;
+            // case 6 when isHint: // For the time being not needed
+            //     dropdownNotification.value = 0;
+            //     break;
             case 6:
             {
                 //Player Color
@@ -166,34 +171,27 @@ public class NotificationPreview : MonoBehaviour
             //HintState Color
             case 7 when isHint:
                 tempHintStateColor = c;
-                previewHintText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(tempHintPlayerColor)}>Frog King</color>'s " +
-                                       $"<color=#{ColorUtility.ToHtmlStringRGB(tempHintItemColor)}>Important Item</color>\n" +
+                previewHintText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(tempPlayerColor)}>Frog King</color>'s " +
+                                       $"<color=#{ColorUtility.ToHtmlStringRGB(tempItemColor)}>Important Item</color> " +
+                                       $"<size=22>at</size> <color=#{ColorUtility.ToHtmlStringRGB(tempHintSenderColor)}>Assistant #22</color>'s <size=22>world</size>\n" +
                                        $"<color=#{ColorUtility.ToHtmlStringRGB(c)}>(Priority)</color>";
                 break;
             case 7:
                 dropdownNotification.value = 1;
                 break;
-            //Item(Hint) Color
+            //HintSender Color
             case 8 when isHint:
-                tempHintItemColor = c;
-                previewHintText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(tempHintPlayerColor)}>Frog King</color>'s " +
-                                       $"<color=#{ColorUtility.ToHtmlStringRGB(c)}>Important Item</color>\n" +
+                tempHintSenderColor = c;
+                previewHintText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(tempPlayerColor)}>Frog King</color>'s " +
+                                       $"<color=#{ColorUtility.ToHtmlStringRGB(tempItemColor)}>Important Item</color> " +
+                                       $"<size=22>at</size> <color=#{ColorUtility.ToHtmlStringRGB(c)}>Assistant #22</color>'s <size=22>world</size>\n" +
                                        $"<color=#{ColorUtility.ToHtmlStringRGB(tempHintStateColor)}>(Priority)</color>";
                 break;
             case 8:
                 dropdownNotification.value = 1;
                 break;
-            //Player(Hint) Color
-            case 9 when isHint:
-                tempHintPlayerColor = c;
-                previewHintText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(c)}>Frog King</color>'s " +
-                                       $"<color=#{ColorUtility.ToHtmlStringRGB(tempHintItemColor)}>Important Item</color>\n" +
-                                       $"<color=#{ColorUtility.ToHtmlStringRGB(tempHintStateColor)}>(Priority)</color>";
-                break;
-            case 9:
-                dropdownNotification.value = 1;
-                break;
         }
+        tempColors.SetByIndex(dropdown.value, c);
     }
 
     private void UpdateOptions(int _)
@@ -201,10 +199,6 @@ public class NotificationPreview : MonoBehaviour
         switch (dropdown.value)
         {
             case 0:
-                //Accent(Prog) Color
-                rSlider.value = tempProgColor.r;
-                gSlider.value = tempProgColor.g;
-                bSlider.value = tempProgColor.b;
                 noteMaterial.material = Plugin.ProgNotificationTexture;
                 noteHintMaterial.material = Plugin.ProgNotificationTexture;
                 noteIcon.sprite = Plugin.ApProgressionSprite;
@@ -213,10 +207,6 @@ public class NotificationPreview : MonoBehaviour
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;
             case 1:
-                //Accent(Useful) Color
-                rSlider.value = tempUsefulColor.r;
-                gSlider.value = tempUsefulColor.g;
-                bSlider.value = tempUsefulColor.b;
                 noteMaterial.material = Plugin.UsefulNotificationTexture;
                 noteHintMaterial.material = Plugin.UsefulNotificationTexture;
                 noteIcon.sprite = Plugin.ApUsefulSprite;
@@ -225,10 +215,6 @@ public class NotificationPreview : MonoBehaviour
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;
             case 2:
-                //Accent(Trap) Color
-                rSlider.value = tempTrapColor.r;
-                gSlider.value = tempTrapColor.g;
-                bSlider.value = tempTrapColor.b;
                 noteMaterial.material = Plugin.TrapNotificationTexture;
                 noteHintMaterial.material = Plugin.TrapNotificationTexture;
                 noteIcon.sprite = Plugin.ApTrap2Sprite;
@@ -237,10 +223,6 @@ public class NotificationPreview : MonoBehaviour
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;
             case 3:
-                //Accent(Filler) Color
-                rSlider.value = tempFillerColor.r;
-                gSlider.value = tempFillerColor.g;
-                bSlider.value = tempFillerColor.b;
                 noteMaterial.material = Plugin.FillerNotificationTexture;
                 noteHintMaterial.material = Plugin.FillerNotificationTexture;
                 noteIcon.sprite = Plugin.ApFillerSprite;
@@ -248,43 +230,12 @@ public class NotificationPreview : MonoBehaviour
                 noteScrollEffect.Invoke("Start",0f);
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;
-            case 4:
-                //Timer Color
-                rSlider.value = tempTimerColor.r;
-                gSlider.value = tempTimerColor.g;
-                bSlider.value = tempTimerColor.b;
-                break;
-            case 5:
-                //Item Color
-                rSlider.value = tempItemColor.r;
-                gSlider.value = tempItemColor.g;
-                bSlider.value = tempItemColor.b;
-                break;
-            case 6:
-                //Player Color
-                rSlider.value = tempPlayerColor.r;
-                gSlider.value = tempPlayerColor.g;
-                bSlider.value = tempPlayerColor.b;
-                break;
-            case 7:
-                //Hint State Color
-                rSlider.value = tempHintStateColor.r;
-                gSlider.value = tempHintStateColor.g;
-                bSlider.value = tempHintStateColor.b;
-                break;
-            case 8:
-                //Item(Hint) Color
-                rSlider.value = tempHintItemColor.r;
-                gSlider.value = tempHintItemColor.g;
-                bSlider.value = tempHintItemColor.b;
-                break;
-            case 9:
-                //Player(Hint) Color
-                rSlider.value = tempHintPlayerColor.r;
-                gSlider.value = tempHintPlayerColor.g;
-                bSlider.value = tempHintPlayerColor.b;
-                break;
         }
+        Color c = tempColors.GetByIndex(_);
+        rSlider.value = c.r;
+        gSlider.value = c.g;
+        bSlider.value = c.b;
+        UpdatePreview(tempDuration);
     }
 
     private void UpdateNotification(int _)
@@ -312,6 +263,7 @@ public class NotificationPreview : MonoBehaviour
         durationValue.text = durationSlider.value.ToString("0.00")+ "s";
         StopAllCoroutines();
         StartCoroutine(PreviewTimer(duration));
+        tempDuration = duration;
     }
 
     private IEnumerator PreviewTimer(float duration)
@@ -330,13 +282,21 @@ public class NotificationPreview : MonoBehaviour
 
     public void ApplySettings()
     {
-        //SavedData.Instance.NotificationTimerColor = ColorUtility.ToHtmlStringRGBA(colorPreview.color);
         tempProgColor.a = 0.7215f;
         tempUsefulColor.a = 0.7215f;
         tempTrapColor.a = 0.7215f;
         tempFillerColor.a = 0.7215f;
         tempTimerColor.a = 0.79f;
         SavedData.Instance.NotificationDuration = durationSlider.value;
+        SavedData.Instance.NotificationProgColor = ColorUtility.ToHtmlStringRGB(tempColors.progColor);
+        SavedData.Instance.NotificationUsefulColor = ColorUtility.ToHtmlStringRGB(tempColors.usefulColor);
+        SavedData.Instance.NotificationTrapColor = ColorUtility.ToHtmlStringRGB(tempColors.trapColor);
+        SavedData.Instance.NotificationFillerColor = ColorUtility.ToHtmlStringRGB(tempColors.fillerColor);
+        SavedData.Instance.NotificationTimerColor = ColorUtility.ToHtmlStringRGB(tempColors.timerColor);
+        SavedData.Instance.NotificationItemNameColor = ColorUtility.ToHtmlStringRGB(tempColors.itemColor);
+        SavedData.Instance.NotificationPlayerNameColor = ColorUtility.ToHtmlStringRGB(tempColors.playerNameColor);
+        SavedData.Instance.NotificationHintSenderColor = ColorUtility.ToHtmlStringRGB(tempColors.hintSenderColor);
+        SavedData.Instance.NotificationHintStateColor = ColorUtility.ToHtmlStringRGB(tempColors.hintStateColor);
         SavedData.Instance.SaveSettings();
     }
 
@@ -363,16 +323,22 @@ public class NotificationPreview : MonoBehaviour
 
     private void LoadSavedSettings()
     {
+        dropdown.value = 0;
         durationSlider.value = SavedData.Instance.NotificationDuration;
         if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationProgColor, out var progColor))
         {
+            tempColors.progColor = progColor;
             tempProgColor.r = progColor.r;
             tempProgColor.g = progColor.g;
             tempProgColor.b = progColor.b;
+            rSlider.value = progColor.r;
+            gSlider.value = progColor.g;
+            bSlider.value = progColor.b;
         }
 
         if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationUsefulColor, out var usefulColor))
         {
+            tempColors.usefulColor = usefulColor;
             tempUsefulColor.r = usefulColor.r;
             tempUsefulColor.g = usefulColor.g;
             tempUsefulColor.b = usefulColor.b;
@@ -380,6 +346,7 @@ public class NotificationPreview : MonoBehaviour
 
         if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationTrapColor, out var trapColor))
         {
+            tempColors.trapColor = trapColor;
             tempTrapColor.r = trapColor.r;
             tempTrapColor.g = trapColor.g;
             tempTrapColor.b = trapColor.b;
@@ -387,6 +354,7 @@ public class NotificationPreview : MonoBehaviour
 
         if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationFillerColor, out var fillerColor))
         {
+            tempColors.fillerColor = fillerColor;
             tempFillerColor.r = fillerColor.r;
             tempFillerColor.g = fillerColor.g;
             tempFillerColor.b = fillerColor.b;
@@ -394,48 +362,45 @@ public class NotificationPreview : MonoBehaviour
 
         if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationTimerColor, out var timerColor))
         {
+            tempColors.timerColor = timerColor;
             tempTimerColor.r = timerColor.r;
             tempTimerColor.g = timerColor.g;
             tempTimerColor.b = timerColor.b;
         }
-
-        if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationPlayerNameColor,
-                out var playerNameColor))
-        {
-            tempPlayerColor.r = playerNameColor.r;
-            tempPlayerColor.g = playerNameColor.g;
-            tempPlayerColor.b = playerNameColor.b;
-        }
-
+        
         if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationItemNameColor, out var itemNameColor))
         {
+            tempColors.itemColor = itemNameColor;
             tempItemColor.r = itemNameColor.r;
             tempItemColor.g = itemNameColor.g;
             tempItemColor.b = itemNameColor.b;
         }
 
-        // if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationHintPlayerNameColor,
-        //         out var hintPlayerNameColor))
-        // {
-        //     tempHintPlayerColor.r = hintPlayerNameColor.r;
-        //     tempHintPlayerColor.g = hintPlayerNameColor.g;
-        //     tempHintPlayerColor.b = hintPlayerNameColor.b;
-        // }
-        //
-        // if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationHintItemNameColor,
-        //         out var hintItemNameColor))
-        // {
-        //     tempHintItemColor.r = hintItemNameColor.r;
-        //     tempHintItemColor.g = hintItemNameColor.g;
-        //     tempHintItemColor.b = hintItemNameColor.b;
-        // }
+        if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationPlayerNameColor,
+                out var playerNameColor))
+        {
+            tempColors.playerNameColor = playerNameColor;
+            tempPlayerColor.r = playerNameColor.r;
+            tempPlayerColor.g = playerNameColor.g;
+            tempPlayerColor.b = playerNameColor.b;
+        }
 
         if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationHintStateColor,
                 out var hintStateColor))
         {
+            tempColors.hintStateColor = hintStateColor;
             tempHintStateColor.r = hintStateColor.r;
             tempHintStateColor.g = hintStateColor.g;
             tempHintStateColor.b = hintStateColor.b;
+        }
+        
+        if (ColorUtility.TryParseHtmlString("#" + SavedData.Instance.NotificationHintSenderColor,
+                out var hintSenderColor))
+        {
+            tempColors.hintSenderColor = hintSenderColor;
+            tempHintSenderColor.r = hintSenderColor.r;
+            tempHintSenderColor.g = hintSenderColor.g;
+            tempHintSenderColor.b = hintSenderColor.b;
         }
         tempProgColor.a = 0.7215f;
         tempUsefulColor.a = 0.7215f;
@@ -446,7 +411,7 @@ public class NotificationPreview : MonoBehaviour
 
     private void ResetSettings()
     {
-        durationSlider.value = 3.5f;
+        durationSlider.value = 3f;
         tempProgColor = new Color(0.976f, 0.54f, 1, 0.72f);
         tempUsefulColor = new Color(0.46f, 0.427f, 1, 0.72f);
         tempTrapColor = new Color(1, 0.75f, 0.41f, 0.72f);
@@ -456,7 +421,38 @@ public class NotificationPreview : MonoBehaviour
         tempItemColor = new Color(1f, 0.4f, 0.4f);
         tempHintPlayerColor = new Color(0.4f, 0.60f, 1);
         tempHintItemColor = new Color(1f, 0.4f, 0.4f);
+        tempHintSenderColor = new Color(0.85f, 0.94f, 0.4f);
         tempHintStateColor = new Color(0.7058824f, 0, 0.7176471f);
+        
+        tempColors.progColor = tempProgColor;
+        tempColors.usefulColor = tempUsefulColor;
+        tempColors.trapColor = tempTrapColor;
+        tempColors.fillerColor = tempFillerColor;
+        tempColors.timerColor = tempTimerColor;
+        tempColors.playerNameColor = tempPlayerColor;
+        tempColors.itemColor = tempItemColor;
+        tempColors.hintStateColor = tempHintStateColor;
+        tempColors.hintSenderColor = tempHintSenderColor;
+
+        if (dropdown.value == 0)
+        {
+            dropdown.value = 1;
+            tempColors.SetByIndex(dropdown.value, tempUsefulColor);
+        }
+        else
+        {
+            dropdown.value = 0;
+            tempColors.SetByIndex(dropdown.value, tempProgColor);
+        }
+        
+        previewTimerColor.color = tempColors.timerColor;
+        previewText.text = $"<color=#B400B7></color>You sent <color=#{ColorUtility.ToHtmlStringRGB(tempColors.itemColor)}>Important Item</color> to " +
+                           $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.playerNameColor)}>Frog King</color>";
+        previewHintText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.playerNameColor)}>Frog King</color>'s " +
+                               $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.itemColor)}>Important Item</color> " +
+                               $"<size=22>at</size> <color=#{ColorUtility.ToHtmlStringRGB(tempColors.hintSenderColor)}>Assistant #22</color>'s <size=22>world</size>\n" +
+                               $"<color=#{ColorUtility.ToHtmlStringRGB(tempColors.hintStateColor)}>(Priority)</color>";
+        dropdown.value = 0;
         //notificationLocationNameColor = new Color(0.5566038f, 0.5566038f, 0.5566038f);
     }
 }

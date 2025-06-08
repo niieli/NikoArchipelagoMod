@@ -44,6 +44,7 @@ public class NotificationManager : MonoBehaviour
     public static Color notificationItemNameColor = new(1f, 0.4f, 0.4f);
     public static Color notificationHintPlayerNameColor = new(0.4f, 0.60f, 1);
     public static Color notificationHintItemNameColor = new(1f, 0.4f, 0.4f);
+    public static Color notificationHintSenderColor = new(0.85f, 0.94f, 0.4f);
     public static Color notificationHintStateColor = new(0.7058824f, 0, 0.7176471f);
     public static Color notificationLocationNameColor = new(0.5566038f, 0.5566038f, 0.5566038f);
 
@@ -53,14 +54,11 @@ public class NotificationManager : MonoBehaviour
         _notificationListFake = transform.Find("FakePanel");
         _notificationListUICanvasGroup = _notificationListUI.gameObject.GetComponent<CanvasGroup>();
         instance = this;
-        LoadColors();
+        LoadSettings();
     }
 
     public static void DefaultColors()
     {
-        // notificationBoxColor = Color.white;
-        // notificationBoxHintColor = new Color(0.3624749f, 0.3069153f, 0.5377358f, 1);
-        // notificationAccentColor = new Color(1, 0.54f, 0.76f, 0.72f);
         notificationProgColor = new Color(0.976f, 0.54f, 1, 0.72f);
         notificationUsefulColor = new Color(0.46f, 0.427f, 1, 0.72f);
         notificationTrapColor = new Color(1, 0.75f, 0.41f, 0.72f);
@@ -70,20 +68,16 @@ public class NotificationManager : MonoBehaviour
         notificationItemNameColor = new Color(1f, 0.4f, 0.4f);
         notificationHintPlayerNameColor = new(0.4f, 0.60f, 1);
         notificationHintItemNameColor = new(1f, 0.4f, 0.4f);
+        notificationHintSenderColor = new(0.85f, 0.94f, 0.4f);
         notificationHintStateColor = new Color(0.7058824f, 0, 0.7176471f);
         notificationLocationNameColor = new Color(0.5566038f, 0.5566038f, 0.5566038f);
     }
     
-    private void LoadColors()
+    private void LoadSettings()
     {
         if (File.Exists(jsonFilePath))
         {
-            // if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationBoxColor, out var boxColor))
-            //     notificationBoxColor = boxColor;
-            // if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationBoxHintColor, out var boxHintColor))
-            //     notificationBoxHintColor = boxHintColor;
-            // if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationAccentColor, out var accentColor))
-            //     notificationAccentColor = accentColor;
+            notificationDuration = SavedData.Instance.NotificationDuration;
             if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationProgColor, out var progColor))
                 notificationProgColor = progColor;
             if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationUsefulColor, out var usefulColor))
@@ -98,10 +92,8 @@ public class NotificationManager : MonoBehaviour
                 notificationPlayerNameColor = playerNameColor;
             if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationItemNameColor, out var itemNameColor))
                 notificationItemNameColor = itemNameColor;
-            //if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationHintPlayerNameColor, out var hintPlayerNameColor))
-                //notificationHintPlayerNameColor = hintPlayerNameColor;
-            //if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationHintItemNameColor, out var hintItemNameColor))
-                //notificationHintItemNameColor = hintItemNameColor;
+            if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationHintSenderColor, out var hintSenderColor))
+                notificationHintSenderColor = hintSenderColor;
             if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationHintStateColor, out var hintStateColor))
                 notificationHintStateColor = hintStateColor;
             if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationLocationNameColor, out var locationNameColor))
@@ -155,8 +147,11 @@ public class NotificationManager : MonoBehaviour
         if (notificationGameObject != null)
             fakeNotification = Instantiate(notificationGameObject, _notificationListFake);
         Animator animator = notificationGameObject.GetComponent<Animator>();
+        var time = notificationDuration;
+        if (isHint)
+            time *= 2.25f;
         if (animator != null)
-            animator.SetFloat(Timer, 3f);
+            animator.SetFloat(Timer, time);
         StartCoroutine(UpdateNotificationTimer(notificationGameObject, notification, fakeNotification));
 
         _activeNotifications.Add(notificationGameObject);
@@ -164,41 +159,58 @@ public class NotificationManager : MonoBehaviour
 
     private IEnumerator UpdateNotificationTimer(GameObject notificationObject, APNotification note, GameObject fake)
     {
+        LoadSettings();
         var rt = fake.GetComponent<RectTransform>();
         
         var materialObject = notificationObject.transform.Find("BackgroundBox/NoteMaterial").gameObject;
         var materialImage = materialObject.GetComponent<Image>();
+        var bgColor = note.BackgroundColor;
         if (note.ItemFlags.HasFlag(ItemFlags.Advancement))
+        {
+            bgColor = notificationProgColor;
             materialImage.material = Plugin.ProgNotificationTexture;
+        }
         else if (note.ItemFlags.HasFlag(ItemFlags.NeverExclude))
+        {
+            bgColor = notificationUsefulColor;
             materialImage.material = Plugin.UsefulNotificationTexture;
+        }
         else if (note.ItemFlags.HasFlag(ItemFlags.Trap))
+        {
+            bgColor = notificationTrapColor;
             materialImage.material = Plugin.TrapNotificationTexture;
+        }
         else if (note.ItemFlags.HasFlag(ItemFlags.None))
+        {
+            bgColor = notificationFillerColor;
             materialImage.material = Plugin.FillerNotificationTexture;
+        }
         else
             materialImage.material = Plugin.ProgNotificationTexture;
         materialObject.AddComponent<ScrollingEffect>().scrollSpeed = 0.1f;
         
-        var duration = note.Duration;
+        var duration = notificationDuration;
         var itemName = note.ItemName;
         var itemIcon = note.ItemIcon;
         var playerName = note.PlayerName;
         var senderName = note.SenderName;
         var locationName = note.LocationName;
-        var bgColor = note.BackgroundColor;
-        //var bgColor = notificationAccentColor; TODO: Complete Notification customization
-        var timerColor = note.TimerColor;
         var hintState = note.HintState;
         var isHint = note.IsHint;
+        
+        var timerColor = notificationTimerColor;
+        var playerColor = "#"+SavedData.Instance.NotificationPlayerNameColor;
+        var itemColor = "#"+SavedData.Instance.NotificationItemNameColor;
+        var senderColor = "#"+SavedData.Instance.NotificationHintSenderColor;
+        var hintStateColor = "#"+SavedData.Instance.NotificationHintStateColor;
 
         var icon = notificationObject.transform.Find("ItemIcon").GetComponent<Image>();
         var text = notificationObject.transform.Find("Text").GetComponent<TextMeshProUGUI>();
         var location = notificationObject.transform.Find("LocationName").GetComponent<TextMeshProUGUI>();
         var colorBox = notificationObject.transform.Find("BoxClassification").GetComponent<Image>();
         var timer = notificationObject.transform.Find("Timer").GetComponent<Image>();
-        text.text = isHint ? $"<color=#6699FF>{playerName}</color>'s <color=#FF6666>{itemName}</color> <size=22>at</size> <color=#d9f067>{senderName}</color>'s <size=22>world</size>\n<color=#B400B7>({hintState})</color>" 
-            : $"<color=#B400B7></color>You sent <color=#FF6666>{itemName}</color> to <color=#6699FF>{playerName}</color>";
+        text.text = isHint ? $"<color={playerColor}>{playerName}</color>'s <color={itemColor}>{itemName}</color> <size=22>at</size> <color={senderColor}>{senderName}</color>'s <size=22>world</size>\n<color={hintStateColor}>({hintState})</color>" 
+            : $"<color=#B400B7></color>You sent <color={itemColor}>{itemName}</color> to <color={playerColor}>{playerName}</color>";
         
         icon.sprite = itemIcon;
         location.text = $"({locationName})";
