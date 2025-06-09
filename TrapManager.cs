@@ -26,6 +26,7 @@ public class TrapManager : MonoBehaviour
     private readonly GameObject trapJumpingJacks = Plugin.TrapJumpingJacks;
     private readonly GameObject trapPhoneCall = Plugin.TrapPhoneCall;
     private readonly GameObject trapTiny = Plugin.TrapTiny;
+    private readonly GameObject trapFast = Plugin.TrapFast;
     private Transform trapListUI; 
     private Transform trapListFake;
     private GameObject trapUI;
@@ -219,7 +220,7 @@ public class TrapManager : MonoBehaviour
                 break;
             case "Fast":
                 Plugin.BepinLogger.LogInfo("Instantiating FastTrap");
-                trapUI = Instantiate(trapTiny, trapListFake);
+                trapUI = Instantiate(trapFast, trapListFake);
                 StartCoroutine(Fast(duration));
                 break;
         }

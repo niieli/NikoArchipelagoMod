@@ -62,7 +62,7 @@ namespace NikoArchipelago
         public static AssetBundle AssetBundle, AssetBundleXmas;
         public static GameObject TrapFreeze, TrapIronBoots, TrapMyTurn, TrapWhoops, TrapGravity,
             ItemNotification, HintNotification,
-            TrapWide, TrapHome, TrapJumpingJacks, TrapPhoneCall, TrapTiny,
+            TrapWide, TrapHome, TrapJumpingJacks, TrapPhoneCall, TrapTiny, TrapFast,
             NoticeBonkHelmet, NoticeSodaCan, NoticeParasol, NoticeAC, NoticeSwimCourse, DeathLinkNotice, NoticeBugNet,
             NoticePartyTicket, NoticeAppleBasket;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
@@ -306,6 +306,7 @@ namespace NikoArchipelago
                 BathBoneSprite = AssetBundle.LoadAsset<Sprite>("BathhouseBone");
                 TadpoleBoneSprite = AssetBundle.LoadAsset<Sprite>("TadpoleBone");
                 NoticeAppleBasket = AssetBundle.LoadAsset<GameObject>("NoticeAppleBasket");
+                TrapFast = AssetBundle.LoadAsset<GameObject>("TrapFast");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -1029,10 +1030,10 @@ namespace NikoArchipelago
             {
                 ArchipelagoClient.ToggleTrapLink();
             }
-            // if (GUI.Button(new Rect(16, 600, 100, 20), "TimeTrap"))
-            // {
-            //     TrapManager.FastTimeOn = true;
-            // }
+            if (GUI.Button(new Rect(16, 600, 100, 20), "TimeTrap"))
+            {
+                TrapManager.FastTimeOn = true;
+            }
         }
 
         private void BackgroundForText(Rect rect)
