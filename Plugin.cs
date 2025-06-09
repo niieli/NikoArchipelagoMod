@@ -1029,6 +1029,10 @@ namespace NikoArchipelago
             {
                 ArchipelagoClient.ToggleTrapLink();
             }
+            // if (GUI.Button(new Rect(16, 600, 100, 20), "TimeTrap"))
+            // {
+            //     TrapManager.FastTimeOn = true;
+            // }
         }
 
         private void BackgroundForText(Rect rect)

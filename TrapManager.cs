@@ -15,7 +15,7 @@ namespace NikoArchipelago;
 public class TrapManager : MonoBehaviour
 {
     public static TrapManager instance;
-    public static bool FreezeOn, IronBootsOn, MyTurnOn, WhoopsOn, GravityOn, WideOn, JumpingJacksOn, HomeOn, PhoneOn, TinyOn;
+    public static bool FreezeOn, IronBootsOn, MyTurnOn, WhoopsOn, GravityOn, WideOn, JumpingJacksOn, HomeOn, PhoneOn, TinyOn, FastTimeOn;
     private readonly GameObject trapFreeze = Plugin.TrapFreeze; 
     private readonly GameObject trapIronBoots = Plugin.TrapIronBoots;
     private readonly GameObject trapMyTurn = Plugin.TrapMyTurn;
@@ -40,7 +40,29 @@ public class TrapManager : MonoBehaviour
     public static readonly Queue<(string, string, DateTime)> TrapLinkQueue = new();
     public static readonly Dictionary<string, (string, float)> TrapLinkMapping = new()
     {
+        { "Banana Trap", ("Whoops!", 5f) },
+        { "Chaos Control Trap", ("Freeze", 5f) },
+        { "Confuse Trap", ("My Turn!", 25f) },
+        { "Confusion Trap", ("My Turn!", 25f) },
+        { "Controller Drift Trap", ("My Turn!", 25f) },
+        { "Cutscene Trap", ("Phone", 10f) },
+        { "Eject Ability", ("Whoops!", 5f) },
+        { "Exposition Trap", ("Phone", 10f) },
+        { "Fast Trap", ("Fast", Random.Range(25f, 50f)) },
         { "Freeze Trap", ("Freeze", 5f) },
+        { "Frozen Trap", ("Freeze", 5f) },
+        { "Gravity Trap", ("Gravity", 7.5f) },
+        { "Hiccup Trap", ("Jumping Jacks", 20f) },
+        { "Honey Trap", ("Iron Boots", 15f) },
+        { "Ice Trap", ("Freeze", 5f) },
+        { "Instant Death Trap", ("Home", 5f) },
+        { "Jump Trap", ("Jumping Jacks", 15f) },
+        { "Literature Trap", ("Phone", 10f) },
+        { "Paralyze Trap", ("Freeze", 5f) },
+        { "Push Trap", ("My Turn!", 15f) },
+        { "Slow Trap", ("Iron Boots", 15f) },
+        { "Slowness Trap", ("Iron Boots", 15f) },
+        { "Tiny Trap", ("Tiny", 25f) },
     };
 
     private void Awake()
@@ -121,6 +143,12 @@ public class TrapManager : MonoBehaviour
             TinyOn = false;
             ActivateTrap("Tiny", Random.Range(10f, 60f));
         }
+
+        if (FastTimeOn)
+        {
+            FastTimeOn = false;
+            ActivateTrap("Fast", Random.Range(40f, 80f));
+        }
         canvasGroup.alpha = IsUiOnScreen ? 0.35f : 1f;
     }
 
@@ -188,6 +216,11 @@ public class TrapManager : MonoBehaviour
                 Plugin.BepinLogger.LogInfo("Instantiating TinyTrap");
                 trapUI = Instantiate(trapTiny, trapListFake);
                 StartCoroutine(Tiny(duration));
+                break;
+            case "Fast":
+                Plugin.BepinLogger.LogInfo("Instantiating FastTrap");
+                trapUI = Instantiate(trapTiny, trapListFake);
+                StartCoroutine(Fast(duration));
                 break;
         }
         if (trapUI != null)
@@ -570,6 +603,18 @@ public class TrapManager : MonoBehaviour
             }
         }
         Plugin.BepinLogger.LogInfo("Jumping Jacks Trap ended.");
+    }
+    
+    private static IEnumerator Fast(float duration)
+    {
+        while (duration > 0)
+        {
+            Time.timeScale = 2;
+            yield return null;
+            duration -= Time.deltaTime;
+        }
+        Time.timeScale = 1;
+        Plugin.BepinLogger.LogInfo("Fast Trap ended.");
     }
 
     // For the time beings use this method
