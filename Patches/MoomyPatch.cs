@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
@@ -28,11 +29,11 @@ public class MoomyPatch
             actionButtonPromt = GameObject.FindGameObjectWithTag("ActionButtonPromt").GetComponent<scrActionButtonPromt>();
             myMusic = __instance.GetComponent<AudioSource>();
             if (level == "Hairball City")
-                currentLocationID = Locations.BaseID + 10;
+                currentLocationID = 10;
             else if (level == "Salmon Creek Forest")
-                currentLocationID = Locations.BaseID + 31;
+                currentLocationID = 31;
             else if (level == "The Bathhouse")
-                currentLocationID = Locations.BaseID + 55;
+                currentLocationID = 55;
             NPCRewardHopper = __instance.NPCReward.GetComponent<scrHopOnBump>();
             startHamsterball = typeof(scrHamsterballMaster).GetMethod("StartHamsterball", BindingFlags.Instance | BindingFlags.NonPublic);
             handleEffects = typeof(scrHamsterballMaster).GetMethod("HandleEffects", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -55,6 +56,8 @@ public class MoomyPatch
             if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) != 2) return true;
             
             var textbox = scrTextbox.instance;
+            var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
+            int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
             var questComplete = (bool)AccessTools.Field(typeof(scrHamsterballMaster), "questComplete").GetValue(__instance);
             var moomyDanceTimer = (float)AccessTools.Field(typeof(scrHamsterballMaster), "moomyDanceTimer").GetValue(__instance);
             bool allSeedsCollected = CheckAllSeeds(level);
@@ -76,7 +79,7 @@ public class MoomyPatch
                 GameObjectChecker.IsHamsterball = false;
                 if (!allSeedsCollected && scrTextbox.instance.isOn && scrTextbox.instance.conversation == "MoomyQuest")
                 {
-                    if (!_answerFix)
+                    if (currentBox == 0 && !_answerFix)
                     {
 
                         textbox.conversationLocalized[0] =
@@ -84,25 +87,13 @@ public class MoomyPatch
                             $"\nYou have {_currentSeedCount}/10 for this level!";
                         _answerFix = true;
                     }
-                    if (!_answerFix2)
+                    if (currentBox == 1 && !_answerFix2)
                     {
-                        var item = ArchipelagoClient._session.Locations.ScoutLocationsAsync(
-                            HintCreationPolicy.CreateAndAnnounce, currentLocationID);
-                        var itemName = item.Result[currentLocationID].ItemName;
-                        var itemPlayer = item.Result[currentLocationID].Player;
-                        var itemFlag = item.Result[currentLocationID].Flags;
-                        string classification = "";
-                        if (itemFlag.HasFlag(ItemFlags.Advancement))
-                            classification = "Important";
-                        else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
-                            classification = "Useful";
-                        else if (itemFlag.HasFlag(ItemFlags.Trap))
-                            classification = "Super Duper Important :)";
-                        else if (itemFlag.HasFlag(ItemFlags.None))
-                            classification = "Useless";
+                        var scout = ArchipelagoClient.ScoutLocation(currentLocationID);
+                        var itemPlayer = scout.Player.Name;
                         textbox.conversationLocalized[1] = 
-                            $"I think <color=#6699FF>{itemPlayer}</color> would like their '<color=#FF6666>{itemName}</color>'!" +
-                            $"\nMy expertise tells me it's {classification}##end;";
+                            $"I think {itemPlayer} would like their '{Assets.GetItemName(scout)}'!" +
+                            $"\nMy expertise tells me it's {Assets.GetClassification(scout)} ##end;";
                         _answerFix2 = true;
                     }
                 }

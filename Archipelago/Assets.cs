@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
 using UnityEngine;
 
 namespace NikoArchipelago.Archipelago;
@@ -143,5 +145,86 @@ public class Assets
     public static string RandomProgTrap()
     {
         return _progItems[Random.Range(0, _progItems.Count)];
+    }
+
+    public static string GetItemName(ScoutedItemInfo itemInfo)
+    {
+        var itemName = "";
+        if (itemInfo.IsReceiverRelatedToActivePlayer && itemInfo.Flags.HasFlag(ItemFlags.Trap))
+        {
+            var fakeNames = new[]
+            {
+                "Coin ?",
+                "Coin :)",
+                "Shiny Object",
+                "Pon",
+                "Cassette ?",
+                "Coin",
+                "Rupee",
+                "Coin >:(",
+                "A fabulous flower",
+                "COIN!",
+                "CASSETTE!",
+                "REDACTED",
+                "Cool Item(insert cool smiley)",
+                "A",
+                "Noic",
+                "Mixtape",
+                "Home Cassette",
+                "Tickets for a concert"
+            };
+            var randomFakeName = Random.Range(0, fakeNames.Length);
+            itemName = fakeNames[randomFakeName];
+        }
+        else
+        {
+            itemName = itemInfo.ItemName;
+        }
+
+        return itemName;
+    }
+
+    public static string GetClassification(ScoutedItemInfo itemInfo)
+    {
+        var classification = "";
+        if (itemInfo.Flags.HasFlag(ItemFlags.Advancement))
+        {
+            classification = "Important";
+        }
+        else if (itemInfo.Flags.HasFlag(ItemFlags.NeverExclude))
+        {
+            classification = "Useful";
+        }
+        else if (itemInfo.Flags.HasFlag(ItemFlags.Trap))
+        {
+            var trapStrings = new[]
+            {
+                "SUPER IMPORTANT",
+                "like a good deal",
+                "very important trust me",
+                "like the best item",
+                "a 1-Time Offer!",
+                "one of those 'You Need This!' items",
+                "RARE LOOT!",
+                "Legendary!",
+                "very helpful... I promise!",
+                "Absolutely NOT a trap",
+                "A MUST PICK UP!",
+                "loved among collector's... hehe",
+                "a very funny item"
+            };
+            var randomIndex = Random.Range(0, trapStrings.Length);
+            classification = trapStrings[randomIndex];
+        }
+        else if (itemInfo.Flags.HasFlag(ItemFlags.None))
+        {
+            classification = "Useless";
+        }
+        else
+        {
+            classification = "Unknown";
+        }
+
+        return classification;
     }
 }

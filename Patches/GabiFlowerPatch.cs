@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
+using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
@@ -12,7 +14,8 @@ public class GabiFlowerPatch
     private static bool blockedLog;
     private static int solvedCount;
     private static float checkTimer;
-    private static bool _answerFix;
+    private static bool _answerFix, _answerFix2;
+    private static int _scoutID;
     [HarmonyPatch(typeof(scrFlowerPuzzleMaster), "Start")]
     public static class MoomyStartPatch
     {
@@ -35,6 +38,8 @@ public class GabiFlowerPatch
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("flowersanity")) return true;
             if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) != 2) return true;
+            var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
+            int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
             if ((double) checkTimer < 1.0)
             {
                 checkTimer += Time.deltaTime * 2f;
@@ -60,16 +65,28 @@ public class GabiFlowerPatch
 
                 if (scrTextbox.instance.isOn)
                 {
-                    if (scrTextbox.instance.nameMesh.text is not ("Little Gabi" or "リトルガビ")) return false;
-                    if (_answerFix) return false;
-                    scrTextbox.instance.conversationLocalized[0] =
-                        $"Help, I lost my precious {_currentLevelName} flowers to some sort of... multiworld?!" +
-                        $"\nI currently have {CheckAllFlowers(level)}/{_neededFlowerCount}! ##end;";
-                    _answerFix = true;
+                    if (scrTextbox.instance.conversation != "FlowerQuest") return false;
+                    if (currentBox == 0 && !_answerFix)
+                    {
+                        scrTextbox.instance.conversationLocalized[0] =
+                            $"Help, I lost my precious {_currentLevelName} flowers to some sort of... multiworld?!" +
+                            $"\nI currently have {CheckAllFlowers(level)}/{_neededFlowerCount}!";
+                        _answerFix = true;
+                    }
+
+                    if (currentBox == 1 && !_answerFix2)
+                    {
+                        var scout = ArchipelagoClient.ScoutLocation(_scoutID);
+                        var playerName = scout.Player.Name;
+                        scrTextbox.instance.conversationLocalized[1] =
+                            $"I will give you {playerName}'s '{Assets.GetItemName(scout)}' as a reward.\nI heard it's {Assets.GetClassification(scout)} ##end;";
+                        _answerFix2 = true;
+                    }
                 }
                 else
                 {
                     _answerFix = false;
+                    _answerFix2 = false;
                 }
                 return false;
             }
@@ -84,31 +101,37 @@ public class GabiFlowerPatch
                     amountOfFlowers = ItemHandler.HairballFlowerAmount;
                     _currentLevelName = "Hairball City";
                     _neededFlowerCount = 3;
+                    _scoutID = 5;
                     break;
                 case "Trash Kingdom":
                     amountOfFlowers = ItemHandler.TurbineFlowerAmount;
                     _currentLevelName = "Turbine Town";
                     _neededFlowerCount = 3;
+                    _scoutID = 19;
                     break;
                 case "Salmon Creek Forest":
                     amountOfFlowers = ItemHandler.SalmonFlowerAmount;
                     _currentLevelName = "Salmon Creek Forest";
                     _neededFlowerCount = 6;
+                    _scoutID = 37;
                     break;
                 case "Public Pool":
                     amountOfFlowers = ItemHandler.PoolFlowerAmount;
                     _currentLevelName = "Public Pool";
                     _neededFlowerCount = 3;
+                    _scoutID = 53;
                     break;
                 case "The Bathhouse":
                     amountOfFlowers = ItemHandler.BathFlowerAmount;
                     _currentLevelName = "Bathhouse";
                     _neededFlowerCount = 3;
+                    _scoutID = 65;
                     break;
                 case "Tadpole inc":
                     amountOfFlowers = ItemHandler.TadpoleFlowerAmount;
                     _currentLevelName = "Tadpole HQ";
                     _neededFlowerCount = 4;
+                    _scoutID = 73;
                     break;
                 default:
                     return -1;

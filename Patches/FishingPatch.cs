@@ -326,8 +326,9 @@ public class FishingPatch
 
               if (currentBox == 1 && !answerFix2)
               {
-                FishScout(_currentScoutID);
-                textbox.conversationLocalized[1] = $"My reward is '{_itemName}' for {_playerName} I heard it's {_classification}!";
+                var scout = ArchipelagoClient.ScoutLocation(_currentScoutID);
+                var playerName = scout.Player.Name;
+                textbox.conversationLocalized[1] = $"My reward is '{Assets.GetItemName(scout)}' for {playerName} I heard it's {Assets.GetClassification(scout)}!";
                 answerFix2 = true;
               }
             }
@@ -343,8 +344,9 @@ public class FishingPatch
 
               if (currentBox == 1 && !answerFix2)
               {
-                FishScout(_currentScoutID, false);
-                textbox.conversationLocalized[1] = $"As promised you will get '{_itemName}' for {_playerName}!";
+                var scout = ArchipelagoClient.ScoutLocation(_currentScoutID, false);
+                var playerName = scout.Player.Name;
+                textbox.conversationLocalized[1] = $"As promised you will get '{Assets.GetItemName(scout)}' for {playerName}!";
                 answerFix2 = true;
               }
             }
@@ -354,8 +356,9 @@ public class FishingPatch
               textbox.canWaklaway = true;
               if (currentBox == 0 && !answerFix1)
               {
-                FishScout(_currentScoutID, false);
-                textbox.conversationLocalized[0] = $"You already obtained my '{_itemName}' for {_playerName}!";
+                var scout = ArchipelagoClient.ScoutLocation(_currentScoutID, false);
+                var playerName = scout.Player.Name;
+                textbox.conversationLocalized[0] = $"You already obtained my '{Assets.GetItemName(scout)}' for {playerName}!";
                 answerFix1 = true;
               }
             }
@@ -464,85 +467,4 @@ public class FishingPatch
             return amountOfFish >= 5;
         }
     }
-    
-    private static void FishScout(int scoutID, bool hint = true)
-        {
-            string classification;
-            var scoutedItem = ArchipelagoClient.ScoutLocation(scoutID, hint);
-            var itemName = scoutedItem.ItemName; 
-            if (scoutedItem.Flags.HasFlag(ItemFlags.Advancement))
-            {
-                classification = "Important";
-            }
-            else if (scoutedItem.Flags.HasFlag(ItemFlags.NeverExclude))
-            {
-                classification = "Useful";
-            } else if (scoutedItem.Flags.HasFlag(ItemFlags.Trap))
-            {
-                var trapStrings = new[]
-                {
-                    "SUPER IMPORTANT",
-                    "like a good deal",
-                    "very important trust me",
-                    "like the best item",
-                    "a 1-Time Offer!",
-                    "one of those 'You Need This!' items",
-                    "RARE LOOT!",
-                    "Legendary!",
-                    "very helpful... I promise!",
-                    "Absolutely NOT a trap",
-                    "A MUST PICK UP!",
-                    "loved among collector's... hehe",
-                    "a very funny item"
-                };
-                var randomIndex = Random.Range(0, trapStrings.Length);
-                classification = trapStrings[randomIndex];
-
-                if (scoutedItem.IsReceiverRelatedToActivePlayer)
-                {
-                    var fakeNames = new[]
-                    {
-                        "Coin ?",
-                        "Coin :)",
-                        "Shiny Object",
-                        "Pon",
-                        "Cassette ?",
-                        "Coin",
-                        "Rupee",
-                        "Coin >:(",
-                        "A fabulous flower",
-                        "COIN!",
-                        "CASSETTE!",
-                        "REDACTED",
-                        "Cool Item(insert cool smiley)",
-                        "A",
-                        "Noic",
-                        "Mixtape",
-                        "Home Cassette",
-                        "Tickets for a concert",
-                    };
-                    var randomFakeName = Random.Range(0, fakeNames.Length);
-                    itemName = fakeNames[randomFakeName];
-                }
-                else
-                {
-                    var fakeNames = new[]
-                    {
-                        "Hookshot",
-                    };
-                    var randomFakeName = Random.Range(0, fakeNames.Length);
-                    //itemName = fakeNames[randomFakeName]; Not sure if I should do that, maybe later
-                }
-            } else if (scoutedItem.Flags.HasFlag(ItemFlags.None))
-            {
-                classification = "Useless";
-            }
-            else
-            {
-              classification = "Unknown";
-            }
-            _classification = classification;
-            _itemName = itemName;
-            _playerName = scoutedItem.Player.Name;
-        }
 }
