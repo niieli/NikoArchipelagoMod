@@ -297,9 +297,11 @@ public class ArchipelagoMenu : MonoBehaviour
     public GameObject sanityPanel1;
     public GameObject sanityPanel2;
     public GameObject sanityPanel3;
+    public GameObject sanityPanel4;
     public CanvasGroup sanityPanel1CanvasGroup;
     public CanvasGroup sanityPanel2CanvasGroup;
     public CanvasGroup sanityPanel3CanvasGroup;
+    public CanvasGroup sanityPanel4CanvasGroup;
     public Image checkedHcKeysImage;
     public Image checkedTtKeysImage;
     public Image checkedScfKeysImage;
@@ -401,6 +403,32 @@ public class ArchipelagoMenu : MonoBehaviour
     private bool _mitchGardenDone;
     private bool _maiGardenDone;
     
+    // SanityPage4
+    public GameObject bonePanel;
+    public TextMeshProUGUI boneHcCountBackText;
+    public TextMeshProUGUI boneHcCountFrontText;
+    public TextMeshProUGUI boneTtCountBackText;
+    public TextMeshProUGUI boneTtCountFrontText;
+    public TextMeshProUGUI boneSfcCountBackText;
+    public TextMeshProUGUI boneSfcCountFrontText;
+    public TextMeshProUGUI bonePpCountBackText;
+    public TextMeshProUGUI bonePpCountFrontText;
+    public TextMeshProUGUI boneBathCountBackText;
+    public TextMeshProUGUI boneBathCountFrontText;
+    public TextMeshProUGUI boneHqCountBackText;
+    public TextMeshProUGUI boneHqCountFrontText;
+    public Image boneDisabledImage;
+    public TooltipTrigger boneDisabledTrigger;
+    public Tooltip boneDisabledTooltip;
+    public TooltipTrigger boneTrigger;
+    public Tooltip boneTooltip;
+    public Image boughtHcBoneImage;
+    public Image boughtTtBoneImage;
+    public Image boughtScfBoneImage;
+    public Image boughtPpBoneImage;
+    public Image boughtBathBoneImage;
+    public Image boughtHqBoneImage;
+    
     public void Start()
     {
         gameSaveManager = scrGameSaveManager.instance;
@@ -443,6 +471,7 @@ public class ArchipelagoMenu : MonoBehaviour
         sanityPanel1 = informationPanel.transform.Find("SanityPage1").gameObject;
         sanityPanel2 = informationPanel.transform.Find("SanityPage2").gameObject;
         sanityPanel3 = informationPanel.transform.Find("SanityPage3").gameObject;
+        sanityPanel4 = informationPanel.transform.Find("SanityPage4").gameObject;
         sanityPageBackButton = informationPanel.transform.Find("PrevPage").gameObject.GetComponent<Button>();
         sanityPageForwardButton = informationPanel.transform.Find("NextPage").gameObject.GetComponent<Button>();
         
@@ -491,6 +520,14 @@ public class ArchipelagoMenu : MonoBehaviour
         cassettesTrigger = cassettesPanel.gameObject.AddComponent<TooltipTrigger>();
         cassettesTooltip = cassettesPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         
+        // SanityPage4
+        bonePanel = sanityPanel4.transform.Find("BoneScreen").gameObject;
+        boneDisabledImage = sanityPanel4.transform.Find("BoneDisabled").gameObject.GetComponent<Image>();
+        boneDisabledTrigger = boneDisabledImage.gameObject.AddComponent<TooltipTrigger>();
+        boneDisabledTooltip = boneDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        boneTrigger = bonePanel.gameObject.AddComponent<TooltipTrigger>();
+        boneTooltip = bonePanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        
         // Home
         kioskHomeImage = kioskAndTicketPanel.transform.Find("KioskHome").GetComponent<Image>();
         boughtHomeImage = kioskHomeImage.transform.Find("Bought").GetComponent<Image>();
@@ -525,6 +562,9 @@ public class ArchipelagoMenu : MonoBehaviour
         cassettesHcCountFrontText = cassettesPanel.transform.Find("HCCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         cassettesMitchHairballImage = cassettesPanel.transform.Find("HCCassetteCount/Mitch").GetComponent<Image>();
         cassettesMaiHairballImage = cassettesPanel.transform.Find("HCCassetteCount/Mai").GetComponent<Image>();
+        boneHcCountBackText = bonePanel.transform.Find("HCBoneCount/Back").GetComponent<TextMeshProUGUI>();
+        boneHcCountFrontText = bonePanel.transform.Find("HCBoneCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtHcBoneImage = bonePanel.transform.Find("HCComplete").GetComponent<Image>();
         // Turbine
         ticketTtImage = kioskAndTicketPanel.transform.Find("TicketTurbine").GetComponent<Image>();
         boughtTtImage = ticketTtImage.transform.Find("Bought").GetComponent<Image>();
@@ -548,6 +588,9 @@ public class ArchipelagoMenu : MonoBehaviour
         cassettesTtCountFrontText = cassettesPanel.transform.Find("TTCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         cassettesMitchTurbineImage = cassettesPanel.transform.Find("TTCassetteCount/Mitch").GetComponent<Image>();
         cassettesMaiTurbineImage = cassettesPanel.transform.Find("TTCassetteCount/Mai").GetComponent<Image>();
+        boneTtCountBackText = bonePanel.transform.Find("TTBoneCount/Back").GetComponent<TextMeshProUGUI>();
+        boneTtCountFrontText = bonePanel.transform.Find("TTBoneCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtTtBoneImage = bonePanel.transform.Find("TTComplete").gameObject.GetComponent<Image>();
         // Salmon
         ticketSfcImage = kioskAndTicketPanel.transform.Find("TicketSalmon").GetComponent<Image>();
         boughtSfcImage = ticketSfcImage.transform.Find("Bought").GetComponent<Image>();
@@ -574,6 +617,9 @@ public class ArchipelagoMenu : MonoBehaviour
         cassettesSfcCountFrontText = cassettesPanel.transform.Find("SCFCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         cassettesMitchSalmonImage = cassettesPanel.transform.Find("SCFCassetteCount/Mitch").GetComponent<Image>();
         cassettesMaiSalmonImage = cassettesPanel.transform.Find("SCFCassetteCount/Mai").GetComponent<Image>();
+        boneSfcCountBackText = bonePanel.transform.Find("SCFBoneCount/Back").GetComponent<TextMeshProUGUI>();
+        boneSfcCountFrontText = bonePanel.transform.Find("SCFBoneCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtScfBoneImage = bonePanel.transform.Find("SCFComplete").gameObject.GetComponent<Image>();
         // Pool
         ticketPpImage = kioskAndTicketPanel.transform.Find("TicketPool").GetComponent<Image>();
         boughtPpImage = ticketPpImage.transform.Find("Bought").GetComponent<Image>();
@@ -597,6 +643,9 @@ public class ArchipelagoMenu : MonoBehaviour
         cassettesPpCountFrontText = cassettesPanel.transform.Find("PPCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         cassettesMitchPoolImage = cassettesPanel.transform.Find("PPCassetteCount/Mitch").GetComponent<Image>();
         cassettesMaiPoolImage = cassettesPanel.transform.Find("PPCassetteCount/Mai").GetComponent<Image>();
+        bonePpCountBackText = bonePanel.transform.Find("PPBoneCount/Back").GetComponent<TextMeshProUGUI>();
+        bonePpCountFrontText = bonePanel.transform.Find("PPBoneCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtPpBoneImage = bonePanel.transform.Find("PPComplete").gameObject.GetComponent<Image>();
         // Bath
         ticketBathImage = kioskAndTicketPanel.transform.Find("TicketBath").GetComponent<Image>();
         boughtBathImage = ticketBathImage.transform.Find("Bought").GetComponent<Image>();
@@ -623,6 +672,9 @@ public class ArchipelagoMenu : MonoBehaviour
         cassettesBathCountFrontText = cassettesPanel.transform.Find("BathCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         cassettesMitchBathImage = cassettesPanel.transform.Find("BathCassetteCount/Mitch").GetComponent<Image>();
         cassettesMaiBathImage = cassettesPanel.transform.Find("BathCassetteCount/Mai").GetComponent<Image>();
+        boneBathCountBackText = bonePanel.transform.Find("BathBoneCount/Back").GetComponent<TextMeshProUGUI>();
+        boneBathCountFrontText = bonePanel.transform.Find("BathBoneCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtBathBoneImage = bonePanel.transform.Find("BathComplete").gameObject.GetComponent<Image>();
         // Tadpole
         ticketHqImage = kioskAndTicketPanel.transform.Find("TicketTadpole").GetComponent<Image>();
         boughtHqImage = ticketHqImage.transform.Find("Bought").GetComponent<Image>();
@@ -646,6 +698,9 @@ public class ArchipelagoMenu : MonoBehaviour
         cassettesHqCountFrontText = cassettesPanel.transform.Find("HQCassetteCount/Front").GetComponent<TextMeshProUGUI>();
         cassettesMitchTadpoleImage = cassettesPanel.transform.Find("HQCassetteCount/Mitch").GetComponent<Image>();
         cassettesMaiTadpoleImage = cassettesPanel.transform.Find("HQCassetteCount/Mai").GetComponent<Image>();
+        boneHqCountBackText = bonePanel.transform.Find("HQBoneCount/Back").GetComponent<TextMeshProUGUI>();
+        boneHqCountFrontText = bonePanel.transform.Find("HQBoneCount/Front").GetComponent<TextMeshProUGUI>();
+        boughtHqBoneImage = bonePanel.transform.Find("HQComplete").gameObject.GetComponent<Image>();
         // Misc
         ticketGgImage = kioskAndTicketPanel.transform.Find("TicketGarden").GetComponent<Image>();
         mitchGardenImage = ticketGgImage.transform.Find("Mitch").GetComponent<Image>();
@@ -837,6 +892,8 @@ public class ArchipelagoMenu : MonoBehaviour
         cassetteSpoilerTrigger.tooltip = cassetteSpoilerTooltip;
         seasonalThemesTrigger.tooltip = seasonalThemesTooltip;
         skipPickupTrigger.tooltip = skipPickupTooltip;
+        boneTrigger.tooltip = boneTooltip;
+        boneDisabledTrigger.tooltip = boneDisabledTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -890,6 +947,13 @@ public class ArchipelagoMenu : MonoBehaviour
         checkedPpKeysImage.enabled = false;
         checkedBathKeysImage.enabled = false;
         checkedHqKeysImage.enabled = false;
+        
+        boughtHcBoneImage.enabled = false;
+        boughtTtBoneImage.enabled = false;
+        boughtScfBoneImage.enabled = false;
+        boughtPpBoneImage.enabled = false;
+        boughtBathBoneImage.enabled = false;
+        boughtHqBoneImage.enabled = false;
         
         // Lights
         if (Plugin.ChristmasEvent && !Plugin.NoXmasEvent)
@@ -959,6 +1023,7 @@ public class ArchipelagoMenu : MonoBehaviour
         sanityPanel1CanvasGroup = informationPanel.transform.Find("SanityPage1").gameObject.GetComponent<CanvasGroup>();
         sanityPanel2CanvasGroup = informationPanel.transform.Find("SanityPage2").gameObject.GetComponent<CanvasGroup>();
         sanityPanel3CanvasGroup = informationPanel.transform.Find("SanityPage3").gameObject.GetComponent<CanvasGroup>();
+        sanityPanel4CanvasGroup = informationPanel.transform.Find("SanityPage4").gameObject.GetComponent<CanvasGroup>();
         _activePanel = settingsPanelCanvasGroup;
         _activePanelSanity = sanityPanel1CanvasGroup;
         sanityPageBackButton.enabled = false;
@@ -979,6 +1044,9 @@ public class ArchipelagoMenu : MonoBehaviour
         } else if (_activePanelSanity == sanityPanel3CanvasGroup)
         {
             SetActiveSanityPanel(sanityPanel2CanvasGroup);
+        } else if (_activePanelSanity == sanityPanel4CanvasGroup)
+        {
+            SetActiveSanityPanel(sanityPanel3CanvasGroup);
         }
         sanityPageForwardButton.image.color = Color.white;
         sanityPageForwardButton.enabled = true;
@@ -993,6 +1061,9 @@ public class ArchipelagoMenu : MonoBehaviour
         else if (_activePanelSanity == sanityPanel2CanvasGroup)
         {
             SetActiveSanityPanel(sanityPanel3CanvasGroup);
+        } else if (_activePanelSanity == sanityPanel3CanvasGroup)
+        {
+            SetActiveSanityPanel(sanityPanel4CanvasGroup);
             sanityPageForwardButton.enabled = false;
             sanityPageForwardButton.image.color = Color.gray;
         }
@@ -1059,6 +1130,7 @@ public class ArchipelagoMenu : MonoBehaviour
         tooltipsTooltip.gameObject.SetActive(false);
         cassetteSpoilerTooltip.gameObject.SetActive(false);
         skipPickupTooltip.gameObject.SetActive(false);
+        boneDisabledTooltip.gameObject.SetActive(false);
     }
 
     private void SetActivePanel(CanvasGroup newPanel)
@@ -1125,148 +1197,8 @@ public class ArchipelagoMenu : MonoBehaviour
                 goalText.text = "Goal: Employee Of The Month";
                 goalTooltipText.text = "Get 76 Coins to be considered the 'Employee Of The Month'!";
             }
-
-            if (ArchipelagoData.slotData.ContainsKey("key_level"))
-            {
-                if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
-                {
-                    keysDisabledImage.gameObject.SetActive(false);
-                    keyCountBackText.text = "NO";
-                    keyCountFrontText.text = "NO";
-                    keyHcCountBackText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
-                    keyHcCountFrontText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
-                    if (ItemHandler.UsedKeysHairball() == 1)
-                        checkedHcKeysImage.enabled = true;
-                    keyTtCountBackText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
-                    keyTtCountFrontText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
-                    if (ItemHandler.UsedKeysTurbine() == 1)
-                        checkedTtKeysImage.enabled = true;
-                    keySfcCountBackText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
-                    keySfcCountFrontText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
-                    if (ItemHandler.UsedKeysSalmon() == 1)
-                        checkedScfKeysImage.enabled = true;
-                    keyPpCountBackText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
-                    keyPpCountFrontText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
-                    if (ItemHandler.UsedKeysPool() == 1)
-                        checkedPpKeysImage.enabled = true;
-                    keyBathCountBackText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
-                    keyBathCountFrontText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
-                    if (ItemHandler.UsedKeysBath() == 1)
-                    {
-                        checkedBathKeysImage.enabled = true;
-                        checkedBathKeysImage.color = new Color(0.6698113f, 0.6698113f, 0.6698113f, 0.7647059f);
-                    } else if (ItemHandler.UsedKeysBath() == 2)
-                    {
-                        checkedBathKeysImage.enabled = true;
-                        checkedBathKeysImage.color = Color.white;
-                    }
-                    keyHqCountBackText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
-                    keyHqCountFrontText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
-                    if (ItemHandler.UsedKeysHairball() == 1)
-                        checkedHqKeysImage.enabled = true;
-                }
-                else
-                {
-                    keysDisabledImage.gameObject.SetActive(true);
-                    keyCountBackText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
-                    keyCountFrontText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
-                    keyHcCountBackText.text = "X";
-                    keyHcCountFrontText.text = "X";
-                    keyTtCountBackText.text = "X";
-                    keyTtCountFrontText.text = "X";
-                    keySfcCountBackText.text = "X";
-                    keySfcCountFrontText.text = "X";
-                    keyPpCountBackText.text = "X";
-                    keyPpCountFrontText.text = "X";
-                    keyBathCountBackText.text = "X";
-                    keyBathCountFrontText.text = "X";
-                    keyHqCountBackText.text = "X";
-                    keyHqCountFrontText.text = "X";
-                }
-            }
-            else
-            {
-                keysDisabledImage.gameObject.SetActive(true);
-                keyCountBackText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
-                keyCountFrontText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
-                keyHcCountBackText.text = "X";
-                keyHcCountFrontText.text = "X";
-                keyTtCountBackText.text = "X";
-                keyTtCountFrontText.text = "X";
-                keySfcCountBackText.text = "X";
-                keySfcCountFrontText.text = "X";
-                keyPpCountBackText.text = "X";
-                keyPpCountFrontText.text = "X";
-                keyBathCountBackText.text = "X";
-                keyBathCountFrontText.text = "X";
-                keyHqCountBackText.text = "X";
-                keyHqCountFrontText.text = "X";
-            }
-
-            if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
-            {
-                if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
-                {
-                    fishDisabledImage.gameObject.SetActive(false);
-                    fishHcCountBackText.text = ItemHandler.HairballFishAmount + "/5";
-                    fishHcCountFrontText.text = ItemHandler.HairballFishAmount + "/5";
-                    if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("fishing"))
-                        boughtHcFishImage.enabled = true;
-                    fishTtCountBackText.text = ItemHandler.TurbineFishAmount + "/5";
-                    fishTtCountFrontText.text = ItemHandler.TurbineFishAmount + "/5";
-                    if (scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("fishing"))
-                        boughtTtFishImage.enabled = true;
-                    fishSfcCountBackText.text = ItemHandler.SalmonFishAmount + "/5";
-                    fishSfcCountFrontText.text = ItemHandler.SalmonFishAmount + "/5";
-                    if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("fishing"))
-                        boughtScfFishImage.enabled = true;
-                    fishPpCountBackText.text = ItemHandler.PoolFishAmount + "/5";
-                    fishPpCountFrontText.text = ItemHandler.PoolFishAmount + "/5";
-                    if (scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("fishing"))
-                        boughtPpFishImage.enabled = true;
-                    fishBathCountBackText.text = ItemHandler.BathFishAmount + "/5";
-                    fishBathCountFrontText.text = ItemHandler.BathFishAmount + "/5";
-                    if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("fishing"))
-                        boughtBathFishImage.enabled = true;
-                    fishHqCountBackText.text = ItemHandler.TadpoleFishAmount + "/5";
-                    fishHqCountFrontText.text = ItemHandler.TadpoleFishAmount + "/5";
-                    if (scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("fishing"))
-                        boughtHqFishImage.enabled = true;
-                }
-                else
-                {
-                    fishDisabledImage.gameObject.SetActive(true);
-                    fishHcCountBackText.text = "X";
-                    fishHcCountFrontText.text = "X";
-                    fishTtCountBackText.text = "X";
-                    fishTtCountFrontText.text = "X";
-                    fishSfcCountBackText.text = "X";
-                    fishSfcCountFrontText.text = "X";
-                    fishPpCountBackText.text = "X";
-                    fishPpCountFrontText.text = "X";
-                    fishBathCountBackText.text = "X";
-                    fishBathCountFrontText.text = "X";
-                    fishHqCountBackText.text = "X";
-                    fishHqCountFrontText.text = "X";
-                }
-            }
-            else
-            {
-                fishDisabledImage.gameObject.SetActive(true);
-                fishHcCountBackText.text = "X";
-                fishHcCountFrontText.text = "X";
-                fishTtCountBackText.text = "X";
-                fishTtCountFrontText.text = "X";
-                fishSfcCountBackText.text = "X";
-                fishSfcCountFrontText.text = "X";
-                fishPpCountBackText.text = "X";
-                fishPpCountFrontText.text = "X";
-                fishBathCountBackText.text = "X";
-                fishBathCountFrontText.text = "X";
-                fishHqCountBackText.text = "X";
-                fishHqCountFrontText.text = "X";
-            }
-
+            KeySanityStats();
+            FishSanityStats();
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
                 if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 1)
@@ -1308,111 +1240,7 @@ public class ArchipelagoMenu : MonoBehaviour
                 cassetteCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.cassetteAmount + "/71";
                 gardenDisabledImage.gameObject.SetActive(true);
             }
-            
-            if (KioskSpoiler)
-            {
-                kioskHomeText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[1] 
-                    ? levelData.levelPrices[2].ToString() : "??";
-                kioskHcText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[2] 
-                    ? levelData.levelPrices[3].ToString() : "??";
-                kioskTtText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[3] 
-                    ? levelData.levelPrices[4].ToString() : "??";
-                kioskSfcText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[4] 
-                    ? levelData.levelPrices[5].ToString() : "??";
-                kioskPpText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[5] 
-                    ? levelData.levelPrices[6].ToString() : "??";
-                kioskBathText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[6] 
-                    ? levelData.levelPrices[7].ToString() : "??";
-                kioskHqText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[7] 
-                    ? levelData.levelPrices[8].ToString() : "??";
-            }
-            else
-            {
-                kioskHomeText.text = levelData.levelPrices[2].ToString();
-                kioskHcText.text = levelData.levelPrices[3].ToString();
-                kioskTtText.text = levelData.levelPrices[4].ToString();
-                kioskSfcText.text = levelData.levelPrices[5].ToString();
-                kioskPpText.text = levelData.levelPrices[6].ToString();
-                kioskBathText.text = levelData.levelPrices[7].ToString();
-                kioskHqText.text = levelData.levelPrices[8].ToString();
-            }
-            kioskHomeBackText.text = kioskHomeText.text;
-            kioskHcBackText.text = kioskHcText.text;
-            kioskTtBackText.text = kioskTtText.text;
-            kioskSfcBackText.text = kioskSfcText.text;
-            kioskPpBackText.text = kioskPpText.text;
-            kioskBathBackText.text = kioskBathText.text;
-            kioskHqBackText.text = kioskHqText.text;
-            if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskHome"))
-            {
-                kioskHomeImage.color = new Color(1f, 1f, 1f, 1f);
-                kioskHomeText.enabled = false;
-                kioskHomeBackText.enabled = false;
-                kioskHomeCostImage.enabled = false;
-                kioskHomeCostBackImage.enabled = false;
-                boughtHomeImage.enabled = true;
-                boughtHomeBackImage.enabled = true;
-            }
-
-            if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskHairball City"))
-            {
-                kioskHcText.enabled = false;
-                kioskHcBackText.enabled = false;
-                kioskHcCostImage.enabled = false;
-                kioskHcCostBackImage.enabled = false;
-                boughtHcImage.enabled = true;
-                boughtHcBackImage.enabled = true;
-            }
-
-            if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskTrash Kingdom"))
-            {
-                kioskTtText.enabled = false;
-                kioskTtBackText.enabled = false;
-                kioskTtCostImage.enabled = false;
-                kioskTtCostBackImage.enabled = false;
-                boughtTtImage.enabled = true;
-                boughtTtBackImage.enabled = true;
-            }
-
-            if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskSalmon Creek Forest"))
-            {
-                kioskSfcText.enabled = false;
-                kioskSfcBackText.enabled = false;
-                kioskSfcCostImage.enabled = false;
-                kioskSfcCostBackImage.enabled = false;
-                boughtSfcImage.enabled = true;
-                boughtSfcBackImage.enabled = true;
-            }
-
-            if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskPublic Pool"))
-            {
-                kioskPpText.enabled = false;
-                kioskPpBackText.enabled = false;
-                kioskPpCostImage.enabled = false;
-                kioskPpCostBackImage.enabled = false;
-                boughtPpImage.enabled = true;
-                boughtPpBackImage.enabled = true;
-            }
-
-            if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskThe Bathhouse"))
-            {
-                kioskBathText.enabled = false;
-                kioskBathBackText.enabled = false;
-                kioskBathCostImage.enabled = false;
-                kioskBathCostBackImage.enabled = false;
-                boughtBathImage.enabled = true;
-                boughtBathBackImage.enabled = true;
-            }
-
-            if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskTadpole inc"))
-            {
-                kioskHqText.enabled = false;
-                kioskHqBackText.enabled = false;
-                kioskHqCostImage.enabled = false;
-                kioskHqCostBackImage.enabled = false;
-                boughtHqImage.enabled = true;
-                boughtHqBackImage.enabled = true;
-            }
+            CheckKioskStats();
             if (gameSaveManager.gameData.generalGameData.unlockedLevels[2]) ticketHcImage.color = Color.white;
             if (gameSaveManager.gameData.generalGameData.unlockedLevels[3]) ticketTtImage.color = Color.white;
             if (gameSaveManager.gameData.generalGameData.unlockedLevels[4]) ticketSfcImage.color = Color.white;
@@ -1430,123 +1258,383 @@ public class ArchipelagoMenu : MonoBehaviour
             }
             if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave1")) ticketCl1Image.color = Color.white;
             if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("APWave2")) ticketCl2Image.color = Color.white;
-            for (var i = 1; i < 8; i++)
+            CheckMitchAndMai();
+            FlowerSanityStats();
+            SeedSanityStats();
+            CassetteSanityStats();
+            BoneSanityStats();
+        }
+        else
+        {
+            informationPanel.SetActive(false);
+            connectionPanel.SetActive(true);
+        }
+    }
+    
+    private void KeySanityStats()
+    {
+        if (ArchipelagoData.slotData.ContainsKey("key_level"))
+        {
+            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
             {
-                if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin"))
+                keysDisabledImage.gameObject.SetActive(false);
+                keyCountBackText.text = "NO";
+                keyCountFrontText.text = "NO";
+                keyHcCountBackText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
+                keyHcCountFrontText.text = Plugin.ArchipelagoClient.HcKeyAmount + "/1";
+                if (ItemHandler.UsedKeysHairball() == 1)
+                    checkedHcKeysImage.enabled = true;
+                keyTtCountBackText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
+                keyTtCountFrontText.text = Plugin.ArchipelagoClient.TtKeyAmount + "/1";
+                if (ItemHandler.UsedKeysTurbine() == 1)
+                    checkedTtKeysImage.enabled = true;
+                keySfcCountBackText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
+                keySfcCountFrontText.text = Plugin.ArchipelagoClient.SfcKeyAmount + "/1";
+                if (ItemHandler.UsedKeysSalmon() == 1)
+                    checkedScfKeysImage.enabled = true;
+                keyPpCountBackText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
+                keyPpCountFrontText.text = Plugin.ArchipelagoClient.PpKeyAmount + "/1";
+                if (ItemHandler.UsedKeysPool() == 1)
+                    checkedPpKeysImage.enabled = true;
+                keyBathCountBackText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
+                keyBathCountFrontText.text = Plugin.ArchipelagoClient.BathKeyAmount + "/2";
+                if (ItemHandler.UsedKeysBath() == 1)
                 {
-                    switch (i)
-                    {
-                        case 1:
-                            mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
-                            _mitchHairballDone = true;
-                            break;
-                        case 2:
-                            mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
-                            _mitchTurbineDone = true;
-                            break;
-                        case 3:
-                            mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
-                            _mitchSalmonDone = true;
-                            break;
-                        case 4:
-                            mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
-                            _mitchPoolDone = true;
-                            break;
-                        case 5:
-                            mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
-                            _mitchBathDone = true;
-                            break;
-                        case 6:
-                            mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
-                            _mitchTadpoleDone = true;
-                            break;
-                        case 7:
-                            mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
-                            _mitchGardenDone = true;
-                            break;
-                    }
+                    checkedBathKeysImage.enabled = true;
+                    checkedBathKeysImage.color = new Color(0.6698113f, 0.6698113f, 0.6698113f, 0.7647059f);
                 }
-                if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin2"))
+                else if (ItemHandler.UsedKeysBath() == 2)
                 {
-                    switch (i)
-                    {
-                        case 1:
-                            maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
-                            _maiHairballDone = true;
-                            break;
-                        case 2:
-                            maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
-                            _maiTurbineDone = true;
-                            break;
-                        case 3:
-                            maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
-                            _maiSalmonDone = true;
-                            break;
-                        case 4:
-                            maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
-                            _maiPoolDone = true;
-                            break;
-                        case 5:
-                            maiBathImage.color = new Color(1f, 1f, 1f, 1f);
-                            _maiBathDone = true;
-                            break;
-                        case 6:
-                            maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
-                            _maiTadpoleDone = true;
-                            break;
-                        case 7:
-                            maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
-                            _maiGardenDone = true;
-                            break;
-                    }
+                    checkedBathKeysImage.enabled = true;
+                    checkedBathKeysImage.color = Color.white;
                 }
+
+                keyHqCountBackText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
+                keyHqCountFrontText.text = Plugin.ArchipelagoClient.HqKeyAmount + "/1";
+                if (ItemHandler.UsedKeysHairball() == 1)
+                    checkedHqKeysImage.enabled = true;
             }
-            if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
+            else
             {
-                if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 2)
+                keysDisabledImage.gameObject.SetActive(true);
+                keyCountBackText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
+                keyCountFrontText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
+                keyHcCountBackText.text = "X";
+                keyHcCountFrontText.text = "X";
+                keyTtCountBackText.text = "X";
+                keyTtCountFrontText.text = "X";
+                keySfcCountBackText.text = "X";
+                keySfcCountFrontText.text = "X";
+                keyPpCountBackText.text = "X";
+                keyPpCountFrontText.text = "X";
+                keyBathCountBackText.text = "X";
+                keyBathCountFrontText.text = "X";
+                keyHqCountBackText.text = "X";
+                keyHqCountFrontText.text = "X";
+            }
+        }
+        else
+        {
+            keysDisabledImage.gameObject.SetActive(true);
+            keyCountBackText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
+            keyCountFrontText.text = Plugin.ArchipelagoClient.KeyAmount + "/9";
+            keyHcCountBackText.text = "X";
+            keyHcCountFrontText.text = "X";
+            keyTtCountBackText.text = "X";
+            keyTtCountFrontText.text = "X";
+            keySfcCountBackText.text = "X";
+            keySfcCountFrontText.text = "X";
+            keyPpCountBackText.text = "X";
+            keyPpCountFrontText.text = "X";
+            keyBathCountBackText.text = "X";
+            keyBathCountFrontText.text = "X";
+            keyHqCountBackText.text = "X";
+            keyHqCountFrontText.text = "X";
+        }
+    }
+    private void FishSanityStats()
+    {
+        if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
+        {
+            if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+            {
+                fishDisabledImage.gameObject.SetActive(false);
+                fishHcCountBackText.text = ItemHandler.HairballFishAmount + "/5";
+                fishHcCountFrontText.text = ItemHandler.HairballFishAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("fishing"))
+                    boughtHcFishImage.enabled = true;
+                fishTtCountBackText.text = ItemHandler.TurbineFishAmount + "/5";
+                fishTtCountFrontText.text = ItemHandler.TurbineFishAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("fishing"))
+                    boughtTtFishImage.enabled = true;
+                fishSfcCountBackText.text = ItemHandler.SalmonFishAmount + "/5";
+                fishSfcCountFrontText.text = ItemHandler.SalmonFishAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("fishing"))
+                    boughtScfFishImage.enabled = true;
+                fishPpCountBackText.text = ItemHandler.PoolFishAmount + "/5";
+                fishPpCountFrontText.text = ItemHandler.PoolFishAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("fishing"))
+                    boughtPpFishImage.enabled = true;
+                fishBathCountBackText.text = ItemHandler.BathFishAmount + "/5";
+                fishBathCountFrontText.text = ItemHandler.BathFishAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("fishing"))
+                    boughtBathFishImage.enabled = true;
+                fishHqCountBackText.text = ItemHandler.TadpoleFishAmount + "/5";
+                fishHqCountFrontText.text = ItemHandler.TadpoleFishAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("fishing"))
+                    boughtHqFishImage.enabled = true;
+            }
+            else
+            {
+                fishDisabledImage.gameObject.SetActive(true);
+                fishHcCountBackText.text = "X";
+                fishHcCountFrontText.text = "X";
+                fishTtCountBackText.text = "X";
+                fishTtCountFrontText.text = "X";
+                fishSfcCountBackText.text = "X";
+                fishSfcCountFrontText.text = "X";
+                fishPpCountBackText.text = "X";
+                fishPpCountFrontText.text = "X";
+                fishBathCountBackText.text = "X";
+                fishBathCountFrontText.text = "X";
+                fishHqCountBackText.text = "X";
+                fishHqCountFrontText.text = "X";
+            }
+        }
+        else
+        {
+            fishDisabledImage.gameObject.SetActive(true);
+            fishHcCountBackText.text = "X";
+            fishHcCountFrontText.text = "X";
+            fishTtCountBackText.text = "X";
+            fishTtCountFrontText.text = "X";
+            fishSfcCountBackText.text = "X";
+            fishSfcCountFrontText.text = "X";
+            fishPpCountBackText.text = "X";
+            fishPpCountFrontText.text = "X";
+            fishBathCountBackText.text = "X";
+            fishBathCountFrontText.text = "X";
+            fishHqCountBackText.text = "X";
+            fishHqCountFrontText.text = "X";
+        }
+    }
+    private void CheckKioskStats()
+    {
+        if (KioskSpoiler)
+        {
+            kioskHomeText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[1]
+                ? levelData.levelPrices[2].ToString()
+                : "??";
+            kioskHcText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[2]
+                ? levelData.levelPrices[3].ToString()
+                : "??";
+            kioskTtText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[3]
+                ? levelData.levelPrices[4].ToString()
+                : "??";
+            kioskSfcText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[4]
+                ? levelData.levelPrices[5].ToString()
+                : "??";
+            kioskPpText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[5]
+                ? levelData.levelPrices[6].ToString()
+                : "??";
+            kioskBathText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[6]
+                ? levelData.levelPrices[7].ToString()
+                : "??";
+            kioskHqText.text = scrGameSaveManager.instance.gameData.generalGameData.unlockedLevels[7]
+                ? levelData.levelPrices[8].ToString()
+                : "??";
+        }
+        else
+        {
+            kioskHomeText.text = levelData.levelPrices[2].ToString();
+            kioskHcText.text = levelData.levelPrices[3].ToString();
+            kioskTtText.text = levelData.levelPrices[4].ToString();
+            kioskSfcText.text = levelData.levelPrices[5].ToString();
+            kioskPpText.text = levelData.levelPrices[6].ToString();
+            kioskBathText.text = levelData.levelPrices[7].ToString();
+            kioskHqText.text = levelData.levelPrices[8].ToString();
+        }
+
+        kioskHomeBackText.text = kioskHomeText.text;
+        kioskHcBackText.text = kioskHcText.text;
+        kioskTtBackText.text = kioskTtText.text;
+        kioskSfcBackText.text = kioskSfcText.text;
+        kioskPpBackText.text = kioskPpText.text;
+        kioskBathBackText.text = kioskBathText.text;
+        kioskHqBackText.text = kioskHqText.text;
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskHome"))
+        {
+            kioskHomeImage.color = new Color(1f, 1f, 1f, 1f);
+            kioskHomeText.enabled = false;
+            kioskHomeBackText.enabled = false;
+            kioskHomeCostImage.enabled = false;
+            kioskHomeCostBackImage.enabled = false;
+            boughtHomeImage.enabled = true;
+            boughtHomeBackImage.enabled = true;
+        }
+
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskHairball City"))
+        {
+            kioskHcText.enabled = false;
+            kioskHcBackText.enabled = false;
+            kioskHcCostImage.enabled = false;
+            kioskHcCostBackImage.enabled = false;
+            boughtHcImage.enabled = true;
+            boughtHcBackImage.enabled = true;
+        }
+
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskTrash Kingdom"))
+        {
+            kioskTtText.enabled = false;
+            kioskTtBackText.enabled = false;
+            kioskTtCostImage.enabled = false;
+            kioskTtCostBackImage.enabled = false;
+            boughtTtImage.enabled = true;
+            boughtTtBackImage.enabled = true;
+        }
+
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskSalmon Creek Forest"))
+        {
+            kioskSfcText.enabled = false;
+            kioskSfcBackText.enabled = false;
+            kioskSfcCostImage.enabled = false;
+            kioskSfcCostBackImage.enabled = false;
+            boughtSfcImage.enabled = true;
+            boughtSfcBackImage.enabled = true;
+        }
+
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskPublic Pool"))
+        {
+            kioskPpText.enabled = false;
+            kioskPpBackText.enabled = false;
+            kioskPpCostImage.enabled = false;
+            kioskPpCostBackImage.enabled = false;
+            boughtPpImage.enabled = true;
+            boughtPpBackImage.enabled = true;
+        }
+
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskThe Bathhouse"))
+        {
+            kioskBathText.enabled = false;
+            kioskBathBackText.enabled = false;
+            kioskBathCostImage.enabled = false;
+            kioskBathCostBackImage.enabled = false;
+            boughtBathImage.enabled = true;
+            boughtBathBackImage.enabled = true;
+        }
+
+        if (gameSaveManager.gameData.generalGameData.generalFlags.Contains("KioskTadpole inc"))
+        {
+            kioskHqText.enabled = false;
+            kioskHqBackText.enabled = false;
+            kioskHqCostImage.enabled = false;
+            kioskHqCostBackImage.enabled = false;
+            boughtHqImage.enabled = true;
+            boughtHqBackImage.enabled = true;
+        }
+    }
+    private void CheckMitchAndMai()
+    {
+        for (var i = 1; i < 8; i++)
+        {
+            if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin"))
+                switch (i)
                 {
-                    flowersDisabledImage.gameObject.SetActive(false);
-                    flowerHcCountBackText.text = ItemHandler.HairballFlowerAmount + "/3";
-                    flowerHcCountFrontText.text = ItemHandler.HairballFlowerAmount + "/3";
-                    if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("flowerPuzzle"))
-                        boughtHcFlowersImage.enabled = true;
-                    flowerTtCountBackText.text = ItemHandler.TurbineFlowerAmount + "/3";
-                    flowerTtCountFrontText.text = ItemHandler.TurbineFlowerAmount + "/3";
-                    if (scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("flowerPuzzle"))
-                        boughtTtFlowersImage.enabled = true;
-                    flowerSfcCountBackText.text = ItemHandler.SalmonFlowerAmount + "/6";
-                    flowerSfcCountFrontText.text = ItemHandler.SalmonFlowerAmount + "/6";
-                    if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle"))
-                        boughtScfFlowersImage.enabled = true;
-                    flowerPpCountBackText.text = ItemHandler.PoolFlowerAmount + "/3";
-                    flowerPpCountFrontText.text = ItemHandler.PoolFlowerAmount + "/3";
-                    if (scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle"))
-                        boughtPpFlowersImage.enabled = true;
-                    flowerBathCountBackText.text = ItemHandler.BathFlowerAmount + "/3";
-                    flowerBathCountFrontText.text = ItemHandler.BathFlowerAmount + "/3";
-                    if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle"))
-                        boughtBathFlowersImage.enabled = true;
-                    flowerHqCountBackText.text = ItemHandler.TadpoleFlowerAmount + "/4";
-                    flowerHqCountFrontText.text = ItemHandler.TadpoleFlowerAmount + "/4";
-                    if (scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("flowerPuzzle"))
-                        boughtHqFlowersImage.enabled = true;
+                    case 1:
+                        mitchHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                        _mitchHairballDone = true;
+                        break;
+                    case 2:
+                        mitchTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                        _mitchTurbineDone = true;
+                        break;
+                    case 3:
+                        mitchSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                        _mitchSalmonDone = true;
+                        break;
+                    case 4:
+                        mitchPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                        _mitchPoolDone = true;
+                        break;
+                    case 5:
+                        mitchBathImage.color = new Color(1f, 1f, 1f, 1f);
+                        _mitchBathDone = true;
+                        break;
+                    case 6:
+                        mitchTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                        _mitchTadpoleDone = true;
+                        break;
+                    case 7:
+                        mitchGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                        _mitchGardenDone = true;
+                        break;
                 }
-                else
+
+            if (scrGameSaveManager.instance.gameData.worldsData[i].coinFlags.Contains("cassetteCoin2"))
+                switch (i)
                 {
-                    flowersDisabledImage.gameObject.SetActive(true);
-                    flowerHcCountBackText.text = "X";
-                    flowerHcCountFrontText.text = "X";
-                    flowerTtCountBackText.text = "X";
-                    flowerTtCountFrontText.text = "X";
-                    flowerSfcCountBackText.text = "X";
-                    flowerSfcCountFrontText.text = "X";
-                    flowerPpCountBackText.text = "X";
-                    flowerPpCountFrontText.text = "X";
-                    flowerBathCountBackText.text = "X";
-                    flowerBathCountFrontText.text = "X";
-                    flowerHqCountBackText.text = "X";
-                    flowerHqCountFrontText.text = "X";
+                    case 1:
+                        maiHairballImage.color = new Color(1f, 1f, 1f, 1f);
+                        _maiHairballDone = true;
+                        break;
+                    case 2:
+                        maiTurbineImage.color = new Color(1f, 1f, 1f, 1f);
+                        _maiTurbineDone = true;
+                        break;
+                    case 3:
+                        maiSalmonImage.color = new Color(1f, 1f, 1f, 1f);
+                        _maiSalmonDone = true;
+                        break;
+                    case 4:
+                        maiPoolImage.color = new Color(1f, 1f, 1f, 1f);
+                        _maiPoolDone = true;
+                        break;
+                    case 5:
+                        maiBathImage.color = new Color(1f, 1f, 1f, 1f);
+                        _maiBathDone = true;
+                        break;
+                    case 6:
+                        maiTadpoleImage.color = new Color(1f, 1f, 1f, 1f);
+                        _maiTadpoleDone = true;
+                        break;
+                    case 7:
+                        maiGardenImage.color = new Color(1f, 1f, 1f, 1f);
+                        _maiGardenDone = true;
+                        break;
                 }
+        }
+    }
+    private void FlowerSanityStats()
+    {
+        if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
+        {
+            if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 2)
+            {
+                flowersDisabledImage.gameObject.SetActive(false);
+                flowerHcCountBackText.text = ItemHandler.HairballFlowerAmount + "/3";
+                flowerHcCountFrontText.text = ItemHandler.HairballFlowerAmount + "/3";
+                if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("flowerPuzzle"))
+                    boughtHcFlowersImage.enabled = true;
+                flowerTtCountBackText.text = ItemHandler.TurbineFlowerAmount + "/3";
+                flowerTtCountFrontText.text = ItemHandler.TurbineFlowerAmount + "/3";
+                if (scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("flowerPuzzle"))
+                    boughtTtFlowersImage.enabled = true;
+                flowerSfcCountBackText.text = ItemHandler.SalmonFlowerAmount + "/6";
+                flowerSfcCountFrontText.text = ItemHandler.SalmonFlowerAmount + "/6";
+                if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("flowerPuzzle"))
+                    boughtScfFlowersImage.enabled = true;
+                flowerPpCountBackText.text = ItemHandler.PoolFlowerAmount + "/3";
+                flowerPpCountFrontText.text = ItemHandler.PoolFlowerAmount + "/3";
+                if (scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("flowerPuzzle"))
+                    boughtPpFlowersImage.enabled = true;
+                flowerBathCountBackText.text = ItemHandler.BathFlowerAmount + "/3";
+                flowerBathCountFrontText.text = ItemHandler.BathFlowerAmount + "/3";
+                if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("flowerPuzzle"))
+                    boughtBathFlowersImage.enabled = true;
+                flowerHqCountBackText.text = ItemHandler.TadpoleFlowerAmount + "/4";
+                flowerHqCountFrontText.text = ItemHandler.TadpoleFlowerAmount + "/4";
+                if (scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("flowerPuzzle"))
+                    boughtHqFlowersImage.enabled = true;
             }
             else
             {
@@ -1564,34 +1652,43 @@ public class ArchipelagoMenu : MonoBehaviour
                 flowerHqCountBackText.text = "X";
                 flowerHqCountFrontText.text = "X";
             }
-            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
+        }
+        else
+        {
+            flowersDisabledImage.gameObject.SetActive(true);
+            flowerHcCountBackText.text = "X";
+            flowerHcCountFrontText.text = "X";
+            flowerTtCountBackText.text = "X";
+            flowerTtCountFrontText.text = "X";
+            flowerSfcCountBackText.text = "X";
+            flowerSfcCountFrontText.text = "X";
+            flowerPpCountBackText.text = "X";
+            flowerPpCountFrontText.text = "X";
+            flowerBathCountBackText.text = "X";
+            flowerBathCountFrontText.text = "X";
+            flowerHqCountBackText.text = "X";
+            flowerHqCountFrontText.text = "X";
+        }
+    }
+    private void SeedSanityStats()
+    {
+        if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
+        {
+            if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 2)
             {
-                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 2)
-                {
-                    seedsDisabledImage.gameObject.SetActive(false);
-                    seedHcCountBackText.text = ItemHandler.HairballSeedAmount + "/10";
-                    seedHcCountFrontText.text = ItemHandler.HairballSeedAmount + "/10";
-                    if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("hamsterball"))
-                        boughtHcSeedsImage.enabled = true;
-                    seedSfcCountBackText.text = ItemHandler.SalmonSeedAmount + "/10";
-                    seedSfcCountFrontText.text = ItemHandler.SalmonSeedAmount + "/10";
-                    if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("hamsterball"))
-                        boughtScfSeedsImage.enabled = true;
-                    seedBathCountBackText.text = ItemHandler.BathSeedAmount + "/10";
-                    seedBathCountFrontText.text = ItemHandler.BathSeedAmount + "/10";
-                    if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("hamsterball"))
-                        boughtBathSeedsImage.enabled = true;
-                }
-                else
-                {
-                    seedsDisabledImage.gameObject.SetActive(true);
-                    seedHcCountBackText.text = "X";
-                    seedHcCountFrontText.text = "X";
-                    seedSfcCountBackText.text = "X";
-                    seedSfcCountFrontText.text = "X";
-                    seedBathCountBackText.text = "X";
-                    seedBathCountFrontText.text = "X";
-                }
+                seedsDisabledImage.gameObject.SetActive(false);
+                seedHcCountBackText.text = ItemHandler.HairballSeedAmount + "/10";
+                seedHcCountFrontText.text = ItemHandler.HairballSeedAmount + "/10";
+                if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("hamsterball"))
+                    boughtHcSeedsImage.enabled = true;
+                seedSfcCountBackText.text = ItemHandler.SalmonSeedAmount + "/10";
+                seedSfcCountFrontText.text = ItemHandler.SalmonSeedAmount + "/10";
+                if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("hamsterball"))
+                    boughtScfSeedsImage.enabled = true;
+                seedBathCountBackText.text = ItemHandler.BathSeedAmount + "/10";
+                seedBathCountFrontText.text = ItemHandler.BathSeedAmount + "/10";
+                if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("hamsterball"))
+                    boughtBathSeedsImage.enabled = true;
             }
             else
             {
@@ -1603,72 +1700,67 @@ public class ArchipelagoMenu : MonoBehaviour
                 seedBathCountBackText.text = "X";
                 seedBathCountFrontText.text = "X";
             }
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
+        }
+        else
+        {
+            seedsDisabledImage.gameObject.SetActive(true);
+            seedHcCountBackText.text = "X";
+            seedHcCountFrontText.text = "X";
+            seedSfcCountBackText.text = "X";
+            seedSfcCountFrontText.text = "X";
+            seedBathCountBackText.text = "X";
+            seedBathCountFrontText.text = "X";
+        }
+    }
+    private void CassetteSanityStats()
+    {
+        if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
+        {
+            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
             {
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
-                {
-                    cassettesDisabledImage.gameObject.SetActive(false);
-                    cassettesHcCountBackText.text = ItemHandler.HairballCassetteAmount + "/10";
-                    cassettesHcCountFrontText.text = ItemHandler.HairballCassetteAmount + "/10";
-                    if (_mitchHairballDone)
-                        cassettesMitchHairballImage.color = Color.white;
-                    if (_maiHairballDone)
-                        cassettesMaiHairballImage.color = Color.white;
-                    cassettesTtCountBackText.text = ItemHandler.TurbineCassetteAmount + "/10";
-                    cassettesTtCountFrontText.text = ItemHandler.TurbineCassetteAmount + "/10";
-                    if (_mitchTurbineDone)
-                        cassettesMitchTurbineImage.color = Color.white;
-                    if (_maiTurbineDone)
-                        cassettesMaiTurbineImage.color = Color.white;
-                    cassettesSfcCountBackText.text = ItemHandler.SalmonCassetteAmount + "/10";
-                    cassettesSfcCountFrontText.text = ItemHandler.SalmonCassetteAmount + "/10";
-                    if (_mitchSalmonDone)
-                        cassettesMitchSalmonImage.color = Color.white;
-                    if (_maiSalmonDone)
-                        cassettesMaiSalmonImage.color = Color.white;
-                    cassettesPpCountBackText.text = ItemHandler.PoolCassetteAmount + "/10";
-                    cassettesPpCountFrontText.text = ItemHandler.PoolCassetteAmount + "/10";
-                    if (_mitchPoolDone)
-                        cassettesMitchPoolImage.color = Color.white;
-                    if (_maiPoolDone)
-                        cassettesMaiPoolImage.color = Color.white;
-                    cassettesBathCountBackText.text = ItemHandler.BathCassetteAmount + "/10";
-                    cassettesBathCountFrontText.text = ItemHandler.BathCassetteAmount + "/10";
-                    if (_mitchBathDone)
-                        cassettesMitchBathImage.color = Color.white;
-                    if (_maiBathDone)
-                        cassettesMaiBathImage.color = Color.white;
-                    cassettesHqCountBackText.text = ItemHandler.TadpoleCassetteAmount + "/10";
-                    cassettesHqCountFrontText.text = ItemHandler.TadpoleCassetteAmount + "/10";
-                    if (_mitchTadpoleDone)
-                        cassettesMitchTadpoleImage.color = Color.white;
-                    if (_maiTadpoleDone)
-                        cassettesMaiTadpoleImage.color = Color.white;
-                    cassettesGgCountBackText.text = ItemHandler.GardenCassetteAmount + "/10";
-                    cassettesGgCountFrontText.text = ItemHandler.GardenCassetteAmount + "/10";
-                    if (_mitchGardenDone)
-                        cassettesMitchGardenImage.color = Color.white;
-                    if (_maiGardenDone)
-                        cassettesMaiGardenImage.color = Color.white;
-                }
-                else
-                {
-                    cassettesDisabledImage.gameObject.SetActive(true);
-                    cassettesHcCountBackText.text = "X";
-                    cassettesHcCountFrontText.text = "X";
-                    cassettesTtCountBackText.text = "X";
-                    cassettesTtCountFrontText.text = "X";
-                    cassettesSfcCountBackText.text = "X";
-                    cassettesSfcCountFrontText.text = "X";
-                    cassettesPpCountBackText.text = "X";
-                    cassettesPpCountFrontText.text = "X";
-                    cassettesBathCountBackText.text = "X";
-                    cassettesBathCountFrontText.text = "X";
-                    cassettesHqCountBackText.text = "X";
-                    cassettesHqCountFrontText.text = "X";
-                    cassettesGgCountBackText.text = "X";
-                    cassettesGgCountFrontText.text = "X";
-                }
+                cassettesDisabledImage.gameObject.SetActive(false);
+                cassettesHcCountBackText.text = ItemHandler.HairballCassetteAmount + "/10";
+                cassettesHcCountFrontText.text = ItemHandler.HairballCassetteAmount + "/10";
+                if (_mitchHairballDone)
+                    cassettesMitchHairballImage.color = Color.white;
+                if (_maiHairballDone)
+                    cassettesMaiHairballImage.color = Color.white;
+                cassettesTtCountBackText.text = ItemHandler.TurbineCassetteAmount + "/10";
+                cassettesTtCountFrontText.text = ItemHandler.TurbineCassetteAmount + "/10";
+                if (_mitchTurbineDone)
+                    cassettesMitchTurbineImage.color = Color.white;
+                if (_maiTurbineDone)
+                    cassettesMaiTurbineImage.color = Color.white;
+                cassettesSfcCountBackText.text = ItemHandler.SalmonCassetteAmount + "/10";
+                cassettesSfcCountFrontText.text = ItemHandler.SalmonCassetteAmount + "/10";
+                if (_mitchSalmonDone)
+                    cassettesMitchSalmonImage.color = Color.white;
+                if (_maiSalmonDone)
+                    cassettesMaiSalmonImage.color = Color.white;
+                cassettesPpCountBackText.text = ItemHandler.PoolCassetteAmount + "/10";
+                cassettesPpCountFrontText.text = ItemHandler.PoolCassetteAmount + "/10";
+                if (_mitchPoolDone)
+                    cassettesMitchPoolImage.color = Color.white;
+                if (_maiPoolDone)
+                    cassettesMaiPoolImage.color = Color.white;
+                cassettesBathCountBackText.text = ItemHandler.BathCassetteAmount + "/10";
+                cassettesBathCountFrontText.text = ItemHandler.BathCassetteAmount + "/10";
+                if (_mitchBathDone)
+                    cassettesMitchBathImage.color = Color.white;
+                if (_maiBathDone)
+                    cassettesMaiBathImage.color = Color.white;
+                cassettesHqCountBackText.text = ItemHandler.TadpoleCassetteAmount + "/10";
+                cassettesHqCountFrontText.text = ItemHandler.TadpoleCassetteAmount + "/10";
+                if (_mitchTadpoleDone)
+                    cassettesMitchTadpoleImage.color = Color.white;
+                if (_maiTadpoleDone)
+                    cassettesMaiTadpoleImage.color = Color.white;
+                cassettesGgCountBackText.text = ItemHandler.GardenCassetteAmount + "/10";
+                cassettesGgCountFrontText.text = ItemHandler.GardenCassetteAmount + "/10";
+                if (_mitchGardenDone)
+                    cassettesMitchGardenImage.color = Color.white;
+                if (_maiGardenDone)
+                    cassettesMaiGardenImage.color = Color.white;
             }
             else
             {
@@ -1691,8 +1783,87 @@ public class ArchipelagoMenu : MonoBehaviour
         }
         else
         {
-            informationPanel.SetActive(false);
-            connectionPanel.SetActive(true);
+            cassettesDisabledImage.gameObject.SetActive(true);
+            cassettesHcCountBackText.text = "X";
+            cassettesHcCountFrontText.text = "X";
+            cassettesTtCountBackText.text = "X";
+            cassettesTtCountFrontText.text = "X";
+            cassettesSfcCountBackText.text = "X";
+            cassettesSfcCountFrontText.text = "X";
+            cassettesPpCountBackText.text = "X";
+            cassettesPpCountFrontText.text = "X";
+            cassettesBathCountBackText.text = "X";
+            cassettesBathCountFrontText.text = "X";
+            cassettesHqCountBackText.text = "X";
+            cassettesHqCountFrontText.text = "X";
+            cassettesGgCountBackText.text = "X";
+            cassettesGgCountFrontText.text = "X";
+        }
+    }
+    private void BoneSanityStats()
+    {
+        if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
+        {
+            if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 2)
+            {
+                boneDisabledImage.gameObject.SetActive(false);
+                boneHcCountBackText.text = ItemHandler.HairballBoneAmount + "/5";
+                boneHcCountFrontText.text = ItemHandler.HairballBoneAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[1].coinFlags.Contains("arcadeBone"))
+                    boughtHcBoneImage.enabled = true;
+                boneTtCountBackText.text = ItemHandler.TurbineBoneAmount + "/5";
+                boneTtCountFrontText.text = ItemHandler.TurbineBoneAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[2].coinFlags.Contains("arcadeBone"))
+                    boughtTtBoneImage.enabled = true;
+                boneSfcCountBackText.text = ItemHandler.SalmonBoneAmount + "/5";
+                boneSfcCountFrontText.text = ItemHandler.SalmonBoneAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[3].coinFlags.Contains("arcadeBone"))
+                    boughtScfBoneImage.enabled = true;
+                bonePpCountBackText.text = ItemHandler.PoolBoneAmount + "/5";
+                bonePpCountFrontText.text = ItemHandler.PoolBoneAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[4].coinFlags.Contains("arcadeBone"))
+                    boughtPpBoneImage.enabled = true;
+                boneBathCountBackText.text = ItemHandler.BathBoneAmount + "/5";
+                boneBathCountFrontText.text = ItemHandler.BathBoneAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("arcadeBone"))
+                    boughtBathBoneImage.enabled = true;
+                boneHqCountBackText.text = ItemHandler.TadpoleBoneAmount + "/5";
+                boneHqCountFrontText.text = ItemHandler.TadpoleBoneAmount + "/5";
+                if (scrGameSaveManager.instance.gameData.worldsData[6].coinFlags.Contains("arcadeBone"))
+                    boughtHqBoneImage.enabled = true;
+            }
+            else
+            {
+                boneDisabledImage.gameObject.SetActive(true);
+                boneHcCountBackText.text = "X";
+                boneHcCountFrontText.text = "X";
+                boneTtCountBackText.text = "X";
+                boneTtCountFrontText.text = "X";
+                boneSfcCountBackText.text = "X";
+                boneSfcCountFrontText.text = "X";
+                bonePpCountBackText.text = "X";
+                bonePpCountFrontText.text = "X";
+                boneBathCountBackText.text = "X";
+                boneBathCountFrontText.text = "X";
+                boneHqCountBackText.text = "X";
+                boneHqCountFrontText.text = "X";
+            }
+        }
+        else
+        {
+            boneDisabledImage.gameObject.SetActive(true);
+            boneHcCountBackText.text = "X";
+            boneHcCountFrontText.text = "X";
+            boneTtCountBackText.text = "X";
+            boneTtCountFrontText.text = "X";
+            boneSfcCountBackText.text = "X";
+            boneSfcCountFrontText.text = "X";
+            bonePpCountBackText.text = "X";
+            bonePpCountFrontText.text = "X";
+            boneBathCountBackText.text = "X";
+            boneBathCountFrontText.text = "X";
+            boneHqCountBackText.text = "X";
+            boneHqCountFrontText.text = "X";
         }
     }
 

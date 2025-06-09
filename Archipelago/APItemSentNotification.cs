@@ -190,6 +190,13 @@ public static class APItemSentNotification
                     "Swim Course" => Plugin.SwimCourseSprite,
                     "Textbox" => Plugin.TextboxItemSprite,
                     "AC Repair" => Plugin.ACRepairSprite,
+                    "Apple Basket" => Plugin.AppleBasketSprite,
+                    "Hairball City Bone" => Plugin.HairballBoneSprite,
+                    "Turbine Town Bone" => Plugin.TurbineBoneSprite,
+                    "Salmon Creek Forest Bone" => Plugin.SalmonBoneSprite,
+                    "Public Pool Bone" => Plugin.PoolBoneSprite,
+                    "Bathhouse Bone" => Plugin.BathBoneSprite,
+                    "Tadpole HQ Bone" => Plugin.TadpoleBoneSprite,
                     _ => Plugin.ApProgressionSprite
                 };
                 break;

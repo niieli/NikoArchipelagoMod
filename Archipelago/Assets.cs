@@ -73,7 +73,14 @@ public class Assets
         { "parasolRepair", "ParasolRepair" },
         { "swimCourse", "SwimCourse" },
         { "textbox", "Textbox" },
-        { "acRepair", "ACRepair" }
+        { "acRepair", "ACRepair" },
+        { "applebasket", "AppleBasket" },
+        { "hcbone", "HairballBone" },
+        { "ttbone", "TurbineBone" },
+        { "scfbone", "SalmonBone" },
+        { "ppbone", "PoolBone" },
+        { "bathbone", "BathBone" },
+        { "hqbone", "TadpoleBone" },
     };
 
     private static List<string> _progItems = [
@@ -124,6 +131,13 @@ public class Assets
         "swimCourse",
         "textbox",
         "acRepair",
+        "applebasket",
+        "hcbone",
+        "ttbone",
+        "scfbone",
+        "ppbone",
+        "bathbone",
+        "hqbone",
     ];
 
     public static string RandomProgTrap()

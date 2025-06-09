@@ -19,7 +19,8 @@ public static class ItemHandler
         HairballFishAmount, TurbineFishAmount, SalmonFishAmount, PoolFishAmount, BathFishAmount, TadpoleFishAmount,
         HairballSeedAmount, SalmonSeedAmount, BathSeedAmount,
         HairballFlowerAmount, TurbineFlowerAmount, SalmonFlowerAmount, PoolFlowerAmount, BathFlowerAmount, TadpoleFlowerAmount,
-        HairballCassetteAmount, TurbineCassetteAmount, SalmonCassetteAmount, PoolCassetteAmount, BathCassetteAmount, TadpoleCassetteAmount, GardenCassetteAmount;
+        HairballCassetteAmount, TurbineCassetteAmount, SalmonCassetteAmount, PoolCassetteAmount, BathCassetteAmount, TadpoleCassetteAmount, GardenCassetteAmount,
+        HairballBoneAmount, TurbineBoneAmount, SalmonBoneAmount, PoolBoneAmount, BathBoneAmount, TadpoleBoneAmount;
     public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -760,6 +761,69 @@ public static class ItemHandler
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
             3f, SetSprite(itemName));
     }
+    public static void AddAppleBasket(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, SetSprite(itemName));
+    }
+    public static void AddHairballBone(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, SetSprite(itemName));
+    }
+    public static void AddTurbineBone(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, SetSprite(itemName));
+    }
+    public static void AddSalmonBone(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, SetSprite(itemName));
+    }
+    public static void AddPoolBone(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, SetSprite(itemName));
+    }
+    public static void AddBathBone(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, SetSprite(itemName));
+    }
+    public static void AddTadpoleBone(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, SetSprite(itemName));
+    }
     
     private static Sprite SetSprite(string itemName)
     {
@@ -827,6 +891,13 @@ public static class ItemHandler
             "Swim Course" => Plugin.SwimCourseSprite,
             "Textbox" => Plugin.TextboxItemSprite,
             "AC Repair" => Plugin.ACRepairSprite,
+            "Apple Basket" => Plugin.AppleBasketSprite,
+            "Hairball City Bone" => Plugin.HairballBoneSprite,
+            "Turbine Town Bone" => Plugin.TurbineBoneSprite,
+            "Salmon Creek Forest Bone" => Plugin.SalmonBoneSprite,
+            "Public Pool Bone" => Plugin.PoolBoneSprite,
+            "Bathhouse Bone" => Plugin.BathBoneSprite,
+            "Tadpole HQ Bone" => Plugin.TadpoleBoneSprite,
             _ => Plugin.ApProgressionSprite
         };
         return sprite;

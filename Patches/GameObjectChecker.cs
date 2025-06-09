@@ -70,6 +70,7 @@ public class GameObjectChecker : MonoBehaviour
         Applesanity.ApplesanityStart.nextAppleID = 1;
         Bugsanity.bugIDs.Clear();
         Bugsanity.nextBugID = 1;
+        Bonesanity.ID = 0;
         //LocationCheck();
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();

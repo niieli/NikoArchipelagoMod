@@ -1683,6 +1683,46 @@ public class Locations
         { BaseID + 1848, new Location(BaseID + 1848, "Bug49", 6) },
         { BaseID + 1849, new Location(BaseID + 1849, "Bug50", 6) },
     };
+    
+    public static readonly Dictionary<long, Location> BonesanityLocations = new()
+    {
+        //Boner
+        { BaseID + 2201, new Location(BaseID + 2201, "Bone", 1) },
+        { BaseID + 2202, new Location(BaseID + 2202, "Bone (1)", 1) },
+        { BaseID + 2203, new Location(BaseID + 2203, "Bone (2)", 1) },
+        { BaseID + 2204, new Location(BaseID + 2204, "Bone (3)", 1) },
+        { BaseID + 2205, new Location(BaseID + 2205, "Bone (4)", 1) },
+        
+        { BaseID + 2206, new Location(BaseID + 2206, "Bone", 2) },
+        { BaseID + 2207, new Location(BaseID + 2207, "Bone (1)", 2) },
+        { BaseID + 2208, new Location(BaseID + 2208, "Bone (2)", 2) },
+        { BaseID + 2209, new Location(BaseID + 2209, "Bone (3)", 2) },
+        { BaseID + 2210, new Location(BaseID + 2210, "Bone (4)", 2) },
+        
+        { BaseID + 2211, new Location(BaseID + 2211, "Bone", 3) },
+        { BaseID + 2212, new Location(BaseID + 2212, "Bone (1)", 3) },
+        { BaseID + 2213, new Location(BaseID + 2213, "Bone (2)", 3) },
+        { BaseID + 2214, new Location(BaseID + 2214, "Bone (3)", 3) },
+        { BaseID + 2215, new Location(BaseID + 2215, "Bone (4)", 3) },
+        
+        { BaseID + 2216, new Location(BaseID + 2216, "Bone", 4) },
+        { BaseID + 2217, new Location(BaseID + 2217, "Bone (1)", 4) },
+        { BaseID + 2218, new Location(BaseID + 2218, "Bone (2)", 4) },
+        { BaseID + 2219, new Location(BaseID + 2219, "Bone (3)", 4) },
+        { BaseID + 2220, new Location(BaseID + 2220, "Bone (4)", 4) },
+        
+        { BaseID + 2221, new Location(BaseID + 2221, "Bone", 5) },
+        { BaseID + 2222, new Location(BaseID + 2222, "Bone (1)", 5) },
+        { BaseID + 2223, new Location(BaseID + 2223, "Bone (2)", 5) },
+        { BaseID + 2224, new Location(BaseID + 2224, "Bone (3)", 5) },
+        { BaseID + 2225, new Location(BaseID + 2225, "Bone (4)", 5) },
+        
+        { BaseID + 2226, new Location(BaseID + 2226, "Bone", 6) },
+        { BaseID + 2227, new Location(BaseID + 2227, "Bone (1)", 6) },
+        { BaseID + 2228, new Location(BaseID + 2228, "Bone (2)", 6) },
+        { BaseID + 2229, new Location(BaseID + 2229, "Bone (3)", 6) },
+        { BaseID + 2230, new Location(BaseID + 2230, "Bone (4)", 6) },
+    };
 
     private static readonly List<long> ScoutList =
     [

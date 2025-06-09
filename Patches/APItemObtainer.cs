@@ -469,6 +469,13 @@ public class APItemObtainer
                         "Swim Course" => TextureAndDisplayer(Plugin.SwimCourseSprite.texture, __instance),
                         "Textbox" => TextureAndDisplayer(Plugin.TextboxItemSprite.texture, __instance),
                         "AC Repair" => TextureAndDisplayer(Plugin.ACRepairSprite.texture, __instance),
+                        "Apple Basket" => TextureAndDisplayer(Plugin.AppleBasketSprite.texture, __instance),
+                        "Hairball City Bone" => TextureAndDisplayer(Plugin.HairballBoneSprite.texture, __instance),
+                        "Turbine Town Bone" => TextureAndDisplayer(Plugin.TurbineBoneSprite.texture, __instance),
+                        "Salmon Creek Forest Bone" => TextureAndDisplayer(Plugin.SalmonBoneSprite.texture, __instance),
+                        "Public Pool Bone" => TextureAndDisplayer(Plugin.PoolBoneSprite.texture, __instance),
+                        "Bathhouse Bone" => TextureAndDisplayer(Plugin.BathBoneSprite.texture, __instance),
+                        "Tadpole HQ Bone" => TextureAndDisplayer(Plugin.TadpoleBoneSprite.texture, __instance),
                         _ => Plugin.APIconSprite.texture
                     };
             }

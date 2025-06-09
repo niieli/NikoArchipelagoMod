@@ -64,7 +64,7 @@ namespace NikoArchipelago
             ItemNotification, HintNotification,
             TrapWide, TrapHome, TrapJumpingJacks, TrapPhoneCall, TrapTiny,
             NoticeBonkHelmet, NoticeSodaCan, NoticeParasol, NoticeAC, NoticeSwimCourse, DeathLinkNotice, NoticeBugNet,
-            NoticePartyTicket;
+            NoticePartyTicket, NoticeAppleBasket;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
@@ -86,7 +86,7 @@ namespace NikoArchipelago
             FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite, GravityTrapSprite,
             PhoneCallTrapSprite, JumpingJacksTrapSprite, WideTrapSprite, HomeTrapSprite, TinyTrapSprite,
             PartyTicketSprite, BonkHelmetSprite, BugNetSprite, SodaRepairSprite, ParasolRepairSprite, SwimCourseSprite, TextboxItemSprite, ACRepairSprite,
-            DeathLinkSprite;
+            AppleBasketSprite, DeathLinkSprite, HairballBoneSprite, TurbineBoneSprite, SalmonBoneSprite, PoolBoneSprite, BathBoneSprite, TadpoleBoneSprite;
 
         public static Material ProgNotificationTexture, UsefulNotificationTexture, FillerNotificationTexture, TrapNotificationTexture;
         public static GameObject SparksParticleSystem;
@@ -298,6 +298,14 @@ namespace NikoArchipelago
                 DeathLinkNotice = AssetBundle.LoadAsset<GameObject>("NoticeDeathLink");
                 NoticeBugNet = AssetBundle.LoadAsset<GameObject>("NoticeBugNet");
                 NoticePartyTicket = AssetBundle.LoadAsset<GameObject>("NoticePartyTicket");
+                AppleBasketSprite = AssetBundle.LoadAsset<Sprite>("AppleBasket");
+                HairballBoneSprite = AssetBundle.LoadAsset<Sprite>("HairballBone");
+                TurbineBoneSprite = AssetBundle.LoadAsset<Sprite>("TurbineBone");
+                SalmonBoneSprite = AssetBundle.LoadAsset<Sprite>("SalmonBone");
+                PoolBoneSprite = AssetBundle.LoadAsset<Sprite>("PoolBone");
+                BathBoneSprite = AssetBundle.LoadAsset<Sprite>("BathhouseBone");
+                TadpoleBoneSprite = AssetBundle.LoadAsset<Sprite>("TadpoleBone");
+                NoticeAppleBasket = AssetBundle.LoadAsset<GameObject>("NoticeAppleBasket");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");
@@ -684,6 +692,18 @@ namespace NikoArchipelago
                     SyncValue(ref ItemHandler.PoolFlowerAmount, ArchipelagoClient.PpFlowerAmount);
                     SyncValue(ref ItemHandler.BathFlowerAmount, ArchipelagoClient.BathFlowerAmount);
                     SyncValue(ref ItemHandler.TadpoleFlowerAmount, ArchipelagoClient.HqFlowerAmount);
+                }
+            }
+            if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 2)
+                {
+                    SyncValue(ref ItemHandler.HairballBoneAmount, ArchipelagoClient.HcBoneAmount);
+                    SyncValue(ref ItemHandler.TurbineBoneAmount, ArchipelagoClient.TtBoneAmount);
+                    SyncValue(ref ItemHandler.SalmonBoneAmount, ArchipelagoClient.SfcBoneAmount);
+                    SyncValue(ref ItemHandler.PoolBoneAmount, ArchipelagoClient.PpBoneAmount);
+                    SyncValue(ref ItemHandler.BathBoneAmount, ArchipelagoClient.BathBoneAmount);
+                    SyncValue(ref ItemHandler.TadpoleBoneAmount, ArchipelagoClient.HqBoneAmount);
                 }
             }
             if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)

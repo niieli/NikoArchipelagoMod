@@ -221,6 +221,13 @@ public class Bugsanity
                         "Swim Course" => CreateItemOverworld("swimCourse", __instance),
                         "Textbox" => CreateItemOverworld("textbox", __instance),
                         "AC Repair" => CreateItemOverworld("acRepair", __instance),
+                        "Apple Basket" => CreateItemOverworld("applebasket", __instance),
+                        "Hairball City Bone" => CreateItemOverworld("hcbone", __instance),
+                        "Turbine Town Bone" => CreateItemOverworld("ttbone", __instance),
+                        "Salmon Creek Forest Bone" => CreateItemOverworld("scfbone", __instance),
+                        "Public Pool Bone" => CreateItemOverworld("ppbone", __instance),
+                        "Bathhouse Bone" => CreateItemOverworld("bathbone", __instance),
+                        "Tadpole HQ Bone" => CreateItemOverworld("hqbone", __instance),
                         _ when ArchipelagoClient.ScoutedLocations[index + offset].ItemName.EndsWith("Trap") => 
                             CreateItemOverworld(Assets.RandomProgTrap(), __instance, -20f),
                         _ => CreateItemOverworld("apProg", __instance)

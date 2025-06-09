@@ -63,7 +63,8 @@ public class LocationHandler : MonoBehaviour
                     .Concat(Locations.ApplesanityLocations)
                     .Concat(Locations.ChatsanityLevelLocations)
                     .Concat(Locations.ChatsanityNikoThoughtsLocations)
-                    .Concat(Locations.BugsanityLocations);
+                    .Concat(Locations.BugsanityLocations)
+                    .Concat(Locations.BonesanityLocations);
                 foreach (var locationEntry in relevantLocations.Where(locationEntry => 
                              locationEntry.Value.Level == currentLevel && miscFlag[miscIndex] == locationEntry.Value.Flag))
                 {

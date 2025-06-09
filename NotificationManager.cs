@@ -98,7 +98,7 @@ public class NotificationManager : MonoBehaviour
                 notificationHintStateColor = hintStateColor;
             if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationLocationNameColor, out var locationNameColor))
                 notificationLocationNameColor = locationNameColor;
-            Plugin.BepinLogger.LogInfo("Loaded saved Colors.");
+            //Plugin.BepinLogger.LogInfo("Loaded saved Colors.");
         }
         else
         {
@@ -198,6 +198,8 @@ public class NotificationManager : MonoBehaviour
         var hintState = note.HintState;
         var isHint = note.IsHint;
         
+        if (isHint)
+            duration *= 1.85f;
         var timerColor = notificationTimerColor;
         var playerColor = "#"+SavedData.Instance.NotificationPlayerNameColor;
         var itemColor = "#"+SavedData.Instance.NotificationItemNameColor;

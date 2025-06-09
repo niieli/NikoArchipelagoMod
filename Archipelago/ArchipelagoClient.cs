@@ -32,12 +32,13 @@ public class ArchipelagoClient
         HcFishAmount, TtFishAmount, SfcFishAmount, PpFishAmount, BathFishAmount, HqFishAmount,
         HcSeedAmount, SfcSeedAmount, BathSeedAmount,
         HcFlowerAmount, TtFlowerAmount, SfcFlowerAmount, PpFlowerAmount, BathFlowerAmount, HqFlowerAmount,
-        HcCassetteAmount, TtCassetteAmount, SfcCassetteAmount, PpCassetteAmount, BathCassetteAmount, HqCassetteAmount, GgCassetteAmount;
+        HcCassetteAmount, TtCassetteAmount, SfcCassetteAmount, PpCassetteAmount, BathCassetteAmount, HqCassetteAmount, GgCassetteAmount,
+        HcBoneAmount, TtBoneAmount, SfcBoneAmount, PpBoneAmount, BathBoneAmount, HqBoneAmount;
 
     public static int SpeedBoostAmount;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary, TicketParty,
         HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs, Keysanity, ElevatorRepaired, 
-        BonkPermitAcquired, BugnetAcquired, SodaRepairAcquired, ParasolRepairAcquired, SwimmingAcquired, TextboxAcquired, acRepairAcquired;
+        BonkPermitAcquired, BugnetAcquired, SodaRepairAcquired, ParasolRepairAcquired, SwimmingAcquired, TextboxAcquired, acRepairAcquired, AppleBasketAcquired;
 
     private static int savedItemIndex;
     private static bool stopIt;
@@ -564,6 +565,34 @@ public class ArchipelagoClient
                     ItemHandler.AddACRepair(item, notify);
                     acRepairAcquired = true;
                     break;
+                case 598_145_444_000+108: // Apple Basket
+                    ItemHandler.AddAppleBasket(item, notify);
+                    AppleBasketAcquired = true;
+                    break;
+                case 598_145_444_000+111: // Hairball City Bone
+                    ItemHandler.AddHairballBone(item, notify);
+                    HcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Bone");
+                    break;
+                case 598_145_444_000+112: // Turbine Town Bone
+                    ItemHandler.AddTurbineBone(item, notify);
+                    TtBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Bone");
+                    break;
+                case 598_145_444_000+113: // Salmon Creek Forest Bone
+                    ItemHandler.AddSalmonBone(item, notify);
+                    SfcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Bone");
+                    break;
+                case 598_145_444_000+114: // Public Pool Bone
+                    ItemHandler.AddPoolBone(item, notify);
+                    PpBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Bone");
+                    break;
+                case 598_145_444_000+115: // Bathhouse Bone
+                    ItemHandler.AddBathBone(item, notify);
+                    BathBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Bone");
+                    break;
+                case 598_145_444_000+116: // Tadpole HQ Bone
+                    ItemHandler.AddTadpoleBone(item, notify);
+                    HqBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Bone");
+                    break;
             }
     }
 
@@ -710,6 +739,11 @@ public class ArchipelagoClient
                 matchedLocation = bugLocation;
                 flagType = "Bug";
             }
+            else if (Locations.BonesanityLocations.TryGetValue(location, out var boneLocation))
+            {
+                matchedLocation = boneLocation;
+                flagType = "Bone";
+            }
             
             ServerData.CheckedLocations.Add(location);
             if (matchedLocation != null)
@@ -742,7 +776,7 @@ public class ArchipelagoClient
                 if (!worldsData[level].cassetteFlags.Contains(flag))
                     worldsData[level].cassetteFlags.Add(flag);
                 break;
-            case "SunflowerSeed" or "Flowerbed" or "Apple" or "Thought" or "ChatLevel" or "Bug":
+            case "SunflowerSeed" or "Flowerbed" or "Apple" or "Thought" or "ChatLevel" or "Bug" or "Bone":
                 if (!worldsData[level].miscFlags.Contains(flag))
                     worldsData[level].miscFlags.Add(flag);
                 break;

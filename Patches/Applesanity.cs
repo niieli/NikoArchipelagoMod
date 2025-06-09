@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Archipelago.MultiClient.Net.Enums;
@@ -195,6 +196,13 @@ public class Applesanity
                         "Swim Course" => CreateItemOverworld("swimCourse", __instance),
                         "Textbox" => CreateItemOverworld("textbox", __instance),
                         "AC Repair" => CreateItemOverworld("acRepair", __instance),
+                        "Apple Basket" => CreateItemOverworld("applebasket", __instance),
+                        "Hairball City Bone" => CreateItemOverworld("hcbone", __instance),
+                        "Turbine Town Bone" => CreateItemOverworld("ttbone", __instance),
+                        "Salmon Creek Forest Bone" => CreateItemOverworld("scfbone", __instance),
+                        "Public Pool Bone" => CreateItemOverworld("ppbone", __instance),
+                        "Bathhouse Bone" => CreateItemOverworld("bathbone", __instance),
+                        "Tadpole HQ Bone" => CreateItemOverworld("hqbone", __instance),
                         _ when ArchipelagoClient.ScoutedLocations[index + offset].ItemName.EndsWith("Trap") => 
                             CreateItemOverworld(Assets.RandomProgTrap(), __instance, -20f),
                         _ => CreateItemOverworld("apProg", __instance),
@@ -400,6 +408,12 @@ public class Applesanity
         }
     }
 
+    [HarmonyPatch(typeof(scrApple), "OnTriggerEnter")]
+    public static class AppleBasketPatch
+    {
+        
+    }
+
     [HarmonyPatch(typeof(scrApple), "GetCollected")]
     public static class ApplesanityTrigger
     {
@@ -409,8 +423,31 @@ public class Applesanity
         public static int appleCountPP = 94;
         public static int appleCountBath = 72;
         public static int appleCountHQ = 14;
+        
+        private static bool _noticeUp;
+        private static bool Prefix(scrApple __instance)
+        {
+            if (ArchipelagoData.slotData == null) return true;
+            if (!ArchipelagoData.slotData.ContainsKey("applebasket")) return true;
+            if (int.Parse(ArchipelagoData.slotData["applebasket"].ToString()) == 0) return true;
+            
+            if (ArchipelagoClient.AppleBasketAcquired) return true;
+            __instance.StartCoroutine(ShowNotice());
+            return false;
+        }
+        
+        private static IEnumerator ShowNotice()
+        {
+            if (_noticeUp) yield break;
+            var t = Object.Instantiate(Plugin.NoticeAppleBasket, Plugin.NotifcationCanvas.transform);
+            _noticeUp = true;
+            yield return new WaitForSeconds(12.5f);
+            Object.Destroy(t);
+            _noticeUp = false;
+        }
         private static void Postfix(scrApple __instance)
         {
+            if (!ArchipelagoClient.AppleBasketAcquired) return;
             if (!applesanityOn) return;
             if (!ApplesanityStart.appleIDs.ContainsKey(__instance))
             {
@@ -425,53 +462,6 @@ public class Applesanity
                 scrGameSaveManager.instance.SaveGame();
                 scrWorldSaveDataContainer.instance.SaveWorld();
             }
-        }
-
-        private static bool ValidIDRange(scrApple instance)
-        {
-            if (SceneManager.GetActiveScene().name == "Hairball City")
-            {
-                if (ApplesanityStart.appleIDs[instance] <= appleCountHC)
-                {
-                    return true;
-                }
-            } else
-            if (SceneManager.GetActiveScene().name == "Trash Kingdom")
-            {
-                if (ApplesanityStart.appleIDs[instance] <= appleCountTT)
-                {
-                    return true;
-                }
-            }else
-            if (SceneManager.GetActiveScene().name == "Salmon Creek Forest")
-            {
-                if (ApplesanityStart.appleIDs[instance] <= appleCountSCF)
-                {
-                    return true;
-                }
-            }else
-            if (SceneManager.GetActiveScene().name == "Public Pool")
-            {
-                if (ApplesanityStart.appleIDs[instance] <= appleCountPP)
-                {
-                    return true;
-                }
-            }else
-            if (SceneManager.GetActiveScene().name == "The Bathhouse")
-            {
-                if (ApplesanityStart.appleIDs[instance] <= appleCountBath)
-                {
-                    return true;
-                }
-            }else
-            if (SceneManager.GetActiveScene().name == "Tadpole inc")
-            {
-                if (ApplesanityStart.appleIDs[instance] <= appleCountHQ)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
     }
 }
