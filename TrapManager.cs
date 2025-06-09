@@ -489,7 +489,7 @@ public class TrapManager : MonoBehaviour
         if (scrTextbox.instance.conversationLocalized.Count >= 30)
         {
             var letterDurationField = typeof(scrTextbox).GetField("letterDuration", BindingFlags.NonPublic | BindingFlags.Instance);
-            letterDurationField.SetValue(scrTextbox.instance, 0.005f);
+            letterDurationField.SetValue(scrTextbox.instance, 0.01f);
             scrTextbox.instance.typeSpeedMod = 0f;
             Plugin.BepinLogger.LogInfo("Phone Call Trap: Long Conversation, slight text speed up!");
         }
@@ -583,5 +583,23 @@ public class TrapManager : MonoBehaviour
             "##nameDesperate Trainer;I'm looking for a super important item, have you seen it? ##newbox;It's like some kind of parcel, and the guy who needs it has the same name as a tree. ##newbox;If you find it, please let me know ASAP. Thanks!");
         TrapConversations.Add("trapConv3",
             "##nameUnknown Caller;##nikoimg2;Why do they call it oven when you of in the cold food of out hot eat the food? ##addinput:Yes;skip0; ##addinput:No;skip0; ##addinput:What?;skip0; ##newbox;##nikoimg4;...Nevermind.");
+        TrapConversations.Add("trapConv4",
+            "##nameMedia Enjoyer;##nikoimg2;Niko, you're not gonna believe this... ##newbox;I watched the next episode of this show I've been binging... ##newbox;and this guy turned himself into a PICKLE!  ##newbox;##nikoimg4;Literally the funniest thing I've ever seen. ##newbox;Anyway, you should probably get back to work. Somebody in BK is waiting on you.");
+        TrapConversations.Add("trapConv5",
+            "##nameSnatcher;##nikoimg5;AHHHHAHAHAHAHAHAHAHA!! ##newbox;FOOOOOOOOOOooo... oh wait, wrong number.");
+        TrapConversations.Add("trapConv6",
+            "##nameEgg Frog;##nikoimg2;I've called to make an announcement. ##newbox;##nikoimg9;Handsome Frog is a dirty-faced liar. ##newbox;##nikoimg5;He jumped over my freaking wife! ##newbox;##nikoimg8;That's right, he took pathetic little legs out and jumped over my freaking wife! ##newbox;##nikoimg8;And he said his jump was *t h i s   b i g*. ##newbox;##nikoimg4;And I said that was embarrassing. ##newbox;##nikoimg4;So I'm making a callout post on my frogsky dot net. ##newbox;##nikoimg4;Handsome Frog, you have a small jump. ##newbox;##nikoimg4;It's the height of piece of paper except way smaller. ##newbox;##nikoimg8;And guess what, here's what my jump looks like. ##newbox;##morenikoimg2; ##newbox;##morenikoimg2;That's right baby, all height, no fear, no pillows. ##newbox;##morenikoimg2;Look at that it looks like a super high jump. ##newbox;##morenikoimg1;He jumped over my wife so guess what? ##newbox;##nikoimg5;I'm gonna jump over the earth. ##newbox;##nikoimg5;THAT'S RIGHT THIS IS WHAT YOU GET, MY SUPER JUMP! ##newbox;##nikoimg4;Except I'm not gonna jump over the earth, I'm gonna go higher. ##newbox;##nikoimg5;I'M JUMPING OVER THE MOOOOOOON! ##newbox;##morenikoimg2;HOW DO YOU LIKE THAT PEPPER? I JUMPED OVER THE MOON YOU IDIOT! ##newbox;##morenikoimg3;YOU HAVE 23 HOURS BEFORE THE GRAVITY HITS TADPOLE HQ. ##newbox;##morenikoimg1;NOW GET OUT OF MY SIGHT BEFORE I JUMP OVER YOU TOO.");
+        TrapConversations.Add("trapConv7",
+            "##nameFred;Hey Niko! Guess what! ##newbox;##nikoimg2;I uhhhhhhhhhh... ##newbox;Uhhhhhhhhhhh.... ##newbox;Uhmmm.......hmmmm...... ##newbox;##nikoimg9;I uh....erm.... ##newbox;Hold on......uh...............  ##newbox;##nikoimg8;.................................................................................................. ##newbox;##nikoimg4;I forgot. ##newbox;Talk to you later!!");
+        TrapConversations.Add("trapConv8",
+            "##name?????;##nikoimg2;Crazy? ##newbox;I was crazy once. ##newbox;They locked me in a room. ##newbox;An Archipelago room. ##newbox;An Archipelago room with rats. ##newbox;And rats drive me crazy. ##newbox;##morenikoimg1;Crazy? ##newbox;I was crazy once. ##newbox;They locked me in a room. ##newbox;An Archipelago room. ##newbox;An Archipelago room with rats. ##newbox;And rats drive me crazy. ##newbox;##nikoimg5;Crazy? ##newbox;I was crazy once. ##newbox;They locked me in a room. ##newbox;An Archipelago room. ##newbox;An Archipelago room with rats. ##newbox;And rats drive me crazy. ##newbox;Crazy? ##newbox;I was crazy once. ##newbox;They locked me in a room. ##newbox;An Archipelago room. ##newbox;An Archipelago room with rats. ##newbox;And rats drive me crazy. ##newbox;Crazy? ##newbox;I was crazy once. ##newbox;They locked me in a room. ##newbox;An Archipelago room. ##newbox;An Archipelago room with rats. ##newbox;And rats drive me crazy.");
+        TrapConversations.Add("trapConv9",
+            "##nameMadeline;##nikoimg6;Comf! ##newbox;.... ##newbox;##nikoimg2;You were warned. ##newbox;##morenikoimg1;I'm now going to say every word beginning with Z! ##newbox;##nikoimg5;ZA ##newbox;ZABAGLIONE ##newbox;ZABAGLIONES ##newbox;ZABIONE ##newbox;ZABIONES ##newbox;ZABAJONE ##newbox;ZABAJONES ##newbox;ZABETA ##newbox;ZABETAS ##newbox;ZABRA ##newbox;ZABRAS ##newbox;ZABTIEH ##newbox;ZABTIEHS ##newbox;ZACATON ##newbox;ZACATONS ##newbox;ZACK ##newbox;ZACKS ##newbox;ZADDICK ##newbox;ZADDIK ##newbox;ZADDIKIM ##newbox;ZADDIKS ##newbox;ZAFFAR ##newbox;ZAFFARS ##newbox;ZAFFER ##newbox;ZAFFERS ##newbox;ZAFFIR ##newbox;.... ##newbox;.... ##newbox;.... ##newbox;I'll let you off easy. ##newbox;This Time.");
+        TrapConversations.Add("trapConv10",
+            "##namePepper;Niko,  if you want to be a real professional friend, you need to take this position more seriously. ##newbox;##morenikoimg2;Too serious. Stop that.");
+        TrapConversations.Add("trapConv11",
+            "Rock, Paper, Scissors? ##addinput:Rock;skip0; ##addinput:Paper;skip1; ##addinput:Scissors;skip0; ##newbox;You lost! ##end; ##newbox;You win!");
+        TrapConversations.Add("trapConv12",
+            "##nameNonkey Jong ;Nonkey Jong Try To Call Red And White Lady ##newbox; ##sp7; ##sp0;                                  ##sp7; ##sp0; ##newbox;Nonkey Jong Have Wrong Number");
     }
 }
