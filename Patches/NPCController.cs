@@ -19,15 +19,13 @@ public class NpcController : MonoBehaviour
     {
         currentScene = SceneManager.GetActiveScene().name;
         LoggedConversations.Clear();
-        home = ["CHATpepperMeet", "CHATmataMeet", "CHATFetchInfo", "CHATFetchQuest", 
-            "CHATBlastFrog", "CHATKiosk",
-            "CHATpepper", "CHATMoomy", "CHATBlessley", "CHATVlogFrog",
+        home = ["CHATPepper", "CHATMata", "CHATFetchInfo", "CHATFetchQuest", 
+            "CHATBlastFrog", "CHATKiosk", "CHATMoomy", "CHATBlessley", "CHATVlogFrog",
             "CHATLouist", "CHATSerschel", "CHATDustan", "CHATTravis",
             "CHATTrixie", "CHATMitch", "CHATMai", "CHATGunter", "CHATGabi",
             "CHATBlippy", "CHATGameKid", "CHATNina", "CHATStijn", "CHATMelissa",
             "CHATFischer", "CHATFrogKing", "CHATPoppy", "CHATPaul", "CHATFrogtective",
-            "CHATMata", "CHATPelican", "CHATMinoes", "CHATMaggie", "CHATCarrot",
-            "CHATDispatched", "CHATMahjongFrog", "CHATCoastGaurd"
+            "CHATPelican", "CHATMinoes", "CHATMaggie", "CHATCarrot", "CHATMahjongFrog", "CHATCoastGaurd", "CHATmonthFrog"
         ];
         
         hairball = ["CHATBritney", "CHATfrogFloaty", "CHATfrogSmallTalk", "CHATtrainFrog", 
@@ -363,8 +361,12 @@ public class NpcController : MonoBehaviour
                         conversation = "FetchInfo";
                     if (conversation is "FetchPost" or "FetchQuest" or "FetchReward")
                         conversation = "FetchQuest";
-                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought")
+                    if (conversation is "kioskNomoney" or "kioskBuy" or "kioskBought" or "DispatchedParty")
                         conversation = "Kiosk";
+                    if (conversation is "mataMeet" or "MataParty")
+                        conversation = "Mata";
+                    if (conversation is "pepperMeet" or "pepperParty")
+                        conversation = "Pepper";
                     if (conversation.EndsWith("Party"))
                         conversation = conversation.Replace("Party", "");
 

@@ -799,13 +799,13 @@ public class Locations
     public static readonly Dictionary<long, Location> ChatsanityLevelLocations = new()
     {
         // Chats
-        { BaseID + 1100, new Location(BaseID +1100, "CHATpepperMeet", 0) },
-        { BaseID + 1101, new Location(BaseID +1101, "CHATmataMeet", 0) },
+        { BaseID + 1100, new Location(BaseID +1100, "CHATPepper", 0) },
+        { BaseID + 1101, new Location(BaseID +1101, "CHATMata", 0) },
         { BaseID + 1102, new Location(BaseID +1102, "CHATFetchInfo", 0) },
         { BaseID + 1103, new Location(BaseID +1103, "CHATFetchQuest", 0) },
         { BaseID + 1104, new Location(BaseID +1104, "CHATBlastFrog", 0) },
         { BaseID + 1105, new Location(BaseID +1105, "CHATKiosk", 0) },
-        { BaseID + 1106, new Location(BaseID +1106, "CHATpepper", 0) },
+        { BaseID + 1106, new Location(BaseID +1106, "CHATmonthFrog", 0) },
         { BaseID + 1107, new Location(BaseID +1107, "CHATMoomy", 0) },
         { BaseID + 1108, new Location(BaseID +1108, "CHATBlessley", 0) },
         { BaseID + 1109, new Location(BaseID +1109, "CHATVlogFrog", 0) },
@@ -828,12 +828,12 @@ public class Locations
         { BaseID + 1126, new Location(BaseID +1126, "CHATPoppy", 0) },
         { BaseID + 1127, new Location(BaseID +1127, "CHATPaul", 0) },
         { BaseID + 1128, new Location(BaseID +1128, "CHATFrogtective", 0) },
-        { BaseID + 1129, new Location(BaseID +1129, "CHATMata", 0) },
+        //{ BaseID + 1129, new Location(BaseID +1129, "CHATMata", 0) },
         { BaseID + 1130, new Location(BaseID +1130, "CHATPelican", 0) },
         { BaseID + 1131, new Location(BaseID +1131, "CHATMinoes", 0) },
         { BaseID + 1132, new Location(BaseID +1132, "CHATMaggie", 0) },
         { BaseID + 1133, new Location(BaseID +1133, "CHATCarrot", 0) },
-        { BaseID + 1134, new Location(BaseID +1134, "CHATDispatched", 0) },
+        //{ BaseID + 1134, new Location(BaseID +1134, "CHATDispatched", 0) },
         { BaseID + 1135, new Location(BaseID +1135, "CHATMahjongFrog", 0) },
         { BaseID + 1440, new Location(BaseID +1440, "CHATCoastGaurd", 0) },
         
