@@ -64,10 +64,6 @@ public class Bonesanity
             itemOverworld.transform.localPosition = Vector3.zero;
             itemQuads.transform.position = ogQuads.transform.position;
             
-            if (itemQuads.GetComponent<ScuffedSpin>() == null)
-            {
-                itemQuads.AddComponent<ScuffedSpin>();
-            }
             if (itemQuads.GetComponent<scrUIwobble>() == null)
             {
                 var wobble = itemQuads.AddComponent<scrUIwobble>();
