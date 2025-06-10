@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
@@ -14,7 +15,6 @@ public class Bonesanity
 {
     public static int ID;
     private static bool _bonesanityOn;
-    private static int _level;
     private static string _currentLevelName;
     private static int _currentScoutID;
     private static int _currentBoneCount;
@@ -95,6 +95,7 @@ public class Bonesanity
         private static void PlaceModel(int scoutID, scrBone __instance)
         {
             var scout = ArchipelagoClient.ScoutLocation(scoutID, false);
+            if (scout == null) return;
             var itemGame = scout.ItemGame;
             var itemName = scout.ItemName;
             var flags = scout.Flags;
@@ -224,9 +225,14 @@ public class Bonesanity
             if (!ArchipelagoData.slotData.ContainsKey("bonesanity")) return;
             if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 0) return;
             _bonesanityOn = true;
-            var ogQuads = __instance.transform.Find("Quads").gameObject;
-            Object.Destroy(ogQuads.gameObject);
-            
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            __instance.StartCoroutine(PlaceModelsAfterLoading(__instance));
+        }
+
+        private static IEnumerator PlaceModelsAfterLoading(scrBone __instance)
+        {
+            yield return new WaitUntil(() => GameObjectChecker.PreviousScene != SceneManager.GetActiveScene().name);
+            var flag = __instance.name;
             int scoutID;
             var currentscene = SceneManager.GetActiveScene().name;
             switch (currentscene)
@@ -244,7 +250,6 @@ public class Bonesanity
                     };
                     scoutID = 2200 + ID;
                     PlaceModel(scoutID, __instance);
-                    _level = 1;
                     break;
                 }
                 case "Trash Kingdom":
@@ -260,7 +265,6 @@ public class Bonesanity
                     };
                     scoutID = 2205 + ID;
                     PlaceModel(scoutID, __instance);
-                    _level = 2;
                     break;
                 }
                 case "Salmon Creek Forest":
@@ -276,7 +280,6 @@ public class Bonesanity
                     };
                     scoutID = 2210 + ID;
                     PlaceModel(scoutID, __instance);
-                    _level = 3;
                     break;
                 }
                 case "Public Pool":
@@ -292,7 +295,6 @@ public class Bonesanity
                     };
                     scoutID = 2215 + ID;
                     PlaceModel(scoutID, __instance);
-                    _level = 4;
                     break;
                 }
                 case "The Bathhouse":
@@ -308,7 +310,6 @@ public class Bonesanity
                     };
                     scoutID = 2220 + ID;
                     PlaceModel(scoutID, __instance);
-                    _level = 5;
                     break;
                 }
                 case "Tadpole inc":
@@ -324,11 +325,11 @@ public class Bonesanity
                     };
                     scoutID = 2225 + ID;
                     PlaceModel(scoutID, __instance);
-                    _level = 6;
                     break;
                 }
             }
-            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            var ogQuads = __instance.transform.Find("Quads").gameObject;
+            Object.Destroy(ogQuads.gameObject);
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
                 .AppendLine($"ID: {ID}, Flag: {flag}")
                 .AppendLine($"Model: {__instance.quads.name}");
