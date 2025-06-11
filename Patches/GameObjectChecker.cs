@@ -373,16 +373,26 @@ public class GameObjectChecker : MonoBehaviour
         var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("Statslocations");
         var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("Statssnailshop");
         var mapStatschatsanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statschatsanity");
-        Instantiate(mapStatsApples, GameObject.Find("Statistics").transform, false);
+        var mapStatsbugsanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statsbugsanity");
+        var mapStatsbonesanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statsbonesanity");
+        var mapStatsthoughtsanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statsthoughtsanity");
+        var apples = Instantiate(mapStatsApples, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFish, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFlowers, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsSeeds, GameObject.Find("Statistics").transform, false);
         var chatsanity = Instantiate(mapStatschatsanity, GameObject.Find("Statistics").transform, false);
         var snailshop = Instantiate(mapStatsSnailShop, GameObject.Find("Statistics").transform, false);
         var achievements = Instantiate(mapStatsLocations, GameObject.Find("Statistics").transform, false);
-        snailshop.transform.localPosition = new Vector3(390f, -238f, 0f);
-        achievements.transform.localPosition = new Vector3(390f, -158f, 0f);
+        var thoughtsanity = Instantiate(mapStatsthoughtsanity, GameObject.Find("Statistics").transform, false);
+        var bugsanity = Instantiate(mapStatsbugsanity, GameObject.Find("Statistics").transform, false);
+        var bonesanity = Instantiate(mapStatsbonesanity, GameObject.Find("Statistics").transform, false);
+        //apples.transform.localPosition = new Vector3(-100f, -176f, 0f);
+        snailshop.transform.localPosition = new Vector3(-432f, -387f, 0f);
+        snailshop.transform.localScale = new Vector3(1f, 1f, 1f);
+        achievements.transform.localPosition = new Vector3(-152.8f, -387f, 0f);
         chatsanity.transform.localPosition = new Vector3(452f, -316f, 0f);
+        bugsanity.transform.localPosition = new Vector3(211f, -176f, 0f);
+        thoughtsanity.transform.localPosition = new Vector3(418f, -176.7f, 0f);
         Plugin.BepinLogger.LogInfo("Added new stats to Statistics.");
     }
     
@@ -397,6 +407,9 @@ public class GameObjectChecker : MonoBehaviour
         var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("StatslocationsBoard");
         var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("StatssnailshopBoard");
         var mapStatschatsanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatschatsanityBoard");
+        var mapStatsbugsanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatsbugsanityBoard");
+        var mapStatsbonesanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatsbonesanityBoard");
+        var mapStatsthoughtsanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatsthoughtsanityBoard");
         var apple = Instantiate(mapStatsApples, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var fish = Instantiate(mapStatsFish, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var flower = Instantiate(mapStatsFlowers, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
@@ -404,13 +417,16 @@ public class GameObjectChecker : MonoBehaviour
         var location = Instantiate(mapStatsLocations, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var snailShop = Instantiate(mapStatsSnailShop, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var chatsanity = Instantiate(mapStatschatsanity, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var thoughtsanity = Instantiate(mapStatsthoughtsanity, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var bugsanity = Instantiate(mapStatsbugsanity, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
+        var bonesanity = Instantiate(mapStatsbonesanity, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
 
-        apple.transform.localPosition = new Vector3(95f, -121f, 0f);
+        apple.transform.localPosition = new Vector3(95f, -100f, 0f);
         apple.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        fish.transform.localPosition = new Vector3(95f, -192f, 0f);
-        flower.transform.localPosition = new Vector3(95f, -252f, 0f);
+        fish.transform.localPosition = new Vector3(95f, -150f, 0f);
+        flower.transform.localPosition = new Vector3(95f, -204f, 0f);
         flower.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        seed.transform.localPosition = new Vector3(95f, -320f, 0f);
+        seed.transform.localPosition = new Vector3(95f, -265f, 0f);
         seed.transform.Find("Image").transform.localRotation = Quaternion.Euler(0f, 0f, 331f);
         location.transform.localPosition = new Vector3(-230f, -456f, 0f);
         location.transform.localScale = new Vector3(0.8166f, 0.8166f, 1.0166f);
@@ -418,14 +434,22 @@ public class GameObjectChecker : MonoBehaviour
         snailShop.transform.localScale = new Vector3(0.8166f, 0.8166f, 1.0166f);
         chatsanity.transform.localPosition = new Vector3(-118f, -386f, 0f);
         chatsanity.transform.localScale = new Vector3(0.6648f, 0.6648f, 0.6648f);
+        thoughtsanity.transform.localPosition = new Vector3(95f, -325f, 0f);
+        thoughtsanity.transform.localScale = new Vector3(0.6f, 0.6f, 0.1f);
+        bugsanity.transform.localPosition = new Vector3(-149f, -325f, 0f);
+        bugsanity.transform.Find("text").transform.localScale = new Vector3(1f, 1f, 1f);
+        bonesanity.transform.localPosition = new Vector3(95f, -386.8f, 0f);
+        bonesanity.transform.Find("text").transform.localScale = new Vector3(1f, 1f, 1f);
         if (GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys") != null)
         {
             var keys = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/keys");
-            keys.transform.localPosition = new Vector3(-179f, -270f, 0f);
+            keys.transform.localPosition = new Vector3(-179f, -245f, 0f);
             keys.transform.localScale = new Vector3(0.6158f, 0.6158f, 0.1f);
         }
         var cassettes = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/cassettes");
         cassettes.transform.localPosition = new Vector3(-431f, -423f, 0f);
+        var coins = GameObject.Find("Pepper/Whiteboard/Canvas/Statistics/coins");
+        //coins.transform.localPosition = new Vector3(-445f, -111f, 0);
         Plugin.BepinLogger.LogInfo("Added new stats to Whiteboard.");
         if (SceneManager.GetActiveScene().name != "Public Pool") return;
         var canvas = GameObject.Find("Pepper/Whiteboard/Canvas");

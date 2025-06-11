@@ -18,13 +18,17 @@ public class TrainMapPatch
     private static TextMeshProUGUI _locationsTextMesh;
     private static TextMeshProUGUI _snailShopTextMesh;
     private static TextMeshProUGUI _chatsanityLevelTextMesh;
+    private static TextMeshProUGUI _bugsTextMesh;
+    private static TextMeshProUGUI _thoughtsTextMesh;
+    private static TextMeshProUGUI _bonesTextMesh;
 
     private static bool _fishingSanity = true, _fishingSanityLocation = true;
     private static bool _flowersSanity = true, _flowersSanityLocation = true;
     private static bool _seedsSanity = true, _seedsSanityLocation = true;
     private static bool _keySanity = true;
     private static int _cassetteSanity = 2;
-    private static bool _chatsanityLevel = true;
+    private static bool _chatsanityLevel = false;
+    private static bool _chatsanityGlobal = false;
     
     private static List<int> applesPerLevel = new()
         { 0, 32, 33, 126, 94, 72, 14, 0 };
@@ -54,7 +58,16 @@ public class TrainMapPatch
         { 5 };
     
     private static List<int> ChatsanityLevel = new()
-        { 37, 41, 35, 46, 37, 44, 38, 16 };
+        { 36, 42, 36, 48, 39, 48, 39, 17 };
+    
+    private static List<int> ThoughtPerLevel = new()
+        { 0, 5, 6, 3, 6, 7, 3, 0 };
+    
+    private static List<int> BugsPerLevel = new()
+        { 0, 58, 58, 89, 43, 51, 50, 0 };
+    
+    private static List<int> BonesPerLevel = new()
+        { 0, 5, 5, 5, 5, 5, 5, 0 };
     
     private static readonly List<string> levelNames = new()
         { "Home", "Hairball City", "Trash Kingdom", "Salmon Creek Forest", "Public Pool", "The Bathhouse", "Tadpole inc" };
@@ -539,120 +552,144 @@ public class TrainMapPatch
             }
             
             if (_locationsTextMesh != null)
-            {
-                if (Achievements[0] != 0)
-                {
-                    if (ArchipelagoClient.TicketCount() < 5)
-                    {
-                        Achievements[0] = 2;
-                    } else if (ArchipelagoClient.TicketCount() == 5)
-                    {
-                        Achievements[0] = 4;
-                    } else if (ArchipelagoClient.TicketCount() >= 6)
-                    {
-                    
-                        if (((ItemHandler.SalmonKeyAmount > 0 && ArchipelagoClient.Keysanity) || 
-                             (saveManager.gameData.generalGameData.keyAmount > 0 && !ArchipelagoClient.Keysanity)) 
-                            && ArchipelagoClient.ElevatorRepaired)
-                        {
-                            Achievements[0] = 7;
-                        }
-                        else
-                        {
-                            Achievements[0] = 6;
-                        }
-                    
-                    }
-                    if (Plugin.ArchipelagoClient.CoinAmount >= 76)
-                    {
-                        Achievements[0] = Achievements[0] switch
-                        {
-                            7 => 8,
-                            6 => 7,
-                            4 => 5,
-                            _ => Achievements[0]
-                        };
-                    }
-                    var totalLocations = Achievements[0];
-                    var locations = 0;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
-                        locations++;
-                    if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
-                        locations++;
-                    if (locations > Achievements[0])
-                        _locationsTextMesh.text = locations + " / " + locations;
-                    else 
-                        _locationsTextMesh.text = locations + " / " + totalLocations;
-                }
-                else
-                {
-                    _locationsTextMesh.text = "X";
-                }
-                
-            }
+                AchievementsTextMesh(__instance);
             else
-            {
-                Plugin.BepinLogger.LogError("_locationsTextMesh is null!");
                 _locationsTextMesh = __instance.transform.Find("Visuals/Statistics/Statslocations(Clone)/text").GetComponent<TextMeshProUGUI>();
-            }
             
             if (_snailShopTextMesh != null)
-            {
-                if (SnailShop[0] != 0)
-                {
-                    if (ArchipelagoClient.TicketCount() == 1)
-                    {
-                        SnailShop[0] = 5;
-                    }
-                    else if (ArchipelagoClient.TicketCount() == 2)
-                    {
-                        SnailShop[0] = 10;
-                    } else if (ArchipelagoClient.TicketCount() == 3)
-                    {
-                        SnailShop[0] = 14;
-                    } else if (ArchipelagoClient.TicketCount() >= 4)
-                    {
-                        SnailShop[0] = 16;
-                    }
-                    var shop = saveManager.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
-                    if (shop > SnailShop[0])
-                        _snailShopTextMesh.text = shop + " / " + shop;
-                    else 
-                        _snailShopTextMesh.text = shop + " / " + SnailShop[0];
-                }
-                else
-                {
-                    _snailShopTextMesh.text = "X";
-                }
-            }
+                SnailShopTextMesh();
             else
-            {
-                Plugin.BepinLogger.LogError("_snailShopTextMesh is null!");
                 _snailShopTextMesh = __instance.transform.Find("Visuals/Statistics/Statssnailshop(Clone)/text").GetComponent<TextMeshProUGUI>();
-            }
             
             if (_chatsanityLevelTextMesh != null)
+                ChatsanityTextMesh(__instance);
+            else
+                _chatsanityLevelTextMesh = __instance.transform.Find("Visuals/Statistics/Statschatsanity(Clone)/text").GetComponent<TextMeshProUGUI>();
+            
+            if (_thoughtsTextMesh != null)
+                ThoughtsanityTextMesh(__instance);
+            else
+                _thoughtsTextMesh = __instance.transform.Find("Visuals/Statistics/Statsthoughtsanity(Clone)/text").GetComponent<TextMeshProUGUI>();
+            
+            if (_bugsTextMesh != null)
+                BugsanityTextMesh(__instance);
+            else
+                _bugsTextMesh = __instance.transform.Find("Visuals/Statistics/Statsbugsanity(Clone)/text").GetComponent<TextMeshProUGUI>();
+            
+            if (_bonesTextMesh != null)
+                BonesanityTextMesh(__instance);
+            else
+                _bonesTextMesh = __instance.transform.Find("Visuals/Statistics/Statsbonesanity(Clone)/text").GetComponent<TextMeshProUGUI>();
+            return false; // Skip original method
+        }
+        private static void AchievementsTextMesh(scrTrainMap __instance)
+        {
+            var saveManager = scrGameSaveManager.instance;
+            if (Achievements[0] != 0)
             {
-                var chats = saveManager.gameData.worldsData[__instance.levelSelected].miscFlags.Count(t => t.StartsWith("CHAT"));
-                _chatsanityLevelTextMesh.text = chats + " / " + ChatsanityLevel[__instance.levelSelected];
+                if (ArchipelagoClient.TicketCount() < 5)
+                {
+                    Achievements[0] = 2;
+                }
+                else if (ArchipelagoClient.TicketCount() == 5)
+                {
+                    Achievements[0] = 4;
+                }
+                else if (ArchipelagoClient.TicketCount() >= 6)
+                {
+                    if (((ItemHandler.SalmonKeyAmount > 0 && ArchipelagoClient.Keysanity) ||
+                         (saveManager.gameData.generalGameData.keyAmount > 0 && !ArchipelagoClient.Keysanity))
+                        && ArchipelagoClient.ElevatorRepaired)
+                        Achievements[0] = 7;
+                    else
+                        Achievements[0] = 6;
+                }
+
+                if (Plugin.ArchipelagoClient.CoinAmount >= 76)
+                    Achievements[0] = Achievements[0] switch
+                    {
+                        7 => 8,
+                        6 => 7,
+                        4 => 5,
+                        _ => Achievements[0]
+                    };
+                var totalLocations = Achievements[0];
+                var locations = 0;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("FROG_FAN"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("EMLOYEE_OF_THE_MONTH"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("LOST_AT_SEA"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("HOPELESS_ROMANTIC"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("VOLLEY_DREAMS"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("BOTTLED_UP"))
+                    locations++;
+                if (saveManager.gameData.generalGameData.generalFlags.Contains("SNAIL_FASHION_SHOW"))
+                    locations++;
+                if (locations > Achievements[0])
+                    _locationsTextMesh.text = locations + " / " + locations;
+                else
+                    _locationsTextMesh.text = locations + " / " + totalLocations;
             }
             else
             {
-                Plugin.BepinLogger.LogError("_chatsanityLevelTextMesh is null!");
-                _chatsanityLevelTextMesh = __instance.transform.Find("Visuals/Statistics/Statschatsanity(Clone)/text").GetComponent<TextMeshProUGUI>();
+                _locationsTextMesh.text = "X";
             }
-            
-            return false; // Skip original method
+        }
+        
+        private static void SnailShopTextMesh()
+        {
+            if (SnailShop[0] != 0)
+            {
+                if (ArchipelagoClient.TicketCount() == 1)
+                {
+                    SnailShop[0] = 5;
+                }
+                else if (ArchipelagoClient.TicketCount() == 2)
+                {
+                    SnailShop[0] = 10;
+                } else if (ArchipelagoClient.TicketCount() == 3)
+                {
+                    SnailShop[0] = 14;
+                } else if (ArchipelagoClient.TicketCount() >= 4)
+                {
+                    SnailShop[0] = 16;
+                }
+                var shop = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Count(t => t.StartsWith("Shop"));
+                if (shop > SnailShop[0])
+                    _snailShopTextMesh.text = shop + " / " + shop;
+                else 
+                    _snailShopTextMesh.text = shop + " / " + SnailShop[0];
+            }
+            else
+            {
+                _snailShopTextMesh.text = "X";
+            }
+        }
+
+        private static void ChatsanityTextMesh(scrTrainMap __instance)
+        {
+            var chats = scrGameSaveManager.instance.gameData.worldsData[__instance.levelSelected].miscFlags.Count(t => t.StartsWith("CHAT"));
+            _chatsanityLevelTextMesh.text = chats + " / " + ChatsanityLevel[__instance.levelSelected];
+        }
+        private static void BugsanityTextMesh(scrTrainMap __instance)
+        {
+            var chats = scrGameSaveManager.instance.gameData.worldsData[__instance.levelSelected].miscFlags.Count(t => t.StartsWith("Bug"));
+            _bugsTextMesh.text = chats + " / " + BugsPerLevel[__instance.levelSelected];
+        }
+        private static void ThoughtsanityTextMesh(scrTrainMap __instance)
+        {
+            var chats = scrGameSaveManager.instance.gameData.worldsData[__instance.levelSelected].miscFlags.Count(t => t.StartsWith("niko"))
+                + scrGameSaveManager.instance.gameData.worldsData[__instance.levelSelected].miscFlags.Count(t => t.StartsWith("inspect"));
+            _thoughtsTextMesh.text = chats + " / " + ThoughtPerLevel[__instance.levelSelected];
+        }
+        private static void BonesanityTextMesh(scrTrainMap __instance)
+        {
+            var chats = scrGameSaveManager.instance.gameData.worldsData[__instance.levelSelected].miscFlags.Count(t => t.StartsWith("Bone"));
+            _bonesTextMesh.text = chats + " / " + BonesPerLevel[__instance.levelSelected];
         }
     }
 
@@ -807,12 +844,63 @@ public class TrainMapPatch
                 { 
                     ChatsanityLevel.Clear();
                     ChatsanityLevel.AddRange(Enumerable.Repeat(0, 8));
+                    _chatsanityLevel = false;
+                } else if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 1)
+                {
+                    _chatsanityLevel = true;
+                }
+                else
+                {
+                    _chatsanityGlobal = true;
                 }
             }
             else
             {
                 ChatsanityLevel.Clear();
                 ChatsanityLevel.AddRange(Enumerable.Repeat(0, 8));
+                _chatsanityLevel = false;
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("thoughtsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["thoughtsanity"].ToString()) == 0)
+                { 
+                    ThoughtPerLevel.Clear();
+                    ThoughtPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                }
+            }
+            else
+            {
+                ThoughtPerLevel.Clear();
+                ThoughtPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("bugsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["bugsanity"].ToString()) == 0)
+                { 
+                    BugsPerLevel.Clear();
+                    BugsPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                } 
+            }
+            else
+            {
+                BugsPerLevel.Clear();
+                BugsPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 0)
+                { 
+                    BonesPerLevel.Clear();
+                    BonesPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                } 
+            }
+            else
+            {
+                BonesPerLevel.Clear();
+                BonesPerLevel.AddRange(Enumerable.Repeat(0, 8));
             }
         }
     }

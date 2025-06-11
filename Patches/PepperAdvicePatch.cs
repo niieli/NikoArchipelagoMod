@@ -18,13 +18,17 @@ public class PepperAdvicePatch
     private static TextMeshProUGUI _locationsTextMesh;
     private static TextMeshProUGUI _snailShopTextMesh;
     private static TextMeshProUGUI _chatsanityLevelTextMesh;
+    private static TextMeshProUGUI _bugsTextMesh;
+    private static TextMeshProUGUI _thoughtsTextMesh;
+    private static TextMeshProUGUI _bonesTextMesh;
 
     private static bool _fishingSanity = true, _fishingSanityLocation = true;
     private static bool _flowersSanity = true, _flowersSanityLocation = true;
     private static bool _seedsSanity = true, _seedsSanityLocation = true;
     private static bool _keySanity = true;
     private static int _cassetteSanity = 2;
-    private static bool _chatsanityLevel = true;
+    private static bool _chatsanityLevel = false;
+    private static bool _chatsanityGlobal = false;
     
     private static List<int> applesPerLevel = new()
         { 0, 32, 33, 126, 94, 72, 14, 0 };
@@ -54,7 +58,16 @@ public class PepperAdvicePatch
         { 5 };
     
     private static List<int> ChatsanityLevel = new()
-        { 37, 41, 35, 46, 37, 44, 38, 16 };
+        { 36, 42, 36, 48, 39, 48, 39, 17 };
+    
+    private static List<int> ThoughtPerLevel = new()
+        { 0, 5, 6, 3, 6, 7, 3, 0 };
+    
+    private static List<int> BugsPerLevel = new()
+        { 0, 58, 58, 89, 43, 51, 50, 0 };
+    
+    private static List<int> BonesPerLevel = new()
+        { 0, 5, 5, 5, 5, 5, 5, 0 };
     
     private static readonly List<string> levelNames = new()
         { "Home", "Hairball City", "Trash Kingdom", "Salmon Creek Forest", "Public Pool", "The Bathhouse", "Tadpole inc" };
@@ -583,7 +596,6 @@ public class PepperAdvicePatch
             }
             else
             {
-                Plugin.BepinLogger.LogError("_locationsTextMesh is null!");
                 _locationsTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatslocationsBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
             }
             
@@ -618,7 +630,6 @@ public class PepperAdvicePatch
             }
             else
             {
-                Plugin.BepinLogger.LogError("_snailShopTextMesh is null!");
                 _snailShopTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatssnailshopBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
             }
             
@@ -629,11 +640,45 @@ public class PepperAdvicePatch
             }
             else
             {
-                Plugin.BepinLogger.LogError("_chatsanityLevelTextMesh is null!");
                 _chatsanityLevelTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatschatsanityBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
             }
+            
+            if (_thoughtsTextMesh != null)
+                ThoughtsanityTextMesh(__instance);
+            else
+                _thoughtsTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatsthoughtsanityBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
+            
+            if (_bugsTextMesh != null)
+                BugsanityTextMesh(__instance);
+            else
+                _bugsTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatsbugsanityBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
+            
+            if (_bonesTextMesh != null)
+                BonesanityTextMesh(__instance);
+            else
+                _bonesTextMesh = __instance.transform.Find("Whiteboard/Canvas/Statistics/StatsbonesanityBoard(Clone)/text").GetComponent<TextMeshProUGUI>();
 
             return false; // Skip original method
+        }
+        
+        private static void BugsanityTextMesh(scrPepperAdvice __instance)
+        {
+            var worldData = scrWorldSaveDataContainer.instance;
+            var chats = scrGameSaveManager.instance.gameData.worldsData[worldData.worldIndex].miscFlags.Count(t => t.StartsWith("Bug"));
+            _bugsTextMesh.text = chats + " / " + BugsPerLevel[worldData.worldIndex];
+        }
+        private static void ThoughtsanityTextMesh(scrPepperAdvice __instance)
+        {
+            var worldData = scrWorldSaveDataContainer.instance;
+            var chats = scrGameSaveManager.instance.gameData.worldsData[worldData.worldIndex].miscFlags.Count(t => t.StartsWith("niko"))
+                        + scrGameSaveManager.instance.gameData.worldsData[worldData.worldIndex].miscFlags.Count(t => t.StartsWith("inspect"));
+            _thoughtsTextMesh.text = chats + " / " + ThoughtPerLevel[worldData.worldIndex];
+        }
+        private static void BonesanityTextMesh(scrPepperAdvice __instance)
+        {
+            var worldData = scrWorldSaveDataContainer.instance;
+            var chats = scrGameSaveManager.instance.gameData.worldsData[worldData.worldIndex].miscFlags.Count(t => t.StartsWith("Bone"));
+            _bonesTextMesh.text = chats + " / " + BonesPerLevel[worldData.worldIndex];
         }
     }
 
@@ -790,12 +835,63 @@ public class PepperAdvicePatch
                 { 
                     ChatsanityLevel.Clear();
                     ChatsanityLevel.AddRange(Enumerable.Repeat(0, 8));
+                    _chatsanityLevel = false;
+                } else if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 1)
+                {
+                    _chatsanityLevel = true;
+                }
+                else
+                {
+                    _chatsanityGlobal = true;
                 }
             }
             else
             {
                 ChatsanityLevel.Clear();
                 ChatsanityLevel.AddRange(Enumerable.Repeat(0, 8));
+                _chatsanityLevel = false;
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("thoughtsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["thoughtsanity"].ToString()) == 0)
+                { 
+                    ThoughtPerLevel.Clear();
+                    ThoughtPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                }
+            }
+            else
+            {
+                ThoughtPerLevel.Clear();
+                ThoughtPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("bugsanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["bugsanity"].ToString()) == 0)
+                { 
+                    BugsPerLevel.Clear();
+                    BugsPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                } 
+            }
+            else
+            {
+                BugsPerLevel.Clear();
+                BugsPerLevel.AddRange(Enumerable.Repeat(0, 8));
+            }
+            
+            if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
+            {
+                if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 0)
+                { 
+                    BonesPerLevel.Clear();
+                    BonesPerLevel.AddRange(Enumerable.Repeat(0, 8));
+                } 
+            }
+            else
+            {
+                BonesPerLevel.Clear();
+                BonesPerLevel.AddRange(Enumerable.Repeat(0, 8));
             }
         }
     }
