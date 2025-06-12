@@ -31,7 +31,7 @@ public class NotificationManager : MonoBehaviour
     public static bool IsUiOnScreen;
     
     // Notification Customization
-    public static float notificationDuration = 3f;
+    public static float notificationDuration = 3.5f;
     public static Color notificationBoxColor = Color.white;
     public static Color notificationBoxHintColor = new (0.3624749f, 0.3069153f, 0.5377358f, 1);
     public static Color notificationAccentColor = new(1, 0.54f, 0.76f, 0.72f);

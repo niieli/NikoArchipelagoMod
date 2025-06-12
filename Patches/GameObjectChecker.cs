@@ -42,6 +42,7 @@ public class GameObjectChecker : MonoBehaviour
     private bool startedTimer = false;
     private Coroutine visibilityTimer;
     public static bool IsHamsterball;
+    private static bool _turnedOff, _turnedOn;
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -53,6 +54,7 @@ public class GameObjectChecker : MonoBehaviour
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        IsHamsterball = false;
         MenuHelpers.Menus.Clear();
         StartCoroutine(ModelLogging());
         if (visibilityTimer != null) StopCoroutine(visibilityTimer);
@@ -912,6 +914,30 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         if (ArchipelagoData.slotData == null) return;
+        if (IsHamsterball)
+        {
+            if (!_turnedOff)
+            {
+                foreach (var bouncer in FindObjectsOfType<scrBouncer>(true))
+                {
+                    bouncer.gameObject.SetActive(false);
+                }
+                _turnedOff = true;
+                _turnedOn = false;
+            }
+        }
+        else
+        {
+            if (!_turnedOn)
+            {
+                foreach (var bouncer in FindObjectsOfType<scrBouncer>(true))
+                {
+                    bouncer.gameObject.SetActive(true);
+                }
+                _turnedOff = false;
+                _turnedOn = true;
+            }
+        }
         if (scrNotificationDisplayer.instance.notificationQueue.Count > 0)
         {
             scrNotificationDisplayer.instance.avatar.enabled = false;

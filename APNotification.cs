@@ -24,7 +24,7 @@ public class APNotification
         string senderName,
         string locationName,
         ItemFlags itemFlags,
-        float duration = 3f,
+        float duration = 3.5f,
         Color? backgroundColor = null,
         Color? durationColor = null,
         Sprite icon = null,
