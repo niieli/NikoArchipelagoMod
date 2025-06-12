@@ -30,6 +30,9 @@ Then click 'Connect' and you should load into Home with a blank save.
 
 You can delete Archipelago saves at `%localappdata%low\Frog Vibes\Here Comes Niko!\Archipelago` (not sure for other systems)
 
+### Custom Playables
+If you want to use custom Playables, you can use the [PlayableLoaderBepInEx](https://github.com/niieli/PlayableLoaderBepInEx/releases/latest)
+
 ## Known issues
 - Connecting to another slot without restarting the game can lead to unchecked locations being sent 
 ## What is randomized?
