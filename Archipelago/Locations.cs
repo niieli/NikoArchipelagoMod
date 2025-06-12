@@ -1239,7 +1239,7 @@ public class Locations
         { BaseID + 2113, new Location(BaseID +2113, "CHATtbhMiki", 3) },
         { BaseID + 2114, new Location(BaseID +2114, "CHATtbhBiki", 3) },
         { BaseID + 2115, new Location(BaseID +2115, "CHATtbhWess", 3) },
-        { BaseID + 2116, new Location(BaseID +2116, "CHATmahjongFrog", 3) },
+        //{ BaseID + 2116, new Location(BaseID +2116, "CHATmahjongFrog", 3) },
         { BaseID + 2117, new Location(BaseID +2117, "CHATtbhMonty", 3) },
         { BaseID + 2118, new Location(BaseID +2118, "CHATUnderhero", 3) },
         { BaseID + 2119, new Location(BaseID +2119, "CHATmonthFrog", 3) },

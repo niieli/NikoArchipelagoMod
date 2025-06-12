@@ -332,6 +332,7 @@ public class NpcController : MonoBehaviour
         if (conversation is "monthFrogParty") conversation = "InfoFrog";
         if (conversation is "townGull2" && currentScene == "Public Pool") conversation = "MomGull";
         if (conversation is "townGull3" && currentScene == "Public Pool") conversation = "MomGull2";
+        if (conversation is "mahjongFrog") conversation = "MahjongFrog";
         if (!conversation.StartsWith("trapConv") && !niko.Contains(conversation))
             conversation = "CHAT" + conversation;
         //if (conversation.EndsWith("Party"))
