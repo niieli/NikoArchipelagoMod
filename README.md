@@ -8,7 +8,14 @@ Here Comes Niko! apworld: [Latest apworld](https://github.com/niieli/Niko-Archip
 1. Download and install [BepInEx 5.4.x](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.22) in your Here Comes Niko root folder (where Here Comes Niko!.exe is located). 
 2. Start the game once so that BepInEx creates its stuff
 3. Download the latest zip from the [release page](https://github.com/niieli/NikoArchipelagoMod/releases/latest) and extract its content into `BepInEx/plugins`
-4. If done correctly it should look like this `...\common\Here Comes Niko\BepInEx\plugins`
+4. If done correctly it should look like this
+```swift
+BepInEx/
+├── plugins/
+│   ├── NikoArchipelago.dll
+│   ├── Archipelago.MultiClient.Net.dll
+│   └── Newtonsoft.Json.dll
+```
 
 ## Connecting
 
@@ -21,13 +28,10 @@ Then click 'Connect' and you should load into Home with a blank save.
 
 (If you already have a save with the same address, port, name and seed, it will load into that one instead)
 
-You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes Niko!\Archipelago` (not sure for other systems)
+You can delete Archipelago saves at `%localappdata%low\Frog Vibes\Here Comes Niko!\Archipelago` (not sure for other systems)
 
 ## Known issues
-
 - Connecting to another slot without restarting the game can lead to unchecked locations being sent 
-- Item Sent Notification once in a while does not show up for a location
-- Train map & Whiteboard total location count (the ap logo) not being accurate
 ## What is randomized?
 - Coins
 - Cassettes
@@ -55,12 +59,13 @@ You can delete Archipelago saves at `...\AppData\LocalLow\Frog Vibes\Here Comes 
   - Public Pool
   - Bathhouse
   - Tadpole HQ
+- Apples *(Depending on settings)*
+- Bugs *(Depending on settings)*
+- Bones *(Depending on settings)*
+- Talking to NPCs *(Depending on settings)*
 
 The levels are randomized and unlocked via a Ticket *(Depending on settings)*
 
 ## Planned features
-- An in-game compass pointing to locations in logic
 - Shuffle Tickets on Kiosk locations
-- Set total Coin count in the multiworld
-- Customization (& improvements) to Archipelago related UI elements 
-- that's pretty much it
+- Set total Coin count in the multiworld 
