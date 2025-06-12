@@ -96,7 +96,7 @@ public class NpcController : MonoBehaviour
         niko = [
             "inspectTPIPond", "nikoFish", "nikoStatue", "nikoTPINightmare",
             "nikoBHMaintain", "nikoBHNinja", "nikoBHEcho", "nikoBHGold", "nikoBHHaiku", "nikoBHMainBuilding", "nikoBHButton",
-            "nikoPPVape","nikoBall" , "nikoPPBath", "nikoPP2D", "nikoPink",
+            "nikoPPVape","nikoBall" , "nikoPPBath", "nikoPP2D", "nikoPink", "nikoCrime",
             "nikoSCRocks", "nikoMoneySmell", "nikoSCFall",
             "nikoTTHaring","nikoSCF", "nikoTTTown", "nikoTTCollider", "nikoSpacefrogs", "nikoTTGate",
             "nikoHBCStatue", "nikoHBCSnack", "nikoHBCSticky", "nikoHBCHarbor", "nikoHBCBench"
