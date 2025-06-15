@@ -35,7 +35,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.7.0";
+        public const string PluginVersion = "0.7.1";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -313,7 +313,11 @@ namespace NikoArchipelago
             gameObjectChecker.AddComponent<GameObjectChecker>();
             NotifcationCanvas = new GameObject("NotificationCanvas");
             var notecanva = NotifcationCanvas.AddComponent<Canvas>();
-            NotifcationCanvas.AddComponent<CanvasScaler>().screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            var scaler = NotifcationCanvas.AddComponent<CanvasScaler>();
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.matchWidthOrHeight = 1;
             notecanva.renderMode = RenderMode.ScreenSpaceOverlay;
             notecanva.sortingOrder = 9;
             AddNotificationManager(NotifcationCanvas.transform);

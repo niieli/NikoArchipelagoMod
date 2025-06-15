@@ -8,6 +8,7 @@ using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace NikoArchipelago;
@@ -490,6 +491,8 @@ public class TrapManager : MonoBehaviour
     
     private static IEnumerator Home(float duration)
     {
+        if (SceneManager.GetActiveScene().name == "Home")
+            yield return new WaitForSeconds(1.5f); // For the time being use this bandaid fix
         Plugin.BepinLogger.LogInfo("Send Player to Home");
         scrTrainManager.instance.UseTrain(1, false);
         while (duration > 0)
@@ -642,10 +645,22 @@ public class TrapManager : MonoBehaviour
         TrapConversations.Add("trapConv9",
             "##nameMadeline;##nikoimg6;Comf! ##newbox;.... ##newbox;##nikoimg2;You were warned. ##newbox;##morenikoimg1;I'm now going to say every word beginning with Z! ##newbox;##nikoimg5;ZA ##newbox;ZABAGLIONE ##newbox;ZABAGLIONES ##newbox;ZABIONE ##newbox;ZABIONES ##newbox;ZABAJONE ##newbox;ZABAJONES ##newbox;ZABETA ##newbox;ZABETAS ##newbox;ZABRA ##newbox;ZABRAS ##newbox;ZABTIEH ##newbox;ZABTIEHS ##newbox;ZACATON ##newbox;ZACATONS ##newbox;ZACK ##newbox;ZACKS ##newbox;ZADDICK ##newbox;ZADDIK ##newbox;ZADDIKIM ##newbox;ZADDIKS ##newbox;ZAFFAR ##newbox;ZAFFARS ##newbox;ZAFFER ##newbox;ZAFFERS ##newbox;ZAFFIR ##newbox;.... ##newbox;.... ##newbox;.... ##newbox;I'll let you off easy. ##newbox;This Time.");
         TrapConversations.Add("trapConv10",
-            "##namePepper;Niko,  if you want to be a real professional friend, you need to take this position more seriously. ##newbox;##morenikoimg2;Too serious. Stop that.");
+            "##namePepper;Niko, if you want to be a real professional friend, you need to take this position more seriously. ##newbox;##morenikoimg2;Too serious. Stop that.");
         TrapConversations.Add("trapConv11",
             "Rock, Paper, Scissors? ##addinput:Rock;skip0; ##addinput:Paper;skip1; ##addinput:Scissors;skip0; ##newbox;You lost! ##end; ##newbox;You win!");
         TrapConversations.Add("trapConv12",
-            "##nameNonkey Jong ;Nonkey Jong Try To Call Red And White Lady ##newbox; ##sp7; ##sp0;                                  ##sp7; ##sp0; ##newbox;Nonkey Jong Have Wrong Number");
+            "##nameNonkey Jong;Nonkey Jong Try To Call Red And White Lady ##newbox; ##sp7; ##sp0;                                  ##sp7; ##sp0; ##newbox;Nonkey Jong Have Wrong Number");
+        TrapConversations.Add("trapConv13",
+            "##nameGaius Van Baelsar;Tell me, for whom do you fight? ##newbox;... Hmmph. How very glib. And do you believe in Eorzea? ##newbox;Eorzea's unity is forged of falsehoods.  ##newbox;Its city-states are built on deceit. ##newbox;And its faith is an instrument of deception. ##newbox;It is naught but a cobweb of lies. ##newbox;To believe in Eorzea is to believe in nothing. ##newbox;In Eorzea, the beast tribes often summon gods to fight in their stead-- ##newbox;though your comrades only rarely respond in kind. ##newbox;Which is strange, is it not? ##newbox;Are the \"Twelve\" otherwise engaged? ##newbox;I was given to understand they were your protectors. ##newbox;Nor is this unknown to your masters. ##newbox;Which prompts the question: why do they cling to these false deities? ##newbox;What drives even men of learning - even the great Louisoix - to grovel at their feet? ##newbox;The answer: your masters lack the strength to do otherwise! ##newbox;For the word of man to mean anything, man must own the world. ##newbox;To this end, he hath fought ever to raise himself through conflict - to grow rich through conquest. ##newbox;And when the dust of battle settles, it is ever the strong who dictate the fate of the weak. ##newbox;Knowing this, but a single path is open to the impotent ruler: that of false worship. ##newbox;A path which leads to enervation and death. ##newbox;Only a man of power can rightly steer the course of civilization. ##newbox;And in this land of creeping mendacity, that one truth will prove its salvation. ##newbox;Come, champion of Eorzea, face me! ##newbox;Your defeat shall serve as proof of my readiness to rule! ##newbox;It is only right that I should take your realm. ##newbox;For none among you has the power to stop me!");
+        TrapConversations.Add("trapConv14",
+            "##morenikoimg3;Ack--! My disguise wore off!");
+        TrapConversations.Add("trapConv15",
+            "##nameFlamel;##nikoimg2;Hey Niko, it's been a while hasn't it? ##newbox;I just wanted to call and check in on you. All this running and jumping can be dangerous! ##newbox;And I hear now you're working with people from other realities? That's dangerous too!  ##newbox;Just remember to stay safe. I keep seeing these weird rings of colored dots around the place. ##newbox;They kinda taste like salt and pop rocks.");
+        TrapConversations.Add("trapConv16",
+            "##nameOnion Boy;Hey, I just wanted to double check something. ##newbox;You don't still have me as \"Onion Boy\" in your contacts, do you?");
+        TrapConversations.Add("trapConv17",
+            "##nameEvil Niko;Hey, it's me. Niko from the Evil Universe. ##newbox;This weird frog named Salt is helping me be a professional enemy, which apparently involves giving people a bunch of my own money. ##newbox;Not to mention throwing fish back into the water, ripping plants out of their pots, stealing bones from dogs -- ##newbox;sorry, I'm getting a call from my mom who loves me very much. We'll catch up some other time, okay?");
+        TrapConversations.Add("trapConv18",
+            "##nameNetlia;##nikoimg2;Hello! My name's Netlia. What's yours? ##newbox;##nikoimg3;Niko? Well hi Niko! I just wanted to call you and remind you to plant flowers for Gabi!  ##newbox;She's got a really good reason for doing it. She bought seeds from me. Special seeds! ##newbox;See, they grow as soon as they're planted! And if you unplant them, they turn back to seeds! ##newbox;Hope this helps you! Byeee!~");
     }
 }

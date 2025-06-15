@@ -17,9 +17,9 @@ public class MoomyPatch
     private static AudioSource myMusic;
     private static long currentLocationID;
     private static scrHopOnBump NPCRewardHopper;
-    private static MethodInfo startHamsterball;
-    private static MethodInfo handleEffects;
-    private static MethodInfo handleHamsterballControls;
+    private static MethodInfo startHamsterball = typeof(scrHamsterballMaster).GetMethod("StartHamsterball", BindingFlags.Instance | BindingFlags.NonPublic);
+    private static MethodInfo handleEffects = typeof(scrHamsterballMaster).GetMethod("HandleEffects", BindingFlags.Instance | BindingFlags.NonPublic);
+    private static MethodInfo handleHamsterballControls = typeof(scrHamsterballMaster).GetMethod("HandleHamsterballControls", BindingFlags.Instance | BindingFlags.NonPublic);
     [HarmonyPatch(typeof(scrHamsterballMaster), "Start")]
     public static class MoomyStartPatch
     {
@@ -47,7 +47,7 @@ public class MoomyPatch
         private static int _currentSeedCount;
         private static string _currentLevelName;
         private static bool _answerFix, _answerFix2;
-
+        private static float lastPhysicsTime = -1f;
         [HarmonyPrefix]
         private static bool Prefix(scrHamsterballMaster __instance)
         {
@@ -69,9 +69,13 @@ public class MoomyPatch
                 myMusic.Stop();
             if (__instance.hamsterball.activeSelf)
             {
+                if (Time.fixedTime == lastPhysicsTime)
+                    return false;
+                lastPhysicsTime = Time.fixedTime;
                 GameObjectChecker.IsHamsterball = true;
                 handleHamsterballControls.Invoke(__instance, null);
                 actionButtonPromt.Show("hamsterballStop", true);
+                //Plugin.BepinLogger.LogInfo("HAMSTER CONTROL @ " + Time.fixedTime);
             }
 
             if (!__instance.hamsterball.activeSelf)

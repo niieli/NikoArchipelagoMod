@@ -287,7 +287,8 @@ public class ArchipelagoClient
                 .AppendLine($"Flag index: {GetItemIndex()}")
                 .AppendLine($"Current Item: {receivedItem.ItemName}");
             if (receivedItem.ItemName is "Apples" or "25 Apples" or "10 Bugs" or "Bugs" or "Letter" or "Snail Money"
-                    or "1000 Snail Money" or "Freeze Trap" or "Iron Boots Trap" or "Whoops! Trap" or "My Turn! Trap" or "Gravity Trap")
+                    or "1000 Snail Money" or "Freeze Trap" or "Iron Boots Trap" or "Whoops! Trap" or "My Turn! Trap"
+                    or "Gravity Trap" or "Home Trap" or "W I D E Trap" or "Phone Trap" or "Tiny Trap" or "Jumping Jacks Trap")
             {
                 GameObjectChecker.LogPastItemsBatch.AppendLine($"Skipping Item: {receivedItem.ItemName}");
             }

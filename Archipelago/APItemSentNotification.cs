@@ -34,6 +34,7 @@ public static class APItemSentNotification
         {
             case HintItemSendLogMessage hintItemSendLogMessage:
             {
+                if (!hintItemSendLogMessage.IsRelatedToActivePlayer) return;
                 if ((message.ToString().Contains("(avoid)") || hintItemSendLogMessage.IsFound) && hintCommand)
                 {
                     Plugin.BepinLogger.LogInfo("Skipped Notification for Hint Item Send Log Message: " + message + "");
@@ -87,6 +88,7 @@ public static class APItemSentNotification
                 break;
             }
             case ItemSendLogMessage itemSendLogMessage:
+                if (!itemSendLogMessage.IsSenderTheActivePlayer) return;
                 itemName = itemSendLogMessage.Item.ItemName;
                 playerName = itemSendLogMessage.Receiver.Name;
                 locationName = itemSendLogMessage.Item.LocationName;

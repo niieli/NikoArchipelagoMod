@@ -12,6 +12,7 @@ public class ParasolPatch
     public static class ParasolPatchUpdate
     {
         private static bool _noticeUp;
+        private static float force;
         private static bool Prefix(scrBouncer __instance)
         {
             if (__instance.transform.parent != null)
@@ -26,10 +27,29 @@ public class ParasolPatch
             {
                 __instance.objectToAnimate.gameObject.SetActive(true);
                 __instance.objectToAnimate.GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 1f, 1f);
+                
+                if (__instance.force != 0) return true;
+                if (__instance.transform.parent.name.Contains("Huge"))
+                {
+                    __instance.force = 52f;
+                }
+                else if (__instance.transform.parent.transform.parent.transform.parent)
+                {
+                    if (__instance.transform.parent.transform.parent.transform.parent.name.Contains("Hamsterball"))
+                        __instance.force = 16f;
+                }
+                else
+                    __instance.force = 24f;
                 return true;
             }
             __instance.objectToAnimate.GetComponent<MeshRenderer>().material.color = new Color(0.09f, 0.09f, 0.09f, 0.85f);
 
+            if (__instance.transform.parent.name.Contains("Huge"))
+                __instance.force = GameObjectChecker.IsHamsterball ? 0f : 52f;
+            if (__instance.transform.parent.transform.parent.transform.parent)
+                if (__instance.transform.parent.transform.parent.transform.parent.name.Contains("Hamsterball"))
+                    __instance.force = GameObjectChecker.IsHamsterball ? 0f : 16f;
+            __instance.force = 0;
             if (__instance.myTrigger.foundPlayer())
             {
                 __instance.StartCoroutine(Notice());

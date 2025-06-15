@@ -918,10 +918,12 @@ public class GameObjectChecker : MonoBehaviour
         {
             if (!_turnedOff)
             {
-                foreach (var bouncer in FindObjectsOfType<scrBouncer>(true))
-                {
-                    bouncer.gameObject.SetActive(false);
-                }
+                MyCharacterController.instance.DiveSpeed = 16f;
+                MyCharacterController.instance.MaxAirMoveSpeed = 8f;
+                MyCharacterController.instance.JumpSpeed = 13f;
+                MyCharacterController.instance.DiveCancelHopSpeed = 11f;
+                MyCharacterController.instance.MaxStableMoveSpeed = 8f;
+                MyCharacterController.instance.MaxWaterMoveSpeed = 11f;
                 _turnedOff = true;
                 _turnedOn = false;
             }
@@ -930,10 +932,7 @@ public class GameObjectChecker : MonoBehaviour
         {
             if (!_turnedOn)
             {
-                foreach (var bouncer in FindObjectsOfType<scrBouncer>(true))
-                {
-                    bouncer.gameObject.SetActive(true);
-                }
+                MovementSpeed.MovementSpeedMultiplier();
                 _turnedOff = false;
                 _turnedOn = true;
             }

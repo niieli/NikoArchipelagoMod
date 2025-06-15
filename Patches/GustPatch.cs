@@ -38,6 +38,7 @@ public class GustPatch
                 {
                     Object.Destroy(__instance.transform.parent.Find("Sparks(Clone)").gameObject);
                 }
+                __instance.GetComponent<AudioSource>().mute = false;
                 return true;
             }
             _triggerChecker = __instance.GetComponent<TriggerChecker>();
@@ -54,6 +55,19 @@ public class GustPatch
                 lights.light = new Light();
             }
 
+            if (GameObjectChecker.IsHamsterball)
+            {
+                _triggerChecker.gameObject.SetActive(false);
+                if (__instance.GetComponentInParent<AudioSource>())
+                    __instance.GetComponentInParent<AudioSource>().mute = true;
+            }
+            else
+            {
+                _triggerChecker.gameObject.SetActive(true);
+                if (__instance.GetComponentInParent<AudioSource>())
+                    __instance.GetComponentInParent<AudioSource>().mute = false;
+            }
+            
             if (_triggerChecker.foundPlayer())
                 __instance.StartCoroutine(Notice());
             return false;
