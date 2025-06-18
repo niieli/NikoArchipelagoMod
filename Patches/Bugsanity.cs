@@ -16,7 +16,7 @@ public class Bugsanity
 {
     public static Dictionary<MonoBehaviour, int> bugIDs = new();
     public static int nextBugID = 1;
-        
+    public static bool NoticeUp;
     private static int GetMaxBugIDForScene(string sceneName)
     {
         return sceneName switch
@@ -355,8 +355,6 @@ public class Bugsanity
     [HarmonyPatch(typeof(scrBugButterfly), "ManagedUpdate")]
     public static class BugsanityUpdatePatch
     {
-        private static bool _noticeUp;
-
         private static bool Prefix(scrBugButterfly __instance)
         {
             if (ArchipelagoData.slotData == null) return true;
@@ -380,17 +378,17 @@ public class Bugsanity
         
         private static IEnumerator ShowNotice()
         {
-            if (_noticeUp) yield break;
+            if (NoticeUp || !SavedData.Instance.Notices) yield break;
             var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
-            _noticeUp = true;
+            NoticeUp = true;
             var time = 0f;
-            while (time < 70f)
+            while (time < 60f)
             {
                 time += Time.deltaTime;
                 yield return null;
             }
             Object.Destroy(t);
-            _noticeUp = false;
+            NoticeUp = false;
         }
 
         private static void Postfix(scrBugButterfly __instance)
@@ -718,11 +716,11 @@ public class Bugsanity
 
         private static IEnumerator ShowNotice()
         {
-            if (_noticeUp) yield break;
+            if (_noticeUp || !SavedData.Instance.Notices) yield break;
             var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
             _noticeUp = true;
             var time = 0f;
-            while (time < 70f)
+            while (time < 60f)
             {
                 time += Time.deltaTime;
                 yield return null;

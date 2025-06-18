@@ -73,6 +73,10 @@ public class ArchipelagoMenu : MonoBehaviour
     [FormerlySerializedAs("itemSentTooltip")] public Tooltip apNotificationsTooltip;
     [FormerlySerializedAs("itemSentTrigger")] public TooltipTrigger apNotificationsTrigger;
     [FormerlySerializedAs("itemSentHighlight")] public GameObject apNotificationsHighlight;
+    public Toggle noticesToggle;
+    public Tooltip noticesTooltip;
+    public TooltipTrigger noticesTrigger;
+    public GameObject noticesHighlight;
     public Toggle cassetteSpoilerToggle;
     public Tooltip cassetteSpoilerTooltip;
     public TooltipTrigger cassetteSpoilerTrigger;
@@ -113,28 +117,30 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _tooltips;
     private static bool _seasonalThemes;
     private static bool _skipPickup;
+    private static bool _notices;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
     public static string Host;
     public static string SlotName;
-    public static bool RememberMe;
-    public static bool Hints;
-    public static bool ShopHints;
-    public static bool Chat;
-    public static bool Ticket;
-    public static bool Kiosk;
-    public static bool KioskSpoiler;
-    public static bool cacmi;
-    public static bool kalmi;
-    public static bool contactList;
-    public static bool APNotifications;
-    public static bool status;
-    public static bool CassetteSpoiler;
+    public static bool RememberMe = true;
+    public static bool Hints = true;
+    public static bool ShopHints = true;
+    public static bool Chat = true;
+    public static bool Ticket = true;
+    public static bool Kiosk = true;
+    public static bool KioskSpoiler = true;
+    public static bool cacmi = true;
+    public static bool kalmi = true;
+    public static bool contactList = true;
+    public static bool APNotifications = true;
+    public static bool status = true;
+    public static bool CassetteSpoiler = true;
     //public static bool TrackerKey;
-    public static bool Tooltips;
-    public static bool SeasonalThemes;
-    public static bool SkipPickup;
+    public static bool Tooltips = true;
+    public static bool SeasonalThemes = true;
+    public static bool SkipPickup = true;
+    public static bool Notices = true;
     
     // New Menu stuff
     public GameObject settingsPanel;
@@ -761,6 +767,10 @@ public class ArchipelagoMenu : MonoBehaviour
         statusTooltip = statusToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         statusTrigger = statusToggle.gameObject.AddComponent<TooltipTrigger>();
         statusHighlight = statusToggle.transform.Find("Highlight").gameObject;
+        noticesToggle = settingsPanel.transform.Find("Notices").gameObject.GetComponent<Toggle>();
+        noticesTooltip = noticesToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        noticesTrigger = noticesToggle.gameObject.AddComponent<TooltipTrigger>();
+        noticesHighlight = noticesToggle.transform.Find("Highlight").gameObject;
         
         // Trackers
         trackersButton = formPanel.transform.Find("Tabs/TrackersButton").gameObject.GetComponent<Button>();
@@ -847,6 +857,7 @@ public class ArchipelagoMenu : MonoBehaviour
         tooltipsToggle.isOn = SavedData.Instance.Tooltips;
         seasonalThemesToggle.isOn = SavedData.Instance.SeasonalThemes;
         skipPickupToggle.isOn = SavedData.Instance.SkipPickup;
+        noticesToggle.isOn = SavedData.Instance.Notices;
 
         versionText.text = "Version "+Plugin.PluginVersion;
         formPanel.SetActive(false);
@@ -894,6 +905,7 @@ public class ArchipelagoMenu : MonoBehaviour
         skipPickupTrigger.tooltip = skipPickupTooltip;
         boneTrigger.tooltip = boneTooltip;
         boneDisabledTrigger.tooltip = boneDisabledTooltip;
+        noticesTrigger.tooltip = noticesTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -909,6 +921,7 @@ public class ArchipelagoMenu : MonoBehaviour
         kalmiToggle.gameObject.AddComponent<Highlighter>().highlightPanel = kalmiHighlight;
         cassetteSpoilerToggle.gameObject.AddComponent<Highlighter>().highlightPanel = cassetteSpoilerHighlight;
         skipPickupToggle.gameObject.AddComponent<Highlighter>().highlightPanel = skipPickupHighlight;
+        noticesToggle.gameObject.AddComponent<Highlighter>().highlightPanel = noticesHighlight;
         
         // Information Tracker stuff
         boughtHomeImage.enabled = false;
@@ -1896,6 +1909,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
         _seasonalThemes = seasonalThemesToggle.isOn;
         _skipPickup = skipPickupToggle.isOn;
+        _notices = noticesToggle.isOn;
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1912,6 +1926,7 @@ public class ArchipelagoMenu : MonoBehaviour
         hideOnce = _tooltips;
         SeasonalThemes = _seasonalThemes;
         SkipPickup = _skipPickup;
+        Notices = _notices;
         
         SavedData.Instance.Host = _serverAddress;
         SavedData.Instance.SlotName = _slotName;
@@ -1931,6 +1946,7 @@ public class ArchipelagoMenu : MonoBehaviour
         SavedData.Instance.CassetteSpoiler = _cassetteSpoiler;
         SavedData.Instance.SeasonalThemes = _seasonalThemes;
         SavedData.Instance.SkipPickup = _skipPickup;
+        SavedData.Instance.Notices = _notices;
         if (_rememberMe)
         {
             SavedData.Instance.SaveSettings();
@@ -1963,6 +1979,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _skipPickup = skipPickupToggle.isOn;
         _tooltips = tooltipsToggle.isOn;
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
+        _notices = noticesToggle.isOn;
         Host = _serverAddress;
         SlotName = _slotName;
         RememberMe = _rememberMe;
@@ -1982,6 +1999,7 @@ public class ArchipelagoMenu : MonoBehaviour
         _seasonalThemes = seasonalThemesToggle.isOn;
         SeasonalThemes = _seasonalThemes;
         SkipPickup = _skipPickup;
+        Notices = _notices;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -2020,6 +2038,7 @@ public class ArchipelagoMenu : MonoBehaviour
         SavedData.Instance.CassetteSpoiler = _cassetteSpoiler;
         SavedData.Instance.SeasonalThemes = _seasonalThemes;
         SavedData.Instance.SkipPickup = _skipPickup;
+        SavedData.Instance.Notices = _notices;
         if (_rememberMe)
         {
             SavedData.Instance.SaveSettings();

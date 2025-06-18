@@ -8,8 +8,8 @@ namespace NikoArchipelago.Patches;
 
 public class BonkHelmet
 {
-    private static bool _playedNoBonk, _noticeUp;
-    private static readonly int Timer = Animator.StringToHash("Timer");
+    private static bool _playedNoBonk;
+    public static bool NoticeUp;
 
     [HarmonyPatch(typeof(scrBreakBlock), "Update")]
     public static class BonkPatchUpdate
@@ -44,17 +44,17 @@ public class BonkHelmet
 
         private static IEnumerator BonkNotice()
         {
-            if (_noticeUp) yield break;
+            if (NoticeUp || !SavedData.Instance.Notices) yield break;
             var t = Object.Instantiate(Plugin.NoticeBonkHelmet, Plugin.NotifcationCanvas.transform);
-            _noticeUp = true;
+            NoticeUp = true;
             var time = 0f;
-            while (time < 70f)
+            while (time < 60f)
             {
                 time += Time.deltaTime;
                 yield return null;
             }
             Object.Destroy(t);
-            _noticeUp = false;
+            NoticeUp = false;
         }
     }
 

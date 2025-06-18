@@ -9,10 +9,10 @@ namespace NikoArchipelago.Patches;
 
 public class ParasolPatch
 {
+    public static bool NoticeUp;
     [HarmonyPatch(typeof(scrBouncer), "Update")]
     public static class ParasolPatchUpdate
     {
-        private static bool _noticeUp;
         private static float force;
         private static bool Prefix(scrBouncer __instance)
         {
@@ -67,17 +67,17 @@ public class ParasolPatch
         
         private static IEnumerator Notice()
         {
-            if (_noticeUp) yield break;
+            if (NoticeUp || !SavedData.Instance.Notices) yield break;
             var t = Object.Instantiate(Plugin.NoticeParasol, Plugin.NotifcationCanvas.transform);
-            _noticeUp = true;
+            NoticeUp = true;
             var time = 0f;
-            while (time < 70f)
+            while (time < 60f)
             {
                 time += Time.deltaTime;
                 yield return null;
             }
             Object.Destroy(t);
-            _noticeUp = false;
+            NoticeUp = false;
         }
     }
 }

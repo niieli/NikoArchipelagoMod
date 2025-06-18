@@ -73,6 +73,9 @@ public class GameObjectChecker : MonoBehaviour
         Bugsanity.bugIDs.Clear();
         Bugsanity.nextBugID = 1;
         Bonesanity.ID = 0;
+        ParasolPatch.NoticeUp = SwimCourse.NoticeUp = SodaCanPatch.NoticeUp = GustPatch.NoticeUp = 
+                Bugsanity.NoticeUp = BonkHelmet.NoticeUp = Applesanity.NoticeUp = false;
+        ClearNotices();
         //LocationCheck();
         MitchAndMaiObject();
         PepperFirstMeetingTrigger();
@@ -171,6 +174,17 @@ public class GameObjectChecker : MonoBehaviour
                 IsVisible = !IsVisible;
             }
             yield return null;
+        }
+    }
+
+    private static void ClearNotices()
+    {
+        foreach (Transform child in Plugin.NotifcationCanvas.transform)
+        {
+            if (child.name.StartsWith("Notice"))
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
     
@@ -917,12 +931,12 @@ public class GameObjectChecker : MonoBehaviour
         {
             if (!_turnedOff)
             {
-                // MyCharacterController.instance.DiveSpeed = 16f;
-                // MyCharacterController.instance.MaxAirMoveSpeed = 8f;
-                // MyCharacterController.instance.JumpSpeed = 13f;
-                // MyCharacterController.instance.DiveCancelHopSpeed = 11f;
-                // MyCharacterController.instance.MaxStableMoveSpeed = 8f;
-                // MyCharacterController.instance.MaxWaterMoveSpeed = 11f;
+                MyCharacterController.instance.DiveSpeed = 16f;
+                MyCharacterController.instance.MaxAirMoveSpeed = 8f;
+                MyCharacterController.instance.JumpSpeed = 13f;
+                MyCharacterController.instance.DiveCancelHopSpeed = 11f;
+                MyCharacterController.instance.MaxStableMoveSpeed = 8f;
+                MyCharacterController.instance.MaxWaterMoveSpeed = 11f;
                 _turnedOff = true;
                 _turnedOn = false;
             }
@@ -931,7 +945,7 @@ public class GameObjectChecker : MonoBehaviour
         {
             if (!_turnedOn)
             {
-                //MovementSpeed.MovementSpeedMultiplier();
+                MovementSpeed.MovementSpeedMultiplier();
                 _turnedOff = false;
                 _turnedOn = true;
             }

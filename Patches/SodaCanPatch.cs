@@ -8,10 +8,10 @@ namespace NikoArchipelago.Patches;
 
 public class SodaCanPatch
 {
+    public static bool NoticeUp;
     [HarmonyPatch(typeof(scrCannon), "Update")]
     public static class SodaCanPatchUpdate
     {
-        private static bool _noticeUp;
         private static bool Prefix(scrCannon __instance)
         {
             if (ArchipelagoData.slotData == null) return true;
@@ -51,17 +51,17 @@ public class SodaCanPatch
         
         private static IEnumerator Notice()
         {
-            if (_noticeUp) yield break;
+            if (NoticeUp || !SavedData.Instance.Notices) yield break;
             var t = Object.Instantiate(Plugin.NoticeSodaCan, Plugin.NotifcationCanvas.transform);
-            _noticeUp = true;
+            NoticeUp = true;
             var time = 0f;
-            while (time < 70f)
+            while (time < 60f)
             {
                 time += Time.deltaTime;
                 yield return null;
             }
             Object.Destroy(t);
-            _noticeUp = false;
+            NoticeUp = false;
         }
     }
 }
