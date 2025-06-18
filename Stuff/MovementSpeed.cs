@@ -5,6 +5,7 @@ namespace NikoArchipelago.Stuff;
 
 public static class MovementSpeed
 {
+    public static bool IsSpeedOn = true;
     private const float DiveSpeed = 16f;
     private const float JumpSpeed = 13f;
     private const float MaxAirMoveSpeed = 8f;

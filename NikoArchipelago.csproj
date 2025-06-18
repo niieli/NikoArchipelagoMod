@@ -43,6 +43,9 @@
     <Reference Include="PerfectCulling">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\PerfectCulling.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\Unity.InputSystem.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\Unity.TextMeshPro.dll</HintPath>
     </Reference>

@@ -18,6 +18,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Color = UnityEngine.Color;
+using UnityEngine.InputSystem;
 
 namespace NikoArchipelago
 {
@@ -332,6 +333,37 @@ namespace NikoArchipelago
             SceneManager.sceneLoaded += OnSceneLoaded;
             Logger.LogInfo("Plugin loaded and Harmony patches applied initially!");
             StartCoroutine(CheckForUpdate());
+            var toggleSpeed = new InputAction("SpeedToggle", binding: "<Keyboard>/f5");
+            // toggleSpeed.AddBinding("<Gamepad>/start");
+            // toggleSpeed.AddBinding("<Gamepad>/select");
+            // toggleSpeed.AddBinding("<Gamepad>/leftStick");
+            toggleSpeed.Enable();
+
+            toggleSpeed.performed += ctx =>
+            {
+                ToggleSpeed();
+            };
+        }
+
+        public static void ToggleSpeed()
+        {
+            MovementSpeed.IsSpeedOn = !MovementSpeed.IsSpeedOn;
+            if (!MovementSpeed.IsSpeedOn)
+            {
+                MyCharacterController.instance.DiveSpeed = 16f;
+                MyCharacterController.instance.MaxAirMoveSpeed = 8f;
+                MyCharacterController.instance.JumpSpeed = 13f;
+                MyCharacterController.instance.DiveCancelHopSpeed = 11f;
+                MyCharacterController.instance.MaxStableMoveSpeed = 8f;
+                MyCharacterController.instance.MaxWaterMoveSpeed = 11f;
+                APSendNote("Disabled Speed Boost", 2f, SpeedBoostSprite);
+            }
+            else
+            {
+                APSendNote("Enabled Speed Boost", 2f, SpeedBoostSprite);
+                MovementSpeed.MovementSpeedMultiplier();
+            }
+            BepinLogger.LogInfo("Toggled Speedbost!");
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

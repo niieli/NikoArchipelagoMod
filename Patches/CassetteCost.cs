@@ -17,6 +17,7 @@ public class CassetteCost
     static int _mitchPrice = 0;
     private static int _maiPriceSafe = 0;
     static int _mimaPrice = 0;
+    private static int _maiHint, _mitchHint;
     private static bool _answerFix;
     public static scrCassetteBuyer MitchGameObject;
     public static scrCassetteBuyer MaiGameObject;
@@ -57,42 +58,56 @@ public class CassetteCost
                         _maiPrice = 10;
                         _mitchIndex = 11;
                         _maiIndex = 12;
+                        _mitchHint = 0;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Trash Kingdom":
                         __instance.price = 5;
                         _maiPrice = 10;
                         _mitchIndex = 23;
                         _maiIndex = 24;
+                        _mitchHint = 2;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Salmon Creek Forest":
                         __instance.price = 5; 
                         _maiPrice = 10;
                         _mitchIndex = 29;
                         _maiIndex = 39;
+                        _mitchHint = 4;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Public Pool":
                         __instance.price = 5; 
                         _maiPrice = 10;
                         _mitchIndex = 52;
                         _maiIndex = 45;
+                        _mitchHint = 7;
+                        _maiHint = _mitchHint - 1;
                         break;
                     case "The Bathhouse":
                         __instance.price = 5; 
                         _maiPrice = 10;
                         _mitchIndex = 58;
                         _maiIndex = 59;
+                        _mitchHint = 8;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Tadpole inc":
                         __instance.price = 5; 
                         _maiPrice = 10;
                         _mitchIndex = 69;
                         _maiIndex = 68;
+                        _mitchHint = 11;
+                        _maiHint = _mitchHint - 1;
                         break;
                     case "GarysGarden":
                         __instance.price = 5; 
                         _maiPrice = 10;
                         _mitchIndex = 200;
                         _maiIndex = 199;
+                        _mitchHint = 13;
+                        _maiHint = _mitchHint - 1;
                         break;
                 }
                 _mitchPrice = __instance.price;
@@ -106,9 +121,9 @@ public class CassetteCost
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ" &&
                         !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchHint);
                         }
                         if (_currentBox == 0)
                         {
@@ -140,9 +155,9 @@ public class CassetteCost
                     if (!_textbox.isOn) _answerFix = false;
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ")
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchHint);
                         }
                         _textbox.canWaklaway = true;
                         if (_currentBox == 0 && !_answerFix)
@@ -167,9 +182,9 @@ public class CassetteCost
                     MaiGameObject.parentBought.SetActive(false);
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiHint);
                         }
 
                         if (_currentBox == 0)
@@ -203,9 +218,9 @@ public class CassetteCost
                     }
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ")
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiHint);
                         }
                         _textbox.canWaklaway = true;
                         if (_currentBox == 0 && !_answerFix)
@@ -389,42 +404,56 @@ public class CassetteCost
                         _maiPrice = int.Parse(slotData["chc2"].ToString());
                         _mitchIndex = 11;
                         _maiIndex = 12;
+                        _mitchHint = 0;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Trash Kingdom":
                         __instance.price = int.Parse(slotData["ctt1"].ToString());
                         _maiPrice = int.Parse(slotData["ctt2"].ToString());
                         _mitchIndex = 23;
                         _maiIndex = 24;
+                        _mitchHint = 2;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Salmon Creek Forest":
                         __instance.price = int.Parse(slotData["csfc1"].ToString());
                         _maiPrice = int.Parse(slotData["csfc2"].ToString());
                         _mitchIndex = 29;
                         _maiIndex = 39;
+                        _mitchHint = 4;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Public Pool":
                         __instance.price = int.Parse(slotData["cpp1"].ToString());
                         _maiPrice = int.Parse(slotData["cpp2"].ToString());
                         _mitchIndex = 52;
                         _maiIndex = 45;
+                        _mitchHint = 7;
+                        _maiHint = _mitchHint - 1;
                         break;
                     case "The Bathhouse":
                         __instance.price = int.Parse(slotData["cbath1"].ToString());
                         _maiPrice = int.Parse(slotData["cbath2"].ToString());
                         _mitchIndex = 58;
                         _maiIndex = 59;
+                        _mitchHint = 8;
+                        _maiHint = _mitchHint + 1;
                         break;
                     case "Tadpole inc":
                         __instance.price = int.Parse(slotData["chq1"].ToString());
                         _maiPrice = int.Parse(slotData["chq2"].ToString());
                         _mitchIndex = 69;
                         _maiIndex = 68;
+                        _mitchHint = 11;
+                        _maiHint = _mitchHint - 1;
                         break;
                     case "GarysGarden":
                         __instance.price = int.Parse(slotData["cgg1"].ToString());
                         _maiPrice = int.Parse(slotData["cgg2"].ToString());
                         _mitchIndex = 200;
                         _maiIndex = 199;
+                        _mitchHint = 13;
+                        _maiHint = _mitchHint - 1;
                         break;
                 }
                 _mitchPrice = __instance.price;
@@ -437,9 +466,9 @@ public class CassetteCost
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ" &&
                         !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin"))
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchHint);
                         }
                         if (_currentBox == 0)
                         {
@@ -473,9 +502,9 @@ public class CassetteCost
                     }
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mitch" or "ミッチ")
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_mitchHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_mitchHint);
                         }
                         _textbox.canWaklaway = true;
                         if (_currentBox == 0 && !_answerFix)
@@ -498,9 +527,9 @@ public class CassetteCost
                     MaiGameObject.parentBought.SetActive(false);
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ" && !scrWorldSaveDataContainer.instance.coinFlags.Contains("cassetteCoin2"))
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiHint);
                         }
 
                         if (_currentBox == 0)
@@ -534,9 +563,9 @@ public class CassetteCost
                     }
                     if (_textbox.isOn && _textbox.nameMesh.text is "Mai" or "マイ")
                     {
-                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiIndex))
+                        if (!_gameSaveManager.gameData.generalGameData.generalFlags.Contains("Hint"+_maiHint))
                         {
-                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiIndex);
+                            _gameSaveManager.gameData.generalGameData.generalFlags.Add("Hint"+_maiHint);
                         }
                         _textbox.canWaklaway = true;
                         if (_currentBox == 0 && !_answerFix)

@@ -10,6 +10,7 @@ using NikoArchipelago.Stuff;
 using NikoArchipelago.Trackers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -43,6 +44,8 @@ public class GameObjectChecker : MonoBehaviour
     private Coroutine visibilityTimer;
     public static bool IsHamsterball;
     private static bool _turnedOff, _turnedOn;
+    private static Gamepad gamepad;
+    private static bool toggleSpeedBoost;
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -908,8 +911,30 @@ public class GameObjectChecker : MonoBehaviour
         PreviousScene = "";
     }
 
+    private void GamepadToggleSpeed()
+    {
+        gamepad = Gamepad.current;
+        if (gamepad == null) return;
+
+        bool combo = gamepad.leftTrigger.isPressed &&
+                     gamepad.selectButton.isPressed &&
+                     gamepad.leftStickButton.isPressed;
+
+        if (combo && !toggleSpeedBoost)
+        {
+            toggleSpeedBoost = true;
+            Plugin.BepinLogger.LogInfo("Gamepad Combo triggered!");
+            Plugin.ToggleSpeed();
+        }
+        else if (!combo)
+        {
+            toggleSpeedBoost = false;
+        }
+    }
+
     public void Update()
     {
+        GamepadToggleSpeed();
         if (PreviousScene == "")
             PreviousScene = SceneManager.GetActiveScene().name;
         if (!ArchipelagoClient.IsValidScene()) return;

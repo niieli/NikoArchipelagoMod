@@ -37,6 +37,8 @@ public class TrapManager : MonoBehaviour
     private static readonly int Timer = Animator.StringToHash("Timer");
     private readonly Dictionary<string, GameObject> activeTraps = new();
     public static readonly Dictionary<string, string> TrapConversations = new();
+    private static string lastPhoneCall;
+    private static bool stillCalling;
     
     // TrapLink
     public static readonly Queue<(string, string, DateTime)> TrapLinkQueue = new();
@@ -521,6 +523,9 @@ public class TrapManager : MonoBehaviour
     private static IEnumerator PhoneCall(float duration)
     {
         var msg = "trapConv"+Random.Range(0, TrapConversations.Count);
+        while (msg == lastPhoneCall)
+            msg = "trapConv"+Random.Range(0, TrapConversations.Count);
+        lastPhoneCall = msg;
         Plugin.BepinLogger.LogInfo($"Phone Call Trap: {msg}");
         scrTextbox.instance.TurnOn(msg);
         if (scrTextbox.instance.conversationLocalized.Count >= 30 && msg != "trapConv9")
@@ -541,6 +546,7 @@ public class TrapManager : MonoBehaviour
             letterDurationField.SetValue(scrTextbox.instance, 0.025f);
             Plugin.BepinLogger.LogInfo("Phone Call Trap: trapConv9, slowing down to prevent textbox from breaking");
         }
+        stillCalling = true;
         scrTextbox.instance.canWaklaway = false;
         while (duration > 0)
         {
@@ -554,6 +560,7 @@ public class TrapManager : MonoBehaviour
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
             int _currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
         }
+        stillCalling = false;
         Plugin.BepinLogger.LogInfo("Phone Call Trap ended.");
     }
 

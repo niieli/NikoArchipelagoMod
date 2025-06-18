@@ -340,7 +340,7 @@ public class TrackerKiosk : MonoBehaviour
         kioskBathShadowText.text = kioskBathText.text;
         kioskHqShadowText.text = kioskHqText.text;
 
-        if (ArchipelagoMenu.CassetteSpoiler)
+        if (SavedData.Instance.CassetteSpoiler)
         {
             if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
             {
