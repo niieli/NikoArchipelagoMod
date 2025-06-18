@@ -523,7 +523,7 @@ public class TrapManager : MonoBehaviour
         var msg = "trapConv"+Random.Range(0, TrapConversations.Count);
         Plugin.BepinLogger.LogInfo($"Phone Call Trap: {msg}");
         scrTextbox.instance.TurnOn(msg);
-        if (scrTextbox.instance.conversationLocalized.Count >= 30)
+        if (scrTextbox.instance.conversationLocalized.Count >= 30 && msg != "trapConv9")
         {
             var letterDurationField = typeof(scrTextbox).GetField("letterDuration", BindingFlags.NonPublic | BindingFlags.Instance);
             letterDurationField.SetValue(scrTextbox.instance, 0.01f);
@@ -534,6 +534,12 @@ public class TrapManager : MonoBehaviour
         {
             var letterDurationField = typeof(scrTextbox).GetField("letterDuration", BindingFlags.NonPublic | BindingFlags.Instance);
             letterDurationField.SetValue(scrTextbox.instance, 0.02f);
+        }
+        if (msg == "trapConv9")
+        {
+            var letterDurationField = typeof(scrTextbox).GetField("letterDuration", BindingFlags.NonPublic | BindingFlags.Instance);
+            letterDurationField.SetValue(scrTextbox.instance, 0.025f);
+            Plugin.BepinLogger.LogInfo("Phone Call Trap: trapConv9, slowing down to prevent textbox from breaking");
         }
         scrTextbox.instance.canWaklaway = false;
         while (duration > 0)
@@ -662,5 +668,13 @@ public class TrapManager : MonoBehaviour
             "##nameEvil Niko;Hey, it's me. Niko from the Evil Universe. ##newbox;This weird frog named Salt is helping me be a professional enemy, which apparently involves giving people a bunch of my own money. ##newbox;Not to mention throwing fish back into the water, ripping plants out of their pots, stealing bones from dogs -- ##newbox;sorry, I'm getting a call from my mom who loves me very much. We'll catch up some other time, okay?");
         TrapConversations.Add("trapConv18",
             "##nameNetlia;##nikoimg2;Hello! My name's Netlia. What's yours? ##newbox;##nikoimg3;Niko? Well hi Niko! I just wanted to call you and remind you to plant flowers for Gabi!  ##newbox;She's got a really good reason for doing it. She bought seeds from me. Special seeds! ##newbox;See, they grow as soon as they're planted! And if you unplant them, they turn back to seeds! ##newbox;Hope this helps you! Byeee!~");
+        TrapConversations.Add("trapConv19",
+            "Is your refrigerator running? ##addinput:Yes;skip0; ##addinput:No;skip1; ##newbox;Well, you better go catch it!##end; ##newbox;Oh. Okay.");
+        TrapConversations.Add("trapConv20",
+            "##nameDetermined Child;Hello, have you by chance seen my ITEM item? ##newbox;You see, the ITEM item is an item that allows me to use items in battle. ##newbox;When I have the ITEM item, it allows me to use the ITEM button to access my items. Without the ITEM item, most items are useless. ##newbox;Of course, I could have chosen not to shuffle the ITEM button, in which I would just start with the ITEM item. ##newbox;In any case, I cannot use items until my ITEM item has been found. If you find an item that looks like the ITEM item, please let me know.");
+        TrapConversations.Add("trapConv21",
+            "Boy, I sure do enjoy playing AIR ##sp7; ##sp0;VOLLEY ##sp7; ##sp0;without any items! ##newbox;##morenikoimg2;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;##nikoimg0;NOTICE: You need the Item AC Repair to-  I think I've taken this joke far enough.");
+        // TrapConversations.Add("trapConvXX",
+        //     "");
     }
 }

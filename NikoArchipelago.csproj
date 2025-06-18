@@ -40,6 +40,9 @@
     <Reference Include="MonoMod">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\BepInEx\core\MonoMod.dll</HintPath>
     </Reference>
+    <Reference Include="PerfectCulling">
+      <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\PerfectCulling.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>A:\SteamLibrary\steamapps\common\Here Comes Niko\Here Comes Niko!_Data\Managed\Unity.TextMeshPro.dll</HintPath>
     </Reference>

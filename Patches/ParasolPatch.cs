@@ -3,6 +3,7 @@ using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Patches;
 
@@ -42,19 +43,25 @@ public class ParasolPatch
                     __instance.force = 24f;
                 return true;
             }
-            __instance.objectToAnimate.GetComponent<MeshRenderer>().material.color = new Color(0.09f, 0.09f, 0.09f, 0.85f);
+            if (__instance.objectToAnimate.gameObject != null)
+                __instance.objectToAnimate.GetComponent<MeshRenderer>().material.color = new Color(0.09f, 0.09f, 0.09f, 0.85f);
 
-            if (__instance.transform.parent.name.Contains("Huge"))
-                __instance.force = GameObjectChecker.IsHamsterball ? 0f : 52f;
-            if (__instance.transform.parent.transform.parent.transform.parent)
-                if (__instance.transform.parent.transform.parent.transform.parent.name.Contains("Hamsterball"))
-                    __instance.force = GameObjectChecker.IsHamsterball ? 0f : 16f;
+            if (SceneManager.GetActiveScene().name is "Hairball City" or "The Bathhouse" or "Salmon Creek Forest")
+            {
+                if (__instance.transform.parent != null)
+                    if (__instance.transform.parent.name.Contains("Huge"))
+                        __instance.force = GameObjectChecker.IsHamsterball ? 0f : 52f;
+                if (__instance.transform.parent.transform.parent.transform.parent != null)
+                    if (__instance.transform.parent.transform.parent.transform.parent.name.Contains("Hamsterball"))
+                        __instance.force = GameObjectChecker.IsHamsterball ? 0f : 16f;
+            }
             __instance.force = 0;
             if (__instance.myTrigger.foundPlayer())
             {
                 __instance.StartCoroutine(Notice());
             }
-            __instance.objectToAnimate.gameObject.SetActive(GameObjectChecker.IsVisible);
+            if (__instance.objectToAnimate.gameObject != null)
+                __instance.objectToAnimate.gameObject.SetActive(GameObjectChecker.IsVisible);
             return false;
         }
         
@@ -63,7 +70,12 @@ public class ParasolPatch
             if (_noticeUp) yield break;
             var t = Object.Instantiate(Plugin.NoticeParasol, Plugin.NotifcationCanvas.transform);
             _noticeUp = true;
-            yield return new WaitForSeconds(5f);
+            var time = 0f;
+            while (time < 70f)
+            {
+                time += Time.deltaTime;
+                yield return null;
+            }
             Object.Destroy(t);
             _noticeUp = false;
         }

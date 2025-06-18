@@ -57,6 +57,8 @@ public class FishingPatch
             Add("FishsanityObtained", $"##nameFischer;##talkerimg1;##nikoimg3;You already obtained my (Item) for (Player)!");
           FischerConversation.
             Add("FishsanityFishing", $"##nameFischer;##talkerimg1;##nikoimg3;You found all fish 5!\nNow you need to catch the remaining Fish!");
+          FischerConversation.
+            Add("FishsanityNoSwimming", $"##nameFischer;##talkerimg1;##nikoimg1;Can you help me fishing? ##newbox;Wait##nikoimg5;, you can't swim?! Then you should learn how to swim, I think (Player) could help you.##nikoimg4;");
         }
     }
     private static void FischerReady()
@@ -70,6 +72,7 @@ public class FishingPatch
     {
         private static int _currentFishCount;
         private static string _currentLevelName;
+        private static bool _canSwim = false;
 
         [HarmonyPrefix]
         private static bool Prefix(scrFishingMaster __instance)
@@ -295,8 +298,27 @@ public class FishingPatch
                 stateStart = true;
               }
             }
+            
+            if (ArchipelagoData.slotData.ContainsKey("swimming"))
+            {
+              if (int.Parse(ArchipelagoData.slotData["swimming"].ToString()) == 1)
+              {
+                if (!ArchipelagoClient.SwimmingAcquired)
+                {
+                  textboxTrigger.conversation = "FishsanityNoSwimming";
+                  __instance.state = scrFishingMaster.States.Inactive;
+                  stateStart = false;
+                }
+                else
+                  _canSwim = true;
+              }
+              else
+                _canSwim = true;
+            }
+            else
+              _canSwim = true;
 
-            if (!textboxTrigger.isNewConversation && !textbox.isOn)
+            if (!textboxTrigger.isNewConversation && !textbox.isOn && _canSwim)
             {
               __instance.animator.SetTexture(__instance.txrFisherIdle);
               __instance.animatorArray.SetAnimationStrip(__instance.txrFisherIdle.name);
@@ -359,6 +381,19 @@ public class FishingPatch
                 var scout = ArchipelagoClient.ScoutLocation(_currentScoutID, false);
                 var playerName = scout.Player.Name;
                 textbox.conversationLocalized[0] = $"You already obtained my '{Assets.GetItemName(scout)}' for {playerName}!";
+                answerFix1 = true;
+              }
+            }
+            
+            if (textbox.isOn && textbox.conversation == "FishsanityNoSwimming")
+            {
+              textbox.canWaklaway = true;
+              if (currentBox == 1 && !answerFix1)
+              {
+                // var scout = ArchipelagoClient.ScoutLocation(_currentScoutID, false);
+                // var playerName = scout.Player.Name;
+                // var game = scout.Player.Game; // Sadly there is no Item Scouting for other slots, so can't hint for swim course.
+                textbox.conversationLocalized[1] = $"Wait##nikoimg5;, you can't ##talkerimg2;##sp7;swim##sp0;?!##nikoimg4; Then you should learn how to swim, not sure where you can learn that.";
                 answerFix1 = true;
               }
             }

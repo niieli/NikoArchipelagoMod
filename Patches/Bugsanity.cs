@@ -356,65 +356,6 @@ public class Bugsanity
     public static class BugsanityUpdatePatch
     {
         private static bool _noticeUp;
-        // private static bool Prefix(scrBugButterfly __instance)
-        // {
-        //     if (ArchipelagoData.slotData == null) return true;
-        //     if (!ArchipelagoData.slotData.ContainsKey("bugsanity")) return true;
-        //     if (int.Parse(ArchipelagoData.slotData["bugsanity"].ToString()) == 0) return true;
-        //     
-        //     var isAliveField = AccessTools.Field(typeof(scrBugButterfly), "isAlive");
-        //     bool isAlive = (bool)isAliveField.GetValue(__instance);
-        //     var positionField = AccessTools.Field(typeof(scrBugButterfly), "position");
-        //     Vector3 position = (Vector3)positionField.GetValue(__instance);
-        //     var localScaleField = AccessTools.Field(typeof(scrBugButterfly), "localScale");
-        //     Vector3 localScale = (Vector3)localScaleField.GetValue(__instance);
-        //     var _playerCameraField = AccessTools.Field(typeof(scrBugButterfly), "_playerCamera");
-        //     PlayerCamera _playerCamera = (PlayerCamera)_playerCameraField.GetValue(__instance);
-        //     var homescaleField = AccessTools.Field(typeof(scrBugButterfly), "homescale");
-        //     float homescale = (float)homescaleField.GetValue(__instance);
-        //     Transform butterflyTransform = (Transform)__instance.GetType().GetField("butterflyTransform", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-        //     
-        //     float num1 = Vector3.SqrMagnitude(position - (_playerCamera.transform.position + Vector3.up));
-        //     float num2 = 1.5f;
-        //     if (isAlive && (double) num1 < 6400.0)
-        //     {
-        //         __instance.Invoke("HandleFlightV2",0f);
-        //         if ((double) Vector3.SqrMagnitude(position - (MyCharacterController.position + Vector3.up)) < (double) num2 * (double) num2)
-        //         {
-        //             Plugin.BepinLogger.LogInfo($"Player obtained {bugIDs[__instance]}!");
-        //             isAliveField.SetValue(__instance, false);
-        //             __instance.functionality.SetActive(false);
-        //             __instance.trigger.resetTrigger();
-        //             GameObject gameObject = Object.Instantiate<GameObject>(__instance.audioOneShot);
-        //             gameObject.transform.position = position;
-        //             Object.Instantiate<GameObject>(__instance.particleEffect).transform.position = position;
-        //             gameObject.GetComponent<scrAudioOneShot>().setup(__instance.audioClipsObtain, 0.7f, 1f);
-        //         }
-        //         if ((double) localScale.x < (double) homescale)
-        //         {
-        //             localScale += new Vector3(1f, 1f, 1f) * Time.deltaTime;
-        //             localScaleField.SetValue(__instance, localScale);
-        //             butterflyTransform.localScale = localScale;
-        //         }
-        //         else
-        //         {
-        //             if ((double) localScale.x == (double) homescale)
-        //                 return false;
-        //             localScale = new Vector3(homescale, homescale, homescale);
-        //             butterflyTransform.localScale = localScale;
-        //         }
-        //     }
-        //     else
-        //     {
-        //         if (isAlive) return false;
-        //             
-        //         if ((double) localScale.x > 0.0)
-        //             localScale -= new Vector3(1f, 1f, 1f) * Time.deltaTime;
-        //         butterflyTransform.localScale = localScale;
-        //     }
-        //
-        //     return false;
-        // }
 
         private static bool Prefix(scrBugButterfly __instance)
         {
@@ -442,7 +383,12 @@ public class Bugsanity
             if (_noticeUp) yield break;
             var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
             _noticeUp = true;
-            yield return new WaitForSeconds(12.5f);
+            var time = 0f;
+            while (time < 70f)
+            {
+                time += Time.deltaTime;
+                yield return null;
+            }
             Object.Destroy(t);
             _noticeUp = false;
         }
@@ -775,7 +721,12 @@ public class Bugsanity
             if (_noticeUp) yield break;
             var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
             _noticeUp = true;
-            yield return new WaitForSeconds(12.5f);
+            var time = 0f;
+            while (time < 70f)
+            {
+                time += Time.deltaTime;
+                yield return null;
+            }
             Object.Destroy(t);
             _noticeUp = false;
         }

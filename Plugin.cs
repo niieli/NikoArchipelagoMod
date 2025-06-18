@@ -35,7 +35,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.7.1";
+        public const string PluginVersion = "0.7.2";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -963,7 +963,7 @@ namespace NikoArchipelago
             }
             if (GUI.Button(new Rect(16, 400, 100, 20), "Iron Boots Trap"))
             {
-                TrapManager.instance.ActivateTrap("Wide", 30f);
+                TrapManager.instance.ActivateTrap("W I D E", 30f);
             }
             if (GUI.Button(new Rect(16, 420, 100, 20), "My Turn! Trap"))
             {

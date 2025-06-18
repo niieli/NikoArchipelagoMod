@@ -78,7 +78,12 @@ public class GustPatch
             if (_noticeUp) yield break;
             var t = Object.Instantiate(Plugin.NoticeAC, Plugin.NotifcationCanvas.transform);
             _noticeUp = true;
-            yield return new WaitForSeconds(5f);
+            var time = 0f;
+            while (time < 70f)
+            {
+                time += Time.deltaTime;
+                yield return null;
+            }
             Object.Destroy(t);
             _noticeUp = false;
         }

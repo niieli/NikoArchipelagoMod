@@ -463,7 +463,6 @@ public class GameObjectChecker : MonoBehaviour
     {
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("chatsanity")) return;
-        if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 0) return;
         if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 2) Patches.NpcController.IsGlobal = true;
         if (int.Parse(ArchipelagoData.slotData["thoughtsanity"].ToString()) == 1) Patches.NpcController.Thoughtsanity = true;
         if (!ArchipelagoClient.IsValidScene()) return;
@@ -918,12 +917,12 @@ public class GameObjectChecker : MonoBehaviour
         {
             if (!_turnedOff)
             {
-                MyCharacterController.instance.DiveSpeed = 16f;
-                MyCharacterController.instance.MaxAirMoveSpeed = 8f;
-                MyCharacterController.instance.JumpSpeed = 13f;
-                MyCharacterController.instance.DiveCancelHopSpeed = 11f;
-                MyCharacterController.instance.MaxStableMoveSpeed = 8f;
-                MyCharacterController.instance.MaxWaterMoveSpeed = 11f;
+                // MyCharacterController.instance.DiveSpeed = 16f;
+                // MyCharacterController.instance.MaxAirMoveSpeed = 8f;
+                // MyCharacterController.instance.JumpSpeed = 13f;
+                // MyCharacterController.instance.DiveCancelHopSpeed = 11f;
+                // MyCharacterController.instance.MaxStableMoveSpeed = 8f;
+                // MyCharacterController.instance.MaxWaterMoveSpeed = 11f;
                 _turnedOff = true;
                 _turnedOn = false;
             }
@@ -932,7 +931,7 @@ public class GameObjectChecker : MonoBehaviour
         {
             if (!_turnedOn)
             {
-                MovementSpeed.MovementSpeedMultiplier();
+                //MovementSpeed.MovementSpeedMultiplier();
                 _turnedOff = false;
                 _turnedOn = true;
             }
