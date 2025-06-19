@@ -308,6 +308,7 @@ public class NotificationPreview : MonoBehaviour
         gameObject.transform.parent.Find("Chat").gameObject.SetActive(true);
         gameObject.transform.parent.Find("Hints").gameObject.SetActive(true);
         gameObject.transform.parent.Find("ShopHints").gameObject.SetActive(true);
+        gameObject.transform.parent.Find("Notices").gameObject.SetActive(true);
     }
 
     public void OpenSettings()
@@ -318,6 +319,7 @@ public class NotificationPreview : MonoBehaviour
         gameObject.transform.parent.Find("Chat").gameObject.SetActive(false);
         gameObject.transform.parent.Find("Hints").gameObject.SetActive(false);
         gameObject.transform.parent.Find("ShopHints").gameObject.SetActive(false);
+        gameObject.transform.parent.Find("Notices").gameObject.SetActive(false);
         LoadSavedSettings();
     }
 

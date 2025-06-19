@@ -34,11 +34,12 @@ public class GustPatch
                     __instance.spinner.speed = 640f;
                 if (__instance.particleEffect != null)
                     __instance.particleEffect.SetActive(true);
-                if (__instance.transform.parent.Find("Sparks(Clone)"))
+                if (__instance.transform.parent.Find("Sparks(Clone)") != null)
                 {
                     Object.Destroy(__instance.transform.parent.Find("Sparks(Clone)").gameObject);
                 }
-                __instance.GetComponent<AudioSource>().mute = false;
+                if (__instance.GetComponent<AudioSource>() != null)
+                    __instance.GetComponent<AudioSource>().mute = false;
                 return true;
             }
             _triggerChecker = __instance.GetComponent<TriggerChecker>();
