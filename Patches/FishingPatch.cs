@@ -211,7 +211,7 @@ public class FishingPatch
                 __instance.hook.transform.position = pullupAnimationStartPoint;
                 camera._targetVerticalAngle = 0.0f;
                 camera.RequestSmooth();
-                camera.SlerpEverything(4f);
+                camera.SlerpEverything(0.5f);
                 if (__instance.currentFish >= 0)
                 {
                   __instance.hookFish.GetComponent<scrAnimateTextureArray>()
@@ -243,7 +243,7 @@ public class FishingPatch
               characterController.requestNewPosition(__instance.pullupAnimationEndPoint.transform.position);
               characterController.blockMovement = true;
               __instance.characterShadow.transform.position = __instance.hook.transform.position;
-              if ((double)__instance.pullupAnimationTimer >= 1.0)
+              if ((double)__instance.pullupAnimationTimer >= 0)
               {
                 __instance.characterShadow.transform.localPosition = characterShadowHomePos;
                 characterController.blockMovement = false;

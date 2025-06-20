@@ -93,6 +93,9 @@ public class ArchipelagoMenu : MonoBehaviour
     public Tooltip skipPickupTooltip;
     public TooltipTrigger skipPickupTrigger;
     public GameObject skipPickupHighlight;
+    public Toggle verboseLoggingToggle;
+    public Tooltip verboseLoggingTooltip;
+    public TooltipTrigger verboseLoggingTrigger;
     public Button connectButton;
     public TMP_Text versionText;
     private static scrGameSaveManager gameSaveManager;
@@ -118,6 +121,7 @@ public class ArchipelagoMenu : MonoBehaviour
     private static bool _seasonalThemes;
     private static bool _skipPickup;
     private static bool _notices;
+    private static bool _verboseLogging;
     private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     private GameObject apButtonGameObject;
     public static string Seed;
@@ -141,6 +145,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public static bool SeasonalThemes = true;
     public static bool SkipPickup = true;
     public static bool Notices = true;
+    public static bool VerboseLogging = true;
     
     // New Menu stuff
     public GameObject settingsPanel;
@@ -466,6 +471,9 @@ public class ArchipelagoMenu : MonoBehaviour
         seasonalThemesToggle = formPanel.transform.Find("Seasonal").gameObject.GetComponent<Toggle>();
         seasonalThemesTrigger = seasonalThemesToggle.gameObject.AddComponent<TooltipTrigger>();
         seasonalThemesTooltip = seasonalThemesToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        verboseLoggingToggle = formPanel.transform.Find("VerboseLogging").gameObject.GetComponent<Toggle>();
+        verboseLoggingTrigger = verboseLoggingToggle.gameObject.AddComponent<TooltipTrigger>();
+        verboseLoggingTooltip = verboseLoggingToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
 
         serverAddressField.selectionColor = new Color(1,(float)0.5801887,(float)0.9300315,(float)0.7529412);
         slotNameField.selectionColor = new Color(1,(float)0.5801887,(float)0.9300315,(float)0.7529412);
@@ -906,6 +914,7 @@ public class ArchipelagoMenu : MonoBehaviour
         boneTrigger.tooltip = boneTooltip;
         boneDisabledTrigger.tooltip = boneDisabledTooltip;
         noticesTrigger.tooltip = noticesTooltip;
+        verboseLoggingTrigger.tooltip = verboseLoggingTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -1910,6 +1919,8 @@ public class ArchipelagoMenu : MonoBehaviour
         _seasonalThemes = seasonalThemesToggle.isOn;
         _skipPickup = skipPickupToggle.isOn;
         _notices = noticesToggle.isOn;
+        _verboseLogging = verboseLoggingToggle.isOn;
+        
         Hints = _hints;
         Chat = _chat;
         ShopHints = _shopHints;
@@ -1927,6 +1938,7 @@ public class ArchipelagoMenu : MonoBehaviour
         SeasonalThemes = _seasonalThemes;
         SkipPickup = _skipPickup;
         Notices = _notices;
+        VerboseLogging = _verboseLogging;
         
         SavedData.Instance.Host = _serverAddress;
         SavedData.Instance.SlotName = _slotName;
@@ -1947,6 +1959,7 @@ public class ArchipelagoMenu : MonoBehaviour
         SavedData.Instance.SeasonalThemes = _seasonalThemes;
         SavedData.Instance.SkipPickup = _skipPickup;
         SavedData.Instance.Notices = _notices;
+        SavedData.Instance.VerboseLogging = _verboseLogging;
         if (_rememberMe)
         {
             SavedData.Instance.SaveSettings();
@@ -1980,6 +1993,8 @@ public class ArchipelagoMenu : MonoBehaviour
         _tooltips = tooltipsToggle.isOn;
         _cassetteSpoiler = cassetteSpoilerToggle.isOn;
         _notices = noticesToggle.isOn;
+        _verboseLogging = verboseLoggingToggle.isOn;
+        
         Host = _serverAddress;
         SlotName = _slotName;
         RememberMe = _rememberMe;
@@ -2000,6 +2015,7 @@ public class ArchipelagoMenu : MonoBehaviour
         SeasonalThemes = _seasonalThemes;
         SkipPickup = _skipPickup;
         Notices = _notices;
+        VerboseLogging = _verboseLogging;
         
         ArchipelagoClient.ServerData.Uri = _serverAddress;
         ArchipelagoClient.ServerData.SlotName = _slotName;
@@ -2039,6 +2055,7 @@ public class ArchipelagoMenu : MonoBehaviour
         SavedData.Instance.SeasonalThemes = _seasonalThemes;
         SavedData.Instance.SkipPickup = _skipPickup;
         SavedData.Instance.Notices = _notices;
+        SavedData.Instance.VerboseLogging = _verboseLogging;
         if (_rememberMe)
         {
             SavedData.Instance.SaveSettings();

@@ -9,6 +9,7 @@ public class ShowDisplayers
     public static scrCoinDisplayer CoinDisplayerGameObject; 
     public static scrCassetteDisplayer CassetteDisplayerGameObject;
     public static scrUIhider KeyDisplayerUIhider, AppleDisplayerUIhider, BugDisplayerUIhider;
+    public static scrFishDisplayer FishDisplayerGameObject;
     
     private static MonoBehaviour _coroutineHost;
 

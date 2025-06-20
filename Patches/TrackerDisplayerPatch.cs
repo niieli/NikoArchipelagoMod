@@ -22,6 +22,7 @@ public class TrackerDisplayerPatch
             ShowDisplayers.BugDisplayerUIhider.visible = visable;
             //ShowDisplayers.CassetteDisplayerGameObject.visible = visable;
             //ShowDisplayers.CoinDisplayerGameObject.visible = visable;
+            //ShowDisplayers.FishDisplayerGameObject.visible = visable;
             ShowDisplayers.KeyDisplayerUIhider.visible = visable;
             if (TicketUI == null || KioskUI == null) return;
             if (ArchipelagoMenu.Ticket)

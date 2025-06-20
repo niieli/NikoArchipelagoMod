@@ -31,8 +31,9 @@ public class Applesanity
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo(
-                    $"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo(
+                        $"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -41,17 +42,20 @@ public class Applesanity
                 var prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
 
             var itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             GameObject ogQuads = null;
             if (instance.transform.Find("Quad") != null)

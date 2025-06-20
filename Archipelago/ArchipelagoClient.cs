@@ -753,7 +753,8 @@ public class ArchipelagoClient
                 string flag = matchedLocation.Flag;
 
                 AddFlag(flagType, flag, level);
-                Plugin.BepinLogger.LogInfo($"Processed Location: {location}, Level: {level}, Flag: {flag}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Processed Location: {location}, Level: {level}, Flag: {flag}");
             }
             else
             {

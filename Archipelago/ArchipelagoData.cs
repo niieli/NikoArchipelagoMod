@@ -19,7 +19,7 @@ public class ArchipelagoData
     private string seed;
 
     public static Dictionary<string, object> slotData;
-    public static int FishsanitySetting { private set; get; } = 0;
+    public static int FishsanitySetting { private set; get; }
     public static int SeedsanitySetting { private set; get; } = 0;
     public static int FlowersanitySetting { private set; get; } = 0;
     public static int BonesanitySetting { private set; get; } = 0;
@@ -39,6 +39,17 @@ public class ArchipelagoData
     public static bool TextboxSetting { private set; get; } = false;
     public static bool AcRepairSetting { private set; get; } = false;
     public static bool AppleBasketSetting { private set; get; } = false;
+    
+    public static bool FreezeTrapEnabled { private set; get; }
+    public static bool IronBootsTrapEnabled { private set; get; }
+    public static bool WhoopsTrapEnabled { private set; get; }
+    public static bool MyTurnTrapEnabled { private set; get; }
+    public static bool GravityTrapEnabled { private set; get; }
+    public static bool HomeTrapEnabled { private set; get; }
+    public static bool WideTrapEnabled { private set; get; }
+    public static bool PhoneTrapEnabled { private set; get; }
+    public static bool TinyTrapEnabled { private set; get; }
+    public static bool JumpingJacksTrapEnabled { private set; get; }
 
     public bool NeedSlotData => slotData == null;
 
@@ -69,6 +80,7 @@ public class ArchipelagoData
         Plugin.Seed = seed;
         ArchipelagoMenu.Seed = seed;
         Plugin.SlotData = slotData;
+        TrapSettings();
     }
 
     /// <summary>
@@ -107,5 +119,28 @@ public class ArchipelagoData
             FishsanitySetting = int.Parse(value10.ToString());
         if (slotData.TryGetValue("fishsanity", out var value11))
             FishsanitySetting = int.Parse(value11.ToString());
+    }
+
+    public static void TrapSettings()
+    {
+        if (slotData == null) return;
+        if (!slotData.ContainsKey("trapchance")) return;
+        FreezeTrapEnabled         = GetTrapEnabled(slotData, "freeze_trapweight");
+        IronBootsTrapEnabled      = GetTrapEnabled(slotData, "ironboots_trapweight");
+        WhoopsTrapEnabled         = GetTrapEnabled(slotData, "whoops_trapweight");
+        MyTurnTrapEnabled         = GetTrapEnabled(slotData, "myturn_trapweight");
+        GravityTrapEnabled        = GetTrapEnabled(slotData, "gravity_trapweight");
+        HomeTrapEnabled           = GetTrapEnabled(slotData, "home_trapweight");
+        WideTrapEnabled           = GetTrapEnabled(slotData, "wide_trapweight");
+        PhoneTrapEnabled          = GetTrapEnabled(slotData, "phone_trapweight");
+        TinyTrapEnabled           = GetTrapEnabled(slotData, "tiny_trapweight");
+        JumpingJacksTrapEnabled   = GetTrapEnabled(slotData, "jumpingjacks_trapweight");
+    }
+    
+    private static bool GetTrapEnabled(Dictionary<string, object> data, string key)
+    {
+        var test = data.TryGetValue(key, out var value) && int.TryParse(value.ToString(), out var intVal) && intVal > 0;
+        Plugin.BepinLogger.LogInfo($"Trap: {key}: value: {value} | {test}");
+        return test;
     }
 }

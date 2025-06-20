@@ -79,6 +79,23 @@ public class TrapManager : MonoBehaviour
         AddTrapConversations();
         Plugin.BepinLogger.LogInfo($"Loaded {TrapConversations.Count} trap conversations.");
     }
+    
+    private static Dictionary<string, bool> GetEnabledTraps()
+    {
+        return new Dictionary<string, bool>
+        {
+            { "Freeze", ArchipelagoData.FreezeTrapEnabled },
+            { "Iron Boots", ArchipelagoData.IronBootsTrapEnabled },
+            { "Whoops!", ArchipelagoData.WhoopsTrapEnabled },
+            { "My Turn!", ArchipelagoData.MyTurnTrapEnabled },
+            { "Gravity", ArchipelagoData.GravityTrapEnabled },
+            { "Home", ArchipelagoData.HomeTrapEnabled },
+            { "W I D E", ArchipelagoData.WideTrapEnabled },
+            { "Phone", ArchipelagoData.PhoneTrapEnabled },
+            { "Tiny", ArchipelagoData.TinyTrapEnabled },
+            { "Jumping Jacks", ArchipelagoData.JumpingJacksTrapEnabled },
+        };
+    }
 
     private void TrapLinkActivation()
     {
@@ -87,6 +104,13 @@ public class TrapManager : MonoBehaviour
         if (trap.Item3 + TimeSpan.FromSeconds(5f) > DateTime.Now)
         {
             var nikoTrap = TrapLinkMapping[trap.Item1].Item1;
+            var enabledTraps = GetEnabledTraps();
+            enabledTraps.TryGetValue(nikoTrap, out var value);
+            if (!value)
+            {
+                Plugin.BepinLogger.LogInfo($"TrapLink: {nikoTrap} is disabled | {ArchipelagoData.FreezeTrapEnabled}");
+                return;
+            }
             var timer = TrapLinkMapping[trap.Item1].Item2;
             ActivateTrap(nikoTrap, timer+0.5f, trap.Item2);
             Plugin.BepinLogger.LogInfo($"Activated {nikoTrap} via TrapLink");

@@ -37,7 +37,8 @@ public class Bonesanity
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -46,17 +47,20 @@ public class Bonesanity
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
             
             GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
@@ -81,7 +85,8 @@ public class Bonesanity
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
             
@@ -227,7 +232,7 @@ public class Bonesanity
 
         private static IEnumerator PlaceModelsAfterLoading(scrBone __instance)
         {
-            yield return new WaitUntil(() => GameObjectChecker.PreviousScene != SceneManager.GetActiveScene().name);
+            yield return new WaitUntil(() => GameObjectChecker.PreviousScene != SceneManager.GetActiveScene().name && !IsTransitioning());
             var flag = __instance.name;
             int scoutID;
             var currentscene = SceneManager.GetActiveScene().name;
@@ -330,6 +335,14 @@ public class Bonesanity
                 .AppendLine($"ID: {ID}, Flag: {flag}")
                 .AppendLine($"Model: {__instance.quads.name}");
         }
+        
+        private static bool IsTransitioning(bool levelIntroduction = true)
+        {
+            return scrTrainManager.instance.isLoadingNewScene
+                   || scrTransitionManager.instance.state != scrTransitionManager.States.idle
+                   || !ArchipelagoClient.IsValidScene()
+                   || (scrLevelIntroduction.isOn && levelIntroduction);
+        }
     }
 
     [HarmonyPatch(typeof(scrBone), "Update")]
@@ -407,14 +420,13 @@ public class Bonesanity
                 return false;
             }
 
-            if (!_playedSound)
+            if (!_playedSound && _isInArea)
             {
                 _playedSound = true;
                 GameObject gameObject = Object.Instantiate<GameObject>(__instance.audioOneShot);
                 gameObject.transform.position = __instance.transform.position;
                 gameObject.GetComponent<scrAudioOneShot>().setup(__instance.sndBoneGotAll, 0.7f, 1f);
                 Object.Instantiate<GameObject>(__instance.smoke).transform.position = __instance.coin.transform.position;
-                
             }
             __instance.NPCQuest.SetActive(false);
             __instance.NPCPost.SetActive(true);
@@ -427,13 +439,13 @@ public class Bonesanity
             }
             else
             {
+                if (!_isInArea) return false;
                 GameObject gameObject = Object.Instantiate<GameObject>(__instance.audioOneShot);
                 gameObject.transform.position = __instance.transform.position;
                 gameObject.GetComponent<scrAudioOneShot>().setup(__instance.sndBoneGotAll, 0.7f, 1f);
                 __instance.UIhider.visible = false;
                 Object.Destroy((Object)__instance.gameObject);
             }
-                
             return false;
         }
 

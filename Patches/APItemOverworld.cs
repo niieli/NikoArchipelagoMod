@@ -32,7 +32,8 @@ public class APItemOverworld
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -41,17 +42,20 @@ public class APItemOverworld
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
             
             GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
@@ -80,7 +84,8 @@ public class APItemOverworld
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
             
@@ -333,7 +338,8 @@ public class APItemOverworld
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -342,17 +348,20 @@ public class APItemOverworld
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
             
             GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
@@ -381,7 +390,8 @@ public class APItemOverworld
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
             
@@ -622,8 +632,8 @@ public class APItemOverworld
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo(
-                    $"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -632,17 +642,20 @@ public class APItemOverworld
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
 
             GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
@@ -672,7 +685,8 @@ public class APItemOverworld
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
 
@@ -863,8 +877,8 @@ public class APItemOverworld
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo(
-                    $"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -873,17 +887,20 @@ public class APItemOverworld
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
 
             GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
@@ -913,7 +930,8 @@ public class APItemOverworld
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
 
@@ -1112,8 +1130,8 @@ public class APItemOverworld
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo(
-                    $"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -1122,17 +1140,20 @@ public class APItemOverworld
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
 
             GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
@@ -1162,7 +1183,8 @@ public class APItemOverworld
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
 
@@ -1470,7 +1492,8 @@ public class APItemOverworld
             var instanceCache = InstanceItemsCache[instance];
             if (instanceCache.TryGetValue(prefabName, out var cachedItem))
             {
-                Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Reusing existing item for prefab: {prefabName} on instance {instance.name}");
                 return cachedItem;
             }
 
@@ -1479,17 +1502,20 @@ public class APItemOverworld
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    if (Plugin.DebugMode)
+                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
                 GameObjectChecker.CreatedItemsCache[prefabName] = prefab;
                 blueprintPrefab = prefab;
-                Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogInfo($"Cached prefab blueprint: {prefabName}");
             }
             
             GameObject itemOverworld = Object.Instantiate(blueprintPrefab, instance.transform, true);
-            Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo($"Instantiated new item from blueprint: {prefabName}");
 
             var ogQuads = instance.transform.Find("Quads").gameObject;
             var itemQuads = itemOverworld.transform.Find("Quads").gameObject;
@@ -1518,7 +1544,8 @@ public class APItemOverworld
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                if (Plugin.DebugMode)
+                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
             

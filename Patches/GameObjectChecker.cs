@@ -646,6 +646,7 @@ public class GameObjectChecker : MonoBehaviour
         ShowDisplayers.AppleDisplayerUIhider = GameObject.Find("Apple Displayer").gameObject.GetComponent<scrUIhider>();
         ShowDisplayers.BugDisplayerUIhider = GameObject.Find("Bug Displayer").gameObject.GetComponent<scrUIhider>();
         ShowDisplayers.KeyDisplayerUIhider = GameObject.Find("Key Displayer").gameObject.GetComponent<scrUIhider>();
+        //ShowDisplayers.FishDisplayerGameObject = ;
     }
 
     private static void SendReminderNote()
@@ -898,7 +899,8 @@ public class GameObjectChecker : MonoBehaviour
         yield return new WaitUntil(() => PreviousScene != SceneManager.GetActiveScene().name);
         if (!onLogin && Plugin.loggedIn)
         {
-            Plugin.BepinLogger.LogInfo("Item Logs:\n"+LogPastItemsBatch);
+            if (Plugin.DebugMode)
+                Plugin.BepinLogger.LogInfo("Item Logs:\n"+LogPastItemsBatch);
             onLogin = true;
         }
         while (waitFor > 0)
@@ -906,7 +908,7 @@ public class GameObjectChecker : MonoBehaviour
             yield return null;
             waitFor -= Time.deltaTime;
         }
-        if(LogBatch.Length > 0)
+        if(LogBatch.Length > 0 && Plugin.DebugMode)
             Plugin.BepinLogger.LogInfo("Model logs:\n"+LogBatch);
         PreviousScene = "";
     }

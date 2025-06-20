@@ -73,6 +73,10 @@ public class PepperInterviewPatch
             instance.postInterview.transform.Find("Credits").gameObject.SetActive(true);
             instance.postInterview.transform.Find("Radio").gameObject.SetActive(true);
             instance.postInterview.transform.Find("Ending Screen").gameObject.SetActive(true);
+            if (instance.transform.Find("First Time") != null)
+            {
+                Object.Destroy(instance.transform.Find("First Time").gameObject);
+            }
         }
     }
 }

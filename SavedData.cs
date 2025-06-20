@@ -29,6 +29,7 @@ public class SavedData
     public bool SeasonalThemes { get; set; } = ArchipelagoMenu.SeasonalThemes;
     public bool SkipPickup { get; set; } = ArchipelagoMenu.SkipPickup;
     public bool Notices { get; set; } = ArchipelagoMenu.Notices;
+    public bool VerboseLogging { get; set; } = ArchipelagoMenu.VerboseLogging;
     public float NotificationDuration { get; set; } = NotificationManager.notificationDuration;
     public string NotificationProgColor { get; set; } = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationProgColor);
     public string NotificationUsefulColor { get; set; } = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationUsefulColor);

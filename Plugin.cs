@@ -36,7 +36,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.7.3";
+        public const string PluginVersion = "0.7.4";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -537,7 +537,7 @@ namespace NikoArchipelago
                     }
                     if (newFile)
                         StartCoroutine(FirstLoginFix());
-                    LogFlags();
+                    //LogFlags();
                     StartCoroutine(CheckWorldSaveManager());
                     loggedIn = true;
                     SaveEstablished = false;
@@ -861,10 +861,6 @@ namespace NikoArchipelago
             CheckNewFlag(ref miscFlg, saveDataMiscFlag, "Misc");
             CheckNewFlag(ref letterFlg, saveDataLetterFlag, nameof(Letter));
             CheckNewFlag(ref generalFlg, saveDataGeneralFlag, "General");
-
-            if (coinTotal <= coinOld) return;
-            Logger.LogInfo("Total Coin Count: " + coinTotal);
-            coinOld++;
         }
 
         private void CheckNewFlag(ref int flagIndex, List<string> flagList, string flagType)
