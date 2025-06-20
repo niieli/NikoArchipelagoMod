@@ -39,6 +39,7 @@ public class TrapManager : MonoBehaviour
     public static readonly Dictionary<string, string> TrapConversations = new();
     private static string lastPhoneCall;
     private static bool stillCalling;
+    private static bool canSendHome;
     
     // TrapLink
     public static readonly Queue<(string, string, DateTime)> TrapLinkQueue = new();
@@ -274,6 +275,10 @@ public class TrapManager : MonoBehaviour
             trap.transform.position = center;
             timeRemaining -= Time.deltaTime;
             trap.GetComponent<Animator>().SetFloat(Timer, timeRemaining);
+            if (IsTransitioning() && trapName == "Home" && !canSendHome)
+            {
+                yield return new WaitUntil(() => canSendHome);
+            }
             if (IsTransitioning() && trapName != "Home")
             {
                 yield return new WaitUntil(() => !IsTransitioning());
@@ -493,8 +498,8 @@ public class TrapManager : MonoBehaviour
     
     private static IEnumerator Home(float duration)
     {
-        if (SceneManager.GetActiveScene().name == "Home")
-            yield return new WaitForSeconds(1.5f); // For the time being use this bandaid fix
+        yield return new WaitUntil(() => !IsTransitioning());
+        canSendHome = true;
         Plugin.BepinLogger.LogInfo("Send Player to Home");
         scrTrainManager.instance.UseTrain(1, false);
         while (duration > 0)
@@ -502,6 +507,7 @@ public class TrapManager : MonoBehaviour
             yield return null;
             duration -= Time.deltaTime;
         }
+        canSendHome = false;
     }
     
     private static IEnumerator JumpingJacks(float duration)
