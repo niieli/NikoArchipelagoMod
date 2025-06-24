@@ -36,7 +36,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.7.4";
+        public const string PluginVersion = "0.7.5";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -1054,6 +1054,8 @@ namespace NikoArchipelago
                     ItemFlags.Trap, 5f, null, null, WhoopsTrapSprite, "Not Found");
                 NotificationManager.AddNewNotification.Enqueue(notification);
             }
+            TrapManager.DebugPhone = Convert.ToInt32(GUI.TextField(new Rect(180, 560, 80, 20), TrapManager.DebugPhone.ToString()));
+            TrapManager.DebugPhoneBool = GUI.Toggle(new Rect(120, 560, 80, 20), TrapManager.DebugPhoneBool, "Debug") ;
             if (GUI.Button(new Rect(16, 560, 100, 20), "MsgLength"))
             {
                 TrapManager.PhoneOn = true;

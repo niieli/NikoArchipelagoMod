@@ -277,7 +277,9 @@ public class NpcController : MonoBehaviour
         if (conversation is "LouistLost" or "LouistReward" or "LouistPost" or "LouistParty") conversation = "Louist";
         if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward" or "GabiParty") conversation = "Gabi";
         if (conversation is "BugQuest" or "BugPost" or "BugReward" or "BlessleyParty") conversation = "Blessley";
-        if (conversation is "FischerAll" or "fish0" or "fish1" or "fish2" or "fish3" or "fish4" or "FischerIdle"
+        if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
+            or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" 
+            or "fish0" or "fish1" or "fish2" or "fish3" or "fish4" or "FischerIdle"
             or "FischerNonFish" or "FischerOldFish" or "FischerParty")
             conversation = "Fischer";
         if (conversation is "masterNotEnough" or "masterBuy" or "masterBought") conversation = "Master"; //Name:Master/Sensei
@@ -416,7 +418,8 @@ public class NpcController : MonoBehaviour
                         conversation = "Gabi";
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0"
+                    if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -437,6 +440,10 @@ public class NpcController : MonoBehaviour
                         or "CassetteCoinNotBought2"
                         or "CassetteCoinBought2")
                         conversation = "Mai";
+                    if (conversation is "pepperGotAllCoins"
+                        or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
+                        or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
+                        conversation = "pepperMain";
 
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
@@ -476,7 +483,8 @@ public class NpcController : MonoBehaviour
                         conversation = "Gabi";
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0"
+                    if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -494,6 +502,10 @@ public class NpcController : MonoBehaviour
                         or "CassetteCoinNotBought2"
                         or "CassetteCoinBought2")
                         conversation = "Mai";
+                    if (conversation is "pepperGotAllCoins"
+                        or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
+                        or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
+                        conversation = "pepperMain";
 
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
@@ -538,7 +550,9 @@ public class NpcController : MonoBehaviour
                         conversation = "Gabi";
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0"
+                    if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
+or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "FishsanityNotEnough" or "FishsanityFishing" 
+                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -558,6 +572,13 @@ public class NpcController : MonoBehaviour
                         conversation = "Mai";
                     if (conversation is "MoomyQuest" or "MoomyReward" or "MoomyPost")
                         conversation = "Moomy";
+                    if (conversation is "pepperGotAllCoins"
+                        or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
+                        or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
+                        conversation = "pepperMain";
+                    if (conversation is "graffitiQuestNina" or "graffitiPostNina"
+                        or "graffitiTooFewNina" or "graffitiRewardNina")
+                        conversation = "Nina";
 
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
@@ -593,7 +614,8 @@ public class NpcController : MonoBehaviour
                         conversation = "Gabi";
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0"
+                    if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -609,6 +631,10 @@ public class NpcController : MonoBehaviour
                         or "CassetteCoinNotBought2"
                         or "CassetteCoinBought2")
                         conversation = "Mai";
+                    if (conversation is "pepperGotAllCoins"
+                        or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
+                        or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
+                        conversation = "pepperMain";
 
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
@@ -666,7 +692,8 @@ public class NpcController : MonoBehaviour
                         conversation = "Gabi";
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0"
+                    if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -686,6 +713,10 @@ public class NpcController : MonoBehaviour
                         conversation = "Mai";
                     if (conversation is "MoomyQuest" or "MoomyReward" or "MoomyPost")
                         conversation = "Moomy";
+                    if (conversation is "pepperGotAllCoins"
+                        or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
+                        or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
+                        conversation = "pepperMain";
 
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
@@ -725,7 +756,8 @@ public class NpcController : MonoBehaviour
                         conversation = "Gabi";
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
-                    if (conversation is "FischerAll" or "fish0"
+                    if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -745,6 +777,10 @@ public class NpcController : MonoBehaviour
                         conversation = "Mai";
                     if (conversation is "VlogFrogMonth")
                         conversation = "VlogFrog";
+                    if (conversation is "pepperGotAllCoins"
+                        or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
+                        or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9" or "interview")
+                        conversation = "pepperMain";
 
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;

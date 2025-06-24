@@ -40,6 +40,8 @@ public class TrapManager : MonoBehaviour
     private static string lastPhoneCall;
     private static bool stillCalling;
     private static bool canSendHome;
+    public static int DebugPhone = -1;
+    public static bool DebugPhoneBool;
     
     // TrapLink
     public static readonly Queue<(string, string, DateTime)> TrapLinkQueue = new();
@@ -555,6 +557,8 @@ public class TrapManager : MonoBehaviour
         var msg = "trapConv"+Random.Range(0, TrapConversations.Count);
         while (msg == lastPhoneCall)
             msg = "trapConv"+Random.Range(0, TrapConversations.Count);
+        if (DebugPhone != -1 && DebugPhoneBool)
+            msg = "trapConv"+DebugPhone;
         lastPhoneCall = msg;
         Plugin.BepinLogger.LogInfo($"Phone Call Trap: {msg}");
         scrTextbox.instance.TurnOn(msg);

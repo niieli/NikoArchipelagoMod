@@ -42,8 +42,7 @@ public class APItemOverworld
                 GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
-                    if (Plugin.DebugMode)
-                        Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
+                    Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");
                     return null;
                 }
 
@@ -84,8 +83,7 @@ public class APItemOverworld
         {
             if (!Assets.PrefabMapping.TryGetValue(itemName, out string prefabName))
             {
-                if (Plugin.DebugMode)
-                    Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
+                Plugin.BepinLogger.LogError($"Item name '{itemName}' not recognized.");
                 return null;
             }
             
