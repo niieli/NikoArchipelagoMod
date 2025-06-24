@@ -52,7 +52,6 @@ namespace NikoArchipelago
         private List<string> saveDataCoinFlag, saveDataCassetteFlag, saveDataFishFlag, saveDataMiscFlag, saveDataLetterFlag, saveDataGeneralFlag;
         private int coinFlg, cassetteFlg, fishFlg, miscFlg, letterFlg, generalFlg, coinTotal, coinOld;
         private int goToLevel, snowAmount;
-        private float env, mas, mus, sfx;
         private static scrNotificationDisplayer _noteDisplayer;
         public static bool worldReady;
         private static bool _canLogin;
@@ -117,10 +116,6 @@ namespace NikoArchipelago
             Logger.LogInfo($"Hey, Niko here! Plugin {PluginName} Loaded! :)");
             ArchipelagoConsole.LogMessage($"{ModDisplayInfo} loaded!");
             saveName = ArchipelagoClient.ServerData.SlotName;
-            mas = 0.5f;
-            env = 0.4f;
-            sfx = 0.4f;
-            mus = 0.4f;
             if (!Directory.Exists(ArchipelagoFolderPath))
             {
                 Directory.CreateDirectory(ArchipelagoFolderPath);
@@ -151,10 +146,6 @@ namespace NikoArchipelago
                 NoXmasEvent = true;
             }
             NoAntiCheese = false;
-            GameOptions.MasterVolume = mas;
-            GameOptions.EnvVolume = env;
-            GameOptions.MusicVolume = mus;
-            GameOptions.SFXVolume = sfx;
             StartCoroutine(CheckGameSaveManager());
             if (Application.unityVersion.StartsWith("2020.2.4f1"))
             {
