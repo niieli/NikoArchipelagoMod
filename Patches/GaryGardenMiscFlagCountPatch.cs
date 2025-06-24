@@ -59,6 +59,8 @@ public class GaryGardenMiscFlagCountPatch
     {
         int flagCount = scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("GardenSeed")) + 1;
         float myTimer = 0.0f;
+        if (flagCount < 0 || flagCount >= instance.objectsToRise.Count)
+            yield break;
         if (instance.objectsToRise[flagCount] != null)
         {
             GameObject gameObject = instance.objectsToRise[flagCount];
@@ -79,6 +81,8 @@ public class GaryGardenMiscFlagCountPatch
         int count = scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("GardenSeed"));
         for (int index = 0; index <= count + 1; ++index)
         {
+            if (index >= instance.objectsToRise.Count)
+                yield break;
             if (instance.objectsToRise[index] != null)
                 instance.objectsToRise[index].transform.position = new Vector3(instance.objectsToRise[index].transform.position.x, 0.0f, instance.objectsToRise[index].transform.position.z);
         }

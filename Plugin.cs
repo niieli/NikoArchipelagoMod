@@ -1068,6 +1068,10 @@ namespace NikoArchipelago
             {
                 TrapManager.FastTimeOn = true;
             }
+            if (GUI.Button(new Rect(16, 620, 100, 20), "Unstuck"))
+            {
+                MyCharacterController.instance.BackToDaisy();
+            }
         }
 
         private void BackgroundForText(Rect rect)

@@ -883,6 +883,7 @@ public static class ItemHandler
             "Phone Trap" => Plugin.PhoneCallTrapSprite,
             "Tiny Trap" => Plugin.TinyTrapSprite,
             "Gravity Trap" => Plugin.GravityTrapSprite,
+            "Jumping Jacks Trap" => Plugin.JumpingJacksTrapSprite,
             "Party Invitation" => Plugin.PartyTicketSprite,
             "Safety Helmet" => Plugin.BonkHelmetSprite,
             "Bug Net" => Plugin.BugNetSprite,

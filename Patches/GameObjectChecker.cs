@@ -101,6 +101,8 @@ public class GameObjectChecker : MonoBehaviour
         AddSwimCourse();
         AddTextboxPermit();
         //Instantiate(Plugin.BasicBlock, GameObject.Find("Quests").transform);
+        if (SceneManager.GetActiveScene().name == "GarysGarden")
+            scrScissor.destroyAll = false;
         if (ArchipelagoClient.IsValidScene())
         {
             cursor = GameObject.Find("UI/Menu system/Cursor").GetComponent<scrCursor>();
