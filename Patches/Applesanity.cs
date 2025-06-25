@@ -15,6 +15,7 @@ public class Applesanity
 {
     private static bool applesanityOn = false;
     public static bool NoticeUp;
+    private static bool needsBasket = true;
     [HarmonyPatch(typeof(scrApple), "Start")]
     public static class ApplesanityStart
     {
@@ -433,7 +434,11 @@ public class Applesanity
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("applebasket")) return true;
-            if (int.Parse(ArchipelagoData.slotData["applebasket"].ToString()) == 0) return true;
+            if (int.Parse(ArchipelagoData.slotData["applebasket"].ToString()) == 0)
+            {
+                needsBasket = false;
+                return true;
+            }
             
             if (ArchipelagoClient.AppleBasketAcquired) return true;
             __instance.StartCoroutine(ShowNotice());
@@ -456,7 +461,7 @@ public class Applesanity
         }
         private static void Postfix(scrApple __instance)
         {
-            if (!ArchipelagoClient.AppleBasketAcquired) return;
+            if (!ArchipelagoClient.AppleBasketAcquired && needsBasket) return;
             if (!applesanityOn) return;
             if (!ApplesanityStart.appleIDs.ContainsKey(__instance))
             {
