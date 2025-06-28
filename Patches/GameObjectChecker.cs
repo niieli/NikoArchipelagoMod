@@ -946,6 +946,23 @@ public class GameObjectChecker : MonoBehaviour
         }
     }
 
+    private void FixMissingLocations()
+    {
+        //TODO: Remove after 0.8.0
+        if (!ArchipelagoClient.TextboxAcquired) return;
+        if (SceneManager.GetActiveScene().name == "Salmon Creek Forest" &&
+            !scrWorldSaveDataContainer.instance.miscFlags.Contains("CHATcaveDoe"))
+        {
+            scrWorldSaveDataContainer.instance.miscFlags.Add("CHATcaveDoe");
+            scrWorldSaveDataContainer.instance.SaveWorld();
+        }
+        if (SceneManager.GetActiveScene().name == "Trash Kingdom" && !scrWorldSaveDataContainer.instance.miscFlags.Contains("CHATtownGull1"))
+        {
+            scrWorldSaveDataContainer.instance.miscFlags.Add("CHATtownGull1");
+            scrWorldSaveDataContainer.instance.SaveWorld();
+        }    
+    }
+
     public void Update()
     {
         GamepadToggleSpeed();
@@ -953,6 +970,7 @@ public class GameObjectChecker : MonoBehaviour
             PreviousScene = SceneManager.GetActiveScene().name;
         if (!ArchipelagoClient.IsValidScene()) return;
         HatKidEasterEgg();
+        FixMissingLocations();
         if (Plugin.ChristmasEvent)
         {
             var t = GameObject.Find("PlayerCamera");
