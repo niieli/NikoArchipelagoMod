@@ -101,6 +101,7 @@ public class GameObjectChecker : MonoBehaviour
         AddSwimCourse();
         AddTextboxPermit();
         StartCoroutine(AddTheRealSkippy());
+        StartCoroutine(DisableBottleUntilCaveOpened());
         //Instantiate(Plugin.BasicBlock, GameObject.Find("Quests").transform);
         if (SceneManager.GetActiveScene().name == "GarysGarden")
             scrScissor.destroyAll = false;
@@ -166,6 +167,18 @@ public class GameObjectChecker : MonoBehaviour
         var t = GameObject.Find("NPCs/Poppy and fam/Turn on").transform;
         t.GetChild(5).gameObject.SetActive(true);
         t.GetChild(7).gameObject.SetActive(false);
+    }
+    
+    private static IEnumerator DisableBottleUntilCaveOpened()
+    {
+        if (SceneManager.GetActiveScene().name != "Salmon Creek Forest") yield break;
+        var t = GameObject.Find("BottledLetter");
+        var mai = GameObject.Find("Quests/Cassette Buyers/CassetteBuyer2");
+        t.SetActive(false);
+        mai.SetActive(false);
+        yield return new WaitUntil(() => scrWorldSaveDataContainer.instance.miscFlags.Contains("lock2"));
+        t.SetActive(true);
+        mai.SetActive(true);
     }
 
     private static IEnumerator VisibilityTimer()
