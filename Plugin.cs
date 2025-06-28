@@ -1063,6 +1063,17 @@ namespace NikoArchipelago
             {
                 MyCharacterController.instance.BackToDaisy();
             }
+            if (GUI.Button(new Rect(16, 640, 100, 20), "ALL CONV"))
+            {
+                var triggers = FindObjectsByType<scrTextboxTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+                foreach (var textbox in triggers)
+                {
+                    string parent;
+                    if (textbox.transform.parent) parent = textbox.transform.parent.name;
+                    else parent = "--";
+                    Logger.LogWarning($"Conversation: {textbox.conversation} | Parent: {parent} | Root: {textbox.transform.root.name}");
+                }
+            }
         }
 
         private void BackgroundForText(Rect rect)

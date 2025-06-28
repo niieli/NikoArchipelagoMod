@@ -899,15 +899,61 @@ public class PepperAdvicePatch
     [HarmonyPatch(typeof(scrPepperAdvice), "SetCurrentFocus")]
     public static class PatchPepperAdviceSetCurrentFocus
     {
-        // static void Postfix(scrPepperAdvice __instance)
-        // {
-        //     var currentFocusField = AccessTools.Field(typeof(scrPepperAdvice), "currentFocus");
-        //     var currentFocus = (int)currentFocusField.GetValue(__instance);
-        //
-        //     if (currentFocus > __instance.cameraPoints.Count)
-        //     {
-        //         currentFocus = __instance.cameraPoints.Count - 1;
-        //     }
-        // }
+        static bool Prefix(scrPepperAdvice __instance)
+        {
+            var currentFocusField = AccessTools.Field(typeof(scrPepperAdvice), "currentFocus");
+            var currentFocus = (int)currentFocusField.GetValue(__instance);
+            var mainQuestCompleteField = AccessTools.Field(typeof(scrPepperAdvice), "mainQuestComplete");
+            var mainQuestComplete = (bool)mainQuestCompleteField.GetValue(__instance);
+        
+            
+            for (int index = 0; index < scrWorldSaveDataContainer.instance.coinFlags.Count; ++index)
+            {
+                if (scrWorldSaveDataContainer.instance.coinFlags[index] == "main")
+                    mainQuestComplete = true;
+            }
+            for (int index1 = 0; index1 < __instance.coinFlags.Count; ++index1)
+            {
+                if (index1 >= __instance.cameraPoints.Count) continue;
+                if (!__instance.cameraPoints[index1].gameObject.activeSelf || __instance.cameraPoints[index1] != null)
+                {
+                    currentFocus = index1 + 1;
+                }
+                else
+                {
+                    bool flag = false;
+                    for (int index2 = 0; index2 < scrWorldSaveDataContainer.instance.coinFlags.Count; ++index2)
+                    {
+                        try
+                        {
+                            if (scrWorldSaveDataContainer.instance.coinFlags[index2] == __instance.coinFlags[index1])
+                            {
+                                currentFocus = index1 + 1;
+                                flag = true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.Log(ex);
+                        }
+                    }
+                    if (!flag)
+                        break;
+                }
+            }
+            if (!mainQuestComplete)
+            {
+                __instance.textboxTrigger.camPoints[1] = __instance.mainCameraPoint;
+                __instance.textboxTrigger.conversation = __instance.mainConversation;
+            }
+            else if (currentFocus < __instance.cameraPoints.Count - 1)
+            {
+                __instance.textboxTrigger.camPoints[1] = __instance.cameraPoints[currentFocus];
+                __instance.textboxTrigger.conversation = __instance.conversationKeys[UnityEngine.Random.Range(0, __instance.conversationKeys.Count - 1)];
+            }
+            else
+                __instance.textboxTrigger.conversation = __instance.allCoinsConversation;
+            return false;
+        }
     }
 }

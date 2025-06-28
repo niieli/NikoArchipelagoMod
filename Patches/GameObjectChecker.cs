@@ -100,6 +100,7 @@ public class GameObjectChecker : MonoBehaviour
         HatPlayers();
         AddSwimCourse();
         AddTextboxPermit();
+        StartCoroutine(AddTheRealSkippy());
         //Instantiate(Plugin.BasicBlock, GameObject.Find("Quests").transform);
         if (SceneManager.GetActiveScene().name == "GarysGarden")
             scrScissor.destroyAll = false;
@@ -156,6 +157,15 @@ public class GameObjectChecker : MonoBehaviour
         if (!ArchipelagoClient.IsValidScene()) return;
         var obj = new GameObject("TextboxPermit");
         obj.AddComponent<TextboxPermit>();
+    }
+    
+    private static IEnumerator AddTheRealSkippy()
+    {
+        if (SceneManager.GetActiveScene().name != "Salmon Creek Forest") yield break;
+        yield return new WaitUntil(() => scrGameSaveManager.instance.gameData.worldsData[5].coinFlags.Contains("main"));
+        var t = GameObject.Find("NPCs/Poppy and fam/Turn on").transform;
+        t.GetChild(5).gameObject.SetActive(true);
+        t.GetChild(7).gameObject.SetActive(false);
     }
 
     private static IEnumerator VisibilityTimer()
@@ -520,7 +530,7 @@ public class GameObjectChecker : MonoBehaviour
         // arrow.enabled = true;
         // Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator = arrow;
         Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.player = player.transform.Find("CharacterController");
-        Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.arrowObject = arrowPrefab.transform;
+        Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.arrow3D = arrowPrefab.transform;
         Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.distanceText = arrowUIPrefab.transform.Find("Distance").GetComponent<TextMeshProUGUI>();
         Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().arrowIndicator.distanceTextShadow = arrowUIPrefab.transform.Find("DistanceShadow").GetComponent<TextMeshProUGUI>();
         Plugin.ArrowTrackerGameObject.GetComponent<ArrowTrackerManager>().iconImage = arrowUIPrefab.transform.Find("Icon").GetComponent<Image>();
