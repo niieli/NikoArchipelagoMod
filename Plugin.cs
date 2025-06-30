@@ -1074,6 +1074,14 @@ namespace NikoArchipelago
                     Logger.LogWarning($"Conversation: {textbox.conversation} | Parent: {parent} | Root: {textbox.transform.root.name}");
                 }
             }
+            if (GUI.Button(new Rect(16, 660, 100, 20), "Bugs"))
+            {
+                var bugIDs = Bugsanity.bugIDs;
+                foreach (var bug in bugIDs)
+                {
+                    Logger.LogWarning($"BugID: {bug.Value} | Vector3: {bug.Key.transform.position}");
+                }
+            }
         }
 
         private void BackgroundForText(Rect rect)

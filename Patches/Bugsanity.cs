@@ -38,6 +38,19 @@ public class Bugsanity
         {
             bugIDs[bug] = nextBugID++;
             //Plugin.BepinLogger.LogInfo($"Assigned Bug CustomID: {bugIDs[bug]} to {bug.gameObject.name}");
+            if (scene == "Salmon Creek Forest")
+            {
+                if (bugIDs[bug] == 47)
+                    bug.transform.position += new Vector3(0, 12f, 0f);
+                if (bugIDs[bug] == 40)
+                    bug.transform.position = new Vector3(-31f, 160f, -135f);
+                if (bugIDs[bug] == 71)
+                    bug.transform.position = new Vector3(-105f, 131f, 100f);
+                if (bugIDs[bug] == 49)
+                    bug.transform.position = new Vector3(-110f, 129f, 75.8f);
+                if (bugIDs[bug] == 1)
+                    bug.transform.position = new Vector3(-105.7f, 130f, 87f);
+            }
         }
         return true;
     }
