@@ -73,7 +73,7 @@ public class NpcController : MonoBehaviour
             "CHATpaul", "CHATtippy", "CHATtrainFrog", "CHATtbhCarl", "CHATtbhJess", "CHATtbhMiki", "CHATtbhBiki", "CHATtbhWess", 
             "CHATmahjongFrog", "CHATVlogFrog", "CHATtbhMonty", "CHATArcadeBone", "CHATArcade", "CHATUnderhero",
             "CHATTravis", "CHATSerschel", "CHATLouist", "CHATGabi", 
-            "CHATBlessley", "CHATFischer", "CHATDustan",
+            "CHATBlessley", "CHATFischer", "CHATDustan", "CHATMelissaStijn",
             "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer", "CHATMoomy"
         ];
         
@@ -329,7 +329,7 @@ public class NpcController : MonoBehaviour
         if (conversation is "hbcMinoes" or "MinoesParty") conversation = "Minoes";
         if (conversation is "hbcCarrot" or "CarrotParty") conversation = "Carrot";
         if (conversation is "trainFrog" && currentScene == "Trash Kingdom") conversation = "TipFrog";
-        if (conversation is "trainFrog2" or "trainFrog") conversation = "TrainFrog";
+        if (conversation is "trainFrog2" or "trainFrog" or "trainfrog") conversation = "TrainFrog";
         if (conversation is "frogFloaty" && currentScene == "Public Pool") conversation = "VacationFrog";
         if (conversation is "monthFrogParty") conversation = "InfoFrog";
         if (conversation is "townGull2" && currentScene == "Public Pool") conversation = "MomGull";
@@ -343,6 +343,11 @@ public class NpcController : MonoBehaviour
         {
             //Plugin.BepinLogger.LogInfo($"Found Coversation: {conversation}");
             scrGameSaveManager.instance.gameData.worldsData[0].miscFlags.Add(conversation);
+            if (conversation == "CHATMelissaStijn")
+            {
+                scrGameSaveManager.instance.gameData.worldsData[0].miscFlags.Add("CHATStijn");
+                scrGameSaveManager.instance.gameData.worldsData[0].miscFlags.Add("CHATMelissa");
+            }
         }
         else if (!global.Contains(conversation) && !LoggedConversations.Contains(conversation)
                  && !conversation.StartsWith("trapConv") && !niko.Contains(conversation))
@@ -725,6 +730,11 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                         && !scrWorldSaveDataContainer.instance.miscFlags.Contains(conversation))
                     {
                         scrWorldSaveDataContainer.instance.miscFlags.Add(conversation);
+                        if (conversation == "CHATMelissaStijn")
+                        {
+                            scrWorldSaveDataContainer.instance.miscFlags.Add("CHATStijn");
+                            scrWorldSaveDataContainer.instance.miscFlags.Add("CHATMelissa");
+                        }
                     }
                     else if (!bathhouse.Contains(conversation) && !niko.Contains(conversation) &&
                              !conversation.StartsWith("trapConv") && !LoggedConversations.Contains(conversation))
