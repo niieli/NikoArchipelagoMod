@@ -50,6 +50,16 @@ public class Bugsanity
                     bug.transform.position = new Vector3(-110f, 129f, 75.8f);
                 if (bugIDs[bug] == 1)
                     bug.transform.position = new Vector3(-105.7f, 130f, 87f);
+                if (bugIDs[bug] == 54)
+                    bug.transform.position = new Vector3(2.6f, 194.5f, -78.7f);
+                if (bugIDs[bug] == 84)
+                    bug.transform.position = new Vector3(-55.82f, 178f, -50.7f);
+                if (bugIDs[bug] == 76)
+                    bug.transform.position = new Vector3(-53.82f, 184f, -48.7f);
+                if (bugIDs[bug] == 42)
+                    bug.transform.position = new Vector3(-28.6f, 181.5f, -80.4f);
+                if (bugIDs[bug] == 81)
+                    bug.transform.position = new Vector3(-60f, 178f, -63.9f);
             }
         }
         return true;
