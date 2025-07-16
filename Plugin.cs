@@ -36,7 +36,7 @@ namespace NikoArchipelago
          */
         private const string PluginGuid = "nieli.NikoArchipelago";
         private const string PluginName = nameof(NikoArchipelago);
-        public const string PluginVersion = "0.7.7";
+        public const string PluginVersion = "0.7.8";
         
         private const string ModDisplayInfo = $"{PluginName} v{PluginVersion}";
         private const string APDisplayInfo = $"Archipelago v{ArchipelagoClient.APVersion}";
@@ -766,13 +766,13 @@ namespace NikoArchipelago
             SyncLevel(6, ArchipelagoClient.Ticket5);
             SyncLevel(7, ArchipelagoClient.Ticket6);
             SyncValue(ref ItemHandler.Garden, ArchipelagoClient.TicketGary);
-            if (ArchipelagoClient.queuedItems2.Count <= 0 || !ArchipelagoClient.IsValidScene())
+            if (ArchipelagoClient.InvalidSceneItemQueue.Count <= 0 || !ArchipelagoClient.IsValidScene())
             {
-                foreach (var t in ArchipelagoClient.queuedItems2)
+                foreach (var t in ArchipelagoClient.InvalidSceneItemQueue)
                 {
                     ArchipelagoClient.GiveItem(t, false);
                 }
-                ArchipelagoClient.queuedItems2.Clear();
+                ArchipelagoClient.InvalidSceneItemQueue.Clear();
             }
             if (ArchipelagoClient.queuedItems.Count <= 0 || !ArchipelagoClient.IsValidScene() || !SaveEstablished) yield break;
             foreach (var t in ArchipelagoClient.queuedItems)

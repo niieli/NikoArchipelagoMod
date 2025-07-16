@@ -7,6 +7,7 @@ using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Converters;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Exceptions;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
@@ -253,7 +254,7 @@ public class ArchipelagoClient
     }
     
     public List<ItemInfo> queuedItems = [];
-    public List<ItemInfo> queuedItems2 = [];
+    public List<ItemInfo> InvalidSceneItemQueue = [];
     private static readonly string[] validScenes = ["Public Pool", "Hairball City", "Salmon Creek Forest", "Trash Kingdom", "Tadpole inc", "Home", "The Bathhouse", "GarysGarden"];
 
     // Maybe useful for later or when I am bored and rework the whole scout thing (ScoutID Array)
@@ -607,7 +608,7 @@ public class ArchipelagoClient
             }
             else
             {
-                queuedItems2.Add(item);
+                InvalidSceneItemQueue.Add(item);
             }
         }
     }

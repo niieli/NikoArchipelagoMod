@@ -146,7 +146,7 @@ public class GameObjectChecker : MonoBehaviour
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("swimming")) return;
         if (int.Parse(ArchipelagoData.slotData["swimming"].ToString()) == 0) return;
-        if (!ArchipelagoClient.IsValidScene()) return;
+        if (!ArchipelagoClient.IsValidScene() || SceneManager.GetActiveScene().name == "GarysGarden") return;
         MyCharacterController.instance.gameObject.AddComponent<SwimCourse>();
     }
     
@@ -963,17 +963,34 @@ public class GameObjectChecker : MonoBehaviour
     {
         //TODO: Remove after 0.8.0
         if (!ArchipelagoClient.TextboxAcquired) return;
-        if (SceneManager.GetActiveScene().name == "Salmon Creek Forest" &&
-            !scrWorldSaveDataContainer.instance.miscFlags.Contains("CHATcaveDoe"))
+        if (!Patches.NpcController.IsGlobal)
         {
-            scrWorldSaveDataContainer.instance.miscFlags.Add("CHATcaveDoe");
-            scrWorldSaveDataContainer.instance.SaveWorld();
+            if (SceneManager.GetActiveScene().name == "Salmon Creek Forest" &&
+                !scrWorldSaveDataContainer.instance.miscFlags.Contains("CHATcaveDoe"))
+            {
+                scrWorldSaveDataContainer.instance.miscFlags.Add("CHATcaveDoe");
+                scrWorldSaveDataContainer.instance.SaveWorld();
+            }
+            if (SceneManager.GetActiveScene().name == "Trash Kingdom" && !scrWorldSaveDataContainer.instance.miscFlags.Contains("CHATtownGull1"))
+            {
+                scrWorldSaveDataContainer.instance.miscFlags.Add("CHATtownGull1");
+                scrWorldSaveDataContainer.instance.SaveWorld();
+            }
         }
-        if (SceneManager.GetActiveScene().name == "Trash Kingdom" && !scrWorldSaveDataContainer.instance.miscFlags.Contains("CHATtownGull1"))
+        else
         {
-            scrWorldSaveDataContainer.instance.miscFlags.Add("CHATtownGull1");
-            scrWorldSaveDataContainer.instance.SaveWorld();
-        }    
+            if (!scrGameSaveManager.instance.gameData.worldsData[0].miscFlags.Contains("CHATcaveDoe"))
+            {
+                scrGameSaveManager.instance.gameData.worldsData[0].miscFlags.Add("CHATcaveDoe");
+                scrWorldSaveDataContainer.instance.SaveWorld();
+            }
+            if (!scrGameSaveManager.instance.gameData.worldsData[0].miscFlags.Contains("CHATtownGull1"))
+            {
+                scrGameSaveManager.instance.gameData.worldsData[0].miscFlags.Add("CHATtownGull1");
+                scrWorldSaveDataContainer.instance.SaveWorld();
+            }
+        }
+        
     }
 
     public void Update()
