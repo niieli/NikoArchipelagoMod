@@ -5,6 +5,7 @@ using System.Reflection;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
+using NikoArchipelago.Patches;
 using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
@@ -328,7 +329,8 @@ public class TrapManager : MonoBehaviour
         return scrTrainManager.instance.isLoadingNewScene
                || scrTransitionManager.instance.state != scrTransitionManager.States.idle
                || !ArchipelagoClient.IsValidScene()
-               || (scrLevelIntroduction.isOn && levelIntroduction);
+               || (scrLevelIntroduction.isOn && levelIntroduction)
+               || GameObjectChecker.IsHamsterball;
     }
     
     private static IEnumerator Whoops(float duration)
