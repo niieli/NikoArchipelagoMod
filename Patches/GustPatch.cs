@@ -26,7 +26,7 @@ public class GustPatch
             
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("ac_repair")) return true;
-            if (int.Parse(ArchipelagoData.slotData["ac_repair"].ToString()) != 1) return true;
+            if (!ArchipelagoData.Options.AcRepair) return true;
             
             if (ArchipelagoClient.acRepairAcquired)
             {

@@ -17,7 +17,7 @@ public class TrackerKeys : MonoBehaviour
     {
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("key_level")) return;
-        if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) != 1) return;
+        if (!ArchipelagoData.Options.Keylevels) return;
         switch (SceneManager.GetActiveScene().name)
         {
             case "Hairball City":

@@ -667,7 +667,7 @@ namespace NikoArchipelago
             }
             if (ArchipelagoData.slotData.ContainsKey("key_level"))
             {
-                if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+                if (ArchipelagoData.Options.Keylevels)
                 {
                     ArchipelagoClient.Keysanity = true;
                     SyncValue(ref ItemHandler.HairballKeyAmount, ArchipelagoClient.HcKeyAmount - ItemHandler.UsedKeysHairball());
@@ -691,7 +691,7 @@ namespace NikoArchipelago
 
             if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+                if (ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Insanity)
                 {
                     SyncValue(ref ItemHandler.HairballFishAmount, ArchipelagoClient.HcFishAmount);
                     SyncValue(ref ItemHandler.TurbineFishAmount, ArchipelagoClient.TtFishAmount);
@@ -703,7 +703,7 @@ namespace NikoArchipelago
             }
             if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 2)
+                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Insanity)
                 {
                     SyncValue(ref ItemHandler.HairballSeedAmount, ArchipelagoClient.HcSeedAmount);
                     SyncValue(ref ItemHandler.SalmonSeedAmount, ArchipelagoClient.SfcSeedAmount);
@@ -712,7 +712,7 @@ namespace NikoArchipelago
             }
             if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 2)
+                if (ArchipelagoData.Options.Flowersanity == ArchipelagoOptions.InsanityLevel.Insanity)
                 {
                     SyncValue(ref ItemHandler.HairballFlowerAmount, ArchipelagoClient.HcFlowerAmount);
                     SyncValue(ref ItemHandler.TurbineFlowerAmount, ArchipelagoClient.TtFlowerAmount);
@@ -724,7 +724,7 @@ namespace NikoArchipelago
             }
             if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 2)
+                if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Insanity)
                 {
                     SyncValue(ref ItemHandler.HairballBoneAmount, ArchipelagoClient.HcBoneAmount);
                     SyncValue(ref ItemHandler.TurbineBoneAmount, ArchipelagoClient.TtBoneAmount);
@@ -734,7 +734,7 @@ namespace NikoArchipelago
                     SyncValue(ref ItemHandler.TadpoleBoneAmount, ArchipelagoClient.HqBoneAmount);
                 }
             }
-            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased)
             {
                 SyncValue(ref ItemHandler.HairballCassetteAmount, ArchipelagoClient.HcCassetteAmount);
                 SyncValue(ref ItemHandler.TurbineCassetteAmount, ArchipelagoClient.TtCassetteAmount);

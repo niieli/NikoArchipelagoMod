@@ -1209,12 +1209,12 @@ public class ArchipelagoMenu : MonoBehaviour
             connectionPanel.SetActive(false);
             //trackersButton.interactable = false;
             //qolButton.interactable = false;
-            if (int.Parse(ArchipelagoData.slotData["goal_completion"].ToString()) == 0)
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Hired)
             {
                 goalText.text = "Goal: Get Hired";
                 goalTooltipText.text = "Repair the elevator in Tadpole HQ to reach Pepper and get hired!";
             }
-            else
+            else if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Employee)
             {
                 goalText.text = "Goal: Employee Of The Month";
                 goalTooltipText.text = "Get 76 Coins to be considered the 'Employee Of The Month'!";
@@ -1223,11 +1223,11 @@ public class ArchipelagoMenu : MonoBehaviour
             FishSanityStats();
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 1)
+                if (ArchipelagoData.Options.GarysGarden)
                 {
                     coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
                     coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/79";
-                    if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0) {
+                    if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased) {
                         cassetteCountBackText.text = "NO";
                         cassetteCountFrontText.text = "NO";
                     }
@@ -1242,7 +1242,7 @@ public class ArchipelagoMenu : MonoBehaviour
                 {
                     coinCountBackText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/76";
                     coinCountFrontText.text = scrGameSaveManager.instance.gameData.generalGameData.coinAmount + "/76";
-                    if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0) {
+                    if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased) {
                         cassetteCountBackText.text = "NO";
                         cassetteCountFrontText.text = "NO";
                     }
@@ -1271,7 +1271,7 @@ public class ArchipelagoMenu : MonoBehaviour
             if (gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketHqImage.color = Color.white;
             if (ArchipelagoData.slotData.ContainsKey("garden_access"))
             {
-                if (ItemHandler.Garden || int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0 
+                if (ItemHandler.Garden || ArchipelagoData.Options.GardenAccess == ArchipelagoOptions.GardenAccessMode.Tadpole
                     && gameSaveManager.gameData.generalGameData.unlockedLevels[7]) ticketGgImage.color = Color.white;
             }
             else if (gameSaveManager.gameData.generalGameData.unlockedLevels[7])
@@ -1297,7 +1297,7 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         if (ArchipelagoData.slotData.ContainsKey("key_level"))
         {
-            if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 1)
+            if (ArchipelagoData.Options.Keylevels)
             {
                 keysDisabledImage.gameObject.SetActive(false);
                 keyCountBackText.text = "NO";
@@ -1378,7 +1378,7 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
         {
-            if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 2)
+            if (ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
                 fishDisabledImage.gameObject.SetActive(false);
                 fishHcCountBackText.text = ItemHandler.HairballFishAmount + "/5";
@@ -1630,7 +1630,7 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
         {
-            if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 2)
+            if (ArchipelagoData.Options.Flowersanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
                 flowersDisabledImage.gameObject.SetActive(false);
                 flowerHcCountBackText.text = ItemHandler.HairballFlowerAmount + "/3";
@@ -1696,7 +1696,7 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
         {
-            if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 2)
+            if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
                 seedsDisabledImage.gameObject.SetActive(false);
                 seedHcCountBackText.text = ItemHandler.HairballSeedAmount + "/10";
@@ -1738,7 +1738,7 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
         {
-            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased)
             {
                 cassettesDisabledImage.gameObject.SetActive(false);
                 cassettesHcCountBackText.text = ItemHandler.HairballCassetteAmount + "/10";
@@ -1826,7 +1826,7 @@ public class ArchipelagoMenu : MonoBehaviour
     {
         if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
         {
-            if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 2)
+            if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
                 boneDisabledImage.gameObject.SetActive(false);
                 boneHcCountBackText.text = ItemHandler.HairballBoneAmount + "/5";

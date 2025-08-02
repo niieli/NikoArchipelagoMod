@@ -701,7 +701,7 @@ public class TrainMapPatch
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("applessanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Applesanity)
                 {
                     applesPerLevel.Clear();
                     applesPerLevel.AddRange(Enumerable.Repeat(0, 8));
@@ -715,13 +715,13 @@ public class TrainMapPatch
 
             if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
                 {
                     seedsPerLevel.Clear();
                     seedsPerLevel.AddRange(Enumerable.Repeat(0, 8));
                     _seedsSanity = false;
                     _seedsSanityLocation = false;
-                } else if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 1)
+                } else if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Location)
                 {
                     _seedsSanity = false;
                     _seedsSanityLocation = true;
@@ -737,13 +737,13 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Flowersanity == ArchipelagoOptions.InsanityLevel.Vanilla)
                 {
                     flowersPerLevel.Clear();
                     flowersPerLevel.AddRange(Enumerable.Repeat(0, 8));
                     _flowersSanity = false;
                     _flowersSanityLocation = false;
-                }else if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) == 1)
+                }else if (ArchipelagoData.Options.Flowersanity == ArchipelagoOptions.InsanityLevel.Location)
                 {
                     _flowersSanity = false;
                     _flowersSanityLocation = true;
@@ -759,13 +759,13 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
                 {
                     fishPerLevel.Clear();
                     fishPerLevel.AddRange(Enumerable.Repeat(0, 8));
                     _fishingSanity = false;
                     _fishingSanityLocation = false;
-                } else if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) == 1)
+                } else if (ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Location)
                 {
                     _fishingSanity = false;
                     _fishingSanityLocation = true;
@@ -781,7 +781,7 @@ public class TrainMapPatch
 
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 { 
                     SnailShop.Clear();
                     SnailShop.AddRange(Enumerable.Repeat(0, 8));
@@ -795,7 +795,7 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("key_level"))
             {
-                if (int.Parse(ArchipelagoData.slotData["key_level"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Keylevels)
                 {
                     _keySanity = false;
                 }
@@ -807,10 +807,10 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
             {
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased)
                 {
                     _cassetteSanity = 0;
-                } else if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                } else if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                 {
                     _cassetteSanity = 1;
                 }
@@ -826,7 +826,7 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("achievements"))
             {
-                if (int.Parse(ArchipelagoData.slotData["achievements"].ToString()) == 2)
+                if (ArchipelagoData.Options.Achievements == ArchipelagoOptions.AchievementsMode.Disabled)
                 { 
                     Achievements.Clear();
                     Achievements.AddRange(Enumerable.Repeat(0, 8));
@@ -840,12 +840,12 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("chatsanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Chatsanity == ArchipelagoOptions.ChatsanityLevel.Vanilla)
                 { 
                     ChatsanityLevel.Clear();
                     ChatsanityLevel.AddRange(Enumerable.Repeat(0, 8));
                     _chatsanityLevel = false;
-                } else if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 1)
+                } else if (ArchipelagoData.Options.Chatsanity == ArchipelagoOptions.ChatsanityLevel.LevelBased)
                 {
                     _chatsanityLevel = true;
                 }
@@ -863,7 +863,7 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("thoughtsanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["thoughtsanity"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Thoughtsanity)
                 { 
                     ThoughtPerLevel.Clear();
                     ThoughtPerLevel.AddRange(Enumerable.Repeat(0, 8));
@@ -877,7 +877,7 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("bugsanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["bugsanity"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Bugsanity)
                 { 
                     BugsPerLevel.Clear();
                     BugsPerLevel.AddRange(Enumerable.Repeat(0, 8));
@@ -891,7 +891,7 @@ public class TrainMapPatch
             
             if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
             {
-                if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Vanilla)
                 { 
                     BonesPerLevel.Clear();
                     BonesPerLevel.AddRange(Enumerable.Repeat(0, 8));

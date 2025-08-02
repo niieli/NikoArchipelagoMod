@@ -193,7 +193,7 @@ public class LocationHandler : MonoBehaviour
     
     public static void WinCompletion()
     {
-        if (int.Parse(ArchipelagoData.slotData["goal_completion"].ToString()) == 0)
+        if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Hired)
         {
             if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 1 ||
                 !scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("pepperInterview") || _sent) return;
@@ -207,7 +207,7 @@ public class LocationHandler : MonoBehaviour
             ArchipelagoConsole.LogMessage("YOU'RE HIRED! (Completed Goal)");
             _sent = true;
         }
-        else
+        else if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Employee)
         {
             if (Plugin.ArchipelagoClient.CoinAmount < 76 || _sent) return;
             {

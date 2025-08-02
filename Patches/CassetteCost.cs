@@ -42,7 +42,7 @@ public class CassetteCost
                 _gameSaveManager = scrGameSaveManager.instance;
             }
             if (ArchipelagoData.slotData == null) return;
-            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased)
             {
                 if (!_logged)
                 {
@@ -237,7 +237,7 @@ public class CassetteCost
                     MaiGameObject.parentBought.SetActive(true);
                 }
             }
-            else if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+            else if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
             {
                 if (!_logged)
                 {

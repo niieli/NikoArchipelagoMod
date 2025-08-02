@@ -16,7 +16,7 @@ public class TrackerCassettes : MonoBehaviour
     public void Update()
     {
         if (ArchipelagoData.slotData == null) return;
-        if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) != 0) return;
+        if (ArchipelagoData.Options.Cassette != ArchipelagoOptions.CassetteMode.LevelBased) return;
         switch (SceneManager.GetActiveScene().name)
         {
             case "Hairball City":

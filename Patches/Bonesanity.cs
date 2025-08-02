@@ -224,7 +224,7 @@ public class Bonesanity
             }
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("bonesanity")) return;
-            if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) == 0) return;
+            if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Vanilla) return;
             _bonesanityOn = true;
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             __instance.StartCoroutine(PlaceModelsAfterLoading(__instance));
@@ -373,7 +373,7 @@ public class Bonesanity
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("bonesanity")) return true;
-            if (int.Parse(ArchipelagoData.slotData["bonesanity"].ToString()) != 2) return true;
+            if (ArchipelagoData.Options.Bonesanity != ArchipelagoOptions.InsanityLevel.Insanity) return true;
             if (scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("Bone")) >= 5 && scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone"))
             {
                 Object.Destroy((Object)__instance.gameObject);

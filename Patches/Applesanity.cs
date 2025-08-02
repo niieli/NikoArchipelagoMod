@@ -280,25 +280,25 @@ public class Applesanity
             var seedAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("applessanity")) return;
-            if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0) return;
+            if (!ArchipelagoData.Options.Applesanity) return;
             applesanityOn = true;
             var currentscene = SceneManager.GetActiveScene().name;
             if (currentscene == "Home") return; // Do not interact with apples in home, will need to be removed/checked for conditions.
             __instance.enabled = true;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 13;
                     idkAdjustment = 2;
                 }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                     snailShopAdjustment = 16;
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
-                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
                     seedAdjustment = 30;
 
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment;
@@ -434,7 +434,7 @@ public class Applesanity
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("applebasket")) return true;
-            if (int.Parse(ArchipelagoData.slotData["applebasket"].ToString()) == 0)
+            if (!ArchipelagoData.Options.AppleBasket)
             {
                 needsBasket = false;
                 return true;

@@ -37,7 +37,7 @@ public class GabiFlowerPatch
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("flowersanity")) return true;
-            if (int.Parse(ArchipelagoData.slotData["flowersanity"].ToString()) != 2) return true;
+            if (ArchipelagoData.Options.Flowersanity != ArchipelagoOptions.InsanityLevel.Insanity) return true;
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
             int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
             if ((double) checkTimer < 1.0)

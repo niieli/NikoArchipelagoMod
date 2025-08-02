@@ -28,7 +28,7 @@ public class SnailShopPatch
         {
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("snailshop")) return;
-            if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0) return;
+            if (!ArchipelagoData.Options.Snailshop) return;
             var shopIsOpenField = AccessTools.Field(typeof(scrSnail), "shopIsOpen");
             bool shopIsOpen = (bool)shopIsOpenField.GetValue(__instance);
             var clothingForSaleField = AccessTools.Field(typeof(scrSnail), "clothingForSale");

@@ -18,7 +18,7 @@ public class BonkHelmet
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("bonk_permit")) return true;
-            if (int.Parse(ArchipelagoData.slotData["bonk_permit"].ToString()) != 1) return true;
+            if (!ArchipelagoData.Options.BonkPermit) return true;
             if (__instance.isLock) return true;
 
             if (ArchipelagoClient.BonkPermitAcquired) return ArchipelagoClient.BonkPermitAcquired;
@@ -64,7 +64,7 @@ public class BonkHelmet
         private static void Postfix(scrTreeQuest __instance)
         {
             if (!ArchipelagoData.slotData.ContainsKey("bonk_permit")) return;
-            if (int.Parse(ArchipelagoData.slotData["bonk_permit"].ToString()) != 1) return;
+            if (!ArchipelagoData.Options.BonkPermit) return;
 
             if (ArchipelagoClient.BonkPermitAcquired)
             {

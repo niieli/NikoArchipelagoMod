@@ -145,7 +145,7 @@ public class GameObjectChecker : MonoBehaviour
     {
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("swimming")) return;
-        if (int.Parse(ArchipelagoData.slotData["swimming"].ToString()) == 0) return;
+        if (!ArchipelagoData.Options.SwimCourse) return;
         if (!ArchipelagoClient.IsValidScene() || SceneManager.GetActiveScene().name == "GarysGarden") return;
         MyCharacterController.instance.gameObject.AddComponent<SwimCourse>();
     }
@@ -154,7 +154,7 @@ public class GameObjectChecker : MonoBehaviour
     {
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("textbox")) return;
-        if (int.Parse(ArchipelagoData.slotData["textbox"].ToString()) == 0) return;
+        if (!ArchipelagoData.Options.Textbox) return;
         if (!ArchipelagoClient.IsValidScene()) return;
         var obj = new GameObject("TextboxPermit");
         obj.AddComponent<TextboxPermit>();
@@ -186,8 +186,8 @@ public class GameObjectChecker : MonoBehaviour
         if (ArchipelagoData.slotData == null) yield break;
         if (!ArchipelagoData.slotData.ContainsKey("soda_cans")) yield break;
         
-        if (int.Parse(ArchipelagoData.slotData["soda_cans"].ToString()) == 0 
-            && int.Parse(ArchipelagoData.slotData["parasols"].ToString()) == 0) yield break;
+        if (!ArchipelagoData.Options.SodaCans 
+            && !ArchipelagoData.Options.Parasols) yield break;
         
         if (!ArchipelagoClient.IsValidScene()) yield break;
         
@@ -505,8 +505,8 @@ public class GameObjectChecker : MonoBehaviour
     {
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("chatsanity")) return;
-        if (int.Parse(ArchipelagoData.slotData["chatsanity"].ToString()) == 2) Patches.NpcController.IsGlobal = true;
-        if (int.Parse(ArchipelagoData.slotData["thoughtsanity"].ToString()) == 1) Patches.NpcController.Thoughtsanity = true;
+        if (ArchipelagoData.Options.Chatsanity == ArchipelagoOptions.ChatsanityLevel.Global) Patches.NpcController.IsGlobal = true;
+        if (ArchipelagoData.Options.Thoughtsanity) Patches.NpcController.Thoughtsanity = true;
         if (!ArchipelagoClient.IsValidScene()) return;
         var apTrackerUI = new GameObject("NPCController");
         var tracker = apTrackerUI.AddComponent<NpcController>();
@@ -869,7 +869,7 @@ public class GameObjectChecker : MonoBehaviour
 
     private static void ApplesanityModWarning()
     {
-        if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) != 1) return;
+        if (!ArchipelagoData.Options.Applesanity) return;
         if (ArchipelagoData.slotData.ContainsKey("bugsanity")) return;
         cursor.transform.SetParent(GameObject.Find("UI").transform);
         SpawnWarningNotice();

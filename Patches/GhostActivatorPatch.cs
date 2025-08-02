@@ -16,7 +16,7 @@ public class GhostActivatorPatch : MonoBehaviour
     {
         if (ArchipelagoData.slotData == null) return;
         if (!ArchipelagoData.slotData.ContainsKey("garden_access")) return;
-        if (int.Parse(ArchipelagoData.slotData["garden_access"].ToString()) == 0) return;
+        if (ArchipelagoData.Options.GardenAccess == ArchipelagoOptions.GardenAccessMode.Tadpole) return;
         _ghost.SetActive(ItemHandler.Garden);
     }
 }

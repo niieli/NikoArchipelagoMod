@@ -79,7 +79,7 @@ public class FishingPatch
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("fishsanity")) return true;
-            if (int.Parse(ArchipelagoData.slotData["fishsanity"].ToString()) != 2) return true;
+            if (ArchipelagoData.Options.Fishsanity != ArchipelagoOptions.InsanityLevel.Insanity) return true;
             var pullupAnimationStartPoint = (Vector3)AccessTools.Field(typeof(scrFishingMaster), "pullupAnimationStartPoint").GetValue(__instance);
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
             int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
@@ -301,7 +301,7 @@ public class FishingPatch
             
             if (ArchipelagoData.slotData.ContainsKey("swimming"))
             {
-              if (int.Parse(ArchipelagoData.slotData["swimming"].ToString()) == 1)
+              if (ArchipelagoData.Options.SwimCourse)
               {
                 if (!ArchipelagoClient.SwimmingAcquired)
                 {

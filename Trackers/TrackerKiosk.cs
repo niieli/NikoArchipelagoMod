@@ -342,11 +342,11 @@ public class TrackerKiosk : MonoBehaviour
 
         if (SavedData.Instance.CassetteSpoiler)
         {
-            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
             {
                 if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
                 {
-                    if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                    if (!ArchipelagoData.Options.GarysGarden)
                     {
                         gardenOffset = 2;
                     }
@@ -410,7 +410,7 @@ public class TrackerKiosk : MonoBehaviour
                         ? "5" : "??";
                 }
             }
-            else if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            else if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased)
             {
                 mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
                 ? (int.Parse(ArchipelagoData.slotData["chc1"].ToString())).ToString() : "??";
@@ -475,7 +475,7 @@ public class TrackerKiosk : MonoBehaviour
         }
         else
         {
-            if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 0)
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased)
             {
                 mitchHairballText.text = scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains("Hint0") 
                 ? (int.Parse(ArchipelagoData.slotData["chc1"].ToString())).ToString() : "??";
@@ -597,7 +597,7 @@ public class TrackerKiosk : MonoBehaviour
         }
         if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
         {
-            if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+            if (!ArchipelagoData.Options.GarysGarden)
             {
                 mitchGardenText.enabled = false;
                 mitchGardenShadowText.enabled = false;
@@ -612,7 +612,7 @@ public class TrackerKiosk : MonoBehaviour
             }
         }
 
-        if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+        if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
         {
             if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains($"MiMa{3-gardenOffset}"))
             {

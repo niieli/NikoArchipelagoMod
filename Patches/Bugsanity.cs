@@ -284,29 +284,29 @@ public class Bugsanity
             var appleAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("bugsanity")) return;
-            if (int.Parse(ArchipelagoData.slotData["bugsanity"].ToString()) == 0) return;
+            if (!ArchipelagoData.Options.Bugsanity) return;
             var currentscene = SceneManager.GetActiveScene().name;
             __instance.enabled = true;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 13;
                     idkAdjustment = 2;
                 }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                     snailShopAdjustment = 16;
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1 || int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) != 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive || ArchipelagoData.Options.Cassette != ArchipelagoOptions.CassetteMode.Progressive)
                 {
                     cassetteAdjustment = 14;
                 }
 
             if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
-                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
                     seedAdjustment = 30;
             if (ArchipelagoData.slotData.ContainsKey("applessanity"))
-                if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Applesanity)
                     appleAdjustment = 371;
 
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment + appleAdjustment;
@@ -386,7 +386,7 @@ public class Bugsanity
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("bug_net")) return true;
-            if (int.Parse(ArchipelagoData.slotData["bug_net"].ToString()) == 0) return true;
+            if (!ArchipelagoData.Options.BugNet) return true;
             
             if (ArchipelagoClient.BugnetAcquired)
             {
@@ -655,26 +655,26 @@ public class Bugsanity
             var appleAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("bugsanity")) return;
-            if (int.Parse(ArchipelagoData.slotData["bugsanity"].ToString()) == 0) return;
+            if (!ArchipelagoData.Options.Bugsanity) return;
             var currentscene = SceneManager.GetActiveScene().name;
             __instance.enabled = true;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 13;
                     idkAdjustment = 2;
                 }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                     snailShopAdjustment = 16;
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1 || int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) != 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive || ArchipelagoData.Options.Cassette != ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
-                if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 0)
+                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
                     seedAdjustment = 30;
             if (ArchipelagoData.slotData.ContainsKey("applessanity"))
-                if (int.Parse(ArchipelagoData.slotData["applessanity"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Applesanity)
                     appleAdjustment = 371;
 
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment + appleAdjustment;
@@ -721,7 +721,7 @@ public class Bugsanity
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("bug_net")) return true; 
-            if (int.Parse(ArchipelagoData.slotData["bug_net"].ToString()) == 0) return true;
+            if (!ArchipelagoData.Options.BugNet) return true;
             
             if (ArchipelagoClient.BugnetAcquired) return true;
             if (__instance.trigger.foundPlayer())
@@ -768,7 +768,7 @@ public class Bugsanity
         {
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("bugsanity")) return; 
-            if (int.Parse(ArchipelagoData.slotData["bugsanity"].ToString()) == 0) return;
+            if (!ArchipelagoData.Options.Bugsanity) return;
             var key = __instance.GetComponent<scrBugCatchable>();
             if (!bugIDs.ContainsKey(key))
             {

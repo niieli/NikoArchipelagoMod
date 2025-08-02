@@ -226,20 +226,20 @@ public class APItemOverworld
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 3;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
@@ -530,20 +530,20 @@ public class APItemOverworld
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 2;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
@@ -825,20 +825,20 @@ public class APItemOverworld
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 13;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
@@ -1070,20 +1070,20 @@ public class APItemOverworld
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 13;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
@@ -1202,20 +1202,20 @@ public class APItemOverworld
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 13;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
@@ -1693,23 +1693,23 @@ public class APItemOverworld
             var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
             if (!ArchipelagoData.slotData.ContainsKey("seedsanity")) return;
-            if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) == 0) return;
+            if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 13;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;

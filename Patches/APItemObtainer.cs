@@ -182,20 +182,20 @@ public class APItemObtainer
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 2;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             
@@ -503,20 +503,20 @@ public class APItemObtainer
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
             {
-                if (int.Parse(ArchipelagoData.slotData["shuffle_garden"].ToString()) == 0)
+                if (!ArchipelagoData.Options.GarysGarden)
                 {
                     gardenAdjustment = 3;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
-                if (int.Parse(ArchipelagoData.slotData["snailshop"].ToString()) == 0)
+                if (!ArchipelagoData.Options.Snailshop)
                 {
                     snailShopAdjustment = 16;
                 }
             }
             if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (int.Parse(ArchipelagoData.slotData["cassette_logic"].ToString()) == 1)
+                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
                     cassetteAdjustment = 14;
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var currentscene = SceneManager.GetActiveScene().name;

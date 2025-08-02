@@ -16,7 +16,7 @@ public class SodaCanPatch
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("soda_cans")) return true;
-            if (int.Parse(ArchipelagoData.slotData["soda_cans"].ToString()) != 1) return true;
+            if (!ArchipelagoData.Options.SodaCans) return true;
             
             if (__instance.transform.parent.name == "Working" || __instance.transform.root.name == "CoastGuard") return true;
             if (ArchipelagoClient.SodaRepairAcquired)

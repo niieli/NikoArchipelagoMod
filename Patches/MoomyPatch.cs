@@ -53,7 +53,7 @@ public class MoomyPatch
         {
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("seedsanity")) return true;
-            if (int.Parse(ArchipelagoData.slotData["seedsanity"].ToString()) != 2) return true;
+            if (ArchipelagoData.Options.Seedsanity != ArchipelagoOptions.InsanityLevel.Insanity) return true;
             
             var textbox = scrTextbox.instance;
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");

@@ -22,7 +22,7 @@ public class ParasolPatch
                 if (__instance.transform.parent.transform.parent.name.Contains("Kiosk")) return true;
             if (ArchipelagoData.slotData == null) return true;
             if (!ArchipelagoData.slotData.ContainsKey("parasols")) return true;
-            if (int.Parse(ArchipelagoData.slotData["parasols"].ToString()) != 1) return true;
+            if (!ArchipelagoData.Options.Parasols) return true;
 
             if (ArchipelagoClient.ParasolRepairAcquired)
             {
