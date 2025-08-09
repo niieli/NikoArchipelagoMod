@@ -564,7 +564,7 @@ namespace NikoArchipelago
                 if (worldReady & ArchipelagoClient.Authenticated)
                 {
                     StartCoroutine(SyncState());
-                    if (SaveEstablished)
+                    if (SaveEstablished && !scrTrainManager.instance.isLoadingNewScene) // This should fix Home Trap sending unchecked locations in Home
                     {
                         LocationHandler.Update2();
                         LocationHandler.SnailShop();

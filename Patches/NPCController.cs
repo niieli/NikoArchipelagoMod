@@ -858,6 +858,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
 
     private void Update()
     {
+        if (scrTrainManager.instance.isLoadingNewScene) return; // Maybe this fixes the home trap sending home conversations?
         if (Thoughtsanity)
             NikoThoughts();
         if (!IsGlobal)
