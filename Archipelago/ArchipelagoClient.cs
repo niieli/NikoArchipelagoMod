@@ -263,6 +263,21 @@ public class ArchipelagoClient
         var scout = _session.Locations.ScoutLocationsAsync(ArchipelagoMenu.Hints && hint ? HintCreationPolicy.CreateAndAnnounce : HintCreationPolicy.None, 598_145_444_000+locationID);
         return scout.Result[598_145_444_000+locationID];
     }
+
+    const long _apples = 598_145_444_000 + 3;
+    const long _bugs = 598_145_444_000 + 14;
+    const long _letter = 598_145_444_000 + 7;
+    const long _snailMoney  = 598_145_444_000 + 16;
+    const long _freezeTrap = 598_145_444_000 + 70;
+    const long _ironBootsTrap = 598_145_444_000 + 71;
+    const long _whoopsTrap = 598_145_444_000 + 72;
+    const long _myTurnTrap = 598_145_444_000 + 73;
+    const long _gravityTrap = 598_145_444_000 + 74;
+    const long _homeTrap = 598_145_444_000 + 75;
+    const long _wideTrap = 598_145_444_000 + 76;
+    const long _phoneTrap = 598_145_444_000 + 77;
+    const long _tinyTrap = 598_145_444_000 + 78;
+    const long _jumpingJacksTrap = 598_145_444_000 + 79;
     
     /// <summary>
     /// we received an item so reward it here
@@ -287,9 +302,9 @@ public class ArchipelagoClient
                 .AppendLine($"Server index: {ServerData.Index}")
                 .AppendLine($"Flag index: {GetItemIndex()}")
                 .AppendLine($"Current Item: {receivedItem.ItemName}");
-            if (receivedItem.ItemName is "Apples" or "25 Apples" or "10 Bugs" or "Bugs" or "Letter" or "Snail Money"
-                    or "1000 Snail Money" or "Freeze Trap" or "Iron Boots Trap" or "Whoops! Trap" or "My Turn! Trap"
-                    or "Gravity Trap" or "Home Trap" or "W I D E Trap" or "Phone Trap" or "Tiny Trap" or "Jumping Jacks Trap")
+            if (receivedItem.ItemId is _apples or _bugs or _letter or _snailMoney
+                    or _freezeTrap or _ironBootsTrap or _whoopsTrap or _myTurnTrap
+                    or _gravityTrap or _homeTrap or _wideTrap or _phoneTrap or _tinyTrap or _jumpingJacksTrap)
             {
                 GameObjectChecker.LogPastItemsBatch.AppendLine($"Skipping Item: {receivedItem.ItemName}");
             }
@@ -321,15 +336,15 @@ public class ArchipelagoClient
             {
                 case 598_145_444_000:
                     ItemHandler.AddCoin(1, senderName, notify);
-                    CoinAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Coin");
+                    CoinAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000);
                     break;
                 case 598_145_444_000 + 1: // Cassette
                     ItemHandler.AddCassette(1, senderName, notify);
-                    CassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Cassette");
+                    CassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000 + 1);
                     break;
                 case 598_145_444_000 + 2: // Key
                     ItemHandler.AddKey(1, senderName, notify);
-                    KeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Key");
+                    KeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000 + 2);
                     break;
                 case 598_145_444_000 + 3: // Apples
                     ItemHandler.AddApples(25, senderName, notify);
@@ -382,7 +397,7 @@ public class ArchipelagoClient
                     ItemHandler.AddMoney(7500, senderName, notify);
                     break;
                 case 598_145_444_000+15:
-                    var real = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Progressive Contact List");
+                    var real = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+15);
                     if (real == 2)
                     {
                         ItemHandler.AddContactList2(senderName, notify);
@@ -391,118 +406,118 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000+20: // HCFish
                     ItemHandler.AddHcFish(senderName, notify);
-                    HcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Fish");
+                    HcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+20);
                     break;
                 case 598_145_444_000+21: // TTFish
                     ItemHandler.AddTtFish(senderName, notify);
-                    TtFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Fish");
+                    TtFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+21);
                     break;
                 case 598_145_444_000+22: // SFCFish
                     ItemHandler.AddSfcFish(senderName, notify);
-                    SfcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Fish");
+                    SfcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+22);
                     break;
                 case 598_145_444_000+23: // PPFish
                     ItemHandler.AddPpFish(senderName, notify);
-                    PpFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Fish");
+                    PpFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+23);
                     break;
                 case 598_145_444_000+24: // BathFish
                     ItemHandler.AddBathFish(senderName, notify);
-                    BathFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Fish");
+                    BathFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+24);
                     break;
                 case 598_145_444_000+25: // HQFish
                     ItemHandler.AddHqFish(senderName, notify);
-                    HqFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Fish");
+                    HqFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+25);
                     break;
                 case 598_145_444_000+30: // HCKey
                     ItemHandler.AddHCKey(senderName, notify);
-                    HcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Key");
+                    HcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+30);
                     break;
                 case 598_145_444_000+31: // TTKey
                     ItemHandler.AddTTKey(senderName, notify);
-                    TtKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Key");
+                    TtKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+31);
                     break;
                 case 598_145_444_000+32: // SFCKey
                     ItemHandler.AddSFCKey(senderName, notify);
-                    SfcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Key");
+                    SfcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+32);
                     break;
                 case 598_145_444_000+33: // PPKey
                     ItemHandler.AddPPKey(senderName, notify);
-                    PpKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Key");
+                    PpKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+33);
                     break;
                 case 598_145_444_000+34: // BathKey
                     ItemHandler.AddBathKey(senderName, notify);
-                    BathKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Key");
+                    BathKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+34);
                     break;
                 case 598_145_444_000+35: // HQKey
                     ItemHandler.AddHQKey(senderName, notify);
-                    HqKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Key");
+                    HqKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+35);
                     break;
                 case 598_145_444_000+36: // HCSeed
                     ItemHandler.AddHcSeed(senderName, notify);
-                    HcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Seed");
+                    HcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+36);
                     break;
                 case 598_145_444_000+37: // SFCSeed
                     ItemHandler.AddSfcSeed(senderName, notify);
-                    SfcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Seed");
+                    SfcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+37);
                     break;
                 case 598_145_444_000+38: // BathSeed
                     ItemHandler.AddBathSeed(senderName, notify);
-                    BathSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Seed");
+                    BathSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+38);
                     break;
                 case 598_145_444_000+40: // HCFlower
                     ItemHandler.AddHcFlower(senderName, notify);
-                    HcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Flower");
+                    HcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+40);
                     break;
                 case 598_145_444_000+41: // TTFlower
                     ItemHandler.AddTtFlower(senderName, notify);
-                    TtFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Flower");
+                    TtFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+41);
                     break;
                 case 598_145_444_000+42: // SFCFlower
                     ItemHandler.AddSfcFlower(senderName, notify);
-                    SfcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Flower");
+                    SfcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+42);
                     break;
                 case 598_145_444_000+43: // PPFlower
                     ItemHandler.AddPpFlower(senderName, notify);
-                    PpFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Flower");
+                    PpFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+43);
                     break;
                 case 598_145_444_000+44: // BathFlower
                     ItemHandler.AddBathFlower(senderName, notify);
-                    BathFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Flower");
+                    BathFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+44);
                     break;
                 case 598_145_444_000+45: // HQFlower
                     ItemHandler.AddHqFlower(senderName, notify);
-                    HqFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Flower");
+                    HqFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+45);
                     break;
                 case 598_145_444_000+52: // HCCassette
                     ItemHandler.AddHcCassette(senderName, notify);
-                    HcCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Cassette");
+                    HcCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+52);
                     break;
                 case 598_145_444_000+53: // TTCassette
                     ItemHandler.AddTtCassette(senderName, notify);
-                    TtCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Cassette");
+                    TtCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+53);
                     break;
                 case 598_145_444_000+54: // SFCCassette
                     ItemHandler.AddSfcCassette(senderName, notify);
-                    SfcCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Cassette");
+                    SfcCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+54);
                     break;
                 case 598_145_444_000+55: // PPCassette
                     ItemHandler.AddPpCassette(senderName, notify);
-                    PpCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Cassette");
+                    PpCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+55);
                     break;
                 case 598_145_444_000+56: // BathCassette
                     ItemHandler.AddBathCassette(senderName, notify);
-                    BathCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Cassette");
+                    BathCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+56);
                     break;
                 case 598_145_444_000+57: // HQCassette
                     ItemHandler.AddHqCassette(senderName, notify);
-                    HqCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Cassette");
+                    HqCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+57);
                     break;
                 case 598_145_444_000+58: // GGCassette
                     ItemHandler.AddGgCassette(senderName, notify);
-                    GgCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Gary's Garden Cassette");
+                    GgCassetteAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+58);
                     break;
                 case 598_145_444_000+18: // Speed Boost
-                    SpeedBoostAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Speed Boost");
+                    SpeedBoostAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+18);
                     ItemHandler.AddSpeedBoost(senderName, notify);
                     break;
                 case 598_145_444_000+70: // Freeze Trap
@@ -573,27 +588,27 @@ public class ArchipelagoClient
                     break;
                 case 598_145_444_000+111: // Hairball City Bone
                     ItemHandler.AddHairballBone(item, notify);
-                    HcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Hairball City Bone");
+                    HcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+111);
                     break;
                 case 598_145_444_000+112: // Turbine Town Bone
                     ItemHandler.AddTurbineBone(item, notify);
-                    TtBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Turbine Town Bone");
+                    TtBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+112);
                     break;
                 case 598_145_444_000+113: // Salmon Creek Forest Bone
                     ItemHandler.AddSalmonBone(item, notify);
-                    SfcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Salmon Creek Forest Bone");
+                    SfcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+113);
                     break;
                 case 598_145_444_000+114: // Public Pool Bone
                     ItemHandler.AddPoolBone(item, notify);
-                    PpBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Public Pool Bone");
+                    PpBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+114);
                     break;
                 case 598_145_444_000+115: // Bathhouse Bone
                     ItemHandler.AddBathBone(item, notify);
-                    BathBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Bathhouse Bone");
+                    BathBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+115);
                     break;
                 case 598_145_444_000+116: // Tadpole HQ Bone
                     ItemHandler.AddTadpoleBone(item, notify);
-                    HqBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemName == "Tadpole HQ Bone");
+                    HqBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == 598_145_444_000+116);
                     break;
             }
     }
