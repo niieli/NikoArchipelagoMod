@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.MessageLog.Parts;
@@ -54,6 +55,8 @@ public static class APItemSentNotification
                 //If changed to PrintJsonPacket, remove the bool within ArchipelagoConsole.cs
                 
                 itemName = hintItemSendLogMessage.Item.ItemName;
+                if (itemName == null)
+                    itemName = hintItemSendLogMessage.Item.ItemId.ToString();
                 playerName = hintItemSendLogMessage.Receiver.Name;
                 senderName = hintItemSendLogMessage.Sender.Name;
                 locationName = hintItemSendLogMessage.Item.LocationName;
@@ -84,12 +87,14 @@ public static class APItemSentNotification
                     backgroundColor = new Color(1, 0.54f, 0.76f, 0.72f);
                 }
                 durationColor = new Color(0.486f, 0.60f, 1, 0.79f);
-                icon = SetSprite(hintItemSendLogMessage.Item.ItemGame, hintItemSendLogMessage.Item.ItemName, hintItemSendLogMessage.Item.Flags);
+                icon = SetSprite(hintItemSendLogMessage.Item.ItemGame, hintItemSendLogMessage.Item.ItemName, hintItemSendLogMessage.Item.ItemId, hintItemSendLogMessage.Item.Flags);
                 break;
             }
             case ItemSendLogMessage itemSendLogMessage:
                 if (!itemSendLogMessage.IsSenderTheActivePlayer) return;
                 itemName = itemSendLogMessage.Item.ItemName;
+                if (itemName == null)
+                    itemName = itemSendLogMessage.Item.ItemId.ToString();
                 playerName = itemSendLogMessage.Receiver.Name;
                 locationName = itemSendLogMessage.Item.LocationName;
                 itemFlags = itemSendLogMessage.Item.Flags;
@@ -113,7 +118,7 @@ public static class APItemSentNotification
                     backgroundColor = new Color(1, 0.54f, 0.76f, 0.72f);
                 }
                 durationColor = new Color(0.486f, 0.60f, 1, 0.79f);
-                icon = SetSprite(itemSendLogMessage.Item.ItemGame, itemSendLogMessage.Item.ItemName, itemSendLogMessage.Item.Flags);
+                icon = SetSprite(itemSendLogMessage.Item.ItemGame, itemSendLogMessage.Item.ItemName, itemSendLogMessage.Item.ItemId, itemSendLogMessage.Item.Flags);
                 break;
             default:
                 return;
@@ -122,137 +127,148 @@ public static class APItemSentNotification
         NotificationManager.AddNewNotification.Enqueue(notification);
     }
 
-    private static Sprite SetSprite(string itemGame, string itemName, ItemFlags itemFlag)
+    private static Sprite SetSprite(string itemGame, string itemName, long itemId, ItemFlags itemFlag)
     {
-        Sprite sprite;
+        Sprite sprite = null;
         switch (itemGame)
         {
             case "Here Comes Niko!":
-                sprite = itemName switch
+                sprite = itemId switch
                 {
-                    "Coin" => Plugin.CoinSprite,
-                    "Cassette" => Plugin.CassetteSprite,
-                    "Key" => Plugin.KeySprite,
-                    "Super Jump" => Plugin.SuperJumpSprite,
-                    "Letter" => Plugin.LetterSprite,
-                    "Snail Money" or "1000 Snail Dollar" => Plugin.SnailMoneySprite,
-                    "Bugs" or "10 Bugs" => Plugin.BugsSprite,
-                    "Apples" or "25 Apples" => Plugin.ApplesSprite,
-                    "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite,
-                    "Gary's Garden Ticket" => Plugin.GgSprite,
-                    "Hairball City Ticket" => Plugin.HcSprite,
-                    "Turbine Town Ticket" => Plugin.TtSprite,
-                    "Salmon Creek Forest Ticket" => Plugin.SfcSprite,
-                    "Public Pool Ticket" => Plugin.PpSprite,
-                    "Bathhouse Ticket" => Plugin.BathSprite,
-                    "Tadpole HQ Ticket" => Plugin.HqSprite,
-                    "Hairball City Fish" => Plugin.HairballFishSprite,
-                    "Turbine Town Fish" => Plugin.TurbineFishSprite,
-                    "Salmon Creek Forest Fish" => Plugin.SalmonFishSprite,
-                    "Public Pool Fish" => Plugin.PoolFishSprite,
-                    "Bathhouse Fish" => Plugin.BathFishSprite,
-                    "Tadpole HQ Fish" => Plugin.TadpoleFishSprite,
-                    "Hairball City Key" => Plugin.HairballKeySprite,
-                    "Turbine Town Key" => Plugin.TurbineKeySprite,
-                    "Salmon Creek Forest Key" => Plugin.SalmonKeySprite,
-                    "Public Pool Key" => Plugin.PoolKeySprite,
-                    "Bathhouse Key" => Plugin.BathKeySprite,
-                    "Tadpole HQ Key" => Plugin.TadpoleKeySprite,
-                    "Hairball City Flower" => Plugin.HairballFlowerSprite,
-                    "Turbine Town Flower" => Plugin.TurbineFlowerSprite,
-                    "Salmon Creek Forest Flower" => Plugin.SalmonFlowerSprite,
-                    "Public Pool Flower" => Plugin.PoolFlowerSprite,
-                    "Bathhouse Flower" => Plugin.BathFlowerSprite,
-                    "Tadpole HQ Flower" => Plugin.TadpoleFlowerSprite,
-                    "Hairball City Cassette" => Plugin.HairballCassetteSprite,
-                    "Turbine Town Cassette" => Plugin.TurbineCassetteSprite,
-                    "Salmon Creek Forest Cassette" => Plugin.SalmonCassetteSprite,
-                    "Public Pool Cassette" => Plugin.PoolCassetteSprite,
-                    "Bathhouse Cassette" => Plugin.BathCassetteSprite,
-                    "Tadpole HQ Cassette" => Plugin.TadpoleCassetteSprite,
-                    "Gary's Garden Cassette" => Plugin.GardenCassetteSprite,
-                    "Hairball City Seed" => Plugin.HairballSeedSprite,
-                    "Salmon Creek Forest Seed" => Plugin.SalmonSeedSprite,
-                    "Bathhouse Seed" => Plugin.BathSeedSprite,
-                    "Freeze Trap" => Plugin.FreezeTrapSprite,
-                    "Iron Boots Trap" => Plugin.IronBootsTrapSprite,
-                    "Whoops! Trap" => Plugin.WhoopsTrapSprite,
-                    "My Turn! Trap" => Plugin.MyTurnTrapSprite,
-                    "Speed Boost" => Plugin.SpeedBoostSprite,
-                    "Home Trap" => Plugin.HomeTrapSprite,
-                    "W I D E Trap" => Plugin.WideTrapSprite,
-                    "Phone Trap" => Plugin.PhoneCallTrapSprite,
-                    "Tiny Trap" => Plugin.TinyTrapSprite,
-                    "Gravity Trap" => Plugin.GravityTrapSprite,
-                    "Jumping Jacks Trap" => Plugin.JumpingJacksTrapSprite,
-                    "Party Invitation" => Plugin.PartyTicketSprite,
-                    "Safety Helmet" => Plugin.BonkHelmetSprite,
-                    "Bug Net" => Plugin.BugNetSprite,
-                    "Soda Repair" => Plugin.SodaRepairSprite,
-                    "Parasol Repair" => Plugin.ParasolRepairSprite,
-                    "Swim Course" => Plugin.SwimCourseSprite,
-                    "Textbox" => Plugin.TextboxItemSprite,
-                    "AC Repair" => Plugin.ACRepairSprite,
-                    "Apple Basket" => Plugin.AppleBasketSprite,
-                    "Hairball City Bone" => Plugin.HairballBoneSprite,
-                    "Turbine Town Bone" => Plugin.TurbineBoneSprite,
-                    "Salmon Creek Forest Bone" => Plugin.SalmonBoneSprite,
-                    "Public Pool Bone" => Plugin.PoolBoneSprite,
-                    "Bathhouse Bone" => Plugin.BathBoneSprite,
-                    "Tadpole HQ Bone" => Plugin.TadpoleBoneSprite,
+                    ItemID.Coin => Plugin.CoinSprite,
+                    ItemID.Cassette => Plugin.CassetteSprite,
+                    ItemID.Key => Plugin.KeySprite,
+                    ItemID.SuperJump => Plugin.SuperJumpSprite,
+                    ItemID.Letter => Plugin.LetterSprite,
+                    ItemID.SnailMoney => Plugin.SnailMoneySprite,
+                    ItemID.Bugs => Plugin.BugsSprite,
+                    ItemID.Apples => Plugin.ApplesSprite,
+                    ItemID.ContactList1 or ItemID.ContactList2 or ItemID.ProgressiveContactList => Plugin.ContactListSprite,
+                    ItemID.GarysGardenTicket => Plugin.GgSprite,
+                    ItemID.HairballCityTicket => Plugin.HcSprite,
+                    ItemID.TurbineTownTicket => Plugin.TtSprite,
+                    ItemID.SalmonCreekForestTicket => Plugin.SfcSprite,
+                    ItemID.PublicPoolTicket => Plugin.PpSprite,
+                    ItemID.BathhouseTicket => Plugin.BathSprite,
+                    ItemID.TadpoleHqTicket => Plugin.HqSprite,
+                    ItemID.HairballCityFish => Plugin.HairballFishSprite,
+                    ItemID.TurbineTownFish => Plugin.TurbineFishSprite,
+                    ItemID.SalmonCreekForestFish => Plugin.SalmonFishSprite,
+                    ItemID.PublicPoolFish => Plugin.PoolFishSprite,
+                    ItemID.BathhouseFish => Plugin.BathFishSprite,
+                    ItemID.TadpoleHqFish => Plugin.TadpoleFishSprite,
+                    ItemID.HairballCityKey => Plugin.HairballKeySprite,
+                    ItemID.TurbineTownKey => Plugin.TurbineKeySprite,
+                    ItemID.SalmonCreekForestKey => Plugin.SalmonKeySprite,
+                    ItemID.PublicPoolKey => Plugin.PoolKeySprite,
+                    ItemID.BathhouseKey => Plugin.BathKeySprite,
+                    ItemID.TadpoleHqKey => Plugin.TadpoleKeySprite,
+                    ItemID.HairballCityFlower => Plugin.HairballFlowerSprite,
+                    ItemID.TurbineTownFlower => Plugin.TurbineFlowerSprite,
+                    ItemID.SalmonCreekForestFlower => Plugin.SalmonFlowerSprite,
+                    ItemID.PublicPoolFlower => Plugin.PoolFlowerSprite,
+                    ItemID.BathhouseFlower => Plugin.BathFlowerSprite,
+                    ItemID.TadpoleHqFlower => Plugin.TadpoleFlowerSprite,
+                    ItemID.HairballCityCassette => Plugin.HairballCassetteSprite,
+                    ItemID.TurbineTownCassette => Plugin.TurbineCassetteSprite,
+                    ItemID.SalmonCreekForestCassette => Plugin.SalmonCassetteSprite,
+                    ItemID.PublicPoolCassette => Plugin.PoolCassetteSprite,
+                    ItemID.BathhouseCassette => Plugin.BathCassetteSprite,
+                    ItemID.TadpoleHqCassette => Plugin.TadpoleCassetteSprite,
+                    ItemID.GarysGardenCassette => Plugin.GardenCassetteSprite,
+                    ItemID.HairballCitySeed => Plugin.HairballSeedSprite,
+                    ItemID.SalmonCreekForestSeed => Plugin.SalmonSeedSprite,
+                    ItemID.BathhouseSeed => Plugin.BathSeedSprite,
+                    ItemID.FreezeTrap => Plugin.FreezeTrapSprite,
+                    ItemID.IronBootsTrap => Plugin.IronBootsTrapSprite,
+                    ItemID.WhoopsTrap => Plugin.WhoopsTrapSprite,
+                    ItemID.MyTurnTrap => Plugin.MyTurnTrapSprite,
+                    ItemID.SpeedBoost => Plugin.SpeedBoostSprite,
+                    ItemID.HomeTrap => Plugin.HomeTrapSprite,
+                    ItemID.WideTrap => Plugin.WideTrapSprite,
+                    ItemID.PhoneTrap => Plugin.PhoneCallTrapSprite,
+                    ItemID.TinyTrap => Plugin.TinyTrapSprite,
+                    ItemID.GravityTrap => Plugin.GravityTrapSprite,
+                    ItemID.JumpingJacksTrap => Plugin.JumpingJacksTrapSprite,
+                    ItemID.PartyInvitation => Plugin.PartyTicketSprite,
+                    ItemID.SafetyHelmet => Plugin.BonkHelmetSprite,
+                    ItemID.BugNet => Plugin.BugNetSprite,
+                    ItemID.SodaRepair => Plugin.SodaRepairSprite,
+                    ItemID.ParasolRepair => Plugin.ParasolRepairSprite,
+                    ItemID.SwimCourse => Plugin.SwimCourseSprite,
+                    ItemID.Textbox => Plugin.TextboxItemSprite,
+                    ItemID.AcRepair => Plugin.ACRepairSprite,
+                    ItemID.AppleBasket => Plugin.AppleBasketSprite,
+                    ItemID.HairballCityBone => Plugin.HairballBoneSprite,
+                    ItemID.TurbineTownBone => Plugin.TurbineBoneSprite,
+                    ItemID.SalmonCreekForestBone => Plugin.SalmonBoneSprite,
+                    ItemID.PublicPoolBone => Plugin.PoolBoneSprite,
+                    ItemID.BathhouseBone => Plugin.BathBoneSprite,
+                    ItemID.TadpoleHqBone => Plugin.TadpoleBoneSprite,
                     _ => Plugin.ApProgressionSprite
                 };
                 break;
+            case "A Hat in Time":
+                if (itemName == "Time Piece")
+                    sprite = Plugin.TimePieceSprite;
+                if (itemName == "Yarn")
+                    sprite = Plugin.YarnSprite;
+                if (itemFlag.HasFlag(ItemFlags.Advancement))
+                {
+                    sprite = Plugin.ApProgressionSprite;
+                }
+                else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
+                {
+                    sprite = Plugin.ApUsefulSprite;
+                }
+                else if (itemFlag.HasFlag(ItemFlags.Trap))
+                {
+                    var trapSprites = new[]
+                    {
+                        Plugin.ApTrapSprite,
+                        Plugin.ApTrap2Sprite,
+                        Plugin.ApTrap3Sprite
+                    };
+                    var randomIndex = Random.Range(0, trapSprites.Length);
+                    sprite = trapSprites[randomIndex];
+                }
+                else if (itemFlag.HasFlag(ItemFlags.None))
+                {
+                    sprite = Plugin.ApFillerSprite;
+                }
+                break;
             default:
             {
-                switch (itemName)
+                if (itemFlag.HasFlag(ItemFlags.Advancement))
                 {
-                    case "Time Piece" when itemGame == "A Hat in Time":
-                        sprite = Plugin.TimePieceSprite;
-                        break;
-                    case "Yarn" when itemGame == "A Hat in Time":
-                    {
-                        sprite = Plugin.YarnSprite;
-                        break;
-                    }
-                    default:
-                    {
-                        if (itemFlag.HasFlag(ItemFlags.Advancement))
-                        {
-                            sprite = Plugin.ApProgressionSprite;
-                        }
-                        else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
-                        {
-                            sprite = Plugin.ApUsefulSprite;
-                        }
-                        else if (itemFlag.HasFlag(ItemFlags.Trap))
-                        {
-                            var trapSprites = new[]
-                            {
-                                Plugin.ApTrapSprite,
-                                Plugin.ApTrap2Sprite,
-                                Plugin.ApTrap3Sprite
-                            };
-                            var randomIndex = Random.Range(0, trapSprites.Length);
-                            sprite = trapSprites[randomIndex];
-                        }
-                        else if (itemFlag.HasFlag(ItemFlags.None))
-                        {
-                            sprite = Plugin.ApFillerSprite;
-                        }
-                        else
-                        {
-                            sprite = Plugin.ApProgressionSprite;
-                        }
-
-                        break;
-                    }
+                    sprite = Plugin.ApProgressionSprite;
                 }
-
+                else if (itemFlag.HasFlag(ItemFlags.NeverExclude))
+                {
+                    sprite = Plugin.ApUsefulSprite;
+                }
+                else if (itemFlag.HasFlag(ItemFlags.Trap))
+                {
+                    var trapSprites = new[]
+                    {
+                        Plugin.ApTrapSprite,
+                        Plugin.ApTrap2Sprite,
+                        Plugin.ApTrap3Sprite
+                    };
+                    var randomIndex = Random.Range(0, trapSprites.Length);
+                    sprite = trapSprites[randomIndex];
+                }
+                else if (itemFlag.HasFlag(ItemFlags.None))
+                {
+                    sprite = Plugin.ApFillerSprite;
+                }
+                else
+                {
+                    sprite = Plugin.ApProgressionSprite;
+                }
                 break;
             }
         }
-
         return sprite;
     }
 }
