@@ -7,8 +7,6 @@ namespace NikoArchipelago.Archipelago;
 
 public class Assets
 {
-    public static readonly Dictionary<string, GameObject> CreatedItemsCache = new();
-    public static readonly Dictionary<MonoBehaviour, Dictionary<string, GameObject>> InstanceItemsCache = new();
     public static readonly Dictionary<string, string> PrefabMapping = new()
     {
         { "apProg", "APProgressive" },
