@@ -178,7 +178,8 @@ public class Assets
         {
             itemName = itemInfo.ItemName;
         }
-
+        if (itemName == null)
+            itemName = "Item: "+itemInfo.ItemId;
         return itemName;
     }
 

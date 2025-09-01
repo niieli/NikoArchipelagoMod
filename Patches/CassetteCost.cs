@@ -588,6 +588,8 @@ public class CassetteCost
             string classification;
             var scoutedItem = ArchipelagoClient.ScoutLocation(scoutID);
             var itemName = scoutedItem.ItemName; 
+            if (itemName == null)
+                itemName = "Item: "+scoutedItem.ItemId;
             if (scoutedItem.Flags.HasFlag(ItemFlags.Advancement))
             {
                 classification = "Important";

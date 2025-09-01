@@ -56,12 +56,12 @@ public static class APItemSentNotification
                 
                 itemName = hintItemSendLogMessage.Item.ItemName;
                 if (itemName == null)
-                    itemName = hintItemSendLogMessage.Item.ItemId.ToString();
+                    itemName = "Item: "+hintItemSendLogMessage.Item.ItemId;
                 playerName = hintItemSendLogMessage.Receiver.Name;
                 senderName = hintItemSendLogMessage.Sender.Name;
                 locationName = hintItemSendLogMessage.Item.LocationName;
                 if (locationName == null)
-                    locationName = hintItemSendLogMessage.Item.LocationId.ToString();
+                    locationName = "Location: "+hintItemSendLogMessage.Item.LocationId;
                 itemFlags = hintItemSendLogMessage.Item.Flags;
                 // var hint = ArchipelagoClient._session.DataStorage.GetHints()[ArchipelagoClient._session.DataStorage.GetHints().Length];
                 // Plugin.BepinLogger.LogInfo($"Item Name: {hintItemSendLogMessage.Item.ItemName} " +
@@ -96,11 +96,11 @@ public static class APItemSentNotification
                 if (!itemSendLogMessage.IsSenderTheActivePlayer) return;
                 itemName = itemSendLogMessage.Item.ItemName;
                 if (itemName == null)
-                    itemName = itemSendLogMessage.Item.ItemId.ToString();
+                    itemName = "Item: "+itemSendLogMessage.Item.ItemId;
                 playerName = itemSendLogMessage.Receiver.Name;
                 locationName = itemSendLogMessage.Item.LocationName;
                 if (locationName == null)
-                    locationName = itemSendLogMessage.Item.LocationId.ToString();
+                    locationName = "Location: "+itemSendLogMessage.Item.LocationId;
                 itemFlags = itemSendLogMessage.Item.Flags;
                 duration = 3.5f;
                 //if(Some Custom Data from SaveData)
