@@ -46,6 +46,7 @@ public class GameObjectChecker : MonoBehaviour
     private static bool _turnedOff, _turnedOn;
     private static Gamepad gamepad;
     private static bool toggleSpeedBoost;
+    private static bool spawnedDeathcounter;
 
     private static List<string> _hatPlayerNames = [];
     private void Start()
@@ -100,6 +101,7 @@ public class GameObjectChecker : MonoBehaviour
         HatPlayers();
         AddSwimCourse();
         AddTextboxPermit();
+        AddDeathCounter();
         StartCoroutine(AddTheRealSkippy());
         StartCoroutine(DisableBottleUntilCaveOpened());
         //Instantiate(Plugin.BasicBlock, GameObject.Find("Quests").transform);
@@ -158,6 +160,18 @@ public class GameObjectChecker : MonoBehaviour
         if (!ArchipelagoClient.IsValidScene()) return;
         var obj = new GameObject("TextboxPermit");
         obj.AddComponent<TextboxPermit>();
+    }
+    
+    private static void AddDeathCounter()
+    {
+        if (spawnedDeathcounter) return;
+        if (ArchipelagoData.slotData == null) return;
+        if (ArchipelagoData.Options.DeathLinkAmnesty == 0) return;
+        if (!ArchipelagoClient.IsValidScene()) return;
+        var deathCounter = new GameObject("DeathCounter");
+        deathCounter.AddComponent<DeathAmnesty>();
+        DontDestroyOnLoad(deathCounter);
+        spawnedDeathcounter = true;
     }
     
     private static IEnumerator AddTheRealSkippy()

@@ -243,6 +243,11 @@ public class ArchipelagoClient
         Plugin.BepinLogger.LogInfo("Sent TrapLink!");
     }
 
+    public void SendDeathLink(string cause)
+    {
+        deathLinkHandler.SendDeathLink(cause);
+    }
+
     private void SendPacket()
     {
         

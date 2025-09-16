@@ -64,7 +64,7 @@ namespace NikoArchipelago
             ItemNotification, HintNotification,
             TrapWide, TrapHome, TrapJumpingJacks, TrapPhoneCall, TrapTiny, TrapFast,
             NoticeBonkHelmet, NoticeSodaCan, NoticeParasol, NoticeAC, NoticeSwimCourse, DeathLinkNotice, NoticeBugNet,
-            NoticePartyTicket, NoticeAppleBasket;
+            NoticePartyTicket, NoticeAppleBasket, DeathLinkPopup;
         public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
             CatSprite, ClownSprite, FlowerSprite, 
             GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
@@ -299,6 +299,7 @@ namespace NikoArchipelago
                 TadpoleBoneSprite = AssetBundle.LoadAsset<Sprite>("TadpoleBone");
                 NoticeAppleBasket = AssetBundle.LoadAsset<GameObject>("NoticeAppleBasket");
                 TrapFast = AssetBundle.LoadAsset<GameObject>("TrapFast");
+                DeathLinkPopup = AssetBundle.LoadAsset<GameObject>("DeathLinkPopup");
                 _canLogin = true;
             }
             var gameObjectChecker = new GameObject("GameObjectChecker");

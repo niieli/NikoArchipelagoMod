@@ -107,16 +107,16 @@ public class DeathLinkHandler
     /// <summary>
     /// called to send a death link to the multiworld
     /// </summary>
-    public void SendDeathLink()
+    public void SendDeathLink(string cause)
     {
         try
         {
             if (!deathLinkEnabled) return;
 
             Plugin.BepinLogger.LogMessage("sharing your death...");
+            Kill("You died");
 
-            // add the cause here
-            var linkToSend = new DeathLink(slotName);
+            var linkToSend = new DeathLink(slotName, cause);
 
             service.SendDeathLink(linkToSend);
         }

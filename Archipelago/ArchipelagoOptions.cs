@@ -68,6 +68,7 @@ public class ArchipelagoOptions
     public bool AcRepair { get; set; }
     public bool AppleBasket { get; set; }
     public bool Thoughtsanity { get; set; }
+    public int DeathLinkAmnesty { get; set; }
 
     public override string ToString()
     {
@@ -119,6 +120,7 @@ public static class ArchipelagoOptionsParser
         options.AcRepair = GetBool("ac_repair");
         options.AppleBasket = GetBool("apple_basket");
         options.Thoughtsanity = GetBool("thoughtsanity");
+        options.DeathLinkAmnesty = GetInt("death_link_amnesty");
         
         return options;
     }
