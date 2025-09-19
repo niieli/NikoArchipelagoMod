@@ -1322,7 +1322,7 @@ public class Locations
         { BaseID + 1427, new Location(BaseID + 1427, "inspectTPIPond", 6) },
         { BaseID + 1428, new Location(BaseID + 1428, "nikoFish", 6) },
         { BaseID + 1429, new Location(BaseID + 1429, "nikoStatue", 6) },
-        //{ BaseID + 1430, new Location(BaseID + 1430, "nikoTPINightmare", 6) },
+        { BaseID + 1430, new Location(BaseID + 1430, "nikoTPINightmare", 6) },
     };
     
     public static readonly Dictionary<long, Location> BugsanityLocations = new()
