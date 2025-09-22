@@ -59,7 +59,6 @@ public class ArchipelagoData
         seed = roomSeed;
         Plugin.Seed = seed;
         ArchipelagoMenu.Seed = seed;
-        Plugin.SlotData = slotData;
         TrapSettings();
         WhatIsRandomized();
     }

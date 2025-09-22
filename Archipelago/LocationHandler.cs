@@ -221,6 +221,29 @@ public class LocationHandler : MonoBehaviour
                 ArchipelagoConsole.LogMessage("BEST EMPLOYEE (Completed Goal)");
                 _sent = true;
             }
+        } 
+        else if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Custom)
+        {
+            if (Plugin.ArchipelagoClient.CoinAmount < ArchipelagoData.Options.CustomGoalCoinAmount || _sent) return;
+            {
+                ArchipelagoClient.SendCompletion();
+                var achievement = ScriptableObject.CreateInstance<AchievementObject>();
+                achievement.nameKey = "COIN COLLECTOR! (Completed Goal)";
+                achievement.icon = Plugin.GoalBadSprite;
+                AchievementPopup.instance.PopupAchievement(achievement);
+                AchievementPopup.instance.nameMesh.text = achievement.nameKey;
+                AchievementPopup.instance.UIhider.Show(10f);
+                ArchipelagoConsole.LogMessage("COIN COLLECTOR! (Completed Goal)");
+                _sent = true;
+            }
+        }
+        else if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+        {
+            //Implement
+        }
+        else if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Help)
+        {
+            //Implement
         }
     }
 

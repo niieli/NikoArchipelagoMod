@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using UnityEngine;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -10,7 +9,10 @@ public class ArchipelagoOptions
     public enum GoalCompletionMode
     {
         Hired = 0,
-        Employee = 1
+        Employee = 1,
+        Custom = 2,
+        Garden = 3,
+        Help = 4
     }
     public enum GardenAccessMode
     {
@@ -42,6 +44,12 @@ public class ArchipelagoOptions
         ExceptSnailFashion = 1,
         Disabled = 2
     }
+    public enum TextboxLevel
+    {
+        Vanilla = 0,
+        Global = 1,
+        Level = 2
+    }
     
     public GoalCompletionMode GoalCompletion { get; set; }
     public GardenAccessMode GardenAccess { get; set; }
@@ -52,6 +60,7 @@ public class ArchipelagoOptions
     public InsanityLevel Bonesanity { get; set; }
     public ChatsanityLevel Chatsanity { get; set; }
     public AchievementsMode Achievements { get; set; }
+    public TextboxLevel Textbox { get; set; }
 
     public bool GarysGarden { get; set; }
     public bool HandsomeFrog { get; set; }
@@ -64,11 +73,11 @@ public class ArchipelagoOptions
     public bool SodaCans { get; set; }
     public bool Parasols { get; set; }
     public bool SwimCourse { get; set; }
-    public bool Textbox { get; set; }
     public bool AcRepair { get; set; }
     public bool AppleBasket { get; set; }
     public bool Thoughtsanity { get; set; }
     public int DeathLinkAmnesty { get; set; }
+    public int CustomGoalCoinAmount { get; set; }
 
     public override string ToString()
     {
@@ -104,6 +113,7 @@ public static class ArchipelagoOptionsParser
         options.Bonesanity = (ArchipelagoOptions.InsanityLevel)GetInt("bonesanity");
         options.Chatsanity = (ArchipelagoOptions.ChatsanityLevel)GetInt("chatsanity");
         options.Achievements = (ArchipelagoOptions.AchievementsMode)GetInt("achievements");
+        options.Textbox = (ArchipelagoOptions.TextboxLevel)GetInt("textbox");
 
         options.GarysGarden = GetBool("shuffle_garden");
         options.HandsomeFrog = GetBool("handsome_frog");
@@ -116,11 +126,11 @@ public static class ArchipelagoOptionsParser
         options.SodaCans = GetBool("soda_cans");
         options.Parasols = GetBool("parasols");
         options.SwimCourse = GetBool("swimming");
-        options.Textbox = GetBool("textbox");
         options.AcRepair = GetBool("ac_repair");
         options.AppleBasket = GetBool("apple_basket");
         options.Thoughtsanity = GetBool("thoughtsanity");
         options.DeathLinkAmnesty = GetInt("death_link_amnesty");
+        options.CustomGoalCoinAmount = GetInt("custom_goal_coin_amount");
         
         return options;
     }

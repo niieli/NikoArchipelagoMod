@@ -11,7 +11,6 @@ namespace NikoArchipelago.Patches;
 public static class KioskCost
 {
     private static scrKioskManager _kioskManager;
-    private static Plugin plugin;
     private static bool _changed, _changed2, bought, avail, _answerFix, _answerFix2;
 
     [HarmonyPrefix, HarmonyPatch(typeof(levelData))]

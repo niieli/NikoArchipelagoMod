@@ -103,6 +103,7 @@ public static class ItemID
     
     // Textbox
     public const long Textbox = BaseID + 106;
+    public const long HomeTextbox = BaseID + 140;
     public const long HairballCityTextbox = BaseID + 141;
     public const long TurbineTownTextbox = BaseID + 142;
     public const long SalmonCreekForestTextbox = BaseID + 143;

@@ -39,7 +39,9 @@ public class ArchipelagoClient
     public static int SpeedBoostAmount;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary, TicketParty,
         HcNPCs, TtNPCs, SfcNPCs, PpNPCs, BathNPCs, HqNPCs, Keysanity, ElevatorRepaired, 
-        BonkPermitAcquired, BugnetAcquired, SodaRepairAcquired, ParasolRepairAcquired, SwimmingAcquired, TextboxAcquired, acRepairAcquired, AppleBasketAcquired;
+        BonkPermitAcquired, BugnetAcquired, SodaRepairAcquired, ParasolRepairAcquired, SwimmingAcquired, TextboxAcquired, acRepairAcquired, AppleBasketAcquired,
+        HomeTextboxAcquired, HairballTextboxAcquired, TurbineTextboxAcquired, SalmonTextboxAcquired, 
+        PoolTextboxAcquired, BathTextboxAcquired, TadpoleTextboxAcquired, GardenTextboxAcquired;
 
     private static int savedItemIndex;
     private static bool stopIt;
@@ -395,87 +397,87 @@ public class ArchipelagoClient
                     ItemHandler.AddContactList1(senderName, notify);
                     break;
                 case ItemID.HairballCityFish: // HCFish
-                    ItemHandler.AddHcFish(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.HairballCityFish);
                     break;
                 case ItemID.TurbineTownFish: // TTFish
-                    ItemHandler.AddTtFish(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     TtFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TurbineTownFish);
                     break;
                 case ItemID.SalmonCreekForestFish: // SFCFish
-                    ItemHandler.AddSfcFish(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     SfcFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.SalmonCreekForestFish);
                     break;
                 case ItemID.PublicPoolFish: // PPFish
-                    ItemHandler.AddPpFish(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     PpFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.PublicPoolFish);
                     break;
                 case ItemID.BathhouseFish: // BathFish
-                    ItemHandler.AddBathFish(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     BathFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.BathhouseFish);
                     break;
                 case ItemID.TadpoleHqFish: // HQFish
-                    ItemHandler.AddHqFish(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HqFishAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TadpoleHqFish);
                     break;
                 case ItemID.HairballCityKey: // HCKey
-                    ItemHandler.AddHCKey(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.HairballCityKey);
                     break;
                 case ItemID.TurbineTownKey: // TTKey
-                    ItemHandler.AddTTKey(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     TtKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TurbineTownKey);
                     break;
                 case ItemID.SalmonCreekForestKey: // SFCKey
-                    ItemHandler.AddSFCKey(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     SfcKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.SalmonCreekForestKey);
                     break;
                 case ItemID.PublicPoolKey: // PPKey
-                    ItemHandler.AddPPKey(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     PpKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.PublicPoolKey);
                     break;
                 case ItemID.BathhouseKey: // BathKey
-                    ItemHandler.AddBathKey(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     BathKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.BathhouseKey);
                     break;
                 case ItemID.TadpoleHqKey: // HQKey
-                    ItemHandler.AddHQKey(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HqKeyAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TadpoleHqKey);
                     break;
                 case ItemID.HairballCitySeed: // HCSeed
-                    ItemHandler.AddHcSeed(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.HairballCitySeed);
                     break;
                 case ItemID.SalmonCreekForestSeed: // SFCSeed
-                    ItemHandler.AddSfcSeed(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     SfcSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.SalmonCreekForestSeed);
                     break;
                 case ItemID.BathhouseSeed: // BathSeed
-                    ItemHandler.AddBathSeed(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     BathSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.BathhouseSeed);
                     break;
                 case ItemID.HairballCityFlower: // HCFlower
-                    ItemHandler.AddHcFlower(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.HairballCityFlower);
                     break;
                 case ItemID.TurbineTownFlower: // TTFlower
-                    ItemHandler.AddTtFlower(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     TtFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TurbineTownFlower);
                     break;
                 case ItemID.SalmonCreekForestFlower: // SFCFlower
-                    ItemHandler.AddSfcFlower(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     SfcFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.SalmonCreekForestFlower);
                     break;
                 case ItemID.PublicPoolFlower: // PPFlower
-                    ItemHandler.AddPpFlower(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     PpFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.PublicPoolFlower);
                     break;
                 case ItemID.BathhouseFlower: // BathFlower
-                    ItemHandler.AddBathFlower(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     BathFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.BathhouseFlower);
                     break;
                 case ItemID.TadpoleHqFlower: // HQFlower
-                    ItemHandler.AddHqFlower(senderName, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HqFlowerAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TadpoleHqFlower);
                     break;
                 case ItemID.HairballCityCassette: // HCCassette
@@ -545,59 +547,91 @@ public class ArchipelagoClient
                     TicketParty = true;
                     break;
                 case ItemID.SafetyHelmet: // Bonk Helmet
-                    ItemHandler.AddSafetyHelmet(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     BonkPermitAcquired = true;
                     break;
                 case ItemID.BugNet: // Bug net
-                    ItemHandler.AddBugNet(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     BugnetAcquired = true;
                     break;
                 case ItemID.SodaRepair: // Soda Repair
-                    ItemHandler.AddSodaRepair(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     SodaRepairAcquired = true;
                     break;
                 case ItemID.ParasolRepair: // Parasol Repair
-                    ItemHandler.AddParasolRepair(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     ParasolRepairAcquired = true;
                     break;
                 case ItemID.SwimCourse: // Swim Course
-                    ItemHandler.AddSwimCourse(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     SwimmingAcquired = true;
                     break;
                 case ItemID.Textbox: // Textbox
-                    ItemHandler.AddTextboxItem(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     TextboxAcquired = true;
                     break;
+                case ItemID.HomeTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    HomeTextboxAcquired = true;
+                    break;
+                case ItemID.HairballCityTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    HairballTextboxAcquired = true;
+                    break;
+                case ItemID.TurbineTownTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    TurbineTextboxAcquired = true;
+                    break;
+                case ItemID.SalmonCreekForestTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    SalmonTextboxAcquired = true;
+                    break;
+                case ItemID.PublicPoolTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    PoolTextboxAcquired = true;
+                    break;
+                case ItemID.BathhouseTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    BathTextboxAcquired = true;
+                    break;
+                case ItemID.TadpoleHqTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    TadpoleTextboxAcquired = true;
+                    break;
+                case ItemID.GarysGardenTextbox: // Textbox
+                    ItemHandler.AddItemNote(item, notify);
+                    GardenTextboxAcquired = true;
+                    break;
                 case ItemID.AcRepair: // AC Repair
-                    ItemHandler.AddACRepair(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     acRepairAcquired = true;
                     break;
                 case ItemID.AppleBasket: // Apple Basket
-                    ItemHandler.AddAppleBasket(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     AppleBasketAcquired = true;
                     break;
                 case ItemID.HairballCityBone: // Hairball City Bone
-                    ItemHandler.AddHairballBone(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.HairballCityBone);
                     break;
                 case ItemID.TurbineTownBone: // Turbine Town Bone
-                    ItemHandler.AddTurbineBone(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     TtBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TurbineTownBone);
                     break;
                 case ItemID.SalmonCreekForestBone: // Salmon Creek Forest Bone
-                    ItemHandler.AddSalmonBone(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     SfcBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.SalmonCreekForestBone);
                     break;
                 case ItemID.PublicPoolBone: // Public Pool Bone
-                    ItemHandler.AddPoolBone(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     PpBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.PublicPoolBone);
                     break;
                 case ItemID.BathhouseBone: // Bathhouse Bone
-                    ItemHandler.AddBathBone(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     BathBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.BathhouseBone);
                     break;
                 case ItemID.TadpoleHqBone: // Tadpole HQ Bone
-                    ItemHandler.AddTadpoleBone(item, notify);
+                    ItemHandler.AddItemNote(item, notify);
                     HqBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TadpoleHqBone);
                     break;
             }
