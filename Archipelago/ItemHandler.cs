@@ -1,18 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using NikoArchipelago.Stuff;
-using UnityEngine;
-using ArchipelagoClient = NikoArchipelago.Archipelago.ArchipelagoClient;
 
 namespace NikoArchipelago.Archipelago;
 
 public static class ItemHandler
 {
     private static ArchipelagoClient archipelagoClient;
-    private static Plugin plugin;
     private static bool prog;
     public static bool Garden;
     public static int HairballKeyAmount, TurbineKeyAmount, SalmonKeyAmount, PoolKeyAmount, BathKeyAmount, TadpoleKeyAmount,
@@ -58,66 +53,6 @@ public static class ItemHandler
         }
         ShowDisplayers.KeyDisplayer();
         scrGameSaveManager.instance.SaveGame();
-    }
-    
-    public static void AddHCKey(string sender = "", bool notify = true)
-    {
-        if (notify)
-        {
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Key from {sender}!" : "You found your Hairball City Key!",
-                3f, Plugin.HairballKeySprite);
-        }
-    }
-    
-    public static void AddTTKey(string sender = "", bool notify = true)
-    {
-        if (notify)
-        {
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Key from {sender}!" : "You found your Turbine Town Key!",
-                3f, Plugin.TurbineKeySprite);
-        }
-    }
-    
-    public static void AddSFCKey(string sender = "", bool notify = true)
-    {
-        if (notify)
-        {
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Key from {sender}!" : "You found your Salmon Creek Forest Key!",
-                3f, Plugin.SalmonKeySprite);
-        }
-    }
-    
-    public static void AddPPKey(string sender = "", bool notify = true)
-    {
-        if (notify)
-        {
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Key from {sender}!" : "You found your Public Pool Key!",
-                3f, Plugin.PoolKeySprite);
-        }
-    }
-    
-    public static void AddBathKey(string sender = "", bool notify = true)
-    {
-        if (notify)
-        {
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Key from {sender}!" : "You found your Bathhouse Key!",
-                3f, Plugin.BathKeySprite);
-        }
-    }
-    
-    public static void AddHQKey(string sender = "", bool notify = true)
-    {
-        if (notify)
-        {
-            Plugin.APSendNote(
-                sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Key from {sender}!" : "You found your Tadpole HQ Key!",
-                3f, Plugin.TadpoleKeySprite);
-        }
     }
 
     public static void AddLetter(int amount = 1, string sender = "", bool notify = true)
@@ -392,126 +327,6 @@ public static class ItemHandler
         scrGameSaveManager.instance.SaveGame();
     }
     
-    public static void AddHcFish(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Fish from {sender}!" : "You found your Hairball City Fish!",
-            3f, Plugin.HairballFishSprite);
-    }
-    
-    public static void AddTtFish(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Fish from {sender}!" : "You found your Turbine Town Fish!",
-            3f, Plugin.TurbineFishSprite);
-    }
-    
-    public static void AddSfcFish(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Fish from {sender}!" : "You found your Salmon Creek Forest Fish!",
-            3f, Plugin.SalmonFishSprite);
-    }
-    
-    public static void AddPpFish(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Fish from {sender}!" : "You found your Public Pool Fish!",
-            3f, Plugin.PoolFishSprite);
-    }
-    
-    public static void AddBathFish(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Fish from {sender}!" : "You found your Bathhouse Fish!",
-            3f, Plugin.BathFishSprite);
-    }
-    
-    public static void AddHqFish(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Fish from {sender}!" : "You found your Tadpole HQ Fish!",
-            3f, Plugin.TadpoleFishSprite);
-    }
-    
-    public static void AddHcSeed(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Seed from {sender}!" : "You found your Hairball City Seed!",
-            3f, Plugin.HairballSeedSprite);
-    }
-    
-    public static void AddSfcSeed(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Seed from {sender}!" : "You found your Salmon Creek Forest Seed!",
-            3f, Plugin.SalmonSeedSprite);
-    }
-    
-    public static void AddBathSeed(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Seed from {sender}!" : "You found your Bathhouse Seed!",
-            3f, Plugin.BathSeedSprite);
-    }
-    
-    public static void AddHcFlower(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Flower from {sender}!" : "You found your Hairball City Flower!",
-            3f, Plugin.HairballFlowerSprite);
-    }
-    
-    public static void AddTtFlower(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Flower from {sender}!" : "You found your Turbine Town Flower!",
-            3f, Plugin.TurbineFlowerSprite);
-    }
-    
-    public static void AddSfcFlower(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Flower from {sender}!" : "You found your Salmon Creek Forest Flower!",
-            3f, Plugin.SalmonFlowerSprite);
-    }
-    
-    public static void AddPpFlower(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Flower from {sender}!" : "You found your Public Pool Flower!",
-            3f, Plugin.PoolFlowerSprite);
-    }
-    
-    public static void AddBathFlower(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Flower from {sender}!" : "You found your Bathhouse Flower!",
-            3f, Plugin.BathFlowerSprite);
-    }
-    
-    public static void AddHqFlower(string sender, bool notify = true)
-    {
-        if (!notify) return;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Flower from {sender}!" : "You found your Tadpole HQ Flower!",
-            3f, Plugin.TadpoleFlowerSprite);
-    }
-    
     // Level Based Cassettes
     public static void AddHcCassette(string sender, bool notify = true)
     {
@@ -693,214 +508,22 @@ public static class ItemHandler
         if (!notify) return;
         var sender = itemInfo.Player.Name;
         var itemName = itemInfo.ItemName;
+        var itemId = itemInfo.ItemId;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
+            3f, Assets.SetSprite(itemId));
         NotificationManager.ShowParty = true;
     }
-    public static void AddSafetyHelmet(ItemInfo itemInfo, bool notify = true)
+    public static void AddItemNote(ItemInfo itemInfo, bool notify = true)
     {
         if (!notify) return;
         var sender = itemInfo.Player.Name;
         var itemName = itemInfo.ItemName;
+        if (itemName == null)
+            itemName = "Item: " + itemInfo.ItemId;
+        var itemId = itemInfo.ItemId;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddBugNet(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddSodaRepair(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddParasolRepair(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddTextboxItem(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddACRepair(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddSwimCourse(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddAppleBasket(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddHairballBone(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddTurbineBone(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddSalmonBone(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddPoolBone(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddBathBone(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    public static void AddTadpoleBone(ItemInfo itemInfo, bool notify = true)
-    {
-        if (!notify) return;
-        var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        Plugin.APSendNote(
-            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
-            3f, SetSprite(itemName));
-    }
-    
-    private static Sprite SetSprite(string itemName)
-    {
-        var sprite = itemName switch
-        {
-            "Coin" => Plugin.CoinSprite,
-            "Cassette" => Plugin.CassetteSprite,
-            "Key" => Plugin.KeySprite,
-            "Super Jump" => Plugin.SuperJumpSprite,
-            "Letter" => Plugin.LetterSprite,
-            "Snail Money" or "1000 Snail Dollar" => Plugin.SnailMoneySprite,
-            "Bugs" or "10 Bugs" => Plugin.BugsSprite,
-            "Apples" or "25 Apples" => Plugin.ApplesSprite,
-            "Contact List 1" or "Contact List 2" or "Progressive Contact List" => Plugin.ContactListSprite,
-            "Gary's Garden Ticket" => Plugin.GgSprite,
-            "Hairball City Ticket" => Plugin.HcSprite,
-            "Turbine Town Ticket" => Plugin.TtSprite,
-            "Salmon Creek Forest Ticket" => Plugin.SfcSprite,
-            "Public Pool Ticket" => Plugin.PpSprite,
-            "Bathhouse Ticket" => Plugin.BathSprite,
-            "Tadpole HQ Ticket" => Plugin.HqSprite,
-            "Hairball City Fish" => Plugin.HairballFishSprite,
-            "Turbine Town Fish" => Plugin.TurbineFishSprite,
-            "Salmon Creek Forest Fish" => Plugin.SalmonFishSprite,
-            "Public Pool Fish" => Plugin.PoolFishSprite,
-            "Bathhouse Fish" => Plugin.BathFishSprite,
-            "Tadpole HQ Fish" => Plugin.TadpoleFishSprite,
-            "Hairball City Key" => Plugin.HairballKeySprite,
-            "Turbine Town Key" => Plugin.TurbineKeySprite,
-            "Salmon Creek Forest Key" => Plugin.SalmonKeySprite,
-            "Public Pool Key" => Plugin.PoolKeySprite,
-            "Bathhouse Key" => Plugin.BathKeySprite,
-            "Tadpole HQ Key" => Plugin.TadpoleKeySprite,
-            "Hairball City Flower" => Plugin.HairballFlowerSprite,
-            "Turbine Town Flower" => Plugin.TurbineFlowerSprite,
-            "Salmon Creek Forest Flower" => Plugin.SalmonFlowerSprite,
-            "Public Pool Flower" => Plugin.PoolFlowerSprite,
-            "Bathhouse Flower" => Plugin.BathFlowerSprite,
-            "Tadpole HQ Flower" => Plugin.TadpoleFlowerSprite,
-            "Hairball City Cassette" => Plugin.HairballCassetteSprite,
-            "Turbine Town Cassette" => Plugin.TurbineCassetteSprite,
-            "Salmon Creek Forest Cassette" => Plugin.SalmonCassetteSprite,
-            "Public Pool Cassette" => Plugin.PoolCassetteSprite,
-            "Bathhouse Cassette" => Plugin.BathCassetteSprite,
-            "Tadpole HQ Cassette" => Plugin.TadpoleCassetteSprite,
-            "Gary's Garden Cassette" => Plugin.GardenCassetteSprite,
-            "Hairball City Seed" => Plugin.HairballSeedSprite,
-            "Salmon Creek Forest Seed" => Plugin.SalmonSeedSprite,
-            "Bathhouse Seed" => Plugin.BathSeedSprite,
-            "Freeze Trap" => Plugin.FreezeTrapSprite,
-            "Iron Boots Trap" => Plugin.IronBootsTrapSprite,
-            "Whoops! Trap" => Plugin.WhoopsTrapSprite,
-            "My Turn! Trap" => Plugin.MyTurnTrapSprite,
-            "Speed Boost" => Plugin.SpeedBoostSprite,
-            "Home Trap" => Plugin.HomeTrapSprite,
-            "W I D E Trap" => Plugin.WideTrapSprite,
-            "Phone Trap" => Plugin.PhoneCallTrapSprite,
-            "Tiny Trap" => Plugin.TinyTrapSprite,
-            "Gravity Trap" => Plugin.GravityTrapSprite,
-            "Jumping Jacks Trap" => Plugin.JumpingJacksTrapSprite,
-            "Party Invitation" => Plugin.PartyTicketSprite,
-            "Safety Helmet" => Plugin.BonkHelmetSprite,
-            "Bug Net" => Plugin.BugNetSprite,
-            "Soda Repair" => Plugin.SodaRepairSprite,
-            "Parasol Repair" => Plugin.ParasolRepairSprite,
-            "Swim Course" => Plugin.SwimCourseSprite,
-            "Textbox" => Plugin.TextboxItemSprite,
-            "AC Repair" => Plugin.ACRepairSprite,
-            "Apple Basket" => Plugin.AppleBasketSprite,
-            "Hairball City Bone" => Plugin.HairballBoneSprite,
-            "Turbine Town Bone" => Plugin.TurbineBoneSprite,
-            "Salmon Creek Forest Bone" => Plugin.SalmonBoneSprite,
-            "Public Pool Bone" => Plugin.PoolBoneSprite,
-            "Bathhouse Bone" => Plugin.BathBoneSprite,
-            "Tadpole HQ Bone" => Plugin.TadpoleBoneSprite,
-            _ => Plugin.ApProgressionSprite
-        };
-        return sprite;
+            3f, Assets.SetSprite(itemId));
     }
 }

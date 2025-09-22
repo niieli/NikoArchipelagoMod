@@ -155,8 +155,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void AddTextboxPermit()
     {
         if (ArchipelagoData.slotData == null) return;
-        if (!ArchipelagoData.slotData.ContainsKey("textbox")) return;
-        if (!ArchipelagoData.Options.Textbox) return;
+        if (ArchipelagoData.Options.Textbox == ArchipelagoOptions.TextboxLevel.Vanilla) return;
         if (!ArchipelagoClient.IsValidScene()) return;
         var obj = new GameObject("TextboxPermit");
         obj.AddComponent<TextboxPermit>();

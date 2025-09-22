@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using BepInEx;
 using KinematicCharacterController.Core;
+using NikoArchipelago.Patches;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -12,7 +13,6 @@ public class DeathLinkHandler
     private string slotName;
     private static DeathLinkService service;
     private readonly Queue<DeathLink> deathLinks = new();
-    private static Plugin main = new();
 
     /// <summary>
     /// instantiates our death link handler, sets up the hook for receiving death links, and enables death link if needed
@@ -26,6 +26,7 @@ public class DeathLinkHandler
         service.OnDeathLinkReceived += DeathLinkReceived;
         slotName = name;
         deathLinkEnabled = enableDeathLink;
+        DeathAmnesty.DeathLinkEnabled = enableDeathLink;
 
         if (deathLinkEnabled)
         {
@@ -39,7 +40,7 @@ public class DeathLinkHandler
     public static void ToggleDeathLink()
     {
         deathLinkEnabled = !deathLinkEnabled;
-
+        DeathAmnesty.DeathLinkEnabled  = deathLinkEnabled;
         if (deathLinkEnabled)
         {
             service.EnableDeathLink();

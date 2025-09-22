@@ -54,7 +54,6 @@ namespace NikoArchipelago
         private int goToLevel, snowAmount;
         private static scrNotificationDisplayer _noteDisplayer;
         public static bool worldReady;
-        private static bool _canLogin;
         public static readonly string ArchipelagoFolderPath = Path.Combine(Application.persistentDataPath, "Archipelago");
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
         public static bool loggedIn, Compatibility, SaveEstablished, PlayerFound;
@@ -91,21 +90,15 @@ namespace NikoArchipelago
         public static Material ProgNotificationTexture, UsefulNotificationTexture, FillerNotificationTexture, TrapNotificationTexture;
         public static GameObject SparksParticleSystem;
         public static GameObject NotifcationCanvas;
-        public static GameObject ApUIGameObject, ArrowTrackerGameObject;
-        public static Texture2D CassetteTexture;
-        public static Image APLogoImage; 
-        public static Dictionary<string, object> SlotData;
+        public static GameObject ArrowTrackerGameObject;
         private CancellationTokenSource _cancellationTokenSource = new();
-        private DateTime _christmasTime = new(DateTime.Now.Year, 12, 25);
         public static bool ChristmasEvent, NoXmasEvent, NoAntiCheese;
         private static ArchipelagoData _archipelagoData;
         private static bool _appleAmount, annoy, _onlyOnce;
-        private static int _realAppleAmount;
         private const string GithubAPIURL = "https://api.github.com/repos/niieli/NikoArchipelagoMod/releases/latest";
         public static GameObject APUpdateNotice;
         private string latestVersion = "";
         private string latestReleaseUrl = "";
-        public static GameObject BasicBlock;
         
         private void Awake()
         {
@@ -177,7 +170,6 @@ namespace NikoArchipelago
                 TopHatSprite = AssetBundle.LoadAsset<Sprite>("TophatAP");
                 SunglassesSprite = AssetBundle.LoadAsset<Sprite>("SunglassesAP");
                 APLogoSprite = AssetBundle.LoadAsset<Sprite>("HereComesNikoAPLogo");
-                APLogoImage = AssetBundle.LoadAsset<Image>("HereComesNikoAPLogo");
                 APIconSprite = AssetBundle.LoadAsset<Sprite>("nikoApLogo");
                 CoinSprite = AssetBundle.LoadAsset<Sprite>("sprCoinLit");
                 CassetteSprite = AssetBundle.LoadAsset<Sprite>("txrCassette");
@@ -207,7 +199,6 @@ namespace NikoArchipelago
                 ApTrapSprite = AssetBundle.LoadAsset<Sprite>("ApTrap");
                 ApTrap2Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap2");
                 ApTrap3Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap3");
-                CassetteTexture = AssetBundle.LoadAsset<Texture2D>("ApProgression");
                 GoalBadSprite = AssetBundle.LoadAsset<Sprite>("goalBad");
                 SuperJumpSprite = AssetBundle.LoadAsset<Sprite>("SuperJump");
                 FishSprite = AssetBundle.LoadAsset<Sprite>("imgMapfish");
@@ -300,8 +291,8 @@ namespace NikoArchipelago
                 NoticeAppleBasket = AssetBundle.LoadAsset<GameObject>("NoticeAppleBasket");
                 TrapFast = AssetBundle.LoadAsset<GameObject>("TrapFast");
                 DeathLinkPopup = AssetBundle.LoadAsset<GameObject>("DeathLinkPopup");
-                _canLogin = true;
             }
+            Assets.AssignSprites();
             var gameObjectChecker = new GameObject("GameObjectChecker");
             gameObjectChecker.AddComponent<GameObjectChecker>();
             NotifcationCanvas = new GameObject("NotificationCanvas");
@@ -533,7 +524,6 @@ namespace NikoArchipelago
                     StartCoroutine(CheckWorldSaveManager());
                     loggedIn = true;
                     SaveEstablished = false;
-                    _realAppleAmount = gameSaveManager.gameData.generalGameData.appleAmount;
                     ArchipelagoClient.CheckReceivedItems();
                     //scrGameSaveManager.instance.gameData.generalGameData.snailSteps = ArchipelagoClient._session.DataStorage["SnailMoney"];
                     // APSendNote($"Connected to {ArchipelagoClient.ServerData.Uri} successfully", 10F);

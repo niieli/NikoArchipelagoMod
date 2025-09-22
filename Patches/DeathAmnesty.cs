@@ -9,6 +9,7 @@ namespace NikoArchipelago.Patches;
 
 public class DeathAmnesty : MonoBehaviour
 {
+    public static bool DeathLinkEnabled;
     public static int DeathCounterInt; //TODO: Add to the companion save file, when ever that is implemented
     private static int _oldDeathCounterInt;
     private static GameObject _popupObject;
@@ -25,6 +26,7 @@ public class DeathAmnesty : MonoBehaviour
     
     private void Update()
     {
+        if (!DeathLinkEnabled) return;
         if (_playerTouchedHazard && _timer < 2.5f)
         {
             _timer += Time.deltaTime;

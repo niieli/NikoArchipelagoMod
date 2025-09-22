@@ -98,9 +98,18 @@ public static class ItemID
     public const long SodaRepair = BaseID + 103;
     public const long ParasolRepair = BaseID + 104;
     public const long SwimCourse = BaseID + 105;
-    public const long Textbox = BaseID + 106;
     public const long AcRepair = BaseID + 107;
     public const long AppleBasket = BaseID + 108;
+    
+    // Textbox
+    public const long Textbox = BaseID + 106;
+    public const long HairballCityTextbox = BaseID + 141;
+    public const long TurbineTownTextbox = BaseID + 142;
+    public const long SalmonCreekForestTextbox = BaseID + 143;
+    public const long PublicPoolTextbox = BaseID + 144;
+    public const long BathhouseTextbox = BaseID + 145;
+    public const long TadpoleHqTextbox = BaseID + 146;
+    public const long GarysGardenTextbox = BaseID + 147;
     
     // Bonesanity
     public const long HairballCityBone = BaseID + 111;
