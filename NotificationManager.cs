@@ -5,6 +5,7 @@ using System.Linq;
 using Archipelago.MultiClient.Net.Enums;
 using BepInEx;
 using KinematicCharacterController.Core;
+using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
 using TMPro;
 using UnityEngine;
@@ -16,15 +17,15 @@ public class NotificationManager : MonoBehaviour
 {
     public static NotificationManager instance;
     private static readonly int Timer = Animator.StringToHash("Timer");
-    private readonly GameObject hintNotification = Plugin.HintNotification;
-    private readonly GameObject normalNotification = Plugin.ItemNotification;
+    private readonly GameObject _hintNotification = Assets.HintNotification;
+    private readonly GameObject _normalNotification = Assets.ItemNotification;
     private static Transform _notificationListUI;
     private static Transform _notificationListFake;
     private static CanvasGroup _notificationListUICanvasGroup;
     private readonly List<GameObject> _activeNotifications = new();
     private readonly Queue<APNotification> _excessNotifications = new();
     public static readonly Queue<APNotification> AddNewNotification = new();
-    private readonly string jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
+    private readonly string _jsonFilePath = Path.Combine(Paths.PluginPath, "APSavedSettings.json");
     public static bool ShowDeathLink;
     public static string DeathLinkCause;
     public static bool ShowParty;
@@ -75,7 +76,7 @@ public class NotificationManager : MonoBehaviour
     
     private void LoadSettings()
     {
-        if (File.Exists(jsonFilePath))
+        if (File.Exists(_jsonFilePath))
         {
             notificationDuration = SavedData.Instance.NotificationDuration;
             if (ColorUtility.TryParseHtmlString("#"+SavedData.Instance.NotificationProgColor, out var progColor))
@@ -143,7 +144,7 @@ public class NotificationManager : MonoBehaviour
         var isHint = notification.IsHint;
 
         GameObject fakeNotification = null;
-        var notificationGameObject = Instantiate(isHint ? hintNotification : normalNotification, _notificationListUI);
+        var notificationGameObject = Instantiate(isHint ? _hintNotification : _normalNotification, _notificationListUI);
         if (notificationGameObject != null)
             fakeNotification = Instantiate(notificationGameObject, _notificationListFake);
         Animator animator = notificationGameObject.GetComponent<Animator>();
@@ -168,25 +169,25 @@ public class NotificationManager : MonoBehaviour
         if (note.ItemFlags.HasFlag(ItemFlags.Advancement))
         {
             bgColor = notificationProgColor;
-            materialImage.material = Plugin.ProgNotificationTexture;
+            materialImage.material = Assets.ProgNotificationTexture;
         }
         else if (note.ItemFlags.HasFlag(ItemFlags.NeverExclude))
         {
             bgColor = notificationUsefulColor;
-            materialImage.material = Plugin.UsefulNotificationTexture;
+            materialImage.material = Assets.UsefulNotificationTexture;
         }
         else if (note.ItemFlags.HasFlag(ItemFlags.Trap))
         {
             bgColor = notificationTrapColor;
-            materialImage.material = Plugin.TrapNotificationTexture;
+            materialImage.material = Assets.TrapNotificationTexture;
         }
         else if (note.ItemFlags.HasFlag(ItemFlags.None))
         {
             bgColor = notificationFillerColor;
-            materialImage.material = Plugin.FillerNotificationTexture;
+            materialImage.material = Assets.FillerNotificationTexture;
         }
         else
-            materialImage.material = Plugin.ProgNotificationTexture;
+            materialImage.material = Assets.ProgNotificationTexture;
         materialObject.AddComponent<ScrollingEffect>().scrollSpeed = 0.1f;
         
         var duration = notificationDuration;
@@ -248,7 +249,7 @@ public class NotificationManager : MonoBehaviour
     private static IEnumerator ShowDeathLinkNotice(string cause)
     {
         ShowDeathLink = false;
-        var notice = Instantiate(Plugin.DeathLinkNotice, Plugin.NotifcationCanvas.transform);
+        var notice = Instantiate(Assets.DeathLinkNotice, Plugin.NotifcationCanvas.transform);
         notice.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = cause;
         //yield return new WaitUntil(() => scrTransitionManager.instance.state == scrTransitionManager.States.idle);
         yield return new WaitForSeconds(10f);
@@ -268,7 +269,7 @@ public class NotificationManager : MonoBehaviour
             pos += new Vector3(0, 2f, -3f);
             confetti.transform.position = pos;
         }        
-        var t = Instantiate(Plugin.NoticePartyTicket, Plugin.NotifcationCanvas.transform);
+        var t = Instantiate(Assets.NoticePartyTicket, Plugin.NotifcationCanvas.transform);
         yield return new WaitForSeconds(12.5f);
         Destroy(t);
     }

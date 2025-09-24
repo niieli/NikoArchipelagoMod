@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using NikoArchipelago.Archipelago;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -199,34 +200,34 @@ public class NotificationPreview : MonoBehaviour
         switch (dropdown.value)
         {
             case 0:
-                noteMaterial.material = Plugin.ProgNotificationTexture;
-                noteHintMaterial.material = Plugin.ProgNotificationTexture;
-                noteIcon.sprite = Plugin.ApProgressionSprite;
-                noteHintIcon.sprite = Plugin.ApProgressionSprite;
+                noteMaterial.material = Assets.ProgNotificationTexture;
+                noteHintMaterial.material = Assets.ProgNotificationTexture;
+                noteIcon.sprite = Assets.ApProgressionSprite;
+                noteHintIcon.sprite = Assets.ApProgressionSprite;
                 noteScrollEffect.Invoke("Start",0f);
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;
             case 1:
-                noteMaterial.material = Plugin.UsefulNotificationTexture;
-                noteHintMaterial.material = Plugin.UsefulNotificationTexture;
-                noteIcon.sprite = Plugin.ApUsefulSprite;
-                noteHintIcon.sprite = Plugin.ApUsefulSprite;
+                noteMaterial.material = Assets.UsefulNotificationTexture;
+                noteHintMaterial.material = Assets.UsefulNotificationTexture;
+                noteIcon.sprite = Assets.ApUsefulSprite;
+                noteHintIcon.sprite = Assets.ApUsefulSprite;
                 noteScrollEffect.Invoke("Start",0f);
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;
             case 2:
-                noteMaterial.material = Plugin.TrapNotificationTexture;
-                noteHintMaterial.material = Plugin.TrapNotificationTexture;
-                noteIcon.sprite = Plugin.ApTrap2Sprite;
-                noteHintIcon.sprite = Plugin.ApTrap2Sprite;
+                noteMaterial.material = Assets.TrapNotificationTexture;
+                noteHintMaterial.material = Assets.TrapNotificationTexture;
+                noteIcon.sprite = Assets.ApTrap2Sprite;
+                noteHintIcon.sprite = Assets.ApTrap2Sprite;
                 noteScrollEffect.Invoke("Start",0f);
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;
             case 3:
-                noteMaterial.material = Plugin.FillerNotificationTexture;
-                noteHintMaterial.material = Plugin.FillerNotificationTexture;
-                noteIcon.sprite = Plugin.ApFillerSprite;
-                noteHintIcon.sprite = Plugin.ApFillerSprite;
+                noteMaterial.material = Assets.FillerNotificationTexture;
+                noteHintMaterial.material = Assets.FillerNotificationTexture;
+                noteIcon.sprite = Assets.ApFillerSprite;
+                noteHintIcon.sprite = Assets.ApFillerSprite;
                 noteScrollEffect.Invoke("Start",0f);
                 noteHintScrollEffect.Invoke("Start",0f);
                 break;

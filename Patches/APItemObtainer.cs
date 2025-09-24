@@ -54,38 +54,38 @@ public class APItemObtainer
                     {
                         case "Time Piece" 
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                            __instance.txrCoin = Plugin.TimePieceSprite.texture;
+                            __instance.txrCoin = Assets.TimePieceSprite.texture;
                             break;
                         case "Yarn" 
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
-                            __instance.txrCoin = Plugin.YarnSprite.texture;
+                            __instance.txrCoin = Assets.YarnSprite.texture;
                             break;
                         }
                         default:
                         {
                             if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
                             {
-                                __instance.txrCoin = Plugin.ApProgressionSprite.texture;
+                                __instance.txrCoin = Assets.ApProgressionSprite.texture;
                             }
                             else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
                             {
-                                __instance.txrCoin = Plugin.ApUsefulSprite.texture;
+                                __instance.txrCoin = Assets.ApUsefulSprite.texture;
                             }
                             else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
                             {
                                 var trapTextures = new[]
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
+                                    Assets.ApTrapSprite.texture,
+                                    Assets.ApTrap2Sprite.texture,
+                                    Assets.ApTrap3Sprite.texture
                                 };
                                 var randomIndex = Random.Range(0, trapTextures.Length);
                                 __instance.txrCoin = trapTextures[randomIndex];
                             }
                             else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
                             {
-                                __instance.txrCoin = Plugin.ApFillerSprite.texture;
+                                __instance.txrCoin = Assets.ApFillerSprite.texture;
                             }
 
                             break;
@@ -95,74 +95,74 @@ public class APItemObtainer
                 else
                     __instance.txrCoin = ArchipelagoClient.ScoutedLocations[index + offset].ItemId switch
                     {
-                        ItemID.Coin => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                        ItemID.Cassette => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                        ItemID.Key => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                        ItemID.Apples => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                        ItemID.Bugs => TextureAndDisplayer(Plugin.BugsSprite.texture, __instance, "Bugs"),
-                        ItemID.SnailMoney => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                        ItemID.ContactList1 or ItemID.ContactList2 or ItemID.ProgressiveContactList => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                        ItemID.HairballCityTicket => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                        ItemID.TurbineTownTicket => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                        ItemID.SalmonCreekForestTicket => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                        ItemID.PublicPoolTicket => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                        ItemID.BathhouseTicket => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                        ItemID.TadpoleHqTicket => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                        ItemID.GarysGardenTicket => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                        ItemID.SuperJump => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                        ItemID.HairballCityFish => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                        ItemID.TurbineTownFish => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                        ItemID.SalmonCreekForestFish => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                        ItemID.PublicPoolFish => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                        ItemID.BathhouseFish => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                        ItemID.TadpoleHqFish => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                        ItemID.HairballCityKey => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                        ItemID.TurbineTownKey => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                        ItemID.SalmonCreekForestKey => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                        ItemID.PublicPoolKey => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                        ItemID.BathhouseKey => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                        ItemID.TadpoleHqKey => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                        ItemID.HairballCityFlower => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                        ItemID.TurbineTownFlower => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                        ItemID.SalmonCreekForestFlower => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                        ItemID.PublicPoolFlower => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                        ItemID.BathhouseFlower => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                        ItemID.TadpoleHqFlower => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                        ItemID.HairballCityCassette => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                        ItemID.TurbineTownCassette => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                        ItemID.SalmonCreekForestCassette => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                        ItemID.PublicPoolCassette => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                        ItemID.BathhouseCassette => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                        ItemID.TadpoleHqCassette => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                        ItemID.HairballCitySeed => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                        ItemID.SalmonCreekForestSeed => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                        ItemID.BathhouseSeed => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                        ItemID.SpeedBoost => TextureAndDisplayer(Plugin.SpeedBoostSprite.texture, __instance),
-                        ItemID.WhoopsTrap => TextureAndDisplayer(Plugin.WhoopsTrapSprite.texture, __instance),
-                        ItemID.IronBootsTrap => TextureAndDisplayer(Plugin.IronBootsTrapSprite.texture, __instance),
-                        ItemID.MyTurnTrap => TextureAndDisplayer(Plugin.MyTurnTrapSprite.texture, __instance),
-                        ItemID.FreezeTrap => TextureAndDisplayer(Plugin.FreezeTrapSprite.texture, __instance),
-                        ItemID.HomeTrap => TextureAndDisplayer(Plugin.HomeTrapSprite.texture, __instance),
-                        ItemID.WideTrap => TextureAndDisplayer(Plugin.WideTrapSprite.texture, __instance),
-                        ItemID.PhoneTrap => TextureAndDisplayer(Plugin.PhoneCallTrapSprite.texture, __instance),
-                        ItemID.TinyTrap => TextureAndDisplayer(Plugin.TinyTrapSprite.texture, __instance),
-                        ItemID.GravityTrap => TextureAndDisplayer(Plugin.GravityTrapSprite.texture, __instance),
-                        ItemID.PartyInvitation => TextureAndDisplayer(Plugin.PartyTicketSprite.texture, __instance),
-                        ItemID.SafetyHelmet => TextureAndDisplayer(Plugin.BonkHelmetSprite.texture, __instance),
-                        ItemID.BugNet => TextureAndDisplayer(Plugin.BugNetSprite.texture, __instance),
-                        ItemID.SodaRepair => TextureAndDisplayer(Plugin.SodaRepairSprite.texture, __instance),
-                        ItemID.ParasolRepair => TextureAndDisplayer(Plugin.ParasolRepairSprite.texture, __instance),
-                        ItemID.SwimCourse => TextureAndDisplayer(Plugin.SwimCourseSprite.texture, __instance),
-                        ItemID.Textbox => TextureAndDisplayer(Plugin.TextboxItemSprite.texture, __instance),
-                        ItemID.AcRepair => TextureAndDisplayer(Plugin.ACRepairSprite.texture, __instance),
-                        ItemID.AppleBasket => TextureAndDisplayer(Plugin.AppleBasketSprite.texture, __instance),
-                        ItemID.HairballCityBone => TextureAndDisplayer(Plugin.HairballBoneSprite.texture, __instance),
-                        ItemID.TurbineTownBone => TextureAndDisplayer(Plugin.TurbineBoneSprite.texture, __instance),
-                        ItemID.SalmonCreekForestBone => TextureAndDisplayer(Plugin.SalmonBoneSprite.texture, __instance),
-                        ItemID.PublicPoolBone => TextureAndDisplayer(Plugin.PoolBoneSprite.texture, __instance),
-                        ItemID.BathhouseBone => TextureAndDisplayer(Plugin.BathBoneSprite.texture, __instance),
-                        ItemID.TadpoleHqBone => TextureAndDisplayer(Plugin.TadpoleBoneSprite.texture, __instance),
-                        _ => Plugin.APIconSprite.texture
+                        ItemID.Coin => TextureAndDisplayer(Assets.CoinSprite.texture, __instance, "Coin"),
+                        ItemID.Cassette => TextureAndDisplayer(Assets.CassetteSprite.texture, __instance, "Cassette"), 
+                        ItemID.Key => TextureAndDisplayer(Assets.KeySprite.texture, __instance, "Key"),
+                        ItemID.Apples => TextureAndDisplayer(Assets.ApplesSprite.texture, __instance, "Apples"),
+                        ItemID.Bugs => TextureAndDisplayer(Assets.BugsSprite.texture, __instance, "Bugs"),
+                        ItemID.SnailMoney => TextureAndDisplayer(Assets.SnailMoneySprite.texture, __instance),
+                        ItemID.ContactList1 or ItemID.ContactList2 or ItemID.ProgressiveContactList => TextureAndDisplayer(Assets.ContactListSprite.texture, __instance, "Ticket"),
+                        ItemID.HairballCityTicket => TextureAndDisplayer(Assets.HcSprite.texture, __instance, "Ticket"),
+                        ItemID.TurbineTownTicket => TextureAndDisplayer(Assets.TtSprite.texture, __instance, "Ticket"),
+                        ItemID.SalmonCreekForestTicket => TextureAndDisplayer(Assets.SfcSprite.texture, __instance, "Ticket"),
+                        ItemID.PublicPoolTicket => TextureAndDisplayer(Assets.PpSprite.texture, __instance, "Ticket"),
+                        ItemID.BathhouseTicket => TextureAndDisplayer(Assets.BathSprite.texture, __instance, "Ticket"),
+                        ItemID.TadpoleHqTicket => TextureAndDisplayer(Assets.HqSprite.texture, __instance, "Ticket"),
+                        ItemID.GarysGardenTicket => TextureAndDisplayer(Assets.GgSprite.texture, __instance, "Ticket"),
+                        ItemID.SuperJump => TextureAndDisplayer(Assets.SuperJumpSprite.texture, __instance),
+                        ItemID.HairballCityFish => TextureAndDisplayer(Assets.HairballFishSprite.texture, __instance),
+                        ItemID.TurbineTownFish => TextureAndDisplayer(Assets.TurbineFishSprite.texture, __instance),
+                        ItemID.SalmonCreekForestFish => TextureAndDisplayer(Assets.SalmonFishSprite.texture, __instance),
+                        ItemID.PublicPoolFish => TextureAndDisplayer(Assets.PoolFishSprite.texture, __instance),
+                        ItemID.BathhouseFish => TextureAndDisplayer(Assets.BathFishSprite.texture, __instance),
+                        ItemID.TadpoleHqFish => TextureAndDisplayer(Assets.TadpoleFishSprite.texture, __instance),
+                        ItemID.HairballCityKey => TextureAndDisplayer(Assets.HairballKeySprite.texture, __instance),
+                        ItemID.TurbineTownKey => TextureAndDisplayer(Assets.TurbineKeySprite.texture, __instance),
+                        ItemID.SalmonCreekForestKey => TextureAndDisplayer(Assets.SalmonKeySprite.texture, __instance),
+                        ItemID.PublicPoolKey => TextureAndDisplayer(Assets.PoolKeySprite.texture, __instance),
+                        ItemID.BathhouseKey => TextureAndDisplayer(Assets.BathKeySprite.texture, __instance),
+                        ItemID.TadpoleHqKey => TextureAndDisplayer(Assets.TadpoleKeySprite.texture, __instance),
+                        ItemID.HairballCityFlower => TextureAndDisplayer(Assets.HairballFlowerSprite.texture, __instance),
+                        ItemID.TurbineTownFlower => TextureAndDisplayer(Assets.TurbineFlowerSprite.texture, __instance),
+                        ItemID.SalmonCreekForestFlower => TextureAndDisplayer(Assets.SalmonFlowerSprite.texture, __instance),
+                        ItemID.PublicPoolFlower => TextureAndDisplayer(Assets.PoolFlowerSprite.texture, __instance),
+                        ItemID.BathhouseFlower => TextureAndDisplayer(Assets.BathFlowerSprite.texture, __instance),
+                        ItemID.TadpoleHqFlower => TextureAndDisplayer(Assets.TadpoleFlowerSprite.texture, __instance),
+                        ItemID.HairballCityCassette => TextureAndDisplayer(Assets.HairballCassetteSprite.texture, __instance),
+                        ItemID.TurbineTownCassette => TextureAndDisplayer(Assets.TurbineCassetteSprite.texture, __instance),
+                        ItemID.SalmonCreekForestCassette => TextureAndDisplayer(Assets.SalmonCassetteSprite.texture, __instance),
+                        ItemID.PublicPoolCassette => TextureAndDisplayer(Assets.PoolCassetteSprite.texture, __instance),
+                        ItemID.BathhouseCassette => TextureAndDisplayer(Assets.BathCassetteSprite.texture, __instance),
+                        ItemID.TadpoleHqCassette => TextureAndDisplayer(Assets.TadpoleCassetteSprite.texture, __instance),
+                        ItemID.HairballCitySeed => TextureAndDisplayer(Assets.HairballSeedSprite.texture, __instance),
+                        ItemID.SalmonCreekForestSeed => TextureAndDisplayer(Assets.SalmonSeedSprite.texture, __instance),
+                        ItemID.BathhouseSeed => TextureAndDisplayer(Assets.BathSeedSprite.texture, __instance),
+                        ItemID.SpeedBoost => TextureAndDisplayer(Assets.SpeedBoostSprite.texture, __instance),
+                        ItemID.WhoopsTrap => TextureAndDisplayer(Assets.WhoopsTrapSprite.texture, __instance),
+                        ItemID.IronBootsTrap => TextureAndDisplayer(Assets.IronBootsTrapSprite.texture, __instance),
+                        ItemID.MyTurnTrap => TextureAndDisplayer(Assets.MyTurnTrapSprite.texture, __instance),
+                        ItemID.FreezeTrap => TextureAndDisplayer(Assets.FreezeTrapSprite.texture, __instance),
+                        ItemID.HomeTrap => TextureAndDisplayer(Assets.HomeTrapSprite.texture, __instance),
+                        ItemID.WideTrap => TextureAndDisplayer(Assets.WideTrapSprite.texture, __instance),
+                        ItemID.PhoneTrap => TextureAndDisplayer(Assets.PhoneCallTrapSprite.texture, __instance),
+                        ItemID.TinyTrap => TextureAndDisplayer(Assets.TinyTrapSprite.texture, __instance),
+                        ItemID.GravityTrap => TextureAndDisplayer(Assets.GravityTrapSprite.texture, __instance),
+                        ItemID.PartyInvitation => TextureAndDisplayer(Assets.PartyTicketSprite.texture, __instance),
+                        ItemID.SafetyHelmet => TextureAndDisplayer(Assets.BonkHelmetSprite.texture, __instance),
+                        ItemID.BugNet => TextureAndDisplayer(Assets.BugNetSprite.texture, __instance),
+                        ItemID.SodaRepair => TextureAndDisplayer(Assets.SodaRepairSprite.texture, __instance),
+                        ItemID.ParasolRepair => TextureAndDisplayer(Assets.ParasolRepairSprite.texture, __instance),
+                        ItemID.SwimCourse => TextureAndDisplayer(Assets.SwimCourseSprite.texture, __instance),
+                        ItemID.Textbox => TextureAndDisplayer(Assets.TextboxItemSprite.texture, __instance),
+                        ItemID.AcRepair => TextureAndDisplayer(Assets.ACRepairSprite.texture, __instance),
+                        ItemID.AppleBasket => TextureAndDisplayer(Assets.AppleBasketSprite.texture, __instance),
+                        ItemID.HairballCityBone => TextureAndDisplayer(Assets.HairballBoneSprite.texture, __instance),
+                        ItemID.TurbineTownBone => TextureAndDisplayer(Assets.TurbineBoneSprite.texture, __instance),
+                        ItemID.SalmonCreekForestBone => TextureAndDisplayer(Assets.SalmonBoneSprite.texture, __instance),
+                        ItemID.PublicPoolBone => TextureAndDisplayer(Assets.PoolBoneSprite.texture, __instance),
+                        ItemID.BathhouseBone => TextureAndDisplayer(Assets.BathBoneSprite.texture, __instance),
+                        ItemID.TadpoleHqBone => TextureAndDisplayer(Assets.TadpoleBoneSprite.texture, __instance),
+                        _ => Assets.APIconSprite.texture
                     };
             }
             Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);
@@ -365,48 +365,48 @@ public class APItemObtainer
                     {
                         case "Time Piece" 
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
-                            __instance.txrCassette = Plugin.TimePieceSprite.texture;
+                            __instance.txrCassette = Assets.TimePieceSprite.texture;
                             break;
                         case "Yarn" 
                             when ArchipelagoClient.ScoutedLocations[index + offset].ItemGame == "A Hat in Time":
                         {
                             // var yarnTextures = new[]
                             // {
-                            //     Plugin.YarnSprite.texture,
-                            //     Plugin.Yarn2Sprite.texture,
-                            //     Plugin.Yarn3Sprite.texture,
-                            //     Plugin.Yarn4Sprite.texture,
-                            //     Plugin.Yarn5Sprite.texture
+                            //     Assets.YarnSprite.texture,
+                            //     Assets.Yarn2Sprite.texture,
+                            //     Assets.Yarn3Sprite.texture,
+                            //     Assets.Yarn4Sprite.texture,
+                            //     Assets.Yarn5Sprite.texture
                             // };
                             // var randomIndex = Random.Range(0, yarnTextures.Length);
                             // __instance.txrCassette = yarnTextures[randomIndex];
-                            __instance.txrCassette = Plugin.YarnSprite.texture;
+                            __instance.txrCassette = Assets.YarnSprite.texture;
                             break;
                         }
                         default:
                         {
                             if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Advancement))
                             {
-                                __instance.txrCassette = Plugin.ApProgressionSprite.texture;
+                                __instance.txrCassette = Assets.ApProgressionSprite.texture;
                             }
                             else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.NeverExclude))
                             {
-                                __instance.txrCassette = Plugin.ApUsefulSprite.texture;
+                                __instance.txrCassette = Assets.ApUsefulSprite.texture;
                             }
                             else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.Trap))
                             {
                                 var trapTextures = new[]
                                 {
-                                    Plugin.ApTrapSprite.texture,
-                                    Plugin.ApTrap2Sprite.texture,
-                                    Plugin.ApTrap3Sprite.texture
+                                    Assets.ApTrapSprite.texture,
+                                    Assets.ApTrap2Sprite.texture,
+                                    Assets.ApTrap3Sprite.texture
                                 };
                                 var randomIndex = Random.Range(0, trapTextures.Length);
                                 __instance.txrCassette = trapTextures[randomIndex];
                             }
                             else if (ArchipelagoClient.ScoutedLocations[index + offset].Flags.HasFlag(ItemFlags.None))
                             {
-                                __instance.txrCassette = Plugin.ApFillerSprite.texture;
+                                __instance.txrCassette = Assets.ApFillerSprite.texture;
                             }
 
                             break;
@@ -416,74 +416,74 @@ public class APItemObtainer
                 else
                     __instance.txrCassette = ArchipelagoClient.ScoutedLocations[index + offset].ItemId switch
                     {
-                        ItemID.Coin => TextureAndDisplayer(Plugin.CoinSprite.texture, __instance, "Coin"),
-                        ItemID.Cassette => TextureAndDisplayer(Plugin.CassetteSprite.texture, __instance, "Cassette"), 
-                        ItemID.Key => TextureAndDisplayer(Plugin.KeySprite.texture, __instance, "Key"),
-                        ItemID.Apples => TextureAndDisplayer(Plugin.ApplesSprite.texture, __instance, "Apples"),
-                        ItemID.Bugs => TextureAndDisplayer(Plugin.BugsSprite.texture, __instance, "Bugs"),
-                        ItemID.SnailMoney => TextureAndDisplayer(Plugin.SnailMoneySprite.texture, __instance),
-                        ItemID.ContactList1 or ItemID.ContactList2 or ItemID.ProgressiveContactList => TextureAndDisplayer(Plugin.ContactListSprite.texture, __instance, "Ticket"),
-                        ItemID.HairballCityTicket => TextureAndDisplayer(Plugin.HcSprite.texture, __instance, "Ticket"),
-                        ItemID.TurbineTownTicket => TextureAndDisplayer(Plugin.TtSprite.texture, __instance, "Ticket"),
-                        ItemID.SalmonCreekForestTicket => TextureAndDisplayer(Plugin.SfcSprite.texture, __instance, "Ticket"),
-                        ItemID.PublicPoolTicket => TextureAndDisplayer(Plugin.PpSprite.texture, __instance, "Ticket"),
-                        ItemID.BathhouseTicket => TextureAndDisplayer(Plugin.BathSprite.texture, __instance, "Ticket"),
-                        ItemID.TadpoleHqTicket => TextureAndDisplayer(Plugin.HqSprite.texture, __instance, "Ticket"),
-                        ItemID.GarysGardenTicket => TextureAndDisplayer(Plugin.GgSprite.texture, __instance, "Ticket"),
-                        ItemID.SuperJump => TextureAndDisplayer(Plugin.SuperJumpSprite.texture, __instance),
-                        ItemID.HairballCityFish => TextureAndDisplayer(Plugin.HairballFishSprite.texture, __instance),
-                        ItemID.TurbineTownFish => TextureAndDisplayer(Plugin.TurbineFishSprite.texture, __instance),
-                        ItemID.SalmonCreekForestFish => TextureAndDisplayer(Plugin.SalmonFishSprite.texture, __instance),
-                        ItemID.PublicPoolFish => TextureAndDisplayer(Plugin.PoolFishSprite.texture, __instance),
-                        ItemID.BathhouseFish => TextureAndDisplayer(Plugin.BathFishSprite.texture, __instance),
-                        ItemID.TadpoleHqFish => TextureAndDisplayer(Plugin.TadpoleFishSprite.texture, __instance),
-                        ItemID.HairballCityKey => TextureAndDisplayer(Plugin.HairballKeySprite.texture, __instance),
-                        ItemID.TurbineTownKey => TextureAndDisplayer(Plugin.TurbineKeySprite.texture, __instance),
-                        ItemID.SalmonCreekForestKey => TextureAndDisplayer(Plugin.SalmonKeySprite.texture, __instance),
-                        ItemID.PublicPoolKey => TextureAndDisplayer(Plugin.PoolKeySprite.texture, __instance),
-                        ItemID.BathhouseKey => TextureAndDisplayer(Plugin.BathKeySprite.texture, __instance),
-                        ItemID.TadpoleHqKey => TextureAndDisplayer(Plugin.TadpoleKeySprite.texture, __instance),
-                        ItemID.HairballCityFlower => TextureAndDisplayer(Plugin.HairballFlowerSprite.texture, __instance),
-                        ItemID.TurbineTownFlower => TextureAndDisplayer(Plugin.TurbineFlowerSprite.texture, __instance),
-                        ItemID.SalmonCreekForestFlower => TextureAndDisplayer(Plugin.SalmonFlowerSprite.texture, __instance),
-                        ItemID.PublicPoolFlower => TextureAndDisplayer(Plugin.PoolFlowerSprite.texture, __instance),
-                        ItemID.BathhouseFlower => TextureAndDisplayer(Plugin.BathFlowerSprite.texture, __instance),
-                        ItemID.TadpoleHqFlower => TextureAndDisplayer(Plugin.TadpoleFlowerSprite.texture, __instance),
-                        ItemID.HairballCityCassette => TextureAndDisplayer(Plugin.HairballCassetteSprite.texture, __instance),
-                        ItemID.TurbineTownCassette => TextureAndDisplayer(Plugin.TurbineCassetteSprite.texture, __instance),
-                        ItemID.SalmonCreekForestCassette => TextureAndDisplayer(Plugin.SalmonCassetteSprite.texture, __instance),
-                        ItemID.PublicPoolCassette => TextureAndDisplayer(Plugin.PoolCassetteSprite.texture, __instance),
-                        ItemID.BathhouseCassette => TextureAndDisplayer(Plugin.BathCassetteSprite.texture, __instance),
-                        ItemID.TadpoleHqCassette => TextureAndDisplayer(Plugin.TadpoleCassetteSprite.texture, __instance),
-                        ItemID.HairballCitySeed => TextureAndDisplayer(Plugin.HairballSeedSprite.texture, __instance),
-                        ItemID.SalmonCreekForestSeed => TextureAndDisplayer(Plugin.SalmonSeedSprite.texture, __instance),
-                        ItemID.BathhouseSeed => TextureAndDisplayer(Plugin.BathSeedSprite.texture, __instance),
-                        ItemID.SpeedBoost => TextureAndDisplayer(Plugin.SpeedBoostSprite.texture, __instance),
-                        ItemID.WhoopsTrap => TextureAndDisplayer(Plugin.WhoopsTrapSprite.texture, __instance),
-                        ItemID.IronBootsTrap => TextureAndDisplayer(Plugin.IronBootsTrapSprite.texture, __instance),
-                        ItemID.MyTurnTrap => TextureAndDisplayer(Plugin.MyTurnTrapSprite.texture, __instance),
-                        ItemID.FreezeTrap => TextureAndDisplayer(Plugin.FreezeTrapSprite.texture, __instance),
-                        ItemID.HomeTrap => TextureAndDisplayer(Plugin.HomeTrapSprite.texture, __instance),
-                        ItemID.WideTrap => TextureAndDisplayer(Plugin.WideTrapSprite.texture, __instance),
-                        ItemID.PhoneTrap => TextureAndDisplayer(Plugin.PhoneCallTrapSprite.texture, __instance),
-                        ItemID.TinyTrap => TextureAndDisplayer(Plugin.TinyTrapSprite.texture, __instance),
-                        ItemID.GravityTrap => TextureAndDisplayer(Plugin.GravityTrapSprite.texture, __instance),
-                        ItemID.PartyInvitation => TextureAndDisplayer(Plugin.PartyTicketSprite.texture, __instance),
-                        ItemID.SafetyHelmet => TextureAndDisplayer(Plugin.BonkHelmetSprite.texture, __instance),
-                        ItemID.BugNet => TextureAndDisplayer(Plugin.BugNetSprite.texture, __instance),
-                        ItemID.SodaRepair => TextureAndDisplayer(Plugin.SodaRepairSprite.texture, __instance),
-                        ItemID.ParasolRepair => TextureAndDisplayer(Plugin.ParasolRepairSprite.texture, __instance),
-                        ItemID.SwimCourse => TextureAndDisplayer(Plugin.SwimCourseSprite.texture, __instance),
-                        ItemID.Textbox => TextureAndDisplayer(Plugin.TextboxItemSprite.texture, __instance),
-                        ItemID.AcRepair => TextureAndDisplayer(Plugin.ACRepairSprite.texture, __instance),
-                        ItemID.AppleBasket => TextureAndDisplayer(Plugin.AppleBasketSprite.texture, __instance),
-                        ItemID.HairballCityBone => TextureAndDisplayer(Plugin.HairballBoneSprite.texture, __instance),
-                        ItemID.TurbineTownBone => TextureAndDisplayer(Plugin.TurbineBoneSprite.texture, __instance),
-                        ItemID.SalmonCreekForestBone => TextureAndDisplayer(Plugin.SalmonBoneSprite.texture, __instance),
-                        ItemID.PublicPoolBone => TextureAndDisplayer(Plugin.PoolBoneSprite.texture, __instance),
-                        ItemID.BathhouseBone => TextureAndDisplayer(Plugin.BathBoneSprite.texture, __instance),
-                        ItemID.TadpoleHqBone => TextureAndDisplayer(Plugin.TadpoleBoneSprite.texture, __instance),
-                        _ => Plugin.APIconSprite.texture
+                        ItemID.Coin => TextureAndDisplayer(Assets.CoinSprite.texture, __instance, "Coin"),
+                        ItemID.Cassette => TextureAndDisplayer(Assets.CassetteSprite.texture, __instance, "Cassette"), 
+                        ItemID.Key => TextureAndDisplayer(Assets.KeySprite.texture, __instance, "Key"),
+                        ItemID.Apples => TextureAndDisplayer(Assets.ApplesSprite.texture, __instance, "Apples"),
+                        ItemID.Bugs => TextureAndDisplayer(Assets.BugsSprite.texture, __instance, "Bugs"),
+                        ItemID.SnailMoney => TextureAndDisplayer(Assets.SnailMoneySprite.texture, __instance),
+                        ItemID.ContactList1 or ItemID.ContactList2 or ItemID.ProgressiveContactList => TextureAndDisplayer(Assets.ContactListSprite.texture, __instance, "Ticket"),
+                        ItemID.HairballCityTicket => TextureAndDisplayer(Assets.HcSprite.texture, __instance, "Ticket"),
+                        ItemID.TurbineTownTicket => TextureAndDisplayer(Assets.TtSprite.texture, __instance, "Ticket"),
+                        ItemID.SalmonCreekForestTicket => TextureAndDisplayer(Assets.SfcSprite.texture, __instance, "Ticket"),
+                        ItemID.PublicPoolTicket => TextureAndDisplayer(Assets.PpSprite.texture, __instance, "Ticket"),
+                        ItemID.BathhouseTicket => TextureAndDisplayer(Assets.BathSprite.texture, __instance, "Ticket"),
+                        ItemID.TadpoleHqTicket => TextureAndDisplayer(Assets.HqSprite.texture, __instance, "Ticket"),
+                        ItemID.GarysGardenTicket => TextureAndDisplayer(Assets.GgSprite.texture, __instance, "Ticket"),
+                        ItemID.SuperJump => TextureAndDisplayer(Assets.SuperJumpSprite.texture, __instance),
+                        ItemID.HairballCityFish => TextureAndDisplayer(Assets.HairballFishSprite.texture, __instance),
+                        ItemID.TurbineTownFish => TextureAndDisplayer(Assets.TurbineFishSprite.texture, __instance),
+                        ItemID.SalmonCreekForestFish => TextureAndDisplayer(Assets.SalmonFishSprite.texture, __instance),
+                        ItemID.PublicPoolFish => TextureAndDisplayer(Assets.PoolFishSprite.texture, __instance),
+                        ItemID.BathhouseFish => TextureAndDisplayer(Assets.BathFishSprite.texture, __instance),
+                        ItemID.TadpoleHqFish => TextureAndDisplayer(Assets.TadpoleFishSprite.texture, __instance),
+                        ItemID.HairballCityKey => TextureAndDisplayer(Assets.HairballKeySprite.texture, __instance),
+                        ItemID.TurbineTownKey => TextureAndDisplayer(Assets.TurbineKeySprite.texture, __instance),
+                        ItemID.SalmonCreekForestKey => TextureAndDisplayer(Assets.SalmonKeySprite.texture, __instance),
+                        ItemID.PublicPoolKey => TextureAndDisplayer(Assets.PoolKeySprite.texture, __instance),
+                        ItemID.BathhouseKey => TextureAndDisplayer(Assets.BathKeySprite.texture, __instance),
+                        ItemID.TadpoleHqKey => TextureAndDisplayer(Assets.TadpoleKeySprite.texture, __instance),
+                        ItemID.HairballCityFlower => TextureAndDisplayer(Assets.HairballFlowerSprite.texture, __instance),
+                        ItemID.TurbineTownFlower => TextureAndDisplayer(Assets.TurbineFlowerSprite.texture, __instance),
+                        ItemID.SalmonCreekForestFlower => TextureAndDisplayer(Assets.SalmonFlowerSprite.texture, __instance),
+                        ItemID.PublicPoolFlower => TextureAndDisplayer(Assets.PoolFlowerSprite.texture, __instance),
+                        ItemID.BathhouseFlower => TextureAndDisplayer(Assets.BathFlowerSprite.texture, __instance),
+                        ItemID.TadpoleHqFlower => TextureAndDisplayer(Assets.TadpoleFlowerSprite.texture, __instance),
+                        ItemID.HairballCityCassette => TextureAndDisplayer(Assets.HairballCassetteSprite.texture, __instance),
+                        ItemID.TurbineTownCassette => TextureAndDisplayer(Assets.TurbineCassetteSprite.texture, __instance),
+                        ItemID.SalmonCreekForestCassette => TextureAndDisplayer(Assets.SalmonCassetteSprite.texture, __instance),
+                        ItemID.PublicPoolCassette => TextureAndDisplayer(Assets.PoolCassetteSprite.texture, __instance),
+                        ItemID.BathhouseCassette => TextureAndDisplayer(Assets.BathCassetteSprite.texture, __instance),
+                        ItemID.TadpoleHqCassette => TextureAndDisplayer(Assets.TadpoleCassetteSprite.texture, __instance),
+                        ItemID.HairballCitySeed => TextureAndDisplayer(Assets.HairballSeedSprite.texture, __instance),
+                        ItemID.SalmonCreekForestSeed => TextureAndDisplayer(Assets.SalmonSeedSprite.texture, __instance),
+                        ItemID.BathhouseSeed => TextureAndDisplayer(Assets.BathSeedSprite.texture, __instance),
+                        ItemID.SpeedBoost => TextureAndDisplayer(Assets.SpeedBoostSprite.texture, __instance),
+                        ItemID.WhoopsTrap => TextureAndDisplayer(Assets.WhoopsTrapSprite.texture, __instance),
+                        ItemID.IronBootsTrap => TextureAndDisplayer(Assets.IronBootsTrapSprite.texture, __instance),
+                        ItemID.MyTurnTrap => TextureAndDisplayer(Assets.MyTurnTrapSprite.texture, __instance),
+                        ItemID.FreezeTrap => TextureAndDisplayer(Assets.FreezeTrapSprite.texture, __instance),
+                        ItemID.HomeTrap => TextureAndDisplayer(Assets.HomeTrapSprite.texture, __instance),
+                        ItemID.WideTrap => TextureAndDisplayer(Assets.WideTrapSprite.texture, __instance),
+                        ItemID.PhoneTrap => TextureAndDisplayer(Assets.PhoneCallTrapSprite.texture, __instance),
+                        ItemID.TinyTrap => TextureAndDisplayer(Assets.TinyTrapSprite.texture, __instance),
+                        ItemID.GravityTrap => TextureAndDisplayer(Assets.GravityTrapSprite.texture, __instance),
+                        ItemID.PartyInvitation => TextureAndDisplayer(Assets.PartyTicketSprite.texture, __instance),
+                        ItemID.SafetyHelmet => TextureAndDisplayer(Assets.BonkHelmetSprite.texture, __instance),
+                        ItemID.BugNet => TextureAndDisplayer(Assets.BugNetSprite.texture, __instance),
+                        ItemID.SodaRepair => TextureAndDisplayer(Assets.SodaRepairSprite.texture, __instance),
+                        ItemID.ParasolRepair => TextureAndDisplayer(Assets.ParasolRepairSprite.texture, __instance),
+                        ItemID.SwimCourse => TextureAndDisplayer(Assets.SwimCourseSprite.texture, __instance),
+                        ItemID.Textbox => TextureAndDisplayer(Assets.TextboxItemSprite.texture, __instance),
+                        ItemID.AcRepair => TextureAndDisplayer(Assets.ACRepairSprite.texture, __instance),
+                        ItemID.AppleBasket => TextureAndDisplayer(Assets.AppleBasketSprite.texture, __instance),
+                        ItemID.HairballCityBone => TextureAndDisplayer(Assets.HairballBoneSprite.texture, __instance),
+                        ItemID.TurbineTownBone => TextureAndDisplayer(Assets.TurbineBoneSprite.texture, __instance),
+                        ItemID.SalmonCreekForestBone => TextureAndDisplayer(Assets.SalmonBoneSprite.texture, __instance),
+                        ItemID.PublicPoolBone => TextureAndDisplayer(Assets.PoolBoneSprite.texture, __instance),
+                        ItemID.BathhouseBone => TextureAndDisplayer(Assets.BathBoneSprite.texture, __instance),
+                        ItemID.TadpoleHqBone => TextureAndDisplayer(Assets.TadpoleBoneSprite.texture, __instance),
+                        _ => Assets.APIconSprite.texture
                     };
             }
             Plugin.BepinLogger.LogInfo("Index: " + index + ", Offset: " + offset);

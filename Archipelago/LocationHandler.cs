@@ -200,7 +200,7 @@ public class LocationHandler : MonoBehaviour
             ArchipelagoClient.SendCompletion();
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "YOU'RE HIRED! (Completed Goal)";
-            achievement.icon = Plugin.GoalBadSprite;
+            achievement.icon = Assets.GoalBadSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             AchievementPopup.instance.UIhider.Show(10f);
@@ -214,7 +214,7 @@ public class LocationHandler : MonoBehaviour
                 ArchipelagoClient.SendCompletion();
                 var achievement = ScriptableObject.CreateInstance<AchievementObject>();
                 achievement.nameKey = "BEST EMPLOYEE (Completed Goal)";
-                achievement.icon = Plugin.EmployeeSprite;
+                achievement.icon = Assets.EmployeeSprite;
                 AchievementPopup.instance.PopupAchievement(achievement);
                 AchievementPopup.instance.nameMesh.text = achievement.nameKey;
                 AchievementPopup.instance.UIhider.Show(10f);
@@ -229,7 +229,7 @@ public class LocationHandler : MonoBehaviour
                 ArchipelagoClient.SendCompletion();
                 var achievement = ScriptableObject.CreateInstance<AchievementObject>();
                 achievement.nameKey = "COIN COLLECTOR! (Completed Goal)";
-                achievement.icon = Plugin.GoalBadSprite;
+                achievement.icon = Assets.GoalBadSprite;
                 AchievementPopup.instance.PopupAchievement(achievement);
                 AchievementPopup.instance.nameMesh.text = achievement.nameKey;
                 AchievementPopup.instance.UIhider.Show(10f);

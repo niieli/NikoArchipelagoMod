@@ -16,7 +16,7 @@ public class DeathAmnesty : MonoBehaviour
     private static float _timer;
     private static bool _playerTouchedHazard;
     private static Hazard _lastHazard;
-    private static readonly GameObject Popup = Plugin.DeathLinkPopup;
+    private static readonly GameObject Popup = Assets.DeathLinkPopup;
 
     private enum Hazard
     {
@@ -40,6 +40,7 @@ public class DeathAmnesty : MonoBehaviour
         if (DeathCounterInt >= ArchipelagoData.Options.DeathLinkAmnesty)
         {
             SendDeath();
+            return;
         }
         
         IsTouchingWater();

@@ -44,7 +44,7 @@ public class Bonesanity
 
             if (!GameObjectChecker.CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
             {
-                GameObject prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
+                GameObject prefab = Assets.AssetBundle.LoadAsset<GameObject>(prefabName);
                 if (prefab == null)
                 {
                     if (Plugin.DebugMode)

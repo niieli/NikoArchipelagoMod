@@ -297,7 +297,7 @@ public class GameObjectChecker : MonoBehaviour
         {
             var titleScreen = GameObject.Find("Title Screen");
             if (titleScreen == null) return;
-            titleScreen.GetComponent<Image>().sprite = Plugin.APLogoSprite;
+            titleScreen.GetComponent<Image>().sprite = Assets.APLogoSprite;
             var actionScreen = GameObject.Find("ActionButton Title Screen");
             var textRef = actionScreen.transform.Find("text").GetComponent<TextMeshProUGUI>();
             FirstTimeNotice.TitleScreen = actionScreen;
@@ -316,7 +316,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void InstantiateAPMenu()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var apUIGameObject = Plugin.ChristmasEvent ? Plugin.AssetBundleXmas.LoadAsset<GameObject>("APMenuXmasTheme") : Plugin.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
+        var apUIGameObject = Plugin.ChristmasEvent ? Assets.AssetBundleXmas.LoadAsset<GameObject>("APMenuXmasTheme") : Assets.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
         APMenu = Instantiate(apUIGameObject, GameObject.Find("UI").transform, false);
         if (APMenu == null)
         {
@@ -343,7 +343,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void TrackerTicket()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var apTrackerUI = Plugin.AssetBundle.LoadAsset<GameObject>("APTrackerTicket");
+        var apTrackerUI = Assets.AssetBundle.LoadAsset<GameObject>("APTrackerTicket");
         var ticketPrefab = Instantiate(apTrackerUI, GameObject.Find("UI").transform, false);
         if (ticketPrefab == null)
         {
@@ -370,7 +370,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void TrackerKiosk()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var apTrackerUI = Plugin.AssetBundle.LoadAsset<GameObject>("APTrackerKiosk");
+        var apTrackerUI = Assets.AssetBundle.LoadAsset<GameObject>("APTrackerKiosk");
         var kioskPrefab = Instantiate(apTrackerUI, GameObject.Find("UI").transform, false);
         if (kioskPrefab == null)
         {
@@ -423,16 +423,16 @@ public class GameObjectChecker : MonoBehaviour
     private static void Statistics()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var mapStatsApples = Plugin.AssetBundle.LoadAsset<GameObject>("Statsapples");
-        var mapStatsFish = Plugin.AssetBundle.LoadAsset<GameObject>("Statsfish");
-        var mapStatsFlowers = Plugin.AssetBundle.LoadAsset<GameObject>("Statsflowers");
-        var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("Statsseeds");
-        var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("Statslocations");
-        var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("Statssnailshop");
-        var mapStatschatsanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statschatsanity");
-        var mapStatsbugsanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statsbugsanity");
-        var mapStatsbonesanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statsbonesanity");
-        var mapStatsthoughtsanity = Plugin.AssetBundle.LoadAsset<GameObject>("Statsthoughtsanity");
+        var mapStatsApples = Assets.AssetBundle.LoadAsset<GameObject>("Statsapples");
+        var mapStatsFish = Assets.AssetBundle.LoadAsset<GameObject>("Statsfish");
+        var mapStatsFlowers = Assets.AssetBundle.LoadAsset<GameObject>("Statsflowers");
+        var mapStatsSeeds = Assets.AssetBundle.LoadAsset<GameObject>("Statsseeds");
+        var mapStatsLocations = Assets.AssetBundle.LoadAsset<GameObject>("Statslocations");
+        var mapStatsSnailShop = Assets.AssetBundle.LoadAsset<GameObject>("Statssnailshop");
+        var mapStatschatsanity = Assets.AssetBundle.LoadAsset<GameObject>("Statschatsanity");
+        var mapStatsbugsanity = Assets.AssetBundle.LoadAsset<GameObject>("Statsbugsanity");
+        var mapStatsbonesanity = Assets.AssetBundle.LoadAsset<GameObject>("Statsbonesanity");
+        var mapStatsthoughtsanity = Assets.AssetBundle.LoadAsset<GameObject>("Statsthoughtsanity");
         var apples = Instantiate(mapStatsApples, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFish, GameObject.Find("Statistics").transform, false);
         Instantiate(mapStatsFlowers, GameObject.Find("Statistics").transform, false);
@@ -457,16 +457,16 @@ public class GameObjectChecker : MonoBehaviour
     {
         if (!ArchipelagoClient.IsValidScene()) return;
         if (GameObject.Find("Pepper/Whiteboard/Canvas/Statistics") == null) return;
-        var mapStatsApples = Plugin.AssetBundle.LoadAsset<GameObject>("StatsapplesBoard");
-        var mapStatsFish = Plugin.AssetBundle.LoadAsset<GameObject>("StatsfishBoard");
-        var mapStatsFlowers = Plugin.AssetBundle.LoadAsset<GameObject>("StatsflowersBoard");
-        var mapStatsSeeds = Plugin.AssetBundle.LoadAsset<GameObject>("StatsseedsBoard");
-        var mapStatsLocations = Plugin.AssetBundle.LoadAsset<GameObject>("StatslocationsBoard");
-        var mapStatsSnailShop = Plugin.AssetBundle.LoadAsset<GameObject>("StatssnailshopBoard");
-        var mapStatschatsanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatschatsanityBoard");
-        var mapStatsbugsanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatsbugsanityBoard");
-        var mapStatsbonesanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatsbonesanityBoard");
-        var mapStatsthoughtsanity = Plugin.AssetBundle.LoadAsset<GameObject>("StatsthoughtsanityBoard");
+        var mapStatsApples = Assets.AssetBundle.LoadAsset<GameObject>("StatsapplesBoard");
+        var mapStatsFish = Assets.AssetBundle.LoadAsset<GameObject>("StatsfishBoard");
+        var mapStatsFlowers = Assets.AssetBundle.LoadAsset<GameObject>("StatsflowersBoard");
+        var mapStatsSeeds = Assets.AssetBundle.LoadAsset<GameObject>("StatsseedsBoard");
+        var mapStatsLocations = Assets.AssetBundle.LoadAsset<GameObject>("StatslocationsBoard");
+        var mapStatsSnailShop = Assets.AssetBundle.LoadAsset<GameObject>("StatssnailshopBoard");
+        var mapStatschatsanity = Assets.AssetBundle.LoadAsset<GameObject>("StatschatsanityBoard");
+        var mapStatsbugsanity = Assets.AssetBundle.LoadAsset<GameObject>("StatsbugsanityBoard");
+        var mapStatsbonesanity = Assets.AssetBundle.LoadAsset<GameObject>("StatsbonesanityBoard");
+        var mapStatsthoughtsanity = Assets.AssetBundle.LoadAsset<GameObject>("StatsthoughtsanityBoard");
         var apple = Instantiate(mapStatsApples, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var fish = Instantiate(mapStatsFish, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
         var flower = Instantiate(mapStatsFlowers, GameObject.Find("Pepper/Whiteboard/Canvas/Statistics").transform, false);
@@ -535,8 +535,8 @@ public class GameObjectChecker : MonoBehaviour
     private static void APArrowTracker()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var apArrow = Plugin.AssetBundle.LoadAsset<GameObject>("Arrow");
-        var arrowUI = Plugin.AssetBundle.LoadAsset<GameObject>("ArrowUI");
+        var apArrow = Assets.AssetBundle.LoadAsset<GameObject>("Arrow");
+        var arrowUI = Assets.AssetBundle.LoadAsset<GameObject>("ArrowUI");
         var player = GameObject.Find("PlayerCharacter");
         var arrowPrefab = Instantiate(apArrow, player.transform.Find("CharacterController"), false);
         var arrowUIPrefab = Instantiate(arrowUI, GameObject.Find("UI").transform, false);
@@ -590,7 +590,7 @@ public class GameObjectChecker : MonoBehaviour
         if (ArchipelagoData.slotData == null) return;
         if (Plugin.Compatibility) return;
         if (SceneManager.GetActiveScene().name != "Home" || _spawned) return;
-        var gary = Plugin.AssetBundle.LoadAsset<GameObject>("Gary");
+        var gary = Assets.AssetBundle.LoadAsset<GameObject>("Gary");
         _garyGhostHome = Instantiate(gary, GameObject.Find("Pre Party").transform, false);
         _garyGhostHome.transform.position = new Vector3((float)-7.9545, (float)2.0436, (float)-2.8);
         _garyGhostHome.transform.localScale = new Vector3((float)0.3091, (float)0.34, (float)-1.6218);
@@ -695,7 +695,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Hairball City")
         {
             Plugin.APSendNote("You gathered all fish from Hairball City! Come get your reward!", 6.5f,
-                Plugin.FischerNoteSprite);
+                Assets.FischerNoteSprite);
             _sentNote10 = true;
         }
 
@@ -704,7 +704,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Trash Kingdom")
         {
             Plugin.APSendNote("You gathered all fish from Turbine Town! Come get your reward!", 6.5f,
-                Plugin.FischerNoteSprite);
+                Assets.FischerNoteSprite);
             _sentNote11 = true;
         }
 
@@ -714,7 +714,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Salmon Creek Forest")
         {
             Plugin.APSendNote("You gathered all fish from Salmon Creek Forest! Come get your reward!", 6.5f,
-                Plugin.FischerNoteSprite);
+                Assets.FischerNoteSprite);
             _sentNote12 = true;
         }
 
@@ -723,7 +723,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Public Pool")
         {
             Plugin.APSendNote("You gathered all fish from Public Pool! Come get your reward!", 6.5f,
-                Plugin.FischerNoteSprite);
+                Assets.FischerNoteSprite);
             _sentNote13 = true;
         }
 
@@ -733,7 +733,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "The Bathhouse")
         {
             Plugin.APSendNote("You gathered all fish from Bathhouse! Come get your reward!", 6.5f,
-                Plugin.FischerNoteSprite);
+                Assets.FischerNoteSprite);
             _sentNote14 = true;
         }
 
@@ -742,7 +742,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Tadpole inc")
         {
             Plugin.APSendNote("You gathered all fish from Tadpole HQ! Come get your reward!", 6.5f,
-                Plugin.FischerNoteSprite);
+                Assets.FischerNoteSprite);
             _sentNote15 = true;
         }
 
@@ -751,7 +751,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Hairball City")
         {
             Plugin.APSendNote("You gathered all flowers from Hairball City! Come get your reward!", 6.5f,
-                Plugin.GabiNoteSprite);
+                Assets.GabiNoteSprite);
             _sentNote4 = true;
         }
 
@@ -760,7 +760,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Trash Kingdom")
         {
             Plugin.APSendNote("You gathered all flowers from Turbine Town! Come get your reward!", 6.5f,
-                Plugin.GabiNoteSprite);
+                Assets.GabiNoteSprite);
             _sentNote5 = true;
         }
 
@@ -769,7 +769,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Salmon Creek Forest")
         {
             Plugin.APSendNote("You gathered all flowers from Salmon Creek Forest! Come get your reward!", 6.5f,
-                Plugin.GabiNoteSprite);
+                Assets.GabiNoteSprite);
             _sentNote6 = true;
         }
 
@@ -779,7 +779,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Public Pool")
         {
             Plugin.APSendNote("You gathered all flowers from Public Pool! Come get your reward!", 6.5f,
-                Plugin.GabiNoteSprite);
+                Assets.GabiNoteSprite);
             _sentNote7 = true;
         }
 
@@ -789,7 +789,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "The Bathhouse")
         {
             Plugin.APSendNote("You gathered all flowers from Bathhouse! Come get your reward!", 6.5f,
-                Plugin.GabiNoteSprite);
+                Assets.GabiNoteSprite);
             _sentNote8 = true;
         }
 
@@ -798,7 +798,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Tadpole inc")
         {
             Plugin.APSendNote("You gathered all flowers from Tadpole HQ! Come get your reward!", 6.5f,
-                Plugin.GabiNoteSprite);
+                Assets.GabiNoteSprite);
             _sentNote9 = true;
         }
 
@@ -808,7 +808,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Hairball City")
         {
             Plugin.APSendNote("You gathered all 10 Seeds from Hairball City! Come get your reward!", 6.5f,
-                Plugin.MoomyNoteSprite);
+                Assets.MoomyNoteSprite);
             _sentNote = true;
         }
 
@@ -817,7 +817,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "Salmon Creek Forest")
         {
             Plugin.APSendNote("You gathered all 10 Seeds from Salmon Creek Forest! Come get your reward!", 6.5f,
-                Plugin.MoomyNoteSprite);
+                Assets.MoomyNoteSprite);
             _sentNote2 = true;
         }
 
@@ -826,7 +826,7 @@ public class GameObjectChecker : MonoBehaviour
             && SceneManager.GetActiveScene().name != "The Bathhouse")
         {
             Plugin.APSendNote("You gathered all 10 Seeds from Bathhouse! Come get your reward!", 6.5f,
-                Plugin.MoomyNoteSprite);
+                Assets.MoomyNoteSprite);
             _sentNote3 = true;
         }
     }
@@ -894,7 +894,7 @@ public class GameObjectChecker : MonoBehaviour
     
     private static void SpawnWarningNotice()
     {
-        var apUpdateNoticePrefab = Plugin.AssetBundle.LoadAsset<GameObject>("APWarningNotice");
+        var apUpdateNoticePrefab = Assets.AssetBundle.LoadAsset<GameObject>("APWarningNotice");
         WarningNotice = Instantiate(apUpdateNoticePrefab, GameObject.Find("UI").transform, false);
         if (WarningNotice == null)
         {
@@ -1019,7 +1019,7 @@ public class GameObjectChecker : MonoBehaviour
             var t = GameObject.Find("PlayerCamera");
             if (t != null && !_foundCamera)
             {
-                var asset = Plugin.AssetBundleXmas.LoadAsset<GameObject>("Snowflakes");
+                var asset = Assets.AssetBundleXmas.LoadAsset<GameObject>("Snowflakes");
                 var w = Instantiate(asset, t.transform, false);
                 w.AddComponent<StayOnScreen>();
                 _foundCamera = true;

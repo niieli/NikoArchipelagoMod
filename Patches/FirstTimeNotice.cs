@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using NikoArchipelago.Archipelago;
+using TMPro;
 using UnityEngine;
 
 namespace NikoArchipelago.Patches;
@@ -10,7 +11,7 @@ public class FirstTimeNotice
     public static void TitleScreenAPLogo()
     {
         if (TitleScreen == null) return;
-        var infoGameObject = Plugin.ChristmasEvent && !Plugin.NoXmasEvent ? Plugin.AssetBundleXmas.LoadAsset<GameObject>("FirstTimeInfoXmasTheme") : Plugin.AssetBundle.LoadAsset<GameObject>("FirstTimeInfo");
+        var infoGameObject = Plugin.ChristmasEvent && !Plugin.NoXmasEvent ? Assets.AssetBundleXmas.LoadAsset<GameObject>("FirstTimeInfoXmasTheme") : Assets.AssetBundle.LoadAsset<GameObject>("FirstTimeInfo");
         var notice = Object.Instantiate(infoGameObject, GameObject.Find("UI").transform, false);
         var wobble = notice.AddComponent<scrUIwobble>();
         if (!Plugin.loggedIn)

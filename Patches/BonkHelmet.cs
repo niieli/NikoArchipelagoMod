@@ -45,7 +45,7 @@ public class BonkHelmet
         private static IEnumerator BonkNotice()
         {
             if (NoticeUp || !SavedData.Instance.Notices) yield break;
-            var t = Object.Instantiate(Plugin.NoticeBonkHelmet, Plugin.NotifcationCanvas.transform);
+            var t = Object.Instantiate(Assets.NoticeBonkHelmet, Plugin.NotifcationCanvas.transform);
             NoticeUp = true;
             var time = 0f;
             while (time < 60f)

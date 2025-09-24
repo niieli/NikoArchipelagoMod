@@ -30,8 +30,8 @@ public class SodaCanPatch
             __instance.mesh.transform.Find("Mesh").gameObject.GetComponent<MeshRenderer>().material.color = new Color(0.25f, 0.25f, 0.25f, 0.85f);
             if (!__instance.transform.Find("Sparks(Clone)"))
             {
-                var sparks2 = Object.Instantiate(Plugin.SparksParticleSystem, __instance.transform, false);
-                var sparks = Object.Instantiate(Plugin.SparksParticleSystem, __instance.transform, false);
+                var sparks2 = Object.Instantiate(Assets.SparksParticleSystem, __instance.transform, false);
+                var sparks = Object.Instantiate(Assets.SparksParticleSystem, __instance.transform, false);
                 sparks.transform.position = __instance.mesh.transform.Find("Mesh").position;
                 sparks2.transform.position = __instance.mesh.transform.Find("Mesh").position;
                 var lights = sparks.GetComponent<ParticleSystem>().lights;
@@ -52,7 +52,7 @@ public class SodaCanPatch
         private static IEnumerator Notice()
         {
             if (NoticeUp || !SavedData.Instance.Notices) yield break;
-            var t = Object.Instantiate(Plugin.NoticeSodaCan, Plugin.NotifcationCanvas.transform);
+            var t = Object.Instantiate(Assets.NoticeSodaCan, Plugin.NotifcationCanvas.transform);
             NoticeUp = true;
             var time = 0f;
             while (time < 60f)

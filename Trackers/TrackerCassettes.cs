@@ -20,31 +20,31 @@ public class TrackerCassettes : MonoBehaviour
         switch (SceneManager.GetActiveScene().name)
         {
             case "Hairball City":
-                cassetteDisplayer.sprite = Plugin.HairballCassetteSprite;
+                cassetteDisplayer.sprite = Assets.HairballCassetteSprite;
                 //cassetteDisplayer.color = new Color(0f, 0.6196079f, 1f, 1f);
                 break;
             case "Trash Kingdom":
-                cassetteDisplayer.sprite = Plugin.TurbineCassetteSprite;
+                cassetteDisplayer.sprite = Assets.TurbineCassetteSprite;
                 //cassetteDisplayer.color = new Color(0.6705883f, 0.6705883f, 0.6705883f, 1f);
                 break;
             case "Salmon Creek Forest":
-                cassetteDisplayer.sprite = Plugin.SalmonCassetteSprite;
+                cassetteDisplayer.sprite = Assets.SalmonCassetteSprite;
                 //cassetteDisplayer.color = new Color(0.2117647f, 1f, 0f, 1f);
                 break;
             case "Public Pool":
-                cassetteDisplayer.sprite = Plugin.PoolCassetteSprite;
+                cassetteDisplayer.sprite = Assets.PoolCassetteSprite;
                 //cassetteDisplayer.color = new Color(0f, 1f, 1f, 1f);
                 break;
             case "The Bathhouse":
-                cassetteDisplayer.sprite = Plugin.BathCassetteSprite;
+                cassetteDisplayer.sprite = Assets.BathCassetteSprite;
                 //cassetteDisplayer.color = new Color(1f, 0f, 0f, 1f);
                 break;
             case "Tadpole inc":
-                cassetteDisplayer.sprite = Plugin.TadpoleCassetteSprite;
+                cassetteDisplayer.sprite = Assets.TadpoleCassetteSprite;
                 //cassetteDisplayer.color = new Color(0.6577053f, 1f, 0f, 1f);
                 break;
             case "GarysGarden":
-                cassetteDisplayer.sprite = Plugin.GardenCassetteSprite;
+                cassetteDisplayer.sprite = Assets.GardenCassetteSprite;
                 //cassetteDisplayer.color = new Color(1f, 0.5518868f, 0.8447619f, 1f);
                 break;
             default:

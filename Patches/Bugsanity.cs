@@ -212,7 +212,7 @@ public class Bugsanity
         private static IEnumerator ShowNotice()
         {
             if (NoticeUp || !SavedData.Instance.Notices) yield break;
-            var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
+            var t = Object.Instantiate(Assets.NoticeBugNet, Plugin.NotifcationCanvas.transform);
             NoticeUp = true;
             var time = 0f;
             while (time < 60f)
@@ -368,7 +368,7 @@ public class Bugsanity
         private static IEnumerator ShowNotice()
         {
             if (_noticeUp || !SavedData.Instance.Notices) yield break;
-            var t = Object.Instantiate(Plugin.NoticeBugNet, Plugin.NotifcationCanvas.transform);
+            var t = Object.Instantiate(Assets.NoticeBugNet, Plugin.NotifcationCanvas.transform);
             _noticeUp = true;
             var time = 0f;
             while (time < 60f)

@@ -68,7 +68,7 @@ public class ParasolPatch
         private static IEnumerator Notice()
         {
             if (NoticeUp || !SavedData.Instance.Notices) yield break;
-            var t = Object.Instantiate(Plugin.NoticeParasol, Plugin.NotifcationCanvas.transform);
+            var t = Object.Instantiate(Assets.NoticeParasol, Plugin.NotifcationCanvas.transform);
             NoticeUp = true;
             var time = 0f;
             while (time < 60f)

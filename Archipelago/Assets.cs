@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace NikoArchipelago.Archipelago;
 
@@ -144,15 +146,43 @@ public class Assets
         SalmonBoneSprite,
         PoolBoneSprite,
         BathBoneSprite,
-        TadpoleBoneSprite;
+        TadpoleBoneSprite,
+        HomeTextboxSprite,
+        HairballTextboxSprite,
+        TurbineTextboxSprite,
+        SalmonTextboxSprite,
+        PoolTextboxSprite,
+        BathTextboxSprite,
+        TadpoleTextboxSprite,
+        GardenTextboxSprite;
 
     public static Material ProgNotificationTexture,
         UsefulNotificationTexture,
         FillerNotificationTexture,
         TrapNotificationTexture;
 
+    private static void CheckForChristmas()
+    {
+        var now = DateTime.Now;
+        var currentYear = now.Month == 1 ? now.Year - 1 : now.Year;
+        var christmasTime = new DateTime(currentYear, 12, 25);
+        var startChrismas = christmasTime.AddDays(-24);
+        var endChrismas = christmasTime.AddDays(18);
+        if (DateTime.Now.Ticks > startChrismas.Ticks && DateTime.Now.Ticks < endChrismas.Ticks)
+        {
+            Plugin.ChristmasEvent = true;
+            Plugin.BepinLogger.LogInfo($"Christmas Event Active.");
+            AssetBundleXmas = AssetBundleLoader.LoadEmbeddedAssetBundle("apxmas");
+        }
+        else
+        {
+            Plugin.NoXmasEvent = true;
+        }
+    }
+    
     public static void AssignSprites()
     {
+        CheckForChristmas();
         AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets");
         if (AssetBundle == null) return;
         APSprite = AssetBundle.LoadAsset<Sprite>("apLogo");
@@ -294,6 +324,14 @@ public class Assets
         NoticeAppleBasket = AssetBundle.LoadAsset<GameObject>("NoticeAppleBasket");
         TrapFast = AssetBundle.LoadAsset<GameObject>("TrapFast");
         DeathLinkPopup = AssetBundle.LoadAsset<GameObject>("DeathLinkPopup");
+        HomeTextboxSprite = AssetBundle.LoadAsset<Sprite>("HomeTextboxItem");
+        HairballTextboxSprite = AssetBundle.LoadAsset<Sprite>("HairballTextboxItem");
+        TurbineTextboxSprite = AssetBundle.LoadAsset<Sprite>("TurbineTextboxItem");
+        SalmonTextboxSprite = AssetBundle.LoadAsset<Sprite>("SalmonTextboxItem");
+        PoolTextboxSprite = AssetBundle.LoadAsset<Sprite>("PoolTextboxItem");
+        BathTextboxSprite = AssetBundle.LoadAsset<Sprite>("BathTextboxItem");
+        TadpoleTextboxSprite = AssetBundle.LoadAsset<Sprite>("TadpoleTextboxItem");
+        GardenTextboxSprite = AssetBundle.LoadAsset<Sprite>("GardenTextboxItem");
     }
 
     public static readonly Dictionary<string, string> PrefabMapping = new()
@@ -369,7 +407,15 @@ public class Assets
         { "scfbone", "SalmonBone" },
         { "ppbone", "PoolBone" },
         { "bathbone", "BathBone" },
-        { "hqbone", "TadpoleBone" }
+        { "hqbone", "TadpoleBone" },
+        { "homeTextbox", "HomeTextbox" },
+        { "hcTextbox", "HairballTextbox" },
+        { "ttTextbox", "TurbineTextbox" },
+        { "scfTextbox", "SalmonTextbox" },
+        { "ppTextbox", "PoolTextbox" },
+        { "bathTextbox", "BathTextbox" },
+        { "hqTextbox", "TadpoleTextbox" },
+        { "ggTextbox", "GardenTextbox" },
     };
 
     private static readonly List<string> _progItems =
@@ -427,7 +473,15 @@ public class Assets
         "scfbone",
         "ppbone",
         "bathbone",
-        "hqbone"
+        "hqbone",
+        "homeTextbox",
+        "hcTextbox",
+        "ttTextbox",
+        "scfTextbox",
+        "ppTextbox",
+        "bathTextbox",
+        "hqTextbox",
+        "ggTextbox",
     ];
 
     public static string RandomProgTrap()
@@ -501,7 +555,8 @@ public class Assets
                 "Absolutely NOT a trap",
                 "A MUST PICK UP!",
                 "loved among collector's... hehe",
-                "a very funny item"
+                "a very funny item",
+                "needed for 100% completion!"
             };
             var randomIndex = Random.Range(0, trapStrings.Length);
             classification = trapStrings[randomIndex];
@@ -592,6 +647,14 @@ public class Assets
             ItemID.PublicPoolBone => PoolBoneSprite,
             ItemID.BathhouseBone => BathBoneSprite,
             ItemID.TadpoleHqBone => TadpoleBoneSprite,
+            ItemID.HomeTextbox => HomeTextboxSprite,
+            ItemID.HairballCityTextbox => HairballTextboxSprite,
+            ItemID.TurbineTownTextbox => TurbineTextboxSprite,
+            ItemID.SalmonCreekForestTextbox => SalmonTextboxSprite,
+            ItemID.PublicPoolTextbox => PoolTextboxSprite,
+            ItemID.BathhouseTextbox => BathTextboxSprite,
+            ItemID.TadpoleHqTextbox => TadpoleTextboxSprite,
+            ItemID.GarysGardenTextbox => GardenTextboxSprite,
             _ => ApProgressionSprite
         };
         return sprite;

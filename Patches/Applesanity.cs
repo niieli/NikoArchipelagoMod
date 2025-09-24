@@ -251,7 +251,7 @@ public class Applesanity
         private static IEnumerator ShowNotice()
         {
             if (NoticeUp || !SavedData.Instance.Notices) yield break;
-            var t = Object.Instantiate(Plugin.NoticeAppleBasket, Plugin.NotifcationCanvas.transform);
+            var t = Object.Instantiate(Assets.NoticeAppleBasket, Plugin.NotifcationCanvas.transform);
             NoticeUp = true;
             var time = 0f;
             while (time < 60f)

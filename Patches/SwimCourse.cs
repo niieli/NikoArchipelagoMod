@@ -20,7 +20,7 @@ public class SwimCourse : MonoBehaviour
     private IEnumerator Notice()
     {
         if (NoticeUp || !SavedData.Instance.Notices) yield break;
-        var t = Instantiate(Plugin.NoticeSwimCourse, Plugin.NotifcationCanvas.transform);
+        var t = Instantiate(Assets.NoticeSwimCourse, Plugin.NotifcationCanvas.transform);
         var time = 0f;
         NoticeUp = true;
         while (time < 60f)

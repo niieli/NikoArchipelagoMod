@@ -156,6 +156,14 @@ public static class PlaceModelHelper
                 ItemID.PublicPoolBone => CreateItemOverworld("ppbone", instance),
                 ItemID.BathhouseBone => CreateItemOverworld("bathbone", instance),
                 ItemID.TadpoleHqBone => CreateItemOverworld("hqbone", instance),
+                ItemID.HomeTextbox => CreateItemOverworld("homeTextbox", instance),
+                ItemID.HairballCityTextbox => CreateItemOverworld("hcTextbox", instance),
+                ItemID.TurbineTownTextbox => CreateItemOverworld("ttTextbox", instance),
+                ItemID.SalmonCreekForestTextbox => CreateItemOverworld("scfTextbox", instance),
+                ItemID.PublicPoolTextbox => CreateItemOverworld("ppTextbox", instance),
+                ItemID.BathhouseTextbox => CreateItemOverworld("bathTextbox", instance),
+                ItemID.TadpoleHqTextbox => CreateItemOverworld("hqTextbox", instance),
+                ItemID.GarysGardenTextbox => CreateItemOverworld("ggTextbox", instance),
                 _ when ItemID.TrapIDs.Contains(scoutedItemInfo.ItemId) => 
                     CreateItemOverworld(Assets.RandomProgTrap(), instance, -20f),
                 _ => CreateItemOverworld("apProg", instance),
@@ -190,7 +198,7 @@ public static class PlaceModelHelper
 
         if (!CreatedItemsCache.TryGetValue(prefabName, out var blueprintPrefab))
         {
-            var prefab = Plugin.AssetBundle.LoadAsset<GameObject>(prefabName);
+            var prefab = Assets.AssetBundle.LoadAsset<GameObject>(prefabName);
             if (prefab == null)
             {
                 Plugin.BepinLogger.LogError($"Prefab '{prefabName}' not found in AssetBundle.");

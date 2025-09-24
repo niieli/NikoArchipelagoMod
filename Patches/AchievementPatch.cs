@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using NikoArchipelago.Archipelago;
 using UnityEngine;
 
 namespace NikoArchipelago.Patches;
@@ -29,7 +30,7 @@ public class AchievementPatch
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Frog Fan";
-            achievement.icon = Plugin.FrogFanSprite;
+            achievement.icon = Assets.FrogFanSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Frog Fan obtained!", 3.5f, Plugin.FrogFanSprite);
@@ -47,7 +48,7 @@ public class AchievementPatch
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Hopeless romantic";
-            achievement.icon = Plugin.HandsomeSprite;
+            achievement.icon = Assets.HandsomeSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Hopeless Romantic obtained!", 3.5f, Plugin.HandsomeSprite);
@@ -61,7 +62,7 @@ public class AchievementPatch
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Bottled up";
-            achievement.icon = Plugin.BottledSprite;
+            achievement.icon = Assets.BottledSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Bottled Up obtained!", 3.5f, Plugin.BottledSprite);
@@ -74,7 +75,7 @@ public class AchievementPatch
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Employee of the month!";
-            achievement.icon = Plugin.EmployeeSprite;
+            achievement.icon = Assets.EmployeeSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Employee Of The Month obtained!", 3.5f, Plugin.EmployeeSprite);
@@ -87,7 +88,7 @@ public class AchievementPatch
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Lost at sea";
-            achievement.icon = Plugin.LostSprite;
+            achievement.icon = Assets.LostSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Lost At Sea obtained!", 3.5f, Plugin.LostSprite);
@@ -106,7 +107,7 @@ public class AchievementPatch
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Volley dreams";
-            achievement.icon = Plugin.VolleyDreamsSprite;
+            achievement.icon = Assets.VolleyDreamsSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Volley Dreams obtained!", 3.5f, Plugin.VolleyDreamsSprite);
@@ -125,7 +126,7 @@ public class AchievementPatch
             SaveAchievement(flag);
             var achievement = ScriptableObject.CreateInstance<AchievementObject>();
             achievement.nameKey = "Snail fashion show";
-            achievement.icon = Plugin.SnailFashionSprite;
+            achievement.icon = Assets.SnailFashionSprite;
             AchievementPopup.instance.PopupAchievement(achievement);
             AchievementPopup.instance.nameMesh.text = achievement.nameKey;
             //Plugin.APSendNote("Achievement Snail Fashion Show obtained!", 3.5f, Plugin.SnailFashionSprite);

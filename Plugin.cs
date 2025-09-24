@@ -58,37 +58,6 @@ namespace NikoArchipelago
         private static readonly string AssetsFolderPath = Path.Combine(Paths.PluginPath, "APAssets");
         public static bool loggedIn, Compatibility, SaveEstablished, PlayerFound;
         public static string Seed;
-        public static AssetBundle AssetBundle, AssetBundleXmas;
-        public static GameObject TrapFreeze, TrapIronBoots, TrapMyTurn, TrapWhoops, TrapGravity,
-            ItemNotification, HintNotification,
-            TrapWide, TrapHome, TrapJumpingJacks, TrapPhoneCall, TrapTiny, TrapFast,
-            NoticeBonkHelmet, NoticeSodaCan, NoticeParasol, NoticeAC, NoticeSwimCourse, DeathLinkNotice, NoticeBugNet,
-            NoticePartyTicket, NoticeAppleBasket, DeathLinkPopup;
-        public static Sprite APSprite, BandanaSprite, BowtieSprite, CapSprite, 
-            CatSprite, ClownSprite, FlowerSprite, 
-            GlassesSprite, KingSprite, MahjongSprite, MotorSprite, MouseSprite, 
-            SmallHatSprite, StarsSprite, SwordSprite, TopHatSprite, SunglassesSprite, 
-            APLogoSprite, APIconSprite, CoinSprite, CassetteSprite, 
-            FishSprite, HairballFishSprite, TurbineFishSprite, SalmonFishSprite, PoolFishSprite, BathFishSprite, TadpoleFishSprite,
-            KeySprite, HairballKeySprite, TurbineKeySprite, SalmonKeySprite, PoolKeySprite, BathKeySprite, TadpoleKeySprite,
-            ContactListSprite, BottledSprite, EmployeeSprite, FrogFanSprite, 
-            HandsomeSprite, LostSprite, SuperJumpSprite,
-            SnailFashionSprite, VolleyDreamsSprite, ApplesSprite, LetterSprite,
-            HcSprite, TtSprite, SfcSprite, PpSprite, BathSprite, HqSprite,
-            SnailMoneySprite, BugsSprite, GgSprite, GoalBadSprite,
-            ApProgressionSprite, ApUsefulSprite, ApFillerSprite, ApTrapSprite, ApTrap2Sprite, ApTrap3Sprite,
-            TimePieceSprite, YarnSprite,
-            HairballFlowerSprite, TurbineFlowerSprite, SalmonFlowerSprite, PoolFlowerSprite, BathFlowerSprite, TadpoleFlowerSprite,
-            HairballSeedSprite, SalmonSeedSprite, BathSeedSprite,
-            HairballCassetteSprite, TurbineCassetteSprite, SalmonCassetteSprite, PoolCassetteSprite, BathCassetteSprite, TadpoleCassetteSprite, GardenCassetteSprite,
-            FischerNoteSprite, GabiNoteSprite, MoomyNoteSprite, BlessleyNoteSprite,
-            FreezeTrapSprite, IronBootsTrapSprite, MyTurnTrapSprite, WhoopsTrapSprite, SpeedBoostSprite, GravityTrapSprite,
-            PhoneCallTrapSprite, JumpingJacksTrapSprite, WideTrapSprite, HomeTrapSprite, TinyTrapSprite,
-            PartyTicketSprite, BonkHelmetSprite, BugNetSprite, SodaRepairSprite, ParasolRepairSprite, SwimCourseSprite, TextboxItemSprite, ACRepairSprite,
-            AppleBasketSprite, DeathLinkSprite, HairballBoneSprite, TurbineBoneSprite, SalmonBoneSprite, PoolBoneSprite, BathBoneSprite, TadpoleBoneSprite;
-
-        public static Material ProgNotificationTexture, UsefulNotificationTexture, FillerNotificationTexture, TrapNotificationTexture;
-        public static GameObject SparksParticleSystem;
         public static GameObject NotifcationCanvas;
         public static GameObject ArrowTrackerGameObject;
         private CancellationTokenSource _cancellationTokenSource = new();
@@ -123,176 +92,9 @@ namespace NikoArchipelago
 
         public void Start()
         {
-            var now = DateTime.Now;
-            var currentYear = now.Month == 1 ? now.Year - 1 : now.Year;
-            var christmasTime = new DateTime(currentYear, 12, 25);
-            var startChrismas = christmasTime.AddDays(-24);
-            var endChrismas = christmasTime.AddDays(18);
-            if (DateTime.Now.Ticks > startChrismas.Ticks && DateTime.Now.Ticks < endChrismas.Ticks)
-            {
-                ChristmasEvent = true;
-                Logger.LogInfo($"Christmas Event Active.");
-                AssetBundleXmas = AssetBundleLoader.LoadEmbeddedAssetBundle("apxmas");
-            }
-            else
-            {
-                NoXmasEvent = true;
-            }
             NoAntiCheese = false;
             StartCoroutine(CheckGameSaveManager());
-            if (Application.unityVersion.StartsWith("2020.2.4f1"))
-            {
-                Logger.LogInfo($"Found Pre-DLC version {Application.unityVersion} ! - Using compatibility...");
-                Compatibility = true;
-            }
-            else
-            {
-                Logger.LogInfo($"Found DLC version {Application.unityVersion} !");
-                AssetBundle = AssetBundleLoader.LoadEmbeddedAssetBundle("apassets");
-            }
-            if (AssetBundle != null)
-            {
-                APSprite = AssetBundle.LoadAsset<Sprite>("apLogo");
-                BandanaSprite = AssetBundle.LoadAsset<Sprite>("BandanaAP");
-                BowtieSprite = AssetBundle.LoadAsset<Sprite>("BowtieAP");
-                CapSprite = AssetBundle.LoadAsset<Sprite>("CapAP");
-                CatSprite = AssetBundle.LoadAsset<Sprite>("CatAP");
-                ClownSprite = AssetBundle.LoadAsset<Sprite>("ClownFaceAP");
-                FlowerSprite = AssetBundle.LoadAsset<Sprite>("FlowerAP");
-                GlassesSprite = AssetBundle.LoadAsset<Sprite>("GlassesAP");
-                KingSprite = AssetBundle.LoadAsset<Sprite>("KingStaffAP");
-                MahjongSprite = AssetBundle.LoadAsset<Sprite>("MahjongAP");
-                MotorSprite = AssetBundle.LoadAsset<Sprite>("MotorcycleAP");
-                MouseSprite = AssetBundle.LoadAsset<Sprite>("MouseAP");
-                SmallHatSprite = AssetBundle.LoadAsset<Sprite>("SmallHatAP");
-                StarsSprite = AssetBundle.LoadAsset<Sprite>("StarsAP");
-                SwordSprite = AssetBundle.LoadAsset<Sprite>("SwordAP");
-                TopHatSprite = AssetBundle.LoadAsset<Sprite>("TophatAP");
-                SunglassesSprite = AssetBundle.LoadAsset<Sprite>("SunglassesAP");
-                APLogoSprite = AssetBundle.LoadAsset<Sprite>("HereComesNikoAPLogo");
-                APIconSprite = AssetBundle.LoadAsset<Sprite>("nikoApLogo");
-                CoinSprite = AssetBundle.LoadAsset<Sprite>("sprCoinLit");
-                CassetteSprite = AssetBundle.LoadAsset<Sprite>("txrCassette");
-                ContactListSprite = AssetBundle.LoadAsset<Sprite>("txrList");
-                BottledSprite = AssetBundle.LoadAsset<Sprite>("BOTTLED_UP");
-                EmployeeSprite = AssetBundle.LoadAsset<Sprite>("EMLOYEE_OF_THE_MONTH");
-                FrogFanSprite = AssetBundle.LoadAsset<Sprite>("FROG_FAN");
-                HandsomeSprite = AssetBundle.LoadAsset<Sprite>("HOPELESS_ROMANTIC");
-                LostSprite = AssetBundle.LoadAsset<Sprite>("LOST_AT_SEA");
-                SnailFashionSprite = AssetBundle.LoadAsset<Sprite>("SNAIL_FASHION_SHOW");
-                VolleyDreamsSprite = AssetBundle.LoadAsset<Sprite>("VOLLEY_DREAMS");
-                LetterSprite = AssetBundle.LoadAsset<Sprite>("txrLetter");
-                ApplesSprite = AssetBundle.LoadAsset<Sprite>("AppleBundle");
-                KeySprite = AssetBundle.LoadAsset<Sprite>("txrKey");
-                HcSprite = AssetBundle.LoadAsset<Sprite>("TrainHairball");
-                TtSprite = AssetBundle.LoadAsset<Sprite>("TrainTurbine");
-                SfcSprite = AssetBundle.LoadAsset<Sprite>("TrainSalmon");
-                PpSprite = AssetBundle.LoadAsset<Sprite>("TrainPool");
-                BathSprite = AssetBundle.LoadAsset<Sprite>("TrainBath");
-                HqSprite = AssetBundle.LoadAsset<Sprite>("TrainTadpole");
-                GgSprite = AssetBundle.LoadAsset<Sprite>("GarysGarden");
-                SnailMoneySprite = AssetBundle.LoadAsset<Sprite>("SnailMoney");
-                BugsSprite = AssetBundle.LoadAsset<Sprite>("BugBundle");
-                ApProgressionSprite = AssetBundle.LoadAsset<Sprite>("ApProgression");
-                ApUsefulSprite = AssetBundle.LoadAsset<Sprite>("ApUseful");
-                ApFillerSprite = AssetBundle.LoadAsset<Sprite>("ApFiller");
-                ApTrapSprite = AssetBundle.LoadAsset<Sprite>("ApTrap");
-                ApTrap2Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap2");
-                ApTrap3Sprite = AssetBundle.LoadAsset<Sprite>("ApTrap3");
-                GoalBadSprite = AssetBundle.LoadAsset<Sprite>("goalBad");
-                SuperJumpSprite = AssetBundle.LoadAsset<Sprite>("SuperJump");
-                FishSprite = AssetBundle.LoadAsset<Sprite>("imgMapfish");
-                HairballFishSprite = AssetBundle.LoadAsset<Sprite>("HairballFish");
-                TurbineFishSprite = AssetBundle.LoadAsset<Sprite>("TurbineFish");
-                SalmonFishSprite = AssetBundle.LoadAsset<Sprite>("SalmonFish");
-                PoolFishSprite = AssetBundle.LoadAsset<Sprite>("PoolFish");
-                BathFishSprite = AssetBundle.LoadAsset<Sprite>("BathFish");
-                TadpoleFishSprite = AssetBundle.LoadAsset<Sprite>("TadpoleFish");
-                HairballKeySprite = AssetBundle.LoadAsset<Sprite>("txrHairballKey");
-                TurbineKeySprite = AssetBundle.LoadAsset<Sprite>("txrTurbineKey");
-                SalmonKeySprite = AssetBundle.LoadAsset<Sprite>("txrSalmonKey");
-                PoolKeySprite = AssetBundle.LoadAsset<Sprite>("txrPoolKey");
-                BathKeySprite = AssetBundle.LoadAsset<Sprite>("txrBathKey");
-                TadpoleKeySprite = AssetBundle.LoadAsset<Sprite>("txrTadpoleKey");
-                TimePieceSprite = AssetBundle.LoadAsset<Sprite>("timepiece2D");
-                YarnSprite = AssetBundle.LoadAsset<Sprite>("Yarn");
-                HairballFlowerSprite = AssetBundle.LoadAsset<Sprite>("HairballFlower");
-                TurbineFlowerSprite = AssetBundle.LoadAsset<Sprite>("TurbineFlower");
-                SalmonFlowerSprite = AssetBundle.LoadAsset<Sprite>("SalmonFlower");
-                PoolFlowerSprite = AssetBundle.LoadAsset<Sprite>("PoolFlower");
-                BathFlowerSprite = AssetBundle.LoadAsset<Sprite>("BathFlower");
-                TadpoleFlowerSprite = AssetBundle.LoadAsset<Sprite>("TadpoleFlower");
-                HairballSeedSprite = AssetBundle.LoadAsset<Sprite>("HairballSeed");
-                SalmonSeedSprite = AssetBundle.LoadAsset<Sprite>("SalmonSeed");
-                BathSeedSprite = AssetBundle.LoadAsset<Sprite>("BathSeed");
-                HairballCassetteSprite = AssetBundle.LoadAsset<Sprite>("HairballCassette");
-                TurbineCassetteSprite = AssetBundle.LoadAsset<Sprite>("TurbineCassette");
-                SalmonCassetteSprite = AssetBundle.LoadAsset<Sprite>("SalmonCassette");
-                PoolCassetteSprite = AssetBundle.LoadAsset<Sprite>("PoolCassette");
-                BathCassetteSprite = AssetBundle.LoadAsset<Sprite>("BathCassette");
-                TadpoleCassetteSprite = AssetBundle.LoadAsset<Sprite>("TadpoleCassette");
-                GardenCassetteSprite = AssetBundle.LoadAsset<Sprite>("GardenCassette");
-                FischerNoteSprite = AssetBundle.LoadAsset<Sprite>("sprFischerHappyNote");
-                GabiNoteSprite = AssetBundle.LoadAsset<Sprite>("sprFlowerNote");
-                MoomyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprHamsterNote");
-                BlessleyNoteSprite = AssetBundle.LoadAsset<Sprite>("sprBugNote");
-                TrapFreeze = AssetBundle.LoadAsset<GameObject>("TrapFreeze");
-                TrapIronBoots = AssetBundle.LoadAsset<GameObject>("TrapIronBoots");
-                TrapMyTurn = AssetBundle.LoadAsset<GameObject>("TrapMyTurn");
-                TrapWhoops = AssetBundle.LoadAsset<GameObject>("TrapWhoops");
-                FreezeTrapSprite = AssetBundle.LoadAsset<Sprite>("Schneeflocken1");
-                IronBootsTrapSprite = AssetBundle.LoadAsset<Sprite>("TrapIronBoots");
-                MyTurnTrapSprite = AssetBundle.LoadAsset<Sprite>("imgPepper");
-                WhoopsTrapSprite = AssetBundle.LoadAsset<Sprite>("TrapWhoops");
-                SpeedBoostSprite = AssetBundle.LoadAsset<Sprite>("SpeedBoost");
-                TrapGravity = AssetBundle.LoadAsset<GameObject>("TrapGravity");
-                GravityTrapSprite = AssetBundle.LoadAsset<Sprite>("BuzzNote");
-                ProgNotificationTexture = AssetBundle.LoadAsset<Material>("APProgressionNotificationMaterial");
-                UsefulNotificationTexture = AssetBundle.LoadAsset<Material>("APUsefulNotificationMaterial");
-                FillerNotificationTexture = AssetBundle.LoadAsset<Material>("APFillerNotificationMaterial");
-                TrapNotificationTexture = AssetBundle.LoadAsset<Material>("APTrapNotificationMaterial");
-                ItemNotification = AssetBundle.LoadAsset<GameObject>("ItemNotification");
-                HintNotification = AssetBundle.LoadAsset<GameObject>("HintNotification");
-                TrapHome = AssetBundle.LoadAsset<GameObject>("TrapHome");
-                TrapWide = AssetBundle.LoadAsset<GameObject>("TrapWideHappy");
-                TrapJumpingJacks = AssetBundle.LoadAsset<GameObject>("TrapJumpingJacks");
-                TrapPhoneCall = AssetBundle.LoadAsset<GameObject>("TrapPhoneCall");
-                HomeTrapSprite = AssetBundle.LoadAsset<Sprite>("TrainHome");
-                WideTrapSprite = AssetBundle.LoadAsset<Sprite>("WideTrap");
-                JumpingJacksTrapSprite = AssetBundle.LoadAsset<Sprite>("JumpingJacksTrap");
-                PhoneCallTrapSprite = AssetBundle.LoadAsset<Sprite>("NikoPhone");
-                TinyTrapSprite = AssetBundle.LoadAsset<Sprite>("TinyTrap");
-                SparksParticleSystem = AssetBundle.LoadAsset<GameObject>("Sparks");
-                PartyTicketSprite = AssetBundle.LoadAsset<Sprite>("PartyInvitation");
-                BonkHelmetSprite = AssetBundle.LoadAsset<Sprite>("BonkHelmet");
-                BugNetSprite = AssetBundle.LoadAsset<Sprite>("BugNet");
-                SodaRepairSprite = AssetBundle.LoadAsset<Sprite>("SodaCanRepair");
-                ParasolRepairSprite = AssetBundle.LoadAsset<Sprite>("ParasolRepair");
-                SwimCourseSprite = AssetBundle.LoadAsset<Sprite>("SwimCourse");
-                TextboxItemSprite = AssetBundle.LoadAsset<Sprite>("TextboxItem");
-                ACRepairSprite = AssetBundle.LoadAsset<Sprite>("ACRepair");
-                TrapTiny = AssetBundle.LoadAsset<GameObject>("TrapTiny");
-                NoticeBonkHelmet = AssetBundle.LoadAsset<GameObject>("NoticeBonkHelmet");
-                NoticeSodaCan = AssetBundle.LoadAsset<GameObject>("NoticeSodaCan");
-                NoticeParasol = AssetBundle.LoadAsset<GameObject>("NoticeParasol");
-                NoticeSwimCourse = AssetBundle.LoadAsset<GameObject>("NoticeSwimCourse");
-                NoticeAC = AssetBundle.LoadAsset<GameObject>("NoticeAC");
-                DeathLinkSprite = AssetBundle.LoadAsset<Sprite>("DeathlinkSprite");
-                DeathLinkNotice = AssetBundle.LoadAsset<GameObject>("NoticeDeathLink");
-                NoticeBugNet = AssetBundle.LoadAsset<GameObject>("NoticeBugNet");
-                NoticePartyTicket = AssetBundle.LoadAsset<GameObject>("NoticePartyTicket");
-                AppleBasketSprite = AssetBundle.LoadAsset<Sprite>("AppleBasket");
-                HairballBoneSprite = AssetBundle.LoadAsset<Sprite>("HairballBone");
-                TurbineBoneSprite = AssetBundle.LoadAsset<Sprite>("TurbineBone");
-                SalmonBoneSprite = AssetBundle.LoadAsset<Sprite>("SalmonBone");
-                PoolBoneSprite = AssetBundle.LoadAsset<Sprite>("PoolBone");
-                BathBoneSprite = AssetBundle.LoadAsset<Sprite>("BathhouseBone");
-                TadpoleBoneSprite = AssetBundle.LoadAsset<Sprite>("TadpoleBone");
-                NoticeAppleBasket = AssetBundle.LoadAsset<GameObject>("NoticeAppleBasket");
-                TrapFast = AssetBundle.LoadAsset<GameObject>("TrapFast");
-                DeathLinkPopup = AssetBundle.LoadAsset<GameObject>("DeathLinkPopup");
-            }
-            Assets.AssignSprites();
+            Assets.AssignSprites(); //TODO: Swap All Plugin.... Sprite references to Assets
             var gameObjectChecker = new GameObject("GameObjectChecker");
             gameObjectChecker.AddComponent<GameObjectChecker>();
             NotifcationCanvas = new GameObject("NotificationCanvas");
@@ -339,14 +141,14 @@ namespace NikoArchipelago
                 MyCharacterController.instance.DiveCancelHopSpeed = 11f;
                 MyCharacterController.instance.MaxStableMoveSpeed = 8f;
                 MyCharacterController.instance.MaxWaterMoveSpeed = 11f;
-                APSendNote("Disabled Speed Boost", 2f, SpeedBoostSprite);
+                APSendNote("Disabled Speed Boost", 2f, Assets.SpeedBoostSprite);
             }
             else
             {
-                APSendNote("Enabled Speed Boost", 2f, SpeedBoostSprite);
+                APSendNote("Enabled Speed Boost", 2f, Assets.SpeedBoostSprite);
                 MovementSpeed.MovementSpeedMultiplier();
             }
-            BepinLogger.LogInfo("Toggled Speedbost!");
+            BepinLogger.LogInfo("Toggled Speed Boost!");
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -404,7 +206,7 @@ namespace NikoArchipelago
 
         private void SpawnUpdateNotice()
         {
-            var apUpdateNoticePrefab = AssetBundle.LoadAsset<GameObject>("APUpdateNotice");
+            var apUpdateNoticePrefab = Assets.AssetBundle.LoadAsset<GameObject>("APUpdateNotice");
             APUpdateNotice = Instantiate(apUpdateNoticePrefab, GameObject.Find("UI").transform, false);
             if (APUpdateNotice == null)
             {
@@ -436,7 +238,7 @@ namespace NikoArchipelago
         
         private void AddNotificationManager(Transform parent)
         {
-            var noteObject = AssetBundle.LoadAsset<GameObject>("APItemNotification");
+            var noteObject = Assets.AssetBundle.LoadAsset<GameObject>("APItemNotification");
             var noteUI = Instantiate(noteObject, parent, false);
             noteUI.layer = LayerMask.NameToLayer("UI");
             var apNotificationManager = noteUI.transform.Find("APNotificationManager").gameObject;
@@ -446,7 +248,7 @@ namespace NikoArchipelago
         
         private void AddTrapManager(Transform parent)
         {
-            var trapObject = AssetBundle.LoadAsset<GameObject>("APTimerTrap");
+            var trapObject = Assets.AssetBundle.LoadAsset<GameObject>("APTimerTrap");
             var trapUI = Instantiate(trapObject, parent, false);
             trapUI.layer = LayerMask.NameToLayer("UI");
             var apTrapManager = trapUI.transform.Find("APTrapManager").gameObject;
@@ -618,7 +420,7 @@ namespace NikoArchipelago
                     BepinLogger.LogWarning("You have disconnected from the server.");
                     var achievement = ScriptableObject.CreateInstance<AchievementObject>();
                     achievement.nameKey = "Disconnected from Server";
-                    achievement.icon = ApFillerSprite;
+                    achievement.icon = Assets.ApFillerSprite;
                     AchievementPopup.instance.PopupAchievement(achievement);
                     AchievementPopup.instance.nameMesh.text = achievement.nameKey;
                     AchievementPopup.instance.audioSource.volume = 0.35f;
@@ -820,7 +622,7 @@ namespace NikoArchipelago
         {
             var apNote = ScriptableObject.CreateInstance<Notification>();
             apNote.timed = true;
-            apNote.avatar = sprite ? sprite : APSprite;
+            apNote.avatar = sprite ? sprite : Assets.APSprite;
             apNote.duration = time;
             apNote.key = note;
             _noteDisplayer.AddNotification(apNote);
@@ -982,7 +784,7 @@ namespace NikoArchipelago
             if (GUI.Button(new Rect(16, 450, 110, 20), "No Anti-Cheese"))
             {
                 NoAntiCheese = true;
-                APSendNote("Disabled Anti-Cheese...", 7f, ApFillerSprite);
+                APSendNote("Disabled Anti-Cheese...", 7f, Assets.ApFillerSprite);
             }
             if (GUI.Button(new Rect(16, 480, 100, 20), "Apples"))
             {
@@ -1021,19 +823,19 @@ namespace NikoArchipelago
             if (GUI.Button(new Rect(16, 500, 100, 20), "TestNote1"))
             {
                 var notification = new APNotification(false, "TestItem", "YourMom", "XXXGamerHDXXX", "THE MOOOOON", 
-                    ItemFlags.None, 5f, null, null, FishSprite);
+                    ItemFlags.None, 5f, null, null, Assets.FishSprite);
                 NotificationManager.AddNewNotification.Enqueue(notification);
             }
             if (GUI.Button(new Rect(16, 520, 100, 20), "TestNote2"))
             {
                 var notification = new APNotification(false, "Crazy Shiny Item", "nieli", "XXXGamerHDXXX", "Hairball City - Handsome Frog (Chatsanity)", 
-                    ItemFlags.Advancement, 5f, null, null, CoinSprite);
+                    ItemFlags.Advancement, 5f, null, null, Assets.CoinSprite);
                 NotificationManager.AddNewNotification.Enqueue(notification);
             }
             if (GUI.Button(new Rect(16, 540, 100, 20), "TestNote3"))
             {
                 var notification = new APNotification(true, "Crazy Shiny Item", "nieli", "XXXGamerHDXXX", "Hairball City - Handsome Frog (Chatsanity)", 
-                    ItemFlags.Trap, 5f, null, null, WhoopsTrapSprite, "Not Found");
+                    ItemFlags.Trap, 5f, null, null, Assets.WhoopsTrapSprite, "Not Found");
                 NotificationManager.AddNewNotification.Enqueue(notification);
             }
             TrapManager.DebugPhone = Convert.ToInt32(GUI.TextField(new Rect(180, 560, 80, 20), TrapManager.DebugPhone.ToString()));

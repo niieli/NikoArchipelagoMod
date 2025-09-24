@@ -18,17 +18,17 @@ public class TrapManager : MonoBehaviour
 {
     public static TrapManager instance;
     public static bool FreezeOn, IronBootsOn, MyTurnOn, WhoopsOn, GravityOn, WideOn, JumpingJacksOn, HomeOn, PhoneOn, TinyOn, FastTimeOn;
-    private readonly GameObject trapFreeze = Plugin.TrapFreeze; 
-    private readonly GameObject trapIronBoots = Plugin.TrapIronBoots;
-    private readonly GameObject trapMyTurn = Plugin.TrapMyTurn;
-    private readonly GameObject trapWhoops = Plugin.TrapWhoops;
-    private readonly GameObject trapGravity = Plugin.TrapGravity;
-    private readonly GameObject trapHome = Plugin.TrapHome;
-    private readonly GameObject trapWide = Plugin.TrapWide;
-    private readonly GameObject trapJumpingJacks = Plugin.TrapJumpingJacks;
-    private readonly GameObject trapPhoneCall = Plugin.TrapPhoneCall;
-    private readonly GameObject trapTiny = Plugin.TrapTiny;
-    private readonly GameObject trapFast = Plugin.TrapFast;
+    private readonly GameObject trapFreeze = Assets.TrapFreeze; 
+    private readonly GameObject trapIronBoots = Assets.TrapIronBoots;
+    private readonly GameObject trapMyTurn = Assets.TrapMyTurn;
+    private readonly GameObject trapWhoops = Assets.TrapWhoops;
+    private readonly GameObject trapGravity = Assets.TrapGravity;
+    private readonly GameObject trapHome = Assets.TrapHome;
+    private readonly GameObject trapWide = Assets.TrapWide;
+    private readonly GameObject trapJumpingJacks = Assets.TrapJumpingJacks;
+    private readonly GameObject trapPhoneCall = Assets.TrapPhoneCall;
+    private readonly GameObject trapTiny = Assets.TrapTiny;
+    private readonly GameObject trapFast = Assets.TrapFast;
     private Transform trapListUI; 
     private Transform trapListFake;
     private GameObject trapUI;

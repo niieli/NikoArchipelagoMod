@@ -7,15 +7,41 @@ namespace NikoArchipelago.Archipelago;
 
 public static class ItemHandler
 {
-    private static ArchipelagoClient archipelagoClient;
-    private static bool prog;
     public static bool Garden;
-    public static int HairballKeyAmount, TurbineKeyAmount, SalmonKeyAmount, PoolKeyAmount, BathKeyAmount, TadpoleKeyAmount,
-        HairballFishAmount, TurbineFishAmount, SalmonFishAmount, PoolFishAmount, BathFishAmount, TadpoleFishAmount,
-        HairballSeedAmount, SalmonSeedAmount, BathSeedAmount,
-        HairballFlowerAmount, TurbineFlowerAmount, SalmonFlowerAmount, PoolFlowerAmount, BathFlowerAmount, TadpoleFlowerAmount,
-        HairballCassetteAmount, TurbineCassetteAmount, SalmonCassetteAmount, PoolCassetteAmount, BathCassetteAmount, TadpoleCassetteAmount, GardenCassetteAmount,
-        HairballBoneAmount, TurbineBoneAmount, SalmonBoneAmount, PoolBoneAmount, BathBoneAmount, TadpoleBoneAmount;
+
+    public static int HairballKeyAmount,
+        TurbineKeyAmount,
+        SalmonKeyAmount,
+        PoolKeyAmount,
+        BathKeyAmount,
+        TadpoleKeyAmount;
+
+    public static int HairballFishAmount, 
+        TurbineFishAmount,
+        SalmonFishAmount,
+        PoolFishAmount,
+        BathFishAmount,
+        TadpoleFishAmount;
+
+    public static int HairballSeedAmount, SalmonSeedAmount, BathSeedAmount;
+
+    public static int HairballFlowerAmount,
+        TurbineFlowerAmount,
+        SalmonFlowerAmount,
+        PoolFlowerAmount,
+        BathFlowerAmount,
+        TadpoleFlowerAmount;
+
+    public static int HairballCassetteAmount,
+        TurbineCassetteAmount,
+        SalmonCassetteAmount,
+        PoolCassetteAmount,
+        BathCassetteAmount,
+        TadpoleCassetteAmount,
+        GardenCassetteAmount;
+    
+    public static int HairballBoneAmount, TurbineBoneAmount, SalmonBoneAmount, PoolBoneAmount, BathBoneAmount, TadpoleBoneAmount;
+    
     public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -23,7 +49,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Coin from {sender}!" : "You found your Coin!",
-                3f, Plugin.CoinSprite);
+                3f, Assets.CoinSprite);
         }
         ShowDisplayers.CoinDisplayer();
         scrGameSaveManager.instance.SaveGame();
@@ -36,7 +62,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Cassette from {sender}!" : "You found your Cassette!",
-                3f, Plugin.CassetteSprite);
+                3f, Assets.CassetteSprite);
         }
         ShowDisplayers.CassetteDisplayer();
         scrGameSaveManager.instance.SaveGame();
@@ -49,7 +75,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Key from {sender}!" : "You found your Key!",
-                3f, Plugin.KeySprite);
+                3f, Assets.KeySprite);
         }
         ShowDisplayers.KeyDisplayer();
         scrGameSaveManager.instance.SaveGame();
@@ -62,7 +88,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Letter from {sender}!" : "You found your Letter!",
-                1.75f, Plugin.LetterSprite);
+                1.75f, Assets.LetterSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -74,7 +100,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Apples from {sender}!" : $"You found your {amount} Apples!",
-                1.75f, Plugin.ApplesSprite);
+                1.75f, Assets.ApplesSprite);
         }
         ShowDisplayers.AppleDisplayer();
         scrGameSaveManager.instance.SaveGame();
@@ -88,7 +114,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Bugs from {sender}!" : $"You found your {amount} Bugs!",
-                1.75f, Plugin.BugsSprite);
+                1.75f, Assets.BugsSprite);
         }
         ShowDisplayers.BugDisplayer();
         scrGameSaveManager.instance.SaveGame();
@@ -102,7 +128,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received {amount} Snail Money from {sender}!" : $"You found your {amount} Snail Money!",
-                1.75f, Plugin.SnailMoneySprite);
+                1.75f, Assets.SnailMoneySprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -114,7 +140,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Super Jump from {sender}!" : "You found your Super Jump!",
-                3f, Plugin.SuperJumpSprite);
+                3f, Assets.SuperJumpSprite);
         }
         scrGameSaveManager.instance.SaveGame();
     }
@@ -132,7 +158,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 1 from {sender}!" : "You found your Contact List 1!",
-                3f, Plugin.ContactListSprite);
+                3f, Assets.ContactListSprite);
         }
         scrWaveCheck.doCheck = true;
         ShowDisplayers.TicketDisplayer();
@@ -154,7 +180,7 @@ public static class ItemHandler
         {
             Plugin.APSendNote(
                 sender != ArchipelagoClient.ServerData.SlotName ? $"Received Contact List 2 from {sender}!" : "You found your Contact List 2!",
-                3f, Plugin.ContactListSprite);
+                3f, Assets.ContactListSprite);
         }
         scrWaveCheck.doCheck = true;
         ShowDisplayers.TicketDisplayer();
@@ -180,32 +206,32 @@ public static class ItemHandler
             case 2:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Ticket from {sender}!" : "You found your Hairball City Ticket!",
-                    4f, Plugin.HcSprite);
+                    4f, Assets.HcSprite);
                 break;
             case 3:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Ticket from {sender}!" : "You found your Turbine Town Ticket!",
-                    4f, Plugin.TtSprite);
+                    4f, Assets.TtSprite);
                 break;
             case 4:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Ticket from {sender}!" : "You found your Salmon Creek Forest Ticket!",
-                    4f, Plugin.SfcSprite);
+                    4f, Assets.SfcSprite);
                 break;
             case 5:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Ticket from {sender}!" : "You found your Public Pool Ticket!",
-                    4f, Plugin.PpSprite);
+                    4f, Assets.PpSprite);
                 break;
             case 6:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Ticket from {sender}!" : "You found your Bathhouse Ticket!",
-                    4f, Plugin.BathSprite);
+                    4f, Assets.BathSprite);
                 break;
             case 7:
                 Plugin.APSendNote(
                     sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Ticket from {sender}!" : "You found your Tadpole HQ Ticket!",
-                    4f, Plugin.HqSprite);
+                    4f, Assets.HqSprite);
                 break;
         }
         ShowDisplayers.TicketDisplayer();
@@ -321,7 +347,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gary's Garden Ticket from {sender}!" : "You found your Gary's Garden Ticket!",
-            4f, Plugin.GgSprite);
+            4f, Assets.GgSprite);
         Garden = true;
         ShowDisplayers.TicketDisplayer();
         scrGameSaveManager.instance.SaveGame();
@@ -333,7 +359,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Hairball City Cassette from {sender}!" : "You found your Hairball City Cassette!",
-            3f, Plugin.HairballCassetteSprite);
+            3f, Assets.HairballCassetteSprite);
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 2)
         {
             ShowDisplayers.CassetteDisplayer();
@@ -345,7 +371,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Turbine Town Cassette from {sender}!" : "You found your Turbine Town Cassette!",
-            3f, Plugin.TurbineCassetteSprite);
+            3f, Assets.TurbineCassetteSprite);
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 3)
         {
             ShowDisplayers.CassetteDisplayer();
@@ -357,7 +383,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Salmon Creek Forest Cassette from {sender}!" : "You found your Salmon Creek Forest Cassette!",
-            3f, Plugin.SalmonCassetteSprite);
+            3f, Assets.SalmonCassetteSprite);
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 4)
         {
             ShowDisplayers.CassetteDisplayer();
@@ -369,7 +395,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Public Pool Cassette from {sender}!" : "You found your Public Pool Cassette!",
-            3f, Plugin.PoolCassetteSprite);
+            3f, Assets.PoolCassetteSprite);
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 5)
         {
             ShowDisplayers.CassetteDisplayer();
@@ -381,7 +407,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Bathhouse Cassette from {sender}!" : "You found your Bathhouse Cassette!",
-            3f, Plugin.BathCassetteSprite);
+            3f, Assets.BathCassetteSprite);
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 6)
         {
             ShowDisplayers.CassetteDisplayer();
@@ -393,7 +419,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tadpole HQ Cassette from {sender}!" : "You found your Tadpole HQ Cassette!",
-            3f, Plugin.TadpoleCassetteSprite);
+            3f, Assets.TadpoleCassetteSprite);
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 7)
         {
             ShowDisplayers.CassetteDisplayer();
@@ -404,7 +430,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gary's Garden Cassette from {sender}!" : "You found your Gary's Garden Cassette!",
-            3f, Plugin.GardenCassetteSprite);
+            3f, Assets.GardenCassetteSprite);
         if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 24)
         {
             ShowDisplayers.CassetteDisplayer();
@@ -416,7 +442,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Speed Boost from {sender}!" : "You found your Speed Boost!",
-            3f, Plugin.SpeedBoostSprite);
+            3f, Assets.SpeedBoostSprite);
         MovementSpeed.MovementSpeedMultiplier();
     }
     
@@ -425,7 +451,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Freeze Trap from {sender}!" : "You found your Freeze Trap!",
-            3f, Plugin.FreezeTrapSprite);
+            3f, Assets.FreezeTrapSprite);
         TrapManager.FreezeOn = true;
     }
     
@@ -434,7 +460,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Iron Boots Trap from {sender}!" : "You found your Iron Boots Trap!",
-            3f, Plugin.IronBootsTrapSprite);
+            3f, Assets.IronBootsTrapSprite);
         TrapManager.IronBootsOn = true;
     }
     
@@ -443,7 +469,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Whoops! Trap from {sender}!" : "You found your Whoops Trap!",
-            3f, Plugin.WhoopsTrapSprite);
+            3f, Assets.WhoopsTrapSprite);
         TrapManager.WhoopsOn = true;
     }
     
@@ -452,7 +478,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received My Turn! Trap from {sender}!" : "You found your My Turn Trap!",
-            3f, Plugin.MyTurnTrapSprite);
+            3f, Assets.MyTurnTrapSprite);
         TrapManager.MyTurnOn = true;
     }
     public static void AddGravityTrap(string sender, bool notify = true)
@@ -460,7 +486,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Gravity Trap from {sender}!" : "You found your Gravity Trap!",
-            3f, Plugin.GravityTrapSprite);
+            3f, Assets.GravityTrapSprite);
         TrapManager.GravityOn = true;
     }
     public static void AddWideTrap(string sender, bool notify = true)
@@ -468,7 +494,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Wide Trap from {sender}!" : "You found your Wide Trap!",
-            3f, Plugin.WideTrapSprite);
+            3f, Assets.WideTrapSprite);
         TrapManager.WideOn = true;
     }
     public static void AddHomeTrap(string sender, bool notify = true)
@@ -476,7 +502,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Home Trap from {sender}!" : "You found your Home Trap!",
-            3f, Plugin.HomeTrapSprite);
+            3f, Assets.HomeTrapSprite);
         TrapManager.HomeOn = true;
     }
     public static void AddPhoneTrap(string sender, bool notify = true)
@@ -484,7 +510,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Phone Trap from {sender}!" : "You found your Phone Trap!",
-            3f, Plugin.PhoneCallTrapSprite);
+            3f, Assets.PhoneCallTrapSprite);
         TrapManager.PhoneOn = true;
     }
     public static void AddTinyTrap(string sender, bool notify = true)
@@ -492,7 +518,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Tiny Trap from {sender}!" : "You found your Tiny Trap!",
-            3f, Plugin.TinyTrapSprite);
+            3f, Assets.TinyTrapSprite);
         TrapManager.TinyOn = true;
     }
     public static void AddJumpingJacksTrap(string sender, bool notify = true)
@@ -500,7 +526,7 @@ public static class ItemHandler
         if (!notify) return;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received Jumping Jacks Trap from {sender}!" : "You found your Jumping Jacks Trap!",
-            3f, Plugin.JumpingJacksTrapSprite);
+            3f, Assets.JumpingJacksTrapSprite);
         TrapManager.JumpingJacksOn = true;
     }
     public static void AddPartyInvitation(ItemInfo itemInfo, bool notify = true)

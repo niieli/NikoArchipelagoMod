@@ -50,7 +50,7 @@ public class GustPatch
             
             if (!__instance.transform.parent.Find("Sparks(Clone)"))
             {
-                var sparks = Object.Instantiate(Plugin.SparksParticleSystem, __instance.transform.parent, false);
+                var sparks = Object.Instantiate(Assets.SparksParticleSystem, __instance.transform.parent, false);
                 sparks.transform.position = __instance.transform.position;
                 var lights = sparks.GetComponent<ParticleSystem>().lights;
                 lights.light = new Light();
@@ -77,7 +77,7 @@ public class GustPatch
         private static IEnumerator Notice()
         {
             if (NoticeUp || !SavedData.Instance.Notices) yield break;
-            var t = Object.Instantiate(Plugin.NoticeAC, Plugin.NotifcationCanvas.transform);
+            var t = Object.Instantiate(Assets.NoticeAC, Plugin.NotifcationCanvas.transform);
             NoticeUp = true;
             var time = 0f;
             while (time < 60f)

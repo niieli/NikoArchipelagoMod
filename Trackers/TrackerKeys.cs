@@ -21,27 +21,27 @@ public class TrackerKeys : MonoBehaviour
         switch (SceneManager.GetActiveScene().name)
         {
             case "Hairball City":
-                keyDisplayer.sprite = Plugin.HairballKeySprite;
+                keyDisplayer.sprite = Assets.HairballKeySprite;
                 //keyDisplayer.color = new Color(0f, 0.6196079f, 1f, 1f);
                 break;
             case "Trash Kingdom":
-                keyDisplayer.sprite = Plugin.TurbineKeySprite;
+                keyDisplayer.sprite = Assets.TurbineKeySprite;
                 //keyDisplayer.color = new Color(0.6705883f, 0.6705883f, 0.6705883f, 1f);
                 break;
             case "Salmon Creek Forest":
-                keyDisplayer.sprite = Plugin.SalmonKeySprite;
+                keyDisplayer.sprite = Assets.SalmonKeySprite;
                 //keyDisplayer.color = new Color(0.2117647f, 1f, 0f, 1f);
                 break;
             case "Public Pool":
-                keyDisplayer.sprite = Plugin.PoolKeySprite;
+                keyDisplayer.sprite = Assets.PoolKeySprite;
                 //keyDisplayer.color = new Color(0f, 1f, 1f, 1f);
                 break;
             case "The Bathhouse":
-                keyDisplayer.sprite = Plugin.BathKeySprite;
+                keyDisplayer.sprite = Assets.BathKeySprite;
                 //keyDisplayer.color = new Color(1f, 0f, 0f, 1f);
                 break;
             case "Tadpole inc":
-                keyDisplayer.sprite = Plugin.TadpoleKeySprite;
+                keyDisplayer.sprite = Assets.TadpoleKeySprite;
                 //keyDisplayer.color = new Color(0.6577053f, 1f, 0f, 1f);
                 break;
             default:
