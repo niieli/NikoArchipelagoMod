@@ -50,13 +50,15 @@ public class FishingPatch
           characterShadowHomePos = __instance.characterShadow.transform.localPosition;
           FischerConversation.Clear();
           FischerConversation.
-            Add("FishsanityFinal", $"##nameFischer;##talkerimg1;##nikoimg9;You got all 5 {level} fish! ##newbox;##nikoimg6;As promised you will get (Item) for (Player)!");
+            Add("FishsanityFinal", $"##nameFischer;##talkerimg1;##nikoimg9;You caught all fish! ##newbox;##nikoimg6;As promised you will get (Item) for (Player)!");
           FischerConversation.
             Add("FishsanityNotEnough", $"##nameFischer;##talkerimg2;##nikoimg4;You need 5 (level name + fish) to get my reward##newbox;##nikoimg7;My reward is (item) for (Player) I heard it's (Classification)");
           FischerConversation.
+            Add("FischerLocationIdle", $"##nameFischer;##talkerimg1;##nikoimg3;Catch all 5 fish to get my reward##newbox;##nikoimg7;My reward is (item) for (Player) I heard it's (Classification)");
+          FischerConversation.
             Add("FishsanityObtained", $"##nameFischer;##talkerimg1;##nikoimg3;You already obtained my (Item) for (Player)!");
           FischerConversation.
-            Add("FishsanityFishing", $"##nameFischer;##talkerimg1;##nikoimg3;You found all fish 5!\nNow you need to catch the remaining Fish!");
+            Add("FishsanityFishing", $"##nameFischer;##talkerimg1;##nikoimg3;You found all 5 fish!\nNow you need to catch the remaining Fish!");
           FischerConversation.
             Add("FishsanityNoSwimming", $"##nameFischer;##talkerimg1;##nikoimg1;Can you help me fishing? ##newbox;Wait##nikoimg5;, you can't swim?! Then you should learn how to swim, I think (Player) could help you.##nikoimg4;");
         }
@@ -78,18 +80,18 @@ public class FishingPatch
         private static bool Prefix(scrFishingMaster __instance)
         {
             if (ArchipelagoData.slotData == null) return true;
-            if (!ArchipelagoData.slotData.ContainsKey("fishsanity")) return true;
-            if (ArchipelagoData.Options.Fishsanity != ArchipelagoOptions.InsanityLevel.Insanity) return true;
             var pullupAnimationStartPoint = (Vector3)AccessTools.Field(typeof(scrFishingMaster), "pullupAnimationStartPoint").GetValue(__instance);
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
             int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
+            bool isFishsanity = ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Insanity;
             bool allFishCollected = CheckAllFish(level);
             __instance.pullupAnimationDuration = 4f;
 
             if (__instance.finalConversation && !__instance.gotCoin)
               textboxTrigger.ChangeIcon(scrTextboxTrigger.IconType.reward, true);
             else if ((textboxTrigger.conversation == __instance.idleConverstation 
-                      || textboxTrigger.conversation == "FishsanityNotEnough" || textboxTrigger.conversation == "FishsanityFishing") &&
+                      || textboxTrigger.conversation == "FishsanityNotEnough" || textboxTrigger.conversation == "FishsanityFishing" 
+                      || textboxTrigger.conversation == "FischerLocationIdle") &&
                      __instance.state == scrFishingMaster.States.Inactive)
               textboxTrigger.ChangeIcon(scrTextboxTrigger.IconType.quest, true);
             else
@@ -102,7 +104,8 @@ public class FishingPatch
                  textboxTrigger.conversation == "FishsanityObtained" ||
                  textboxTrigger.conversation == "FishsanityNotEnough" ||
                  textboxTrigger.conversation == "FishsanityFinal" ||
-                 textboxTrigger.conversation == "FishsanityFishing"))
+                 textboxTrigger.conversation == "FishsanityFishing" ||
+                 textboxTrigger.conversation == "FischerLocationIdle"))
             {
               if (__instance.state != scrFishingMaster.States.Fishing)
                 stateStart = true;
@@ -299,18 +302,13 @@ public class FishingPatch
               }
             }
             
-            if (ArchipelagoData.slotData.ContainsKey("swimming"))
+            if (ArchipelagoData.Options.SwimCourse)
             {
-              if (ArchipelagoData.Options.SwimCourse)
+              if (!ArchipelagoClient.SwimmingAcquired)
               {
-                if (!ArchipelagoClient.SwimmingAcquired)
-                {
-                  textboxTrigger.conversation = "FishsanityNoSwimming";
-                  __instance.state = scrFishingMaster.States.Inactive;
-                  stateStart = false;
-                }
-                else
-                  _canSwim = true;
+                textboxTrigger.conversation = "FishsanityNoSwimming";
+                __instance.state = scrFishingMaster.States.Inactive;
+                stateStart = false;
               }
               else
                 _canSwim = true;
@@ -323,9 +321,16 @@ public class FishingPatch
               __instance.animator.SetTexture(__instance.txrFisherIdle);
               __instance.animatorArray.SetAnimationStrip(__instance.txrFisherIdle.name);
               __instance.fisherNewFish.SetActive(false);
-              textboxTrigger.conversation = "FishsanityFishing";
-              if (!allFishCollected)
-                textboxTrigger.conversation = "FishsanityNotEnough";
+              if (isFishsanity)
+              {
+                textboxTrigger.conversation = "FishsanityFishing";
+                if (!allFishCollected)
+                  textboxTrigger.conversation = "FishsanityNotEnough";
+              }
+              else
+              {
+                textboxTrigger.conversation = "FischerLocationIdle";
+              }
               textboxTrigger.isNewConversation = true;
               textboxTrigger.conversationStarted = false;
               __instance.gotCoin = false;
@@ -355,12 +360,25 @@ public class FishingPatch
               }
             }
             
+            if (textbox.isOn && textbox.conversation == "FischerLocationIdle")
+            {
+              textbox.canWaklaway = true;
+              if (currentBox == 1 && !answerFix2)
+              {
+                var scout = ArchipelagoClient.ScoutLocation(_currentScoutID);
+                var playerName = scout.Player.Name;
+                textbox.conversationLocalized[1] = $"My reward is '{Assets.GetItemName(scout)}' for {playerName} I heard it's {Assets.GetClassification(scout)}!";
+                answerFix2 = true;
+              }
+            }
+            
             if (textbox.isOn && textbox.conversation == "FishsanityFinal")
             {
               textbox.canWaklaway = true;
               if (currentBox == 0 && !answerFix1)
               {
-                textbox.conversationLocalized[0] = $"You got all 5 {_currentLevelName} fish!";
+                if (isFishsanity)
+                  textbox.conversationLocalized[0] = $"You got all 5 {_currentLevelName} fish!";
                 answerFix1 = true;
               }
 
@@ -399,7 +417,7 @@ public class FishingPatch
             }
 
             if (worldData.fishFlags.Count >= __instance.fishLocations.Count && !__instance.fisherNewFish.activeSelf &&
-                !textbox.isOn && allFishCollected)
+                !textbox.isOn && (allFishCollected || !isFishsanity))
             {
               if (!__instance.finalConversation)
               {
@@ -425,7 +443,7 @@ public class FishingPatch
               }
             }
 
-            if (__instance.gotCoin && allFishCollected)
+            if (__instance.gotCoin && (allFishCollected || !isFishsanity))
             {
               textboxTrigger.conversation = "FishsanityObtained";
             }
