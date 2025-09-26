@@ -41,6 +41,8 @@ public class SavedData
     public string NotificationHintSenderColor { get; set; } = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationHintSenderColor);
     public string NotificationHintStateColor { get; set; } = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationHintStateColor);
     public string NotificationLocationNameColor { get; set; } = ColorUtility.ToHtmlStringRGBA(NotificationManager.notificationLocationNameColor);
+    public bool NotificationShowJunk { get; set; } = true;
+    public bool NotificationShowSelfSent { get; set; } = true;
 
     public void LoadSettings()
     {
@@ -94,6 +96,8 @@ public class SavedData
             NotificationHintSenderColor = ColorUtility.ToHtmlStringRGBA(new Color(0.85f, 0.94f, 0.4f));
             NotificationHintStateColor = ColorUtility.ToHtmlStringRGB(new Color(0.7058824f, 0, 0.7176471f));
             NotificationLocationNameColor = ColorUtility.ToHtmlStringRGB(new Color(0.5566038f, 0.5566038f, 0.5566038f));
+            NotificationShowJunk = true;
+            NotificationShowSelfSent = true;
             Plugin.BepinLogger.LogInfo("Created new saved settings.");
             SaveSettings();
         }

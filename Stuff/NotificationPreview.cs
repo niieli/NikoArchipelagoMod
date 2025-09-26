@@ -2,6 +2,7 @@
 using NikoArchipelago.Archipelago;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace NikoArchipelago.Stuff;
@@ -298,6 +299,8 @@ public class NotificationPreview : MonoBehaviour
         SavedData.Instance.NotificationPlayerNameColor = ColorUtility.ToHtmlStringRGB(tempColors.playerNameColor);
         SavedData.Instance.NotificationHintSenderColor = ColorUtility.ToHtmlStringRGB(tempColors.hintSenderColor);
         SavedData.Instance.NotificationHintStateColor = ColorUtility.ToHtmlStringRGB(tempColors.hintStateColor);
+        SavedData.Instance.NotificationShowJunk = ArchipelagoMenu.NotificationShowJunkToggle.isOn;
+        SavedData.Instance.NotificationShowSelfSent = ArchipelagoMenu.NotificationShowSelfSentToggle.isOn;
         SavedData.Instance.SaveSettings();
     }
 

@@ -10,7 +10,7 @@ namespace NikoArchipelago.Archipelago;
 
 public static class APItemSentNotification
 {
-    public static bool hintCommand;
+    public static bool HintCommand;
     private static string _hintStatus;
     public static void GetHintStatus(HintStatus? hintStatus)
     {
@@ -36,7 +36,7 @@ public static class APItemSentNotification
             case HintItemSendLogMessage hintItemSendLogMessage:
             {
                 if (!hintItemSendLogMessage.IsRelatedToActivePlayer) return;
-                if ((message.ToString().Contains("(avoid)") || hintItemSendLogMessage.IsFound) && hintCommand)
+                if ((message.ToString().Contains("(avoid)") || hintItemSendLogMessage.IsFound) && HintCommand)
                 {
                     Plugin.BepinLogger.LogInfo("Skipped Notification for Hint Item Send Log Message: " + message + "");
                     return;
@@ -94,6 +94,11 @@ public static class APItemSentNotification
             }
             case ItemSendLogMessage itemSendLogMessage:
                 if (!itemSendLogMessage.IsSenderTheActivePlayer) return;
+                if (itemSendLogMessage.IsReceiverTheActivePlayer && !SavedData.Instance.NotificationShowSelfSent)
+                {
+                    Plugin.BepinLogger.LogInfo("Skipped Notification for Send Log Message: " + message + "");
+                    return;
+                }
                 itemName = itemSendLogMessage.Item.ItemName;
                 if (itemName == null)
                     itemName = "Item: "+itemSendLogMessage.Item.ItemId;
@@ -112,9 +117,19 @@ public static class APItemSentNotification
                     backgroundColor = new Color(0.46f, 0.427f, 1, 0.72f);
                 } else if (itemFlags.HasFlag(ItemFlags.Trap))
                 {
+                    if (!SavedData.Instance.NotificationShowJunk)
+                    {
+                        Plugin.BepinLogger.LogInfo("Skipped Notification for Send Log Message: " + message + "");
+                        return;
+                    }
                     backgroundColor = new Color(1, 0.75f, 0.41f, 0.72f);
                 } else if (itemFlags.HasFlag(ItemFlags.None))
                 {
+                    if (!SavedData.Instance.NotificationShowJunk)
+                    {
+                        Plugin.BepinLogger.LogInfo("Skipped Notification for Send Log Message: " + message + "");
+                        return;
+                    }
                     backgroundColor = new Color(0.6f, 0.6f, 0.6f, 1);
                 }
                 else

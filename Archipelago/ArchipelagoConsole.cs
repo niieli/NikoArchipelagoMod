@@ -80,13 +80,11 @@ public class ArchipelagoConsole
                 case "/traplink":
                     ArchipelagoClient.ToggleTrapLink();
                     break;
-                case "!hint":
-                    APItemSentNotification.hintCommand = true;
-                    break;
             }
-
+            if (CommandText.StartsWith("!hint"))
+                APItemSentNotification.HintCommand = true;
             CommandText = "";
-            if (APItemSentNotification.hintCommand)
+            if (APItemSentNotification.HintCommand)
                 NotificationManager.instance.StartCoroutine(HintDelay());
         }
     }
@@ -94,7 +92,7 @@ public class ArchipelagoConsole
     private static IEnumerator HintDelay()
     {
         yield return new WaitForSeconds(3f);
-        APItemSentNotification.hintCommand = false;
+        APItemSentNotification.HintCommand = false;
     }
 
     public static void UpdateWindow()

@@ -440,6 +440,10 @@ public class ArchipelagoMenu : MonoBehaviour
     public Image boughtBathBoneImage;
     public Image boughtHqBoneImage;
     
+    // Notification Toggles
+    public static Toggle NotificationShowJunkToggle;
+    public static Toggle NotificationShowSelfSentToggle;
+    
     public void Start()
     {
         gameSaveManager = scrGameSaveManager.instance;
@@ -833,6 +837,10 @@ public class ArchipelagoMenu : MonoBehaviour
         // itemSentTooltip = itemSentToggle.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         // itemSentTrigger = itemSentToggle.gameObject.AddComponent<TooltipTrigger>();
         
+        //Notification Toggles
+        NotificationShowJunkToggle = settingsPanel.transform.Find("ItemSent/NoteSettingsPanel/ShowJunk").gameObject.GetComponent<Toggle>();
+        NotificationShowSelfSentToggle = settingsPanel.transform.Find("ItemSent/NoteSettingsPanel/SelfSend").gameObject.GetComponent<Toggle>();
+        
         if (serverAddressField == null) Plugin.BepinLogger.LogError("Server Address Field is null!");
         if (slotNameField == null) Plugin.BepinLogger.LogError("Slot Name Field is null!");
         if (passwordField == null) Plugin.BepinLogger.LogError("Password Field is null!");
@@ -866,6 +874,8 @@ public class ArchipelagoMenu : MonoBehaviour
         seasonalThemesToggle.isOn = SavedData.Instance.SeasonalThemes;
         skipPickupToggle.isOn = SavedData.Instance.SkipPickup;
         noticesToggle.isOn = SavedData.Instance.Notices;
+        NotificationShowJunkToggle.isOn = SavedData.Instance.NotificationShowJunk;
+        NotificationShowSelfSentToggle.isOn = SavedData.Instance.NotificationShowSelfSent;
 
         versionText.text = "Version "+Plugin.PluginVersion;
         formPanel.SetActive(false);
