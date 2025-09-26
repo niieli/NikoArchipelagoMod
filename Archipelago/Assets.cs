@@ -25,6 +25,7 @@ public class Assets
         TrapTiny,
         TrapFast,
         NoticeBonkHelmet,
+        NoticeBonkHelmetTree,
         NoticeSodaCan,
         NoticeParasol,
         NoticeAC,
@@ -332,6 +333,7 @@ public class Assets
         BathTextboxSprite = AssetBundle.LoadAsset<Sprite>("BathTextboxItem");
         TadpoleTextboxSprite = AssetBundle.LoadAsset<Sprite>("TadpoleTextboxItem");
         GardenTextboxSprite = AssetBundle.LoadAsset<Sprite>("GardenTextboxItem");
+        NoticeBonkHelmetTree =  AssetBundle.LoadAsset<GameObject>("NoticeBonkHelmetTree");
     }
 
     public static readonly Dictionary<string, string> PrefabMapping = new()
