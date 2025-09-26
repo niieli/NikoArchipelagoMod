@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Models;
 using HarmonyLib;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
@@ -36,12 +37,13 @@ public static class PlaceModelHelper
         return field;
     }
 
-    public static void PlaceModel<T>(int index, int offset, T instance)
+    public static void PlaceModel<T>(int index, int offset, T instance, bool scout = false)
     {
-        if (index + offset >= ArchipelagoClient.ScoutedLocations.Count)
-            return;
+        if (!scout)
+            if (index + offset >= ArchipelagoClient.ScoutedLocations.Count)
+                return;
 
-        var scoutedItemInfo = ArchipelagoClient.ScoutedLocations[index + offset];
+        var scoutedItemInfo = scout ? ArchipelagoClient.ScoutLocation(index, false) : ArchipelagoClient.ScoutedLocations[index + offset];
         var quadField = GetQuadField(typeof(T));
         if (quadField == null)
             return;

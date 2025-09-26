@@ -16,6 +16,7 @@ public class TextboxPermit : MonoBehaviour
     
         foreach (var textbox in textboxes)
         {
+            if (textbox.conversation == "waveTrigger") continue;
             _textboxes.Add(textbox.gameObject);
         }
     }

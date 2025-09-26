@@ -96,7 +96,7 @@ public class MoomyPatch
                         var scout = ArchipelagoClient.ScoutLocation(currentLocationID);
                         var itemPlayer = scout.Player.Name;
                         textbox.conversationLocalized[1] = 
-                            $"I think {itemPlayer} would like their '{Assets.GetItemName(scout)}'!" +
+                            $"I think '{Assets.GetItemName(scout)}' belongs to {itemPlayer}!" +
                             $"\nMy expertise tells me it's {Assets.GetClassification(scout)} ##end;";
                         _answerFix2 = true;
                     }
