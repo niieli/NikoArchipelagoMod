@@ -21,6 +21,7 @@ public class Bonesanity
     private static int _currentScoutID;
     private static int _currentBoneCount;
     private static bool _answerFix;
+    private static bool _answerFix2;
     private static bool _isInArea;
     private static bool _playedSound;
     [HarmonyPatch(typeof(scrBone), "Start")]
@@ -186,10 +187,7 @@ public class Bonesanity
         {
             if (ArchipelagoData.slotData == null) return true;
             bool isBonesanity = ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Insanity;
-            if (scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("Bone")) >= 5 && scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone"))
-            {
-                Object.Destroy((Object)__instance.gameObject);
-            }
+            bool gotAllBones = scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("Bone")) >= 5;
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");
             int currentBox = (int)currentBoxField.GetValue(scrTextbox.instance);
             if (__instance.areaTrigger.foundPlayer())
@@ -207,45 +205,55 @@ public class Bonesanity
             
             if (!scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone"))
             {
-                if (!scrTextbox.instance.isOn || scrTextbox.instance.conversation != "dogeBoneQuest")
+                if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "dogeBoneQuest")
                 {
-                    _answerFix = false;
-                    return false;
-                }
-                if (currentBox != 0 || _answerFix) return false;
-                var item = ArchipelagoClient.ScoutLocation(_currentScoutID);
-                var itemName = Assets.GetItemName(item);
-                var playerName = item.Player.Name;
-                if (!HasEnough() && isBonesanity)
-                {
-                    scrTextbox.instance.conversationLocalized[0] =
-                        $"Gimme {5-_currentBoneCount} more {_currentLevelName} B O N E S and I will show you {playerName}'s '{itemName}'! ({GetClassification(item)})";
+                    if (currentBox == 0 && !_answerFix)
+                    {
+                        var item = ArchipelagoClient.ScoutLocation(_currentScoutID);
+                        var itemName = Assets.GetItemName(item);
+                        var playerName = item.Player.Name;
+                        if (!HasEnough() && isBonesanity)
+                        {
+                            scrTextbox.instance.conversationLocalized[0] =
+                                $"Gimme {5-_currentBoneCount} more {_currentLevelName} B O N E S and I will show you {playerName}'s '{itemName}'! ({GetClassification(item)})";
+                        }
+                        else if (!gotAllBones)
+                        {
+                            scrTextbox.instance.conversationLocalized[0] =
+                                $"Find all B O N E S and I will show you {playerName}'s '{itemName}'! ({GetClassification(item)}) ##fx0;*Happy dog sounds*";
+                        }
+
+                        _answerFix = true;
+                    }
                 }
                 else
                 {
-                    scrTextbox.instance.conversationLocalized[0] =
-                        $"Find all B O N E S and I will show you {playerName}'s '{itemName}'! ({GetClassification(item)}) ##fx0;*Happy dog sounds*";
-                }
-                _answerFix = true;
-                return false;
-            }
-            else
-            {
-                if (!scrTextbox.instance.isOn || scrTextbox.instance.conversation != "dogeBonePost")
-                {
                     _answerFix = false;
-                    return false;
                 }
-                if (currentBox != 0 || _answerFix) return false;
-                var item = ArchipelagoClient.ScoutLocation(_currentScoutID);
-                var itemName = Assets.GetItemName(item);
-                var playerName = item.Player.Name;
-                scrTextbox.instance.conversationLocalized[0] =
-                    $"Tada! Here is {playerName}'s '{itemName}'! ({GetClassification(item)}) ##fx0;";
-                _answerFix = true;
+            }
+            
+            if ((gotAllBones && !isBonesanity)|| HasEnough() || scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone"))
+            {
+                if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "dogeBonePost")
+                {
+                    if (currentBox == 0 && !_answerFix2)
+                    {
+                        HasEnough();
+                        var item = ArchipelagoClient.ScoutLocation(_currentScoutID);
+                        var itemName = Assets.GetItemName(item);
+                        var playerName = item.Player.Name;
+                        scrTextbox.instance.conversationLocalized[0] =
+                            $"Tada! Here is {playerName}'s '{itemName}'! ({GetClassification(item)}) ##fx0;";
+                        _answerFix2 = true;
+                    }
+                }
+                else
+                {
+                    _answerFix2 = false;
+                }
             }
 
-            if (!_playedSound && _isInArea)
+            if (!_playedSound && _isInArea && !scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone") && gotAllBones)
             {
                 _playedSound = true;
                 GameObject gameObject = Object.Instantiate<GameObject>(__instance.audioOneShot);
@@ -253,23 +261,19 @@ public class Bonesanity
                 gameObject.GetComponent<scrAudioOneShot>().setup(__instance.sndBoneGotAll, 0.7f, 1f);
                 Object.Instantiate<GameObject>(__instance.smoke).transform.position = __instance.coin.transform.position;
             }
-            __instance.NPCQuest.SetActive(false);
-            __instance.NPCPost.SetActive(true);
-            if (__instance.coin != null && __instance.coin)
+
+            if (__instance.coin != null && __instance.coin && (gotAllBones || HasEnough() && isBonesanity))
+            {
                 __instance.coin.SetActive(true);
+                __instance.NPCQuest.SetActive(false);
+                __instance.NPCPost.SetActive(true);
+            }
+            if (_isInArea && scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone"))
+                __instance.UIhider.visible = false;
             if (scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("Bone")) < 5)
             {
                 if (!_isInArea)
                     __instance.UIhider.visible = false;
-            }
-            else
-            {
-                if (!_isInArea) return false;
-                GameObject gameObject = Object.Instantiate<GameObject>(__instance.audioOneShot);
-                gameObject.transform.position = __instance.transform.position;
-                gameObject.GetComponent<scrAudioOneShot>().setup(__instance.sndBoneGotAll, 0.7f, 1f);
-                __instance.UIhider.visible = false;
-                Object.Destroy((Object)__instance.gameObject);
             }
             return false;
         }

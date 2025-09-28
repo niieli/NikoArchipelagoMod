@@ -879,6 +879,10 @@ public class Locations
         { BaseID + 1174, new Location(BaseID +1174, "CHATKiosk", 1) },
         { BaseID + 1370, new Location(BaseID +1370, "CHAThbcHandsomeFrog", 1) },
         { BaseID + 1441, new Location(BaseID +1441, "CHATCoastGaurd", 1) },
+        { BaseID + 1900, new Location(BaseID +1900, "CHATBoneDog", 1) },
+        { BaseID + 1901, new Location(BaseID +1901, "CHATkappa", 1) },
+        { BaseID + 1910, new Location(BaseID +1910, "CHATdog", 1) },
+        { BaseID + 1911, new Location(BaseID +1911, "CHATdog2", 1) },
         
         // Turbine Town
         { BaseID + 1175, new Location(BaseID +1175, "CHATtrainFrog", 2) },
@@ -916,6 +920,10 @@ public class Locations
         { BaseID + 1207, new Location(BaseID +1207, "CHATKiosk", 2) },
         { BaseID + 1371, new Location(BaseID +1371, "CHAThbcHandsomeFrog", 2) },
         { BaseID + 1442, new Location(BaseID +1442, "CHATCoastGaurd", 2) },
+        { BaseID + 1902, new Location(BaseID +1902, "CHATkappa", 2) },
+        { BaseID + 1903, new Location(BaseID +1903, "CHATBoneDog", 2) },
+        { BaseID + 1912, new Location(BaseID +1912, "CHATdog", 2) },
+        { BaseID + 1913, new Location(BaseID +1913, "CHATdog2", 2) },
 
         // Salmon Creek Forest
         { BaseID + 1208, new Location(BaseID +1208, "CHATstijnsDad", 3) },
@@ -966,6 +974,7 @@ public class Locations
         { BaseID + 1443, new Location(BaseID +1443, "CHATCoastGaurd", 3) },
         { BaseID + 1450, new Location(BaseID +1450, "CHATNina", 3) },
         { BaseID + 1451, new Location(BaseID +1451, "CHATGamer", 3) },
+        { BaseID + 1904, new Location(BaseID +1904, "CHATBoneDog", 3) },
 
         // Public Pool
         { BaseID + 1252, new Location(BaseID +1252, "CHATculley", 4) },
@@ -1007,6 +1016,7 @@ public class Locations
         { BaseID + 1288, new Location(BaseID +1288, "CHATKiosk", 4) },
         { BaseID + 1373, new Location(BaseID +1373, "CHAThandsomeFrog", 4) },
         { BaseID + 1444, new Location(BaseID +1444, "CHATCoastGaurd", 4) },
+        { BaseID + 1905, new Location(BaseID +1905, "CHATBoneDog", 4) },
         
         // Bathhouse
         { BaseID + 1289, new Location(BaseID +1289, "CHATMelissa", 5) },
@@ -1056,6 +1066,7 @@ public class Locations
         { BaseID + 1448, new Location(BaseID +1448, "CHATNina", 5) },
         { BaseID + 1449, new Location(BaseID +1449, "CHATGamer", 5) },
         { BaseID + 1452, new Location(BaseID +1452, "CHATMoomy", 5) },
+        { BaseID + 1906, new Location(BaseID +1906, "CHATBoneDog", 5) },
         
         // Tadpole HQ
         { BaseID + 1331, new Location(BaseID +1331, "CHATmonthFrog", 6) },
@@ -1097,6 +1108,8 @@ public class Locations
         { BaseID + 1367, new Location(BaseID +1367, "CHATElevator", 6) },
         { BaseID + 1368, new Location(BaseID +1368, "CHATKing", 6) },
         { BaseID + 1446, new Location(BaseID +1446, "CHATCoastGaurd", 6) },
+        { BaseID + 1907, new Location(BaseID +1907, "CHATBoneDog", 6) },
+        { BaseID + 1914, new Location(BaseID +1914, "CHATdog", 6) },
     };
     
     public static readonly Dictionary<long, Location> ChatsanityLevelGarysGardenLocations = new()
@@ -1277,6 +1290,10 @@ public class Locations
         { BaseID + 2151, new Location(BaseID +2151, "CHATGaryFrog8", 3) },
         { BaseID + 2152, new Location(BaseID +2152, "CHATGaryFrog10", 3) },
         { BaseID + 2153, new Location(BaseID +2153, "CHATGaryFrog11", 3) },
+        { BaseID + 2154, new Location(BaseID +2154, "CHATBoneDog", 3) },
+        { BaseID + 2155, new Location(BaseID +2155, "CHATkappa", 3) },
+        { BaseID + 2156, new Location(BaseID +2156, "CHATdog", 3) },
+        { BaseID + 2157, new Location(BaseID +2157, "CHATdog2", 3) },
     };
     
     public static readonly Dictionary<long, Location> ChatsanityNikoThoughtsLocations = new()

@@ -36,7 +36,7 @@ public class NpcController : MonoBehaviour
             "CHATFlowerShovel", "CHATFlowerPlant", "CHATfrogHUD", "CHATpepperMain", "CHATGunter",
             "CHATArcadeBone", "CHATArcade", "CHATMoomy", "CHATBlessley", "CHATFischer",
             "CHATMelissa", "CHATStijn", "CHATNina", "CHATGamer", "CHATSerschel", "CHATLouist", "CHATGabi",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATBoneDog", "CHATkappa", "CHATdog", "CHATdog2"
         ];
         
         turbine = ["CHATtrainFrog", "CHATtrainFrog2", "CHATVlogFrog", 
@@ -46,7 +46,7 @@ public class NpcController : MonoBehaviour
             "CHATtownGull2", "CHATtownGull3", "CHATButtonBird", "CHATPostman", "CHATTravis",
             "CHATdragon", "CHATArcadeBone", "CHATGabi", "CHATBlessley", "CHATFischer",
             "CHATArcade", "CHATPelly", "CHATSerschel", "CHATLouist", "CHATDustan",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATBoneDog", "CHATkappa", "CHATdog", "CHATdog2"
         ];
         
         salmon = ["CHATstijnsDad", "CHATstijnsMom", "CHATtrainFrog", "CHATtreeFrog", "CHATMysteriousDoe", "CHATTurbineStag", 
@@ -55,7 +55,7 @@ public class NpcController : MonoBehaviour
             "CHATbunkid3", "CHATbunkid4", "CHATbundad", "CHATbunmom", "CHATWoodisch", "CHATScarefrog", "CHATTreeMan", 
             "CHATMelissa", "CHATStijn", "CHATpepperMain", "CHATArcadeBone", "CHATArcade",
             "CHATSerschel", "CHATLouist", "CHATGabi", "CHATBlessley", "CHATFischer", "CHATDustan", "CHATTravis",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer", "CHATMoomy"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer", "CHATMoomy", "CHATBoneDog"
         ];
         
         pool = ["CHATculley", "CHAThatkid", "CHATfrogFloaty", "CHATFizzy", "CHATtownGull2", "CHATtownGull3",
@@ -64,7 +64,7 @@ public class NpcController : MonoBehaviour
             "CHATfrogFlowerHint1", "CHATfrogFlowerHint2", "CHATVlogFrog", "CHATArcadeBone", "CHATArcade", 
             "CHATpoppy", "CHATpaul", "CHATflippy", "CHATjippy", "CHATmippy", "CHATskippy", "CHATtippy", 
             "CHATDetective", "CHATGabi", "CHATBlessley", "CHATFischer", "CHATTravis",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThandsomeFrog", "CHATCoastGaurd"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThandsomeFrog", "CHATCoastGaurd", "CHATBoneDog"
         ];
         
         bathhouse = ["CHATMelissa", "CHATStijn", "CHATmonkey1", "CHATmonkey2", "CHATmonkey3", "CHATsteamyStag", 
@@ -74,7 +74,7 @@ public class NpcController : MonoBehaviour
             "CHATmahjongFrog", "CHATVlogFrog", "CHATtbhMonty", "CHATArcadeBone", "CHATArcade", "CHATUnderhero",
             "CHATTravis", "CHATSerschel", "CHATLouist", "CHATGabi", 
             "CHATBlessley", "CHATFischer", "CHATDustan", "CHATMelissaStijn",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer", "CHATMoomy"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer", "CHATMoomy", "CHATBoneDog"
         ];
         
         tadpole = ["CHATmonthFrog", "CHATMelissaStijn", "CHATfrogSushi", "CHATricky", 
@@ -84,7 +84,7 @@ public class NpcController : MonoBehaviour
             "CHATassistant", "CHATtrainFrog", "CHATcoffeeFrog", "CHATclassicNiko", "CHATBorbie", 
             "CHATSerschel", "CHATLouist", "CHATKing",
             "CHATBlessley", "CHATFischer", "CHATMaster", "CHATTravis",
-            "CHATMitch", "CHATMai", "CHATElevator", "CHATCoastGaurd"
+            "CHATMitch", "CHATMai", "CHATElevator", "CHATCoastGaurd", "CHATBoneDog", "CHATdog"
         ];
         
         garden = [
@@ -252,7 +252,11 @@ public class NpcController : MonoBehaviour
             "CHATGaryFrog8",                                        // Hungry Frog
             "CHATGaryFrog10",                                       // Flower Frog
             "CHATGaryFrog11",                                       // Conspiracy Frog
-            "CHATTipFrog"                                           // Tip Frog
+            "CHATTipFrog",                                          // Tip Frog
+            "CHATBoneDog",                                          // Bone Dog
+            "CHATkappa",                                            // Kappa
+            "CHATdog",                                              // Dog
+            "CHATdog2",                                             // Dog
         ];
     }
 
@@ -335,6 +339,7 @@ public class NpcController : MonoBehaviour
         if (conversation is "townGull2" && currentScene == "Public Pool") conversation = "MomGull";
         if (conversation is "townGull3" && currentScene == "Public Pool") conversation = "MomGull2";
         if (conversation is "mahjongFrog") conversation = "MahjongFrog";
+        if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
         if (!conversation.StartsWith("trapConv") && !niko.Contains(conversation))
             conversation = "CHAT" + conversation;
         //if (conversation.EndsWith("Party"))
@@ -449,7 +454,8 @@ public class NpcController : MonoBehaviour
                         or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
                         or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
                         conversation = "pepperMain";
-
+                    if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+                    
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
 
@@ -511,7 +517,8 @@ public class NpcController : MonoBehaviour
                         or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
                         or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
                         conversation = "pepperMain";
-
+                    if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+                    
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
 
@@ -584,7 +591,8 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                     if (conversation is "graffitiQuestNina" or "graffitiPostNina"
                         or "graffitiTooFewNina" or "graffitiRewardNina")
                         conversation = "Nina";
-
+                    if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+                    
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
 
@@ -640,7 +648,8 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                         or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
                         or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
                         conversation = "pepperMain";
-
+                    if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+                    
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
 
@@ -722,7 +731,8 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                         or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
                         or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
                         conversation = "pepperMain";
-
+                    if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+                    
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
 
@@ -791,7 +801,8 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                         or "pepperRandom1" or "pepperRandom2" or "pepperRandom3" or "pepperRandom4" or "pepperRandom5" 
                         or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9" or "interview")
                         conversation = "pepperMain";
-
+                    if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+                    
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;
 
