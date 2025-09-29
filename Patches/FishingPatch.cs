@@ -28,6 +28,7 @@ public class FishingPatch
     private static bool answerFix1, answerFix2;
     private static string _classification, _itemName, _playerName;
     private static int _currentScoutID;
+    public static List<Texture> ItemTextures = new();
     
     [HarmonyPatch(typeof(scrFishingMaster), "Start")]
     public static class FishingStartPatch
@@ -219,6 +220,9 @@ public class FishingPatch
                 {
                   __instance.hookFish.GetComponent<scrAnimateTextureArray>()
                     .SetAnimationStripAndName(__instance.fishTextures[__instance.currentFish].name);
+                  // var testTexture = Assets.APSprite.texture;
+                  // __instance.fishTextures[0] = testTexture; // Texture for when Fischer holds a fish
+                  // __instance.fishTextures = __instance.pondFish;
                 }
                 else
                 {
@@ -369,6 +373,7 @@ public class FishingPatch
                 var playerName = scout.Player.Name;
                 textbox.conversationLocalized[1] = $"My reward is '{Assets.GetItemName(scout)}' for {playerName} I heard it's {Assets.GetClassification(scout)}!";
                 answerFix2 = true;
+                __instance.fishTextures.ForEach(Plugin.BepinLogger.LogWarning);
               }
             }
             
