@@ -42,6 +42,8 @@ public static class ItemHandler
     
     public static int HairballBoneAmount, TurbineBoneAmount, SalmonBoneAmount, PoolBoneAmount, BathBoneAmount, TadpoleBoneAmount;
     
+    public static int GarysGardenSeedAmount;
+    
     public static void AddCoin(int amount = 1, string sender = "", bool notify = true)
     {
         scrGameSaveManager.instance.gameData.generalGameData.coinAmount += amount;
@@ -533,20 +535,32 @@ public static class ItemHandler
     {
         if (!notify) return;
         var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
+        var itemName = itemInfo.ItemName ?? "Item: " + itemInfo.ItemId;
         var itemId = itemInfo.ItemId;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
             3f, Assets.SetSprite(itemId));
         NotificationManager.ShowParty = true;
     }
+    public static void AddGarysGardenSeed(ItemInfo itemInfo, bool notify = true)
+    {
+        if (!notify) return;
+        var sender = itemInfo.Player.Name;
+        var itemName = itemInfo.ItemName ?? "Item: " + itemInfo.ItemId;
+        var itemId = itemInfo.ItemId;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",
+            3f, Assets.SetSprite(itemId));
+        if (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 24)
+        {
+            scrMiscFlagCountSwitch.instance.Rise();
+        }
+    }
     public static void AddItemNote(ItemInfo itemInfo, bool notify = true)
     {
         if (!notify) return;
         var sender = itemInfo.Player.Name;
-        var itemName = itemInfo.ItemName;
-        if (itemName == null)
-            itemName = "Item: " + itemInfo.ItemId;
+        var itemName = itemInfo.ItemName ?? "Item: " + itemInfo.ItemId;
         var itemId = itemInfo.ItemId;
         Plugin.APSendNote(
             sender != ArchipelagoClient.ServerData.SlotName ? $"Received {itemName} from {sender}!" : $"You found your {itemName}!",

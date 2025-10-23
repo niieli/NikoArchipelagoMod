@@ -45,7 +45,7 @@ public class DeathAmnesty : MonoBehaviour
         
         IsTouchingWater();
 
-        while (DeathCounterInt > _oldDeathCounterInt)
+        while (DeathCounterInt > _oldDeathCounterInt && DeathCounterInt < ArchipelagoData.Options.DeathLinkAmnesty)
         {
             _oldDeathCounterInt++;
             Plugin.BepinLogger.LogInfo($"Deathcounter: {DeathCounterInt}");

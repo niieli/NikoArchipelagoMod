@@ -19,6 +19,7 @@ public static class ItemID
     public const long Bugs = BaseID + 14;
     public const long SnailMoney = BaseID + 16;
     public const long SpeedBoost = BaseID + 18;
+    public const long GarysGardenSeed = BaseID + 250;
     
     // Traps
     public const long FreezeTrap = BaseID + 70;

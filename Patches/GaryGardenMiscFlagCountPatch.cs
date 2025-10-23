@@ -2,6 +2,7 @@
 using System.Linq;
 using HarmonyLib;
 using KinematicCharacterController.Core;
+using NikoArchipelago.Archipelago;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -16,6 +17,11 @@ public class GaryGardenMiscFlagCountPatch
         private static bool Prefix(scrMiscFlagCountSwitch __instance)
         {
             int count = scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("GardenSeed"));
+            if (ArchipelagoData.slotData != null)
+                if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                {
+                    count = ItemHandler.GarysGardenSeedAmount;
+                }
             foreach (GameObject gameObject in __instance.objectsToSwitch)
             {
                 if (__instance.objectsToSwitch[count] != gameObject)
@@ -58,6 +64,11 @@ public class GaryGardenMiscFlagCountPatch
     private static IEnumerator AnimateRise(scrMiscFlagCountSwitch instance)
     {
         int flagCount = scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("GardenSeed")) + 1;
+        if (ArchipelagoData.slotData != null)
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+            {
+                flagCount = ItemHandler.GarysGardenSeedAmount + 1;
+            }
         float myTimer = 0.0f;
         if (flagCount < 0 || flagCount >= instance.objectsToRise.Count)
             yield break;
@@ -79,6 +90,11 @@ public class GaryGardenMiscFlagCountPatch
         while (!scrWorldSaveDataContainer.instance.worldLoaded)
             yield return null;
         int count = scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("GardenSeed"));
+        if (ArchipelagoData.slotData != null)
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+            {
+                count = ItemHandler.GarysGardenSeedAmount;
+            }
         for (int index = 0; index <= count + 1; ++index)
         {
             if (index >= instance.objectsToRise.Count)

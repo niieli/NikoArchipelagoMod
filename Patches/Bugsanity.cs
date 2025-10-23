@@ -340,7 +340,6 @@ public class Bugsanity
         private static bool Prefix(scrBugCatchable __instance)
         {
             if (ArchipelagoData.slotData == null) return true;
-            if (!ArchipelagoData.slotData.ContainsKey("bug_net")) return true; 
             if (!ArchipelagoData.Options.BugNet) return true;
             
             if (ArchipelagoClient.BugnetAcquired) return true;
@@ -359,7 +358,6 @@ public class Bugsanity
             if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(flag))
             {
                 scrWorldSaveDataContainer.instance.miscFlags.Add(flag);
-                //scrWorldSaveDataContainer.instance.bugAmount--;
                 scrGameSaveManager.instance.SaveGame();
                 scrWorldSaveDataContainer.instance.SaveWorld();
             }
@@ -387,7 +385,6 @@ public class Bugsanity
         private static void Postfix(scrBugCicada __instance)
         {
             if (ArchipelagoData.slotData == null) return;
-            if (!ArchipelagoData.slotData.ContainsKey("bugsanity")) return; 
             if (!ArchipelagoData.Options.Bugsanity) return;
             var key = __instance.GetComponent<scrBugCatchable>();
             if (!bugIDs.ContainsKey(key))
@@ -395,8 +392,7 @@ public class Bugsanity
                 Plugin.BepinLogger.LogFatal("Not found in keys: "+__instance);
                 return;
             }
-            var flag = "Bug" + bugIDs[key];
-            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag)) return;
+            if (__instance.transform.childCount < 2) return;
             __instance.visualFly.SetActive(false);
             __instance.visualSit.SetActive(false);
         }

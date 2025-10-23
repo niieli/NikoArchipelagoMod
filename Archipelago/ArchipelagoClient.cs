@@ -34,7 +34,7 @@ public class ArchipelagoClient
         HcSeedAmount, SfcSeedAmount, BathSeedAmount,
         HcFlowerAmount, TtFlowerAmount, SfcFlowerAmount, PpFlowerAmount, BathFlowerAmount, HqFlowerAmount,
         HcCassetteAmount, TtCassetteAmount, SfcCassetteAmount, PpCassetteAmount, BathCassetteAmount, HqCassetteAmount, GgCassetteAmount,
-        HcBoneAmount, TtBoneAmount, SfcBoneAmount, PpBoneAmount, BathBoneAmount, HqBoneAmount;
+        HcBoneAmount, TtBoneAmount, SfcBoneAmount, PpBoneAmount, BathBoneAmount, HqBoneAmount, GarysGardenSeedAmount;
 
     public static int SpeedBoostAmount;
     public static bool SuperJump, Ticket1, Ticket2, Ticket3, Ticket4, Ticket5, Ticket6, TicketGary, TicketParty,
@@ -634,6 +634,13 @@ public class ArchipelagoClient
                     ItemHandler.AddItemNote(item, notify);
                     HqBoneAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.TadpoleHqBone);
                     break;
+                case ItemID.GarysGardenSeed: // Gary's Garden Seed
+                    ItemHandler.AddGarysGardenSeed(item, notify);
+                    GarysGardenSeedAmount = _session.Items.AllItemsReceived.Count(t => t.ItemId == ItemID.GarysGardenSeed);
+                    if (GarysGardenSeedAmount >= 10)
+                        GarysGardenSeedAmount = 10;
+                    Plugin.BepinLogger.LogInfo($"Got a new seed! Current Count: {GarysGardenSeedAmount}");
+                    break;
             }
     }
 
@@ -785,6 +792,11 @@ public class ArchipelagoClient
                 matchedLocation = boneLocation;
                 flagType = "Bone";
             }
+            else if (Locations.GaryGardenSeedLocations.TryGetValue(location, out var gardenSeedLocation))
+            {
+                matchedLocation = gardenSeedLocation;
+                flagType = "GardenSeed";
+            }
             
             ServerData.CheckedLocations.Add(location);
             if (matchedLocation != null)
@@ -878,7 +890,7 @@ public class ArchipelagoClient
                     Plugin.BepinLogger.LogInfo($"Failed to add flag {flag} to Garden: {e.Message}");
                 }
                 break;
-            case "GardenChatLevel":
+            case "GardenChatLevel" or "GardenSeed":
                 try
                 {
                     if (!worldsData[7].miscFlags.Contains(flag))

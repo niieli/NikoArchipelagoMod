@@ -458,74 +458,55 @@ namespace NikoArchipelago
             {
                 ArchipelagoClient.ElevatorRepaired = true;
             }
-            if (ArchipelagoData.slotData.ContainsKey("key_level"))
+            if (ArchipelagoData.Options.Keylevels)
             {
-                if (ArchipelagoData.Options.Keylevels)
-                {
-                    ArchipelagoClient.Keysanity = true;
-                    SyncValue(ref ItemHandler.HairballKeyAmount, ArchipelagoClient.HcKeyAmount - ItemHandler.UsedKeysHairball());
-                    SyncValue(ref ItemHandler.TurbineKeyAmount, ArchipelagoClient.TtKeyAmount - ItemHandler.UsedKeysTurbine());
-                    SyncValue(ref ItemHandler.SalmonKeyAmount, ArchipelagoClient.SfcKeyAmount - ItemHandler.UsedKeysSalmon());
-                    SyncValue(ref ItemHandler.PoolKeyAmount, ArchipelagoClient.PpKeyAmount - ItemHandler.UsedKeysPool());
-                    SyncValue(ref ItemHandler.BathKeyAmount, ArchipelagoClient.BathKeyAmount - ItemHandler.UsedKeysBath());
-                    SyncValue(ref ItemHandler.TadpoleKeyAmount, ArchipelagoClient.HqKeyAmount - ItemHandler.UsedKeysTadpole());
-                    FakeLevelSpecificKeyAmount();
-                }
-                else
-                {
-                    SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
-                    if (generalGameData.keyAmount < 0) generalGameData.keyAmount = 0;
-                }
-            } else
+                ArchipelagoClient.Keysanity = true;
+                SyncValue(ref ItemHandler.HairballKeyAmount, ArchipelagoClient.HcKeyAmount - ItemHandler.UsedKeysHairball());
+                SyncValue(ref ItemHandler.TurbineKeyAmount, ArchipelagoClient.TtKeyAmount - ItemHandler.UsedKeysTurbine());
+                SyncValue(ref ItemHandler.SalmonKeyAmount, ArchipelagoClient.SfcKeyAmount - ItemHandler.UsedKeysSalmon());
+                SyncValue(ref ItemHandler.PoolKeyAmount, ArchipelagoClient.PpKeyAmount - ItemHandler.UsedKeysPool());
+                SyncValue(ref ItemHandler.BathKeyAmount, ArchipelagoClient.BathKeyAmount - ItemHandler.UsedKeysBath());
+                SyncValue(ref ItemHandler.TadpoleKeyAmount, ArchipelagoClient.HqKeyAmount - ItemHandler.UsedKeysTadpole());
+                FakeLevelSpecificKeyAmount();
+            }
+            else
             {
                 SyncValue(ref generalGameData.keyAmount, ArchipelagoClient.KeyAmount - ItemHandler.UsedKeys());
                 if (generalGameData.keyAmount < 0) generalGameData.keyAmount = 0;
             }
 
-            if (ArchipelagoData.slotData.ContainsKey("fishsanity"))
+            if (ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
-                if (ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Insanity)
-                {
-                    SyncValue(ref ItemHandler.HairballFishAmount, ArchipelagoClient.HcFishAmount);
-                    SyncValue(ref ItemHandler.TurbineFishAmount, ArchipelagoClient.TtFishAmount);
-                    SyncValue(ref ItemHandler.SalmonFishAmount, ArchipelagoClient.SfcFishAmount);
-                    SyncValue(ref ItemHandler.PoolFishAmount, ArchipelagoClient.PpFishAmount);
-                    SyncValue(ref ItemHandler.BathFishAmount, ArchipelagoClient.BathFishAmount);
-                    SyncValue(ref ItemHandler.TadpoleFishAmount, ArchipelagoClient.HqFishAmount);
-                }
+                SyncValue(ref ItemHandler.HairballFishAmount, ArchipelagoClient.HcFishAmount);
+                SyncValue(ref ItemHandler.TurbineFishAmount, ArchipelagoClient.TtFishAmount);
+                SyncValue(ref ItemHandler.SalmonFishAmount, ArchipelagoClient.SfcFishAmount);
+                SyncValue(ref ItemHandler.PoolFishAmount, ArchipelagoClient.PpFishAmount);
+                SyncValue(ref ItemHandler.BathFishAmount, ArchipelagoClient.BathFishAmount);
+                SyncValue(ref ItemHandler.TadpoleFishAmount, ArchipelagoClient.HqFishAmount);
             }
-            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
+            if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
-                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Insanity)
-                {
-                    SyncValue(ref ItemHandler.HairballSeedAmount, ArchipelagoClient.HcSeedAmount);
-                    SyncValue(ref ItemHandler.SalmonSeedAmount, ArchipelagoClient.SfcSeedAmount);
-                    SyncValue(ref ItemHandler.BathSeedAmount, ArchipelagoClient.BathSeedAmount);
-                }
+                SyncValue(ref ItemHandler.HairballSeedAmount, ArchipelagoClient.HcSeedAmount);
+                SyncValue(ref ItemHandler.SalmonSeedAmount, ArchipelagoClient.SfcSeedAmount);
+                SyncValue(ref ItemHandler.BathSeedAmount, ArchipelagoClient.BathSeedAmount);
             }
-            if (ArchipelagoData.slotData.ContainsKey("flowersanity"))
+            if (ArchipelagoData.Options.Flowersanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
-                if (ArchipelagoData.Options.Flowersanity == ArchipelagoOptions.InsanityLevel.Insanity)
-                {
-                    SyncValue(ref ItemHandler.HairballFlowerAmount, ArchipelagoClient.HcFlowerAmount);
-                    SyncValue(ref ItemHandler.TurbineFlowerAmount, ArchipelagoClient.TtFlowerAmount);
-                    SyncValue(ref ItemHandler.SalmonFlowerAmount, ArchipelagoClient.SfcFlowerAmount);
-                    SyncValue(ref ItemHandler.PoolFlowerAmount, ArchipelagoClient.PpFlowerAmount);
-                    SyncValue(ref ItemHandler.BathFlowerAmount, ArchipelagoClient.BathFlowerAmount);
-                    SyncValue(ref ItemHandler.TadpoleFlowerAmount, ArchipelagoClient.HqFlowerAmount);
-                }
+                SyncValue(ref ItemHandler.HairballFlowerAmount, ArchipelagoClient.HcFlowerAmount);
+                SyncValue(ref ItemHandler.TurbineFlowerAmount, ArchipelagoClient.TtFlowerAmount);
+                SyncValue(ref ItemHandler.SalmonFlowerAmount, ArchipelagoClient.SfcFlowerAmount);
+                SyncValue(ref ItemHandler.PoolFlowerAmount, ArchipelagoClient.PpFlowerAmount);
+                SyncValue(ref ItemHandler.BathFlowerAmount, ArchipelagoClient.BathFlowerAmount);
+                SyncValue(ref ItemHandler.TadpoleFlowerAmount, ArchipelagoClient.HqFlowerAmount);
             }
-            if (ArchipelagoData.slotData.ContainsKey("bonesanity"))
+            if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Insanity)
             {
-                if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Insanity)
-                {
-                    SyncValue(ref ItemHandler.HairballBoneAmount, ArchipelagoClient.HcBoneAmount);
-                    SyncValue(ref ItemHandler.TurbineBoneAmount, ArchipelagoClient.TtBoneAmount);
-                    SyncValue(ref ItemHandler.SalmonBoneAmount, ArchipelagoClient.SfcBoneAmount);
-                    SyncValue(ref ItemHandler.PoolBoneAmount, ArchipelagoClient.PpBoneAmount);
-                    SyncValue(ref ItemHandler.BathBoneAmount, ArchipelagoClient.BathBoneAmount);
-                    SyncValue(ref ItemHandler.TadpoleBoneAmount, ArchipelagoClient.HqBoneAmount);
-                }
+                SyncValue(ref ItemHandler.HairballBoneAmount, ArchipelagoClient.HcBoneAmount);
+                SyncValue(ref ItemHandler.TurbineBoneAmount, ArchipelagoClient.TtBoneAmount);
+                SyncValue(ref ItemHandler.SalmonBoneAmount, ArchipelagoClient.SfcBoneAmount);
+                SyncValue(ref ItemHandler.PoolBoneAmount, ArchipelagoClient.PpBoneAmount);
+                SyncValue(ref ItemHandler.BathBoneAmount, ArchipelagoClient.BathBoneAmount);
+                SyncValue(ref ItemHandler.TadpoleBoneAmount, ArchipelagoClient.HqBoneAmount);
             }
             if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.LevelBased)
             {
@@ -542,6 +523,8 @@ namespace NikoArchipelago
             {
                 SyncValue(ref generalGameData.cassetteAmount, ArchipelagoClient.CassetteAmount);
             }
+            if (ArchipelagoClient.GarysGardenSeedAmount <= 10)
+                SyncValue(ref ItemHandler.GarysGardenSeedAmount, ArchipelagoClient.GarysGardenSeedAmount);
             SyncValue(ref generalGameData.secretMove, ArchipelagoClient.SuperJump);
             // Sync Level Unlocks (Tickets) - No ref here
             void SyncLevel(int levelIndex, bool clientValue)
@@ -875,6 +858,86 @@ namespace NikoArchipelago
                     Logger.LogWarning($"BugID: {bug.Value} | Vector3: {bug.Key.transform.position}");
                 }
             }
+            // if (GUI.Button(new Rect(16, 680, 100, 20), "HELP"))
+            // {
+            //     var worldData = scrGameSaveManager.instance.gameData.worldsData;
+            //     worldData[0].coinFlags.Add("Fetch");
+            //     worldData[1].coinFlags.Add("volley");
+            //     worldData[1].coinFlags.Add("dustan");
+            //     worldData[1].coinFlags.Add("main");
+            //     worldData[1].coinFlags.Add("fishing");
+            //     worldData[1].coinFlags.Add("bug");
+            //     worldData[1].coinFlags.Add("graffiti");
+            //     worldData[1].coinFlags.Add("hamsterball");
+            //     worldData[1].coinFlags.Add("cassetteCoin");
+            //     worldData[1].coinFlags.Add("cassetteCoin2");
+            //     worldData[1].coinFlags.Add("gamerQuest");
+            //     worldData[1].coinFlags.Add("arcadeBone");
+            //     worldData[1].coinFlags.Add("arcade");
+            //     worldData[1].coinFlags.Add("carrynojump");
+            //     worldData[2].coinFlags.Add("fishing");
+            //     worldData[2].coinFlags.Add("volley");
+            //     worldData[2].coinFlags.Add("flowerPuzzle");
+            //     worldData[2].coinFlags.Add("main");
+            //     worldData[2].coinFlags.Add("bug");
+            //     worldData[2].coinFlags.Add("Dustan");
+            //     worldData[2].coinFlags.Add("cassetteCoin");
+            //     worldData[2].coinFlags.Add("cassetteCoin2");
+            //     worldData[2].coinFlags.Add("arcadeBone");
+            //     worldData[2].coinFlags.Add("arcade");
+            //     worldData[2].coinFlags.Add("carrynojump");
+            //     worldData[3].coinFlags.Add("main");
+            //     worldData[3].coinFlags.Add("cassetteCoin");
+            //     worldData[3].coinFlags.Add("Dustan");
+            //     worldData[3].coinFlags.Add("hamsterball");
+            //     worldData[3].coinFlags.Add("arcadeBone");
+            //     worldData[3].coinFlags.Add("tree");
+            //     worldData[3].coinFlags.Add("bug");
+            //     worldData[3].coinFlags.Add("volley");
+            //     worldData[3].coinFlags.Add("flowerPuzzle");
+            //     worldData[3].coinFlags.Add("graffiti");
+            //     worldData[3].coinFlags.Add("cassetteCoin2");
+            //     worldData[3].coinFlags.Add("fishing");
+            //     worldData[3].coinFlags.Add("gamerQuest");
+            //     worldData[3].coinFlags.Add("arcade");
+            //     worldData[3].coinFlags.Add("carrynojump");
+            //     worldData[4].coinFlags.Add("cassetteCoin2");
+            //     worldData[4].coinFlags.Add("arcadeBone");
+            //     worldData[4].coinFlags.Add("arcade");
+            //     worldData[4].coinFlags.Add("fishing");
+            //     worldData[4].coinFlags.Add("main");
+            //     worldData[4].coinFlags.Add("volley");
+            //     worldData[4].coinFlags.Add("bug");
+            //     worldData[4].coinFlags.Add("cassetteCoin");
+            //     worldData[4].coinFlags.Add("flowerPuzzle");
+            //     worldData[5].coinFlags.Add("carrynojump");
+            //     worldData[5].coinFlags.Add("hamsterball");
+            //     worldData[5].coinFlags.Add("main");
+            //     worldData[5].coinFlags.Add("graffiti");
+            //     worldData[5].coinFlags.Add("cassetteCoin");
+            //     worldData[5].coinFlags.Add("cassetteCoin2");
+            //     worldData[5].coinFlags.Add("Dustan");
+            //     worldData[5].coinFlags.Add("volley");
+            //     worldData[5].coinFlags.Add("gamerQuest");
+            //     worldData[5].coinFlags.Add("fishing");
+            //     worldData[5].coinFlags.Add("bug");
+            //     worldData[5].coinFlags.Add("flowerPuzzle");
+            //     worldData[5].coinFlags.Add("arcadeBone");
+            //     worldData[5].coinFlags.Add("arcade");
+            //     worldData[6].coinFlags.Add("cassetteCoin2");
+            //     worldData[6].coinFlags.Add("cassetteCoin");
+            //     worldData[6].coinFlags.Add("main");
+            //     worldData[6].coinFlags.Add("volley");
+            //     worldData[6].coinFlags.Add("fishing");
+            //     worldData[6].coinFlags.Add("flowerPuzzle");
+            //     worldData[6].coinFlags.Add("arcade");
+            //     worldData[6].coinFlags.Add("bug");
+            //     worldData[6].coinFlags.Add("carrynojump");
+            //     worldData[6].coinFlags.Add("arcadeBone");
+            //     worldData[7].coinFlags.Add("Gary");
+            //     worldData[7].coinFlags.Add("cassetteCoin2");
+            //     worldData[7].coinFlags.Add("cassetteCoin");
+            // }
         }
 
         private void BackgroundForText(Rect rect)
@@ -887,51 +950,27 @@ namespace NikoArchipelago
 
         private void Tracker()
         {
-            var slotData = ArchipelagoData.slotData;
-             var flagData = new (string flagKey, string successMsg, string failureMsg, int xPos, int yPos)[]
-             {
-            //   ("APWave1", "Got Contact List 1!", "No Contact List 1!", 16, 70),
-            //   ("APWave2", "Got Contact List 2!", "No Contact List 2!", 170, 70),
-            //     ("KioskHome", "Kiosk Home", $"Kiosk Home({slotData["kioskhome"]})", 16, 90),
-            //     ("KioskHairball City", "Kiosk HC", $"Kiosk HC({slotData["kioskhc"]})", 115, 90),
-            //     ("KioskTrash Kingdom", "Kiosk TT", $"Kiosk TT({slotData["kiosktt"]})", 200, 90),
-            //     ("KioskSalmon Creek Forest", "Kiosk SCF", $"Kiosk SCF({slotData["kiosksfc"]})", 16, 110),
-            //     ("KioskPublic Pool", "Kiosk PP", $"Kiosk PP({slotData["kioskpp"]})", 115, 110),
-            //     ("KioskThe Bathhouse", "Kiosk Bath", $"Kiosk Bath({slotData["kioskbath"]})", 200, 110),
-             };
-            if (int.Parse(slotData["goal_completion"].ToString()) == 0)
+            switch (ArchipelagoData.Options.GoalCompletion)
             {
-                GUI.Label(new Rect(34, 70, 300, 20), $"Goal: Get Hired | Repair the elevator!");
+                case ArchipelagoOptions.GoalCompletionMode.Hired:
+                    GUI.Label(new Rect(34, 70, 300, 20), $"Goal: Get Hired | Repair the elevator!");
+                    break;
+                case ArchipelagoOptions.GoalCompletionMode.Employee:
+                    GUI.Label(new Rect(19, 70, 300, 20), $"Goal: Employee Of The Month! (76 Coins)");
+                    break;
+                case ArchipelagoOptions.GoalCompletionMode.Custom:
+                    GUI.Label(new Rect(90, 70, 300, 20), $"Goal: Get {ArchipelagoData.Options.CustomGoalCoinAmount} Coins!");
+                    break;
+                case ArchipelagoOptions.GoalCompletionMode.Garden:
+                    GUI.Label(new Rect(60, 70, 300, 20), $"Goal: Restore Gary's Garden!");
+                    break;
+                case ArchipelagoOptions.GoalCompletionMode.Help:
+                    GUI.Label(new Rect(80, 70, 300, 20), $"Goal: Help Everyone!");
+                    break;
+                default:
+                    GUI.Label(new Rect(70, 70, 300, 20), $"Error getting goal config");
+                    break;
             }
-            else
-            {
-                GUI.Label(new Rect(19, 70, 300, 20), "Goal: Employee Of The Month! (76 Coins)");
-            }
-
-            foreach (var (flagKey, successMsg, failureMsg, xPos, yPos) in flagData)
-            {
-                DrawFlagStatus(flagKey, successMsg, failureMsg, xPos, yPos);
-            }
-        }
-
-        // Method to display flag status based on game data
-        private void DrawFlagStatus(string flagKey, string successMsg, string failureMsg, int xPos, int yPos)
-        {
-            var startingColor = GUI.color;
-            var generalFlags = scrGameSaveManager.instance.gameData.generalGameData.generalFlags;
-
-            if (generalFlags.Contains(flagKey))
-            {
-                GUI.color = Color.green;
-                GUI.Label(new Rect(xPos, yPos, 300, 20), successMsg);
-            }
-            else
-            {
-                GUI.color = Color.red;
-                GUI.Label(new Rect(xPos, yPos, 300, 20), failureMsg);
-            }
-
-            GUI.color = startingColor;
         }
     }
 }

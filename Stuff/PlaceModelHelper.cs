@@ -228,6 +228,30 @@ public static class PlaceModelHelper
             wobble.wobbleAngle = 5f;
         }
 
+        var frontTransform = itemQuads.transform.Find("Fronts");
+        
+        if (frontTransform != null)
+        {
+            var ogRenderer = ogQuads.GetComponent<Renderer>();
+            if (ogRenderer == null)
+                ogRenderer = ogQuads.transform.Find("Front").GetComponent<Renderer>();
+            var frontRenderer = frontTransform.GetComponent<Renderer>();
+
+            if (ogRenderer != null)
+            {
+                frontRenderer.material = ogRenderer.material;
+                frontRenderer.forceRenderingOff = true;
+            }
+            else
+            {
+                Plugin.BepinLogger.LogWarning($"Object doesn't have a Renderer component! Error - Quad: {ogQuads.name} | Parent: {ogQuads.transform.parent.name}");
+            }
+        }
+        else
+        {
+            Plugin.BepinLogger.LogWarning("Couldn't find 'Fronts' under itemQuads!");
+        }
+
         instanceCache[prefabName] = itemOverworld;
         return itemOverworld;
     }

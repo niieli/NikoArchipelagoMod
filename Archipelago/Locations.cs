@@ -267,6 +267,21 @@ public class Locations
         { BaseID + 192, new Location(BaseID + 192, "Cassette (9)", 23) },
     };
     
+    public static readonly Dictionary<long, Location> GaryGardenSeedLocations = new()
+    {
+        //Seeds
+        { BaseID + 2301, new Location(BaseID + 2301, "GardenSeed 1", 23) },
+        { BaseID + 2302, new Location(BaseID + 2302, "GardenSeed 2", 23) },
+        { BaseID + 2303, new Location(BaseID + 2303, "GardenSeed 3", 23) },
+        { BaseID + 2304, new Location(BaseID + 2304, "GardenSeed 4", 23) },
+        { BaseID + 2305, new Location(BaseID + 2305, "GardenSeed 5", 23) },
+        { BaseID + 2306, new Location(BaseID + 2306, "GardenSeed 6", 23) },
+        { BaseID + 2307, new Location(BaseID + 2307, "GardenSeed 7", 23) },
+        { BaseID + 2308, new Location(BaseID + 2308, "GardenSeed 8", 23) },
+        { BaseID + 2309, new Location(BaseID + 2309, "GardenSeed 9", 23) },
+        { BaseID + 2310, new Location(BaseID + 2310, "GardenSeed 10", 23) },
+    };
+    
     public static readonly Dictionary<long, Location> FishsanityLocations = new()
     {
         //FISH
