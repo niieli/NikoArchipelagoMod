@@ -57,6 +57,7 @@ public class DeathAmnesty : MonoBehaviour
     {
         if (!ArchipelagoClient.SwimmingAcquired)
         {
+            if (!scrWaterIsDeath.isOn && scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 24) return;
             if (MyCharacterController.instance.isTouchingWater && !_playerTouchedHazard)
             {
                 DeathCounterInt++;
