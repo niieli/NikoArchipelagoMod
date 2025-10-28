@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using KinematicCharacterController.Core;
+using Newtonsoft.Json.Linq;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Object = System.Object;
+using Random = UnityEngine.Random;
 
 namespace NikoArchipelago.Patches;
 
@@ -413,10 +415,31 @@ public class FishingPatch
               textbox.canWaklaway = true;
               if (currentBox == 1 && !answerFix1)
               {
-                // var scout = ArchipelagoClient.ScoutLocation(_currentScoutID, false);
-                // var playerName = scout.Player.Name;
-                // var game = scout.Player.Game; // Sadly there is no Item Scouting for other slots, so can't hint for swim course.
-                textbox.conversationLocalized[1] = $"Wait##nikoimg5;, you can't ##talkerimg2;##sp7;swim##sp0;?!##nikoimg4; Then you should learn how to swim, not sure where you can learn that.";
+                var player = -99;
+                long location = -99;
+                if (ArchipelagoData.slotData["hint_swim"] is JArray hintSwim && hintSwim.Count > 0)
+                {
+                  var swimInfo = hintSwim[0];
+                  player = (int)swimInfo["player"];
+                  location = (long)swimInfo["location"];
+                  Plugin.BepinLogger.LogInfo($"Player: {player}, Location: {location}");
+                  if (ArchipelagoClient._session.RoomState.Version >= Version.Parse("0.6.3"))
+                    ArchipelagoClient._session.Hints.CreateHints(player, HintStatus.Priority, location);
+                  
+                }
+
+                var playerName = "!Error!";
+                var playerGame = "no idead";
+                if (player != -99)
+                {
+                  playerName = ArchipelagoClient._session.Players.GetPlayerInfo(player).Name;
+                  playerGame = ArchipelagoClient._session.Players.GetPlayerInfo(player).Game;
+                }
+                var locationName = "!Error!";
+                if (location != -99)
+                  locationName = ArchipelagoClient._session.Locations.GetLocationNameFromId(location, playerGame);
+                textbox.conversationLocalized[1] = $"Wait##nikoimg5;, you can't ##talkerimg2;##sp7;swim##sp0;?!##nikoimg4; Then you should learn how to swim, I heard <b><color=#f4ff2b>{playerName}</color></b> can help you at <u><color=#91b7ff>{locationName}</color></u>!";
+                //#4C3573
                 answerFix1 = true;
               }
             }
