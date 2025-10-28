@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using KinematicCharacterController.Core;
+using NikoArchipelago.Archipelago;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -282,7 +283,7 @@ public class NpcController : MonoBehaviour
         if (conversation is "FlowerQuest" or "FlowerPost" or "FlowerReward" or "GabiParty") conversation = "Gabi";
         if (conversation is "BugQuest" or "BugPost" or "BugReward" or "BlessleyParty") conversation = "Blessley";
         if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
-            or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" 
+            or "FishsanityFinal" or "FishsanityObtained" or "FischerLocationIdle" or "FishsanityNoSwimming" 
             or "fish0" or "fish1" or "fish2" or "fish3" or "fish4" or "FischerIdle"
             or "FischerNonFish" or "FischerOldFish" or "FischerParty")
             conversation = "Fischer";
@@ -364,9 +365,11 @@ public class NpcController : MonoBehaviour
 
     private void LevelChat()
     {
+        var isLevelTextbox = ArchipelagoData.Options.Textbox == ArchipelagoOptions.TextboxLevel.Level;
         switch (currentScene)
         {
             case "Home":
+                if (isLevelTextbox && !ArchipelagoClient.HomeTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -402,6 +405,7 @@ public class NpcController : MonoBehaviour
                 break;
             case "Hairball City":
                 //NpcGameObject.SetActive(ArchipelagoClient.HcNPCs);
+                if (isLevelTextbox && !ArchipelagoClient.HairballTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -429,7 +433,7 @@ public class NpcController : MonoBehaviour
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
                     if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
-                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FischerLocationIdle" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -475,6 +479,7 @@ public class NpcController : MonoBehaviour
                 break;
             case "Trash Kingdom":
                 //NpcGameObject.SetActive(ArchipelagoClient.TtNPCs);
+                if (isLevelTextbox && !ArchipelagoClient.TurbineTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -495,7 +500,7 @@ public class NpcController : MonoBehaviour
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
                     if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
-                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FischerLocationIdle" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -538,6 +543,7 @@ public class NpcController : MonoBehaviour
                 break;
             case "Salmon Creek Forest":
                 //NpcGameObject.SetActive(ArchipelagoClient.SfcNPCs);
+                if (isLevelTextbox && !ArchipelagoClient.SalmonTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -563,8 +569,7 @@ public class NpcController : MonoBehaviour
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
                     if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
-or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "FishsanityNotEnough" or "FishsanityFishing" 
-                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FischerLocationIdle" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -612,6 +617,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                 break;
             case "Public Pool":
                 //NpcGameObject.SetActive(ArchipelagoClient.PpNPCs);
+                if (isLevelTextbox && !ArchipelagoClient.PoolTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -628,7 +634,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
                     if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
-                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FischerLocationIdle" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -669,6 +675,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                 break;
             case "The Bathhouse":
                 //NpcGameObject.SetActive(ArchipelagoClient.BathNPCs);
+                if (isLevelTextbox && !ArchipelagoClient.BathTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -707,7 +714,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
                     if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
-                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FischerLocationIdle" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -757,6 +764,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                 break;
             case "Tadpole inc":
                 //NpcGameObject.SetActive(ArchipelagoClient.HqNPCs);
+                if (isLevelTextbox && !ArchipelagoClient.TadpoleTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -777,7 +785,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
                     if (conversation is "BugQuest" or "BugPost" or "BugReward")
                         conversation = "Blessley";
                     if (conversation is "FischerAll" or "FishsanityNotEnough" or "FishsanityFishing"
-                        or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "fish0"
+                        or "FishsanityFinal" or "FishsanityObtained" or "FischerLocationIdle" or "FishsanityNoSwimming" or "fish0"
                         or "fish1" or "fish2" or "fish3" or "fish4"
                         or "FischerIdle" or "FischerNonFish" or "FischerOldFish")
                         conversation = "Fischer";
@@ -821,6 +829,7 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
 
                 break;
             case "GarysGarden":
+                if (isLevelTextbox && !ArchipelagoClient.GardenTextboxAcquired) return;
                 if (scrTextbox.instance.isOn)
                 {
                     var conversation = scrTextbox.instance.conversation;
@@ -870,6 +879,8 @@ or "FishsanityFinal" or "FishsanityObtained" or "FishsanityNoSwimming" or "Fishs
     private void Update()
     {
         if (scrTrainManager.instance.isLoadingNewScene) return; // Maybe this fixes the home trap sending home conversations?
+        if (ArchipelagoData.Options.Textbox == ArchipelagoOptions.TextboxLevel.Global &&
+            !ArchipelagoClient.TextboxAcquired) return;
         if (Thoughtsanity)
             NikoThoughts();
         if (!IsGlobal)
