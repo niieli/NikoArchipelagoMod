@@ -515,6 +515,8 @@ public class APItemObtainer
                     gardenAdjustment = 3;
                 }
             }
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                gardenAdjustment += 1;
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
                 if (!ArchipelagoData.Options.Snailshop)

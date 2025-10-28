@@ -31,28 +31,21 @@ public class APItemOverworld
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
-            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            if (!ArchipelagoData.Options.GarysGarden)
             {
-                if (!ArchipelagoData.Options.GarysGarden)
-                {
-                    gardenAdjustment = 3;
-                }
+                gardenAdjustment = 3;
             }
-            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                gardenAdjustment += 1;
+            if (!ArchipelagoData.Options.Snailshop)
             {
-                if (!ArchipelagoData.Options.Snailshop)
-                {
-                    snailShopAdjustment = 16;
-                }
+                snailShopAdjustment = 16;
             }
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
-                    cassetteAdjustment = 14;
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
+                cassetteAdjustment = 14; 
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             Object.Destroy(ogQuads.gameObject);
-
-            
 
             var index = 0;
             var offset = 0;
@@ -140,23 +133,16 @@ public class APItemOverworld
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
-            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
+            if (!ArchipelagoData.Options.GarysGarden)
             {
-                if (!ArchipelagoData.Options.GarysGarden)
-                {
-                    gardenAdjustment = 2;
-                }
+                gardenAdjustment = 2;
             }
-            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
+            if (!ArchipelagoData.Options.Snailshop)
             {
-                if (!ArchipelagoData.Options.Snailshop)
-                {
-                    snailShopAdjustment = 16;
-                }
+                snailShopAdjustment = 16;
             }
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
-                    cassetteAdjustment = 14;
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
+                cassetteAdjustment = 14;    
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
@@ -239,23 +225,14 @@ public class APItemOverworld
             var snailShopAdjustment = 0;
             var cassetteAdjustment = 0;
             if (ArchipelagoData.slotData == null) return;
-            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-            {
-                if (!ArchipelagoData.Options.GarysGarden)
-                {
-                    gardenAdjustment = 13;
-                }
-            }
-            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
-            {
-                if (!ArchipelagoData.Options.Snailshop)
-                {
-                    snailShopAdjustment = 16;
-                }
-            }
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
-                    cassetteAdjustment = 14;
+            if (!ArchipelagoData.Options.GarysGarden)
+                gardenAdjustment = 13;
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                gardenAdjustment += 1;
+            if (!ArchipelagoData.Options.Snailshop)
+                snailShopAdjustment = 16;
+            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
+                cassetteAdjustment = 14;    
             var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             ogQuads.SetActive(false);
@@ -295,6 +272,8 @@ public class APItemOverworld
                     gardenAdjustment = 13;
                 }
             }
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                gardenAdjustment += 1;
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
                 if (!ArchipelagoData.Options.Snailshop)
@@ -352,6 +331,8 @@ public class APItemOverworld
                     gardenAdjustment = 13;
                 }
             }
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                gardenAdjustment += 1;
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
                 if (!ArchipelagoData.Options.Snailshop)
@@ -425,6 +406,8 @@ public class APItemOverworld
                     gardenAdjustment = 13;
                 }
             }
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                gardenAdjustment += 1;
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
             {
                 if (!ArchipelagoData.Options.Snailshop)
