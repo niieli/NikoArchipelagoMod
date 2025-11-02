@@ -157,7 +157,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public CanvasGroup settingsPanelCanvasGroup;
     public CanvasGroup trackersPanelCanvasGroup;
     public CanvasGroup qolPanelCanvasGroup;
-    public float fadeDuration = 0.35f;
+    public float fadeDuration = 0.25f;
 
     private CanvasGroup _activePanel;    
     public Button settingsButton;
@@ -309,10 +309,12 @@ public class ArchipelagoMenu : MonoBehaviour
     public GameObject sanityPanel2;
     public GameObject sanityPanel3;
     public GameObject sanityPanel4;
+    public GameObject sanityPanel5;
     public CanvasGroup sanityPanel1CanvasGroup;
     public CanvasGroup sanityPanel2CanvasGroup;
     public CanvasGroup sanityPanel3CanvasGroup;
     public CanvasGroup sanityPanel4CanvasGroup;
+    public CanvasGroup sanityPanel5CanvasGroup;
     public Image checkedHcKeysImage;
     public Image checkedTtKeysImage;
     public Image checkedScfKeysImage;
@@ -440,6 +442,128 @@ public class ArchipelagoMenu : MonoBehaviour
     public Image boughtBathBoneImage;
     public Image boughtHqBoneImage;
     
+    // SanityPage5 | Friend Goal Page
+    public GameObject friendPanel;
+    public Image friendDisabledImage;
+    public TooltipTrigger friendDisabledTrigger;
+    public Tooltip friendDisabledTooltip;
+    public TooltipTrigger friendTrigger;
+    public Tooltip friendTooltip;
+    public Image levelHomeImage;
+    public Image levelHcImage;
+    public Image levelTtImage;
+    public Image levelScfImage;
+    public Image levelPpImage;
+    public Image levelBathImage;
+    public Image levelHqImage;
+    public Image levelGgImage;
+    public Image levelHomeRealImage;
+    public Image levelHcRealImage;
+    public Image levelTtRealImage;
+    public Image levelScfRealImage;
+    public Image levelPpRealImage;
+    public Image levelBathRealImage;
+    public Image levelHqRealImage;
+    public Image levelGgRealImage;
+    public Button friendPageBackButton;
+    public Button friendPageForwardButton;
+    private CanvasGroup _activePanelFriend;
+    public CanvasGroup friendPanelHairballCanvasGroup;
+    public CanvasGroup friendPanelTurbineCanvasGroup;
+    public CanvasGroup friendPanelSalmonCanvasGroup;
+    public CanvasGroup friendPanelPoolCanvasGroup;
+    public CanvasGroup friendPanelBathCanvasGroup;
+    public CanvasGroup friendPanelTadpoleCanvasGroup;
+    // Friend Goal - Home, Hairball
+    public GameObject hairballLocations;
+    public TextMeshProUGUI locationHomeHighFrogText;
+    public TextMeshProUGUI locationHairballVolleyText;
+    public TextMeshProUGUI locationHairballDustanText;
+    public TextMeshProUGUI locationHairballGunterText;
+    public TextMeshProUGUI locationHairballNinaText;
+    public TextMeshProUGUI locationHairballMoomyText;
+    public TextMeshProUGUI locationHairballFischerText;
+    public TextMeshProUGUI locationHairballGameKidText;
+    public TextMeshProUGUI locationHairballBlippyDogText;
+    public TextMeshProUGUI locationHairballBlippyText;
+    public TextMeshProUGUI locationHairballSerschelText;
+    public TextMeshProUGUI locationHairballGabiText;
+    public TextMeshProUGUI locationHairballBlessleyText;
+    public TextMeshProUGUI locationHairballMitchText;
+    public TextMeshProUGUI locationHairballMaiText;
+    // Friend Goal - Turbine
+    public GameObject turbineLocations;
+    public TextMeshProUGUI locationTurbinePellyText;
+    public TextMeshProUGUI locationTurbineVolleyText;
+    public TextMeshProUGUI locationTurbineDustanText;
+    public TextMeshProUGUI locationTurbineFischerText;
+    public TextMeshProUGUI locationTurbineBlippyDogText;
+    public TextMeshProUGUI locationTurbineBlippyText;
+    public TextMeshProUGUI locationTurbineSerschelText;
+    public TextMeshProUGUI locationTurbineGabiText;
+    public TextMeshProUGUI locationTurbineBlessleyText;
+    public TextMeshProUGUI locationTurbineMitchText;
+    public TextMeshProUGUI locationTurbineMaiText;
+    // Friend Goal - Salmon
+    public GameObject salmonLocations;
+    public TextMeshProUGUI locationSalmonStijnText;
+    public TextMeshProUGUI locationSalmonVolleyText;
+    public TextMeshProUGUI locationSalmonDustanText;
+    public TextMeshProUGUI locationSalmonTreemanText;
+    public TextMeshProUGUI locationSalmonNinaText;
+    public TextMeshProUGUI locationSalmonMoomyText;
+    public TextMeshProUGUI locationSalmonFischerText;
+    public TextMeshProUGUI locationSalmonGameKidText;
+    public TextMeshProUGUI locationSalmonBlippyDogText;
+    public TextMeshProUGUI locationSalmonBlippyText;
+    public TextMeshProUGUI locationSalmonSerschelText;
+    public TextMeshProUGUI locationSalmonGabiText;
+    public TextMeshProUGUI locationSalmonBlessleyText;
+    public TextMeshProUGUI locationSalmonMitchText;
+    public TextMeshProUGUI locationSalmonMaiText;
+    // Friend Goal - Pool
+    public GameObject poolLocations;
+    public TextMeshProUGUI locationPoolFrogtectiveText;
+    public TextMeshProUGUI locationPoolVolleyText;
+    public TextMeshProUGUI locationPoolFischerText;
+    public TextMeshProUGUI locationPoolBlippyDogText;
+    public TextMeshProUGUI locationPoolBlippyText;
+    public TextMeshProUGUI locationPoolGabiText;
+    public TextMeshProUGUI locationPoolBlessleyText;
+    public TextMeshProUGUI locationPoolMitchText;
+    public TextMeshProUGUI locationPoolMaiText;
+    // Friend Goal - Bath
+    public GameObject bathLocations;
+    public TextMeshProUGUI locationBathPoppyText;
+    public TextMeshProUGUI locationBathVolleyText;
+    public TextMeshProUGUI locationBathDustanText;
+    public TextMeshProUGUI locationBathNinaText;
+    public TextMeshProUGUI locationBathMoomyText;
+    public TextMeshProUGUI locationBathFischerText;
+    public TextMeshProUGUI locationBathGameKidText;
+    public TextMeshProUGUI locationBathBlippyDogText;
+    public TextMeshProUGUI locationBathBlippyText;
+    public TextMeshProUGUI locationBathSerschelText;
+    public TextMeshProUGUI locationBathGabiText;
+    public TextMeshProUGUI locationBathBlessleyText;
+    public TextMeshProUGUI locationBathMitchText;
+    public TextMeshProUGUI locationBathMaiText;
+    // Friend Goal - Tadpole, Garden
+    public GameObject tadpoleLocations;
+    public TextMeshProUGUI locationTadpoleKingText;
+    public TextMeshProUGUI locationTadpoleVolleyText;
+    public TextMeshProUGUI locationTadpoleFischerText;
+    public TextMeshProUGUI locationTadpoleBlippyDogText;
+    public TextMeshProUGUI locationTadpoleBlippyText;
+    public TextMeshProUGUI locationTadpoleSerschelText;
+    public TextMeshProUGUI locationTadpoleGabiText;
+    public TextMeshProUGUI locationTadpoleBlessleyText;
+    public TextMeshProUGUI locationTadpoleMitchText;
+    public TextMeshProUGUI locationTadpoleMaiText;
+    public TextMeshProUGUI locationGardenGunterText;
+    public TextMeshProUGUI locationGardenMitchText;
+    public TextMeshProUGUI locationGardenMaiText;
+    
     // Notification Toggles
     public static Toggle NotificationShowJunkToggle;
     public static Toggle NotificationShowSelfSentToggle;
@@ -490,6 +614,7 @@ public class ArchipelagoMenu : MonoBehaviour
         sanityPanel2 = informationPanel.transform.Find("SanityPage2").gameObject;
         sanityPanel3 = informationPanel.transform.Find("SanityPage3").gameObject;
         sanityPanel4 = informationPanel.transform.Find("SanityPage4").gameObject;
+        sanityPanel5 = informationPanel.transform.Find("SanityPage5").gameObject;
         sanityPageBackButton = informationPanel.transform.Find("PrevPage").gameObject.GetComponent<Button>();
         sanityPageForwardButton = informationPanel.transform.Find("NextPage").gameObject.GetComponent<Button>();
         
@@ -545,6 +670,129 @@ public class ArchipelagoMenu : MonoBehaviour
         boneDisabledTooltip = boneDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
         boneTrigger = bonePanel.gameObject.AddComponent<TooltipTrigger>();
         boneTooltip = bonePanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        
+        // SanityPage5
+        friendPanel = sanityPanel5.transform.Find("FriendScreen").gameObject;
+        friendDisabledImage = sanityPanel5.transform.Find("FriendDisabled").gameObject.GetComponent<Image>();
+        friendDisabledTrigger = friendDisabledImage.gameObject.AddComponent<TooltipTrigger>();
+        friendDisabledTooltip = friendDisabledImage.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        friendTrigger = friendPanel.gameObject.AddComponent<TooltipTrigger>();
+        friendTooltip = friendPanel.transform.Find("Tooltip").gameObject.AddComponent<Tooltip>();
+        friendPageBackButton = friendPanel.transform.Find("Background/PrevPage").gameObject.GetComponent<Button>();
+        friendPageForwardButton = friendPanel.transform.Find("Background/NextPage").gameObject.GetComponent<Button>();
+        
+        levelHomeImage = friendPanel.transform.Find("Hairball/Home").GetComponent<Image>();
+        levelHcImage = friendPanel.transform.Find("Hairball").GetComponent<Image>();
+        levelTtImage = friendPanel.transform.Find("Turbine").GetComponent<Image>();
+        levelScfImage = friendPanel.transform.Find("Salmon").GetComponent<Image>();
+        levelPpImage = friendPanel.transform.Find("Pool").GetComponent<Image>();
+        levelBathImage = friendPanel.transform.Find("Bath").GetComponent<Image>();
+        levelHqImage = friendPanel.transform.Find("Tadpole").GetComponent<Image>();
+        levelGgImage = friendPanel.transform.Find("Tadpole/Garden").GetComponent<Image>();
+
+        levelHomeRealImage = levelHomeImage.transform.Find("Image").GetComponent<Image>();
+        levelHcRealImage = levelHcImage.transform.Find("Image").GetComponent<Image>();
+        levelTtRealImage = levelTtImage.transform.Find("Image").GetComponent<Image>();
+        levelScfRealImage= levelScfImage.transform.Find("Image").GetComponent<Image>();
+        levelPpRealImage= levelPpImage.transform.Find("Image").GetComponent<Image>();
+        levelBathRealImage= levelBathImage.transform.Find("Image").GetComponent<Image>();
+        levelHqRealImage = levelHqImage.transform.Find("Image").GetComponent<Image>();
+        levelGgRealImage = levelGgImage.transform.Find("Image").GetComponent<Image>();
+
+        // Home, Hairball
+        hairballLocations = levelHcImage.transform.Find("Locations").gameObject;
+        locationHomeHighFrogText = hairballLocations.transform.Find("Frog/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballVolleyText = hairballLocations.transform.Find("Volley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballDustanText = hairballLocations.transform.Find("Dustan/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballGunterText = hairballLocations.transform.Find("Gunter/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballNinaText = hairballLocations.transform.Find("Nina/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballMoomyText = hairballLocations.transform.Find("Moomy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballFischerText = hairballLocations.transform.Find("Fischer/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballGameKidText = hairballLocations.transform.Find("GameKid/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballBlippyDogText = hairballLocations.transform.Find("BlippyDog/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballBlippyText = hairballLocations.transform.Find("Blippy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballSerschelText = hairballLocations.transform.Find("Serschel/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballGabiText = hairballLocations.transform.Find("Gabi/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballBlessleyText = hairballLocations.transform.Find("Blessley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballMitchText = hairballLocations.transform.Find("Mitch/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationHairballMaiText = hairballLocations.transform.Find("Mai/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        
+        // Turbine
+        turbineLocations = levelTtImage.transform.Find("Locations").gameObject;
+        locationTurbinePellyText = turbineLocations.transform.Find("Pelly/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineVolleyText = turbineLocations.transform.Find("Volley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineDustanText = turbineLocations.transform.Find("Dustan/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineFischerText = turbineLocations.transform.Find("Fischer/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineBlippyDogText = turbineLocations.transform.Find("BlippyDog/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineBlippyText = turbineLocations.transform.Find("Blippy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineSerschelText = turbineLocations.transform.Find("Serschel/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineGabiText = turbineLocations.transform.Find("Gabi/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineBlessleyText = turbineLocations.transform.Find("Blessley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineMitchText = turbineLocations.transform.Find("Mitch/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTurbineMaiText = turbineLocations.transform.Find("Mai/Text (TMP)").GetComponent<TextMeshProUGUI>();
+
+        // Salmon
+        salmonLocations = levelScfImage.transform.Find("Locations").gameObject;
+        locationSalmonStijnText = salmonLocations.transform.Find("Stijn/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonVolleyText = salmonLocations.transform.Find("Volley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonDustanText = salmonLocations.transform.Find("Dustan/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonTreemanText = salmonLocations.transform.Find("Treeman/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonNinaText = salmonLocations.transform.Find("Nina/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonMoomyText = salmonLocations.transform.Find("Moomy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonFischerText = salmonLocations.transform.Find("Fischer/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonGameKidText = salmonLocations.transform.Find("GameKid/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonBlippyDogText = salmonLocations.transform.Find("BlippyDog/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonBlippyText = salmonLocations.transform.Find("Blippy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonSerschelText = salmonLocations.transform.Find("Serschel/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonGabiText = salmonLocations.transform.Find("Gabi/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonBlessleyText = salmonLocations.transform.Find("Blessley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonMitchText = salmonLocations.transform.Find("Mitch/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationSalmonMaiText = salmonLocations.transform.Find("Mai/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        
+        // Pool
+        poolLocations = levelPpImage.transform.Find("Locations").gameObject;
+        locationPoolFrogtectiveText = poolLocations.transform.Find("Frogtective/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolVolleyText = poolLocations.transform.Find("Volley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolFischerText = poolLocations.transform.Find("Fischer/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolBlippyDogText = poolLocations.transform.Find("BlippyDog/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolBlippyText = poolLocations.transform.Find("Blippy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolGabiText = poolLocations.transform.Find("Gabi/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolBlessleyText = poolLocations.transform.Find("Blessley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolMitchText = poolLocations.transform.Find("Mitch/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationPoolMaiText = poolLocations.transform.Find("Mai/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        
+        // Bath
+        bathLocations = levelBathImage.transform.Find("Locations").gameObject;
+        locationBathPoppyText = bathLocations.transform.Find("Poppy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathVolleyText = bathLocations.transform.Find("Volley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathDustanText = bathLocations.transform.Find("Dustan/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathNinaText = bathLocations.transform.Find("Nina/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathMoomyText = bathLocations.transform.Find("Moomy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathFischerText = bathLocations.transform.Find("Fischer/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathGameKidText = bathLocations.transform.Find("GameKid/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathBlippyDogText = bathLocations.transform.Find("BlippyDog/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathBlippyText = bathLocations.transform.Find("Blippy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathSerschelText = bathLocations.transform.Find("Serschel/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathGabiText = bathLocations.transform.Find("Gabi/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathBlessleyText = bathLocations.transform.Find("Blessley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathMitchText = bathLocations.transform.Find("Mitch/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationBathMaiText = bathLocations.transform.Find("Mai/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        
+        // Tadpole, Garden
+        tadpoleLocations = levelHqImage.transform.Find("Locations").gameObject;
+        locationTadpoleKingText = tadpoleLocations.transform.Find("King/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleVolleyText = tadpoleLocations.transform.Find("Volley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleFischerText = tadpoleLocations.transform.Find("Fischer/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleBlippyDogText = tadpoleLocations.transform.Find("BlippyDog/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleBlippyText = tadpoleLocations.transform.Find("Blippy/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleSerschelText = tadpoleLocations.transform.Find("Serschel/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleGabiText = tadpoleLocations.transform.Find("Gabi/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleBlessleyText = tadpoleLocations.transform.Find("Blessley/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleMitchText = tadpoleLocations.transform.Find("Mitch/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationTadpoleMaiText = tadpoleLocations.transform.Find("Mai/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationGardenGunterText = tadpoleLocations.transform.Find("Gunter/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationGardenMitchText = tadpoleLocations.transform.Find("Mitch2/Text (TMP)").GetComponent<TextMeshProUGUI>();
+        locationGardenMaiText = tadpoleLocations.transform.Find("Mai2/Text (TMP)").GetComponent<TextMeshProUGUI>();
         
         // Home
         kioskHomeImage = kioskAndTicketPanel.transform.Find("KioskHome").GetComponent<Image>();
@@ -925,6 +1173,8 @@ public class ArchipelagoMenu : MonoBehaviour
         boneDisabledTrigger.tooltip = boneDisabledTooltip;
         noticesTrigger.tooltip = noticesTooltip;
         verboseLoggingTrigger.tooltip = verboseLoggingTooltip;
+        friendTrigger.tooltip = friendTooltip;
+        friendDisabledTrigger.tooltip = friendDisabledTooltip;
         
         // Highlights
         chatToggle.gameObject.AddComponent<Highlighter>().highlightPanel = chatHighlight;
@@ -1049,6 +1299,10 @@ public class ArchipelagoMenu : MonoBehaviour
         sanityPageBackButton.onClick.AddListener(ShowPageBack);
         sanityPageForwardButton.onClick.AddListener(ShowPageForward);
         
+        // Friend Goal
+        friendPageBackButton.onClick.AddListener(FriendShowPageBack);
+        friendPageForwardButton.onClick.AddListener(FriendShowPageForward);
+        
         settingsPanelCanvasGroup = formPanel.transform.Find("settingsPanel").gameObject.GetComponent<CanvasGroup>();
         trackersPanelCanvasGroup = formPanel.transform.Find("trackersPanel").gameObject.GetComponent<CanvasGroup>();
         qolPanelCanvasGroup = formPanel.transform.Find("qolPanel").gameObject.GetComponent<CanvasGroup>();
@@ -1056,12 +1310,25 @@ public class ArchipelagoMenu : MonoBehaviour
         sanityPanel2CanvasGroup = informationPanel.transform.Find("SanityPage2").gameObject.GetComponent<CanvasGroup>();
         sanityPanel3CanvasGroup = informationPanel.transform.Find("SanityPage3").gameObject.GetComponent<CanvasGroup>();
         sanityPanel4CanvasGroup = informationPanel.transform.Find("SanityPage4").gameObject.GetComponent<CanvasGroup>();
+        sanityPanel5CanvasGroup = informationPanel.transform.Find("SanityPage5").gameObject.GetComponent<CanvasGroup>();
+        
+        friendPanelHairballCanvasGroup = friendPanel.transform.Find("Hairball").gameObject.GetComponent<CanvasGroup>();
+        friendPanelTurbineCanvasGroup = friendPanel.transform.Find("Turbine").gameObject.GetComponent<CanvasGroup>();
+        friendPanelSalmonCanvasGroup = friendPanel.transform.Find("Salmon").gameObject.GetComponent<CanvasGroup>();
+        friendPanelPoolCanvasGroup = friendPanel.transform.Find("Pool").gameObject.GetComponent<CanvasGroup>();
+        friendPanelBathCanvasGroup = friendPanel.transform.Find("Bath").gameObject.GetComponent<CanvasGroup>();
+        friendPanelTadpoleCanvasGroup = friendPanel.transform.Find("Tadpole").gameObject.GetComponent<CanvasGroup>();
+        
         _activePanel = settingsPanelCanvasGroup;
         _activePanelSanity = sanityPanel1CanvasGroup;
+        _activePanelFriend = friendPanelHairballCanvasGroup;
         sanityPageBackButton.enabled = false;
         sanityPageBackButton.image.color = Color.gray;
         SetActiveSanityPanel(sanityPanel1CanvasGroup);
         SetActivePanel(settingsPanelCanvasGroup);
+        SetActiveFriendPanel(friendPanelHairballCanvasGroup);
+        friendPageBackButton.enabled = false;
+        friendPageBackButton.image.color = Color.gray;
         settingsImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
         settingsButton.enabled = false;
     }
@@ -1079,6 +1346,15 @@ public class ArchipelagoMenu : MonoBehaviour
         } else if (_activePanelSanity == sanityPanel4CanvasGroup)
         {
             SetActiveSanityPanel(sanityPanel3CanvasGroup);
+        } else if (_activePanelSanity == sanityPanel5CanvasGroup)
+        {
+            keyCountBackText.transform.parent.gameObject.SetActive(true);
+            cassetteCountBackText.transform.parent.gameObject.SetActive(true);
+            coinCountBackText.transform.parent.gameObject.SetActive(true);
+            ticketCl1Image.gameObject.SetActive(true);
+            ticketCl2Image.gameObject.SetActive(true);
+            kioskAndTicketPanel.SetActive(true);
+            SetActiveSanityPanel(sanityPanel4CanvasGroup);
         }
         sanityPageForwardButton.image.color = Color.white;
         sanityPageForwardButton.enabled = true;
@@ -1096,11 +1372,118 @@ public class ArchipelagoMenu : MonoBehaviour
         } else if (_activePanelSanity == sanityPanel3CanvasGroup)
         {
             SetActiveSanityPanel(sanityPanel4CanvasGroup);
+        } else if (_activePanelSanity == sanityPanel4CanvasGroup)
+        {
+            SetActiveSanityPanel(sanityPanel5CanvasGroup);
+            keyCountBackText.transform.parent.gameObject.SetActive(false);
+            cassetteCountBackText.transform.parent.gameObject.SetActive(false);
+            coinCountBackText.transform.parent.gameObject.SetActive(false);
+            ticketCl1Image.gameObject.SetActive(false);
+            ticketCl2Image.gameObject.SetActive(false);
+            kioskAndTicketPanel.SetActive(false);
             sanityPageForwardButton.enabled = false;
             sanityPageForwardButton.image.color = Color.gray;
         }
         sanityPageBackButton.image.color = Color.white;
         sanityPageBackButton.enabled = true;
+    }
+    
+    public void FriendShowPageBack()
+    {
+        if (_activePanelFriend == friendPanelTurbineCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelHairballCanvasGroup);
+            hairballLocations.gameObject.SetActive(true);
+            levelHomeRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelHcRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelTtRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            turbineLocations.gameObject.SetActive(false);
+            friendPageBackButton.enabled = false;
+            friendPageBackButton.image.color = Color.gray;
+        }
+        else if (_activePanelFriend == friendPanelSalmonCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelTurbineCanvasGroup);
+            levelTtRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelScfRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            salmonLocations.gameObject.SetActive(false);
+            turbineLocations.gameObject.SetActive(true);
+        } else if (_activePanelFriend == friendPanelPoolCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelSalmonCanvasGroup);
+            levelScfRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelPpRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            poolLocations.gameObject.SetActive(false);
+            salmonLocations.gameObject.SetActive(true);
+        }
+        else if (_activePanelFriend == friendPanelBathCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelPoolCanvasGroup);
+            levelPpRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelBathRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            bathLocations.gameObject.SetActive(false);
+            poolLocations.gameObject.SetActive(true);
+        }
+        else if (_activePanelFriend == friendPanelTadpoleCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelBathCanvasGroup);
+            levelBathRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelHqRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            levelGgRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            tadpoleLocations.gameObject.SetActive(false);
+            bathLocations.gameObject.SetActive(true);
+        }
+        friendPageForwardButton.image.color = Color.white;
+        friendPageForwardButton.enabled = true;
+    }
+    
+    public void FriendShowPageForward()
+    {
+        if (_activePanelFriend == friendPanelHairballCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelTurbineCanvasGroup);
+            levelHomeRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            levelHcRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            levelTtRealImage.color = new Color(1f, 1f, 1f, 1f);
+            hairballLocations.gameObject.SetActive(false);
+            turbineLocations.gameObject.SetActive(true);
+        }
+        else if (_activePanelFriend == friendPanelTurbineCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelSalmonCanvasGroup);
+            levelScfRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelTtRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            turbineLocations.gameObject.SetActive(false);
+            salmonLocations.gameObject.SetActive(true);
+        } else if (_activePanelFriend == friendPanelSalmonCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelPoolCanvasGroup);
+            levelPpRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelScfRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            salmonLocations.gameObject.SetActive(false);
+            poolLocations.gameObject.SetActive(true);
+        }
+        else if (_activePanelFriend == friendPanelPoolCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelBathCanvasGroup);
+            levelBathRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelPpRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            poolLocations.gameObject.SetActive(false);
+            bathLocations.gameObject.SetActive(true);
+        }
+        else if (_activePanelFriend == friendPanelBathCanvasGroup)
+        {
+            SetActiveFriendPanel(friendPanelTadpoleCanvasGroup);
+            levelHqRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelGgRealImage.color = new Color(1f, 1f, 1f, 1f);
+            levelBathRealImage.color = new Color(0.5568628f, 0.5568628f, 0.5568628f, 0.3882353f);
+            bathLocations.gameObject.SetActive(false);
+            tadpoleLocations.gameObject.SetActive(true);
+            friendPageForwardButton.enabled = false;
+            friendPageForwardButton.image.color = Color.gray;
+        }
+        friendPageBackButton.image.color = Color.white;
+        friendPageBackButton.enabled = true;
     }
 
     public void ShowSettings()
@@ -1183,6 +1566,37 @@ public class ArchipelagoMenu : MonoBehaviour
         StartCoroutine(FadeOut(_activePanelSanity));
         StartCoroutine(FadeIn(newPanel));
         _activePanelSanity = newPanel;
+    }
+    
+    private void SetActiveFriendPanel(CanvasGroup newPanel)
+    {
+        if (_activePanelSanity == newPanel) return;
+        
+        StopAllCoroutines();
+        StartCoroutine(ColorDarker(_activePanelFriend));
+        StartCoroutine(ColorBrighter(newPanel));
+        _activePanelFriend = newPanel;
+    }
+    
+    private IEnumerator ColorBrighter(CanvasGroup panel)
+    {
+        panel.alpha = 1f;
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        {
+            panel.alpha = t / fadeDuration;
+            yield return null;
+        }
+        panel.alpha = 1;
+    }
+
+    private IEnumerator ColorDarker(CanvasGroup panel)
+    {
+        for (float t = 0.5f; t < fadeDuration; t += Time.deltaTime)
+        {
+            panel.alpha = 1 - (t / fadeDuration);
+            yield return null;
+        }
+        panel.alpha = 1f;
     }
 
     private IEnumerator FadeIn(CanvasGroup panel)
@@ -1310,6 +1724,7 @@ public class ArchipelagoMenu : MonoBehaviour
             SeedSanityStats();
             CassetteSanityStats();
             BoneSanityStats();
+            FriendGoalStats();
         }
         else
         {
@@ -1799,6 +2214,188 @@ public class ArchipelagoMenu : MonoBehaviour
             boneBathCountFrontText.text = "X";
             boneHqCountBackText.text = "X";
             boneHqCountFrontText.text = "X";
+        }
+    }
+    
+    private void FriendGoalStats()
+    {
+        if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Help)
+        {
+            friendDisabledImage.gameObject.SetActive(false);
+            
+            var hairballCoins = scrGameSaveManager.instance.gameData.worldsData[1].coinFlags;
+            var turbineCoins = scrGameSaveManager.instance.gameData.worldsData[2].coinFlags;
+            var salmonCoins = scrGameSaveManager.instance.gameData.worldsData[3].coinFlags;
+            var poolCoins = scrGameSaveManager.instance.gameData.worldsData[4].coinFlags;
+            var bathCoins = scrGameSaveManager.instance.gameData.worldsData[5].coinFlags;
+            var tadpoleCoins = scrGameSaveManager.instance.gameData.worldsData[6].coinFlags;
+            var gardenCoins = scrGameSaveManager.instance.gameData.worldsData[7].coinFlags;
+            
+            if (scrGameSaveManager.instance.gameData.worldsData[0].coinFlags.Contains("Fetch"))
+                locationHomeHighFrogText.color = Color.green;
+            
+            if (hairballCoins.Contains("volley"))
+                locationHairballVolleyText.color = Color.green;
+            if (hairballCoins.Contains("Dustan"))
+                locationHairballDustanText.color = Color.green;
+            if (hairballCoins.Contains("main"))
+                locationHairballGunterText.color = Color.green;
+            if (hairballCoins.Contains("graffiti"))
+                locationHairballNinaText.color = Color.green;
+            if (hairballCoins.Contains("hamsterball"))
+                locationHairballMoomyText.color = Color.green;
+            if (hairballCoins.Contains("fishing"))
+                locationHairballFischerText.color = Color.green;
+            if (hairballCoins.Contains("gamerQuest"))
+                locationHairballGameKidText.color = Color.green;
+            if (hairballCoins.Contains("arcadeBone"))
+                locationHairballBlippyDogText.color = Color.green;
+            if (hairballCoins.Contains("arcade"))
+                locationHairballBlippyText.color = Color.green;
+            if (hairballCoins.Contains("carrynojump"))
+                locationHairballSerschelText.color = Color.green;
+            if (hairballCoins.Contains("flowerPuzzle"))
+                locationHairballGabiText.color = Color.green;
+            if (hairballCoins.Contains("bug"))
+                locationHairballBlessleyText.color = Color.green;
+            if (hairballCoins.Contains("cassetteCoin"))
+                locationHairballMitchText.color = Color.green;
+            if (hairballCoins.Contains("cassetteCoin2"))
+                locationHairballMaiText.color = Color.green;
+
+            if (turbineCoins.Contains("volley"))
+                locationTurbineVolleyText.color = Color.green;
+            if (turbineCoins.Contains("Dustan"))
+                locationTurbineDustanText.color = Color.green;
+            if (turbineCoins.Contains("main"))
+                locationTurbinePellyText.color = Color.green;
+            if (turbineCoins.Contains("fishing"))
+                locationTurbineFischerText.color = Color.green;
+            if (turbineCoins.Contains("arcadeBone"))
+                locationTurbineBlippyDogText.color = Color.green;
+            if (turbineCoins.Contains("arcade"))
+                locationTurbineBlippyText.color = Color.green;
+            if (turbineCoins.Contains("carrynojump"))
+                locationTurbineSerschelText.color = Color.green;
+            if (turbineCoins.Contains("flowerPuzzle"))
+                locationTurbineGabiText.color = Color.green;
+            if (turbineCoins.Contains("bug"))
+                locationTurbineBlessleyText.color = Color.green;
+            if (turbineCoins.Contains("cassetteCoin"))
+                locationTurbineMitchText.color = Color.green;
+            if (turbineCoins.Contains("cassetteCoin2"))
+                locationTurbineMaiText.color = Color.green;
+
+            if (salmonCoins.Contains("volley"))
+                locationSalmonVolleyText.color = Color.green;
+            if (salmonCoins.Contains("Dustan"))
+                locationSalmonDustanText.color = Color.green;
+            if (salmonCoins.Contains("main"))
+                locationSalmonStijnText.color = Color.green;
+            if (salmonCoins.Contains("tree"))
+                locationSalmonTreemanText.color = Color.green;
+            if (salmonCoins.Contains("graffiti"))
+                locationSalmonNinaText.color = Color.green;
+            if (salmonCoins.Contains("hamsterball"))
+                locationSalmonMoomyText.color = Color.green;
+            if (salmonCoins.Contains("fishing"))
+                locationSalmonFischerText.color = Color.green;
+            if (salmonCoins.Contains("gamerQuest"))
+                locationSalmonGameKidText.color = Color.green;
+            if (salmonCoins.Contains("arcadeBone"))
+                locationSalmonBlippyDogText.color = Color.green;
+            if (salmonCoins.Contains("arcade"))
+                locationSalmonBlippyText.color = Color.green;
+            if (salmonCoins.Contains("carrynojump"))
+                locationSalmonSerschelText.color = Color.green;
+            if (salmonCoins.Contains("flowerPuzzle"))
+                locationSalmonGabiText.color = Color.green;
+            if (salmonCoins.Contains("bug"))
+                locationSalmonBlessleyText.color = Color.green;
+            if (salmonCoins.Contains("cassetteCoin"))
+                locationSalmonMitchText.color = Color.green;
+            if (salmonCoins.Contains("cassetteCoin2"))
+                locationSalmonMaiText.color = Color.green;
+
+            if (poolCoins.Contains("volley"))
+                locationPoolVolleyText.color = Color.green;
+            if (poolCoins.Contains("main"))
+                locationPoolFrogtectiveText.color = Color.green;
+            if (poolCoins.Contains("fishing"))
+                locationPoolFischerText.color = Color.green;
+            if (poolCoins.Contains("arcadeBone"))
+                locationPoolBlippyDogText.color = Color.green;
+            if (poolCoins.Contains("arcade"))
+                locationPoolBlippyText.color = Color.green;
+            if (poolCoins.Contains("flowerPuzzle"))
+                locationPoolGabiText.color = Color.green;
+            if (poolCoins.Contains("bug"))
+                locationPoolBlessleyText.color = Color.green;
+            if (poolCoins.Contains("cassetteCoin"))
+                locationPoolMitchText.color = Color.green;
+            if (poolCoins.Contains("cassetteCoin2"))
+                locationPoolMaiText.color = Color.green;
+
+            if (bathCoins.Contains("volley"))
+                locationBathVolleyText.color = Color.green;
+            if (bathCoins.Contains("Dustan"))
+                locationBathDustanText.color = Color.green;
+            if (bathCoins.Contains("main"))
+                locationBathPoppyText.color = Color.green;
+            if (bathCoins.Contains("graffiti"))
+                locationBathNinaText.color = Color.green;
+            if (bathCoins.Contains("hamsterball"))
+                locationBathMoomyText.color = Color.green;
+            if (bathCoins.Contains("fishing"))
+                locationBathFischerText.color = Color.green;
+            if (bathCoins.Contains("gamerQuest"))
+                locationBathGameKidText.color = Color.green;
+            if (bathCoins.Contains("arcadeBone"))
+                locationBathBlippyDogText.color = Color.green;
+            if (bathCoins.Contains("arcade"))
+                locationBathBlippyText.color = Color.green;
+            if (bathCoins.Contains("carrynojump"))
+                locationBathSerschelText.color = Color.green;
+            if (bathCoins.Contains("flowerPuzzle"))
+                locationBathGabiText.color = Color.green;
+            if (bathCoins.Contains("bug"))
+                locationBathBlessleyText.color = Color.green;
+            if (bathCoins.Contains("cassetteCoin"))
+                locationBathMitchText.color = Color.green;
+            if (bathCoins.Contains("cassetteCoin2"))
+                locationBathMaiText.color = Color.green;
+
+            if (tadpoleCoins.Contains("volley"))
+                locationTadpoleVolleyText.color = Color.green;
+            if (tadpoleCoins.Contains("main"))
+                locationTadpoleKingText.color = Color.green;
+            if (tadpoleCoins.Contains("fishing"))
+                locationTadpoleFischerText.color = Color.green;
+            if (tadpoleCoins.Contains("arcadeBone"))
+                locationTadpoleBlippyDogText.color = Color.green;
+            if (tadpoleCoins.Contains("arcade"))
+                locationTadpoleBlippyText.color = Color.green;
+            if (tadpoleCoins.Contains("carrynojump"))
+                locationTadpoleSerschelText.color = Color.green;
+            if (tadpoleCoins.Contains("flowerPuzzle"))
+                locationTadpoleGabiText.color = Color.green;
+            if (tadpoleCoins.Contains("bug"))
+                locationTadpoleBlessleyText.color = Color.green;
+            if (tadpoleCoins.Contains("cassetteCoin"))
+                locationTadpoleMitchText.color = Color.green;
+            if (tadpoleCoins.Contains("cassetteCoin2"))
+                locationTadpoleMaiText.color = Color.green;
+            
+            if (gardenCoins.Contains("Gary"))
+                locationGardenGunterText.color = Color.green;
+            if (gardenCoins.Contains("cassetteCoin"))
+                locationGardenMitchText.color = Color.green;
+            if (gardenCoins.Contains("cassetteCoin2"))
+                locationGardenMaiText.color = Color.green;
+        }
+        else
+        {
+            friendDisabledImage.gameObject.SetActive(true);
         }
     }
 
