@@ -11,6 +11,7 @@ using NikoArchipelago.Trackers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -29,6 +30,7 @@ public class GameObjectChecker : MonoBehaviour
     private static bool _missingFrog;
     public static GameObject APMenu;
     private static GameObject WarningNotice;
+    public static GameObject VirtualMouse;
     public static scrCursor cursor;
     private static bool _sentNote, _sentNote2, _sentNote3, _sentNote4, _sentNote5, 
         _sentNote6, _sentNote7, _sentNote8, _sentNote9, _sentNote10, _sentNote11, _sentNote12, _sentNote13, _sentNote14,
@@ -110,6 +112,7 @@ public class GameObjectChecker : MonoBehaviour
         if (ArchipelagoClient.IsValidScene())
         {
             cursor = GameObject.Find("UI/Menu system/Cursor").GetComponent<scrCursor>();
+            AddVirtualMouseCursor();
         }
         //APArrowTracker();
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
@@ -1004,6 +1007,23 @@ public class GameObjectChecker : MonoBehaviour
             }
         }
         
+    }
+
+    private void AddVirtualMouseCursor()
+    {
+        if (GameObject.Find("UI") == null) return;
+        var virtualMousePrefab = Assets.AssetBundle.LoadAsset<GameObject>("VirtualMouseUI");
+        VirtualMouse = Instantiate(virtualMousePrefab, GameObject.Find("UI").transform, false);
+        if (VirtualMouse == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to instantiate VirtualMouseUI prefab.");
+            return;
+        }
+
+        VirtualMouse.gameObject.GetComponent<VirtualMouseInput>().cursorTransform.position = cursor.transform.position;
+        VirtualMouse.layer = LayerMask.NameToLayer("UI");
+        VirtualMouse.transform.SetSiblingIndex(30);
+        VirtualMouse.SetActive(false);
     }
 
     public void Update()
