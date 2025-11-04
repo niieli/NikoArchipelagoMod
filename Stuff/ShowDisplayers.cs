@@ -42,6 +42,10 @@ public class ShowDisplayers
     {
         _coroutineHost.StartCoroutine(ShowTicketDisplayer(timer));
     }
+    public static void GardenSeedDisplayer(float timer = 3.5f)
+    {
+        _coroutineHost.StartCoroutine(ShowGardenSeedDisplayer(timer));
+    }
 
     
     private static IEnumerator ShowCoinDisplayer(float duration)
@@ -103,5 +107,15 @@ public class ShowDisplayers
             duration -= Time.deltaTime;
         }
         KeyDisplayerUIhider.visible = false;
+    }
+    private static IEnumerator ShowGardenSeedDisplayer(float duration)
+    {
+        TrackerDisplayerPatch.GardenSeedUI.visible = true;
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+        }
+        TrackerDisplayerPatch.GardenSeedUI.visible = false;
     }
 }

@@ -38,6 +38,9 @@ public class APItemObtainer
                 case "Bugs":
                     ShowDisplayers.BugDisplayer(timer);
                     break;
+                case "GardenSeed":
+                    ShowDisplayers.GardenSeedDisplayer(timer);
+                    break;
                 case "":
                     break;
             }
@@ -162,6 +165,13 @@ public class APItemObtainer
                         ItemID.PublicPoolBone => TextureAndDisplayer(Assets.PoolBoneSprite.texture, __instance),
                         ItemID.BathhouseBone => TextureAndDisplayer(Assets.BathBoneSprite.texture, __instance),
                         ItemID.TadpoleHqBone => TextureAndDisplayer(Assets.TadpoleBoneSprite.texture, __instance),
+                        ItemID.HairballCityTextbox => TextureAndDisplayer(Assets.HairballTextboxSprite.texture, __instance),
+                        ItemID.TurbineTownTextbox => TextureAndDisplayer(Assets.TurbineTextboxSprite.texture, __instance),
+                        ItemID.SalmonCreekForestTextbox => TextureAndDisplayer(Assets.SalmonTextboxSprite.texture, __instance),
+                        ItemID.PublicPoolTextbox => TextureAndDisplayer(Assets.PoolTextboxSprite.texture, __instance),
+                        ItemID.BathhouseTextbox => TextureAndDisplayer(Assets.BathTextboxSprite.texture, __instance),
+                        ItemID.TadpoleHqTextbox => TextureAndDisplayer(Assets.TadpoleTextboxSprite.texture, __instance),
+                        ItemID.GarysGardenSeed => TextureAndDisplayer(Assets.GardenSeedSprite.texture, __instance, "GardenSeed"),
                         _ => Assets.APIconSprite.texture
                     };
             }
@@ -349,6 +359,9 @@ public class APItemObtainer
                 case "Bugs":
                     ShowDisplayers.BugDisplayer(timer);
                     break;
+                case "GardenSeed":
+                    ShowDisplayers.GardenSeedDisplayer(timer);
+                    break;
                 case "":
                     break;
             }
@@ -483,6 +496,13 @@ public class APItemObtainer
                         ItemID.PublicPoolBone => TextureAndDisplayer(Assets.PoolBoneSprite.texture, __instance),
                         ItemID.BathhouseBone => TextureAndDisplayer(Assets.BathBoneSprite.texture, __instance),
                         ItemID.TadpoleHqBone => TextureAndDisplayer(Assets.TadpoleBoneSprite.texture, __instance),
+                        ItemID.HairballCityTextbox => TextureAndDisplayer(Assets.HairballTextboxSprite.texture, __instance),
+                        ItemID.TurbineTownTextbox => TextureAndDisplayer(Assets.TurbineTextboxSprite.texture, __instance),
+                        ItemID.SalmonCreekForestTextbox => TextureAndDisplayer(Assets.SalmonTextboxSprite.texture, __instance),
+                        ItemID.PublicPoolTextbox => TextureAndDisplayer(Assets.PoolTextboxSprite.texture, __instance),
+                        ItemID.BathhouseTextbox => TextureAndDisplayer(Assets.BathTextboxSprite.texture, __instance),
+                        ItemID.TadpoleHqTextbox => TextureAndDisplayer(Assets.TadpoleTextboxSprite.texture, __instance),
+                        ItemID.GarysGardenSeed => TextureAndDisplayer(Assets.GardenSeedSprite.texture, __instance, "GardenSeed"),
                         _ => Assets.APIconSprite.texture
                     };
             }

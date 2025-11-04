@@ -166,6 +166,7 @@ public static class PlaceModelHelper
                 ItemID.BathhouseTextbox => CreateItemOverworld("bathTextbox", instance),
                 ItemID.TadpoleHqTextbox => CreateItemOverworld("hqTextbox", instance),
                 ItemID.GarysGardenTextbox => CreateItemOverworld("ggTextbox", instance),
+                ItemID.GarysGardenSeed => CreateItemOverworld("gardenSeed", instance),
                 _ when ItemID.TrapIDs.Contains(scoutedItemInfo.ItemId) => 
                     CreateItemOverworld(Assets.RandomProgTrap(), instance, -20f),
                 _ => CreateItemOverworld("apProg", instance),

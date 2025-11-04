@@ -91,6 +91,7 @@ public class GameObjectChecker : MonoBehaviour
         TrackerTicket();
         TrackerKey();
         TrackerCassette();
+        TrackerGardenSeed();
         HqWhiteboard();
         HqGarden();
         SpawnGaryHome();
@@ -418,6 +419,35 @@ public class GameObjectChecker : MonoBehaviour
         if (tracker == null)
         {
             Plugin.BepinLogger.LogError("Failed to add TrackerCassettes component to APTrackerCassette.");
+            return;
+        }
+        tracker.enabled = true;
+    }
+    
+    private static void TrackerGardenSeed()
+    {
+        if (!ArchipelagoClient.IsValidScene()) return;
+        if (ArchipelagoData.slotData == null) return;
+        if (ArchipelagoData.Options.GoalCompletion != ArchipelagoOptions.GoalCompletionMode.Garden) return;
+        var apTrackerUI = Assets.AssetBundle.LoadAsset<GameObject>("APTrackerGardenSeed");
+        var gardenSeedPrefab = Instantiate(apTrackerUI, GameObject.Find("UI").transform, false);
+        if (gardenSeedPrefab == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to instantiate apTrackerUI prefab.");
+            return;
+        }
+        gardenSeedPrefab.layer = LayerMask.NameToLayer("UI");
+        gardenSeedPrefab.transform.SetSiblingIndex(13);
+        var manager = gardenSeedPrefab.transform.Find("APGardenSeedManager")?.gameObject;
+        if (manager == null)
+        {
+            Plugin.BepinLogger.LogError("APGardenSeedManager not found in the prefab.");
+            return;
+        }
+        var tracker = manager.AddComponent<TrackerGardenSeeds>();
+        if (tracker == null)
+        {
+            Plugin.BepinLogger.LogError("Failed to add TrackerGardenSeeds component to APGardenSeedManager.");
             return;
         }
         tracker.enabled = true;
@@ -1020,7 +1050,7 @@ public class GameObjectChecker : MonoBehaviour
             return;
         }
 
-        VirtualMouse.gameObject.GetComponent<VirtualMouseInput>().cursorTransform.position = cursor.transform.position;
+        //VirtualMouse.gameObject.GetComponent<VirtualMouseInput>().cursorTransform.position = cursor.transform.position;
         VirtualMouse.layer = LayerMask.NameToLayer("UI");
         VirtualMouse.transform.SetSiblingIndex(30);
         VirtualMouse.SetActive(false);

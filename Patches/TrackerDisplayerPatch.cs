@@ -11,6 +11,7 @@ public class TrackerDisplayerPatch
     public static scrUIhider TicketUI;
     public static scrUIhider KioskUI;
     public static scrUIhider KeyUI;
+    public static scrUIhider GardenSeedUI;
     [HarmonyPatch(typeof(scrDisplayerSwitch), "SetDisplayerVisiability")]
     public static class PatchDisplayerSwitch
     {
@@ -24,6 +25,10 @@ public class TrackerDisplayerPatch
             //ShowDisplayers.CoinDisplayerGameObject.visible = visable;
             //ShowDisplayers.FishDisplayerGameObject.visible = visable;
             ShowDisplayers.KeyDisplayerUIhider.visible = visable;
+            if (GardenSeedUI != null)
+            {
+                GardenSeedUI.visible = visable;
+            }
             if (TicketUI == null || KioskUI == null) return;
             if (ArchipelagoMenu.Ticket)
             {

@@ -155,7 +155,8 @@ public class Assets
         PoolTextboxSprite,
         BathTextboxSprite,
         TadpoleTextboxSprite,
-        GardenTextboxSprite;
+        GardenTextboxSprite,
+        GardenSeedSprite;
 
     public static Material ProgNotificationTexture,
         UsefulNotificationTexture,
@@ -334,6 +335,7 @@ public class Assets
         TadpoleTextboxSprite = AssetBundle.LoadAsset<Sprite>("TadpoleTextboxItem");
         GardenTextboxSprite = AssetBundle.LoadAsset<Sprite>("GardenTextboxItem");
         NoticeBonkHelmetTree =  AssetBundle.LoadAsset<GameObject>("NoticeBonkHelmetTree");
+        GardenSeedSprite = AssetBundle.LoadAsset<Sprite>("GardenSeed");
     }
 
     public static readonly Dictionary<string, string> PrefabMapping = new()
@@ -418,6 +420,7 @@ public class Assets
         { "bathTextbox", "BathTextbox" },
         { "hqTextbox", "TadpoleTextbox" },
         { "ggTextbox", "GardenTextbox" },
+        { "gardenSeed", "GardenSeed" },
     };
 
     private static readonly List<string> _progItems =
@@ -484,6 +487,7 @@ public class Assets
         "bathTextbox",
         "hqTextbox",
         "ggTextbox",
+        "gardenSeed",
     ];
 
     public static string RandomProgTrap()
@@ -657,6 +661,7 @@ public class Assets
             ItemID.BathhouseTextbox => BathTextboxSprite,
             ItemID.TadpoleHqTextbox => TadpoleTextboxSprite,
             ItemID.GarysGardenTextbox => GardenTextboxSprite,
+            ItemID.GarysGardenSeed => GardenSeedSprite,
             _ => ApProgressionSprite
         };
         return sprite;
