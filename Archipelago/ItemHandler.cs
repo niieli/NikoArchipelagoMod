@@ -555,6 +555,7 @@ public static class ItemHandler
         {
             scrMiscFlagCountSwitch.instance.Rise();
         }
+        ShowDisplayers.GardenSeedDisplayer();
     }
     public static void AddItemNote(ItemInfo itemInfo, bool notify = true)
     {

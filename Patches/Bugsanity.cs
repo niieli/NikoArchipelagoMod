@@ -286,6 +286,8 @@ public class Bugsanity
                     gardenAdjustment = 13;
                     idkAdjustment = 2;
                 }
+            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
+                gardenAdjustment += 1;
             if (ArchipelagoData.slotData.ContainsKey("snailshop"))
                 if (!ArchipelagoData.Options.Snailshop)
                     snailShopAdjustment = 16;
