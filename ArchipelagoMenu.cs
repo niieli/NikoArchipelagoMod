@@ -1237,65 +1237,9 @@ public class ArchipelagoMenu : MonoBehaviour
         boughtBathBoneImage.enabled = false;
         boughtHqBoneImage.enabled = false;
         
-        // Lights
-        if (Plugin.ChristmasEvent && !Plugin.NoXmasEvent)
-        {
-            slotNameField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
-            serverAddressField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
-            passwordField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
-            var menuCandles = formPanel.transform.Find("MenuGlowCandles");
-            var menuCandles2 = formPanel.transform.Find("MenuGlowCandles2");
-            var menuCandlesBlink = formPanel.transform.Find("MenuGlowCandles1Blink");
-            var menuCandlesBlink2 = formPanel.transform.Find("MenuGlowCandles2Blink");
-            var settingsLights = settingsButton.transform.Find("GlowLightsSettings");
-            var trackersLights = trackersButton.transform.Find("GlowLightsTrackers");
-            var qolLights = qolButton.transform.Find("GlowLightsQOL");
-            Color[] glowColors =
-            [
-                new Color(1f, 0f, 0f), 
-                new Color(1f, 0.5f, 0f), 
-                new Color(0f, 1f, 0f), 
-                new Color(0f, 0.9062204f, 1f),
-                new Color(1f, 0.5529412f, 0.788992f),
-                new Color(0.2071452f, 0f, 1f), 
-                new Color(1f, 0f, 0.6565428f), 
-                new Color(1f, 1f, 0f), 
-                new Color(0f, 1f, 0.4670312f), 
-                new Color(0f, 0f, 1f), 
-                new Color(0.9038821f, 0.5518868f, 1f), 
-                new Color(1f, 1f, 1f), 
-                new Color(0f, 0.444962f, 1f), 
-                new Color(1f, 0f, 0.9598556f), 
-                new Color(0.5898412f, 0.5882353f, 1f), 
-                new Color(1f, 0.7369196f, 0f), 
-            ];
-            menuCandles.gameObject.AddComponent<LightController>().glowColors = glowColors;
-            Color[] glowColors2 =
-            [
-                new(1f, 0.7369196f, 0f),
-                new(1f, 0f, 0f), 
-                new(1f, 0.5f, 0f), 
-                new(0f, 1f, 0f), 
-                new(0f, 0.9062204f, 1f),
-                new(1f, 0.5529412f, 0.788992f),
-                new(0.2071452f, 0f, 1f), 
-                new(1f, 0f, 0.6565428f), 
-                new(1f, 1f, 0f), 
-                new(0f, 1f, 0.4670312f), 
-                new(0f, 0f, 1f), 
-                new(0.9038821f, 0.5518868f, 1f), 
-                new(1f, 1f, 1f), 
-                new(0f, 0.444962f, 1f), 
-                new(1f, 0f, 0.9598556f), 
-                new(0.5898412f, 0.5882353f, 1f), 
-            ];
-            menuCandles2.gameObject.AddComponent<LightController>().glowColors = glowColors2;
-            menuCandlesBlink.gameObject.AddComponent<LightBlinking>();
-            menuCandlesBlink2.gameObject.AddComponent<LightBlinking>().alpha = 0f;
-            settingsLights.gameObject.AddComponent<LightController>();
-            trackersLights.gameObject.AddComponent<LightController>();
-            qolLights.gameObject.AddComponent<LightController>();
-        }
+        // Themes
+        XmasTheme();
+        
         sanityPageBackButton.onClick.AddListener(ShowPageBack);
         sanityPageForwardButton.onClick.AddListener(ShowPageForward);
         
@@ -1329,8 +1273,155 @@ public class ArchipelagoMenu : MonoBehaviour
         SetActiveFriendPanel(friendPanelHairballCanvasGroup);
         friendPageBackButton.enabled = false;
         friendPageBackButton.image.color = Color.gray;
-        settingsImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
+        settingsImage.color = Plugin.ChristmasEvent ? new Color(1f, 0.647f, 0.65f) : new Color(1f, 0.6470588f, 0.9411765f, 1f);
         settingsButton.enabled = false;
+    }
+
+    private void XmasTheme()
+    {
+        if (!Plugin.ChristmasEvent || Plugin.NoXmasEvent) return;
+        formPanel.transform.Find("Theme/Xmas").gameObject.SetActive(true);
+        formPanel.transform.Find("TitleTop/Normal").gameObject.SetActive(false);
+        formPanel.transform.Find("TitleTop/Xmas").gameObject.SetActive(true);
+        // Adjust Colors
+        var menuColor = new Color(0.6509804f, 0f, 0.1162791f, 0.6392157f);
+        var buttonHighlightColor = new Color(1f, 0.647f, 0.65f);
+        var buttonPressedColor = new Color(0.878f, 0.45f, 0.45f);
+        var buttonSelectedColor = new Color(0.97f, 0.635f, 0.658f);
+        var highlightColor = new Color(1f, 0.7616066f, 0.7450981f);
+        var outlineColor = Color.red;
+        var topColor = Color.red;
+        var botColor = Color.white;
+        
+        var images = FindObjectsOfType<Image>(true);
+
+        foreach (var img in images)
+        {
+            if (img.name == "Highlight")
+            {
+                img.color = highlightColor;
+            }
+        }
+        
+        slotNameField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
+        serverAddressField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
+        passwordField.selectionColor = new Color(1, (float)0.2877358, (float)0.3696053, (float)0.7529412);
+        formPanel.transform.Find("ScrollingBackground/Image").gameObject.GetComponent<Image>().color = new Color(1f, 0.74f, 0.73f, 1f);
+        formPanel.GetComponent<Image>().color = menuColor;
+        
+        var apButton = apButtonGameObject.GetComponent<Button>();
+        var buttonColors = apButton.colors;
+        buttonColors.highlightedColor = buttonHighlightColor;
+        buttonColors.pressedColor = buttonPressedColor;
+        buttonColors.selectedColor = buttonSelectedColor;
+        apButton.colors = buttonColors;
+        connectButton.colors = buttonColors;
+        settingsButton.colors = buttonColors;
+        settingsButton.gameObject.GetComponent<Outline>().effectColor = outlineColor;
+        trackersButton.colors = buttonColors;
+        trackersButton.gameObject.GetComponent<Outline>().effectColor = outlineColor;
+        qolButton.colors = buttonColors;
+        qolButton.gameObject.GetComponent<Outline>().effectColor = outlineColor;
+        sanityPageForwardButton.colors = buttonColors;
+        sanityPageBackButton.colors = buttonColors;
+        friendPageForwardButton.colors = buttonColors;
+        friendPageBackButton.colors = buttonColors;
+        
+        apNotificationsToggle.transform.Find("NoteSettingsPanel").GetComponent<Image>().color = new Color(1f, 0.74f, 0.73f, 1f);
+        apNotificationsToggle.transform.Find("NoteSettingsPanel").GetComponent<Outline>().effectColor = outlineColor;
+        apNotificationsToggle.transform.Find("NoteSettingsButton").GetComponent<Button>().colors = buttonColors;
+        var notePanel = apNotificationsToggle.transform.Find("NoteSettingsPanel");
+        notePanel.Find("CloseButton").GetComponent<Button>().colors = buttonColors;
+        notePanel.Find("ApplyButton").GetComponent<Button>().colors = buttonColors;
+        notePanel.Find("ResetButton").GetComponent<Button>().colors = buttonColors;
+        
+        notePanel.Find("RSlider").GetComponent<Slider>().colors = buttonColors;
+        notePanel.Find("GSlider").GetComponent<Slider>().colors = buttonColors;
+        notePanel.Find("BSlider").GetComponent<Slider>().colors = buttonColors;
+        notePanel.Find("DurationSlider").GetComponent<Slider>().colors = buttonColors;
+        
+        notePanel.Find("Dropdown").GetComponent<TMP_Dropdown>().colors = buttonColors;
+        notePanel.Find("Dropdown/Template/Viewport/Content/Item").GetComponent<Toggle>().colors = buttonColors;
+        notePanel.Find("DropdownNotification").GetComponent<TMP_Dropdown>().colors = buttonColors;
+        notePanel.Find("DropdownNotification/Template/Viewport/Content/Item").GetComponent<Toggle>().colors = buttonColors;
+        
+        var rememberMeGradient = rememberMeToggle.transform.Find("Text (TMP)").gameObject.GetComponent<TextMeshProUGUI>().colorGradient;
+        rememberMeGradient.topLeft = topColor;
+        rememberMeGradient.topRight = topColor;
+        rememberMeGradient.bottomLeft = botColor;
+        rememberMeGradient.bottomRight = botColor;
+        rememberMeToggle.transform.Find("Text (TMP)").gameObject.GetComponent<TextMeshProUGUI>().colorGradient = rememberMeGradient;
+        rememberMeToggle.transform.Find("Background").gameObject.GetComponent<Shadow>().effectColor = outlineColor;
+
+        var seasonalThemesGradient = seasonalThemesToggle.transform.Find("Text (TMP) (1)/Text (TMP)").gameObject.GetComponent<TextMeshProUGUI>().colorGradient;
+        seasonalThemesGradient.topLeft = topColor;
+        seasonalThemesGradient.topRight = topColor;
+        seasonalThemesGradient.bottomLeft = botColor;
+        seasonalThemesGradient.bottomRight = botColor;
+        seasonalThemesToggle.transform.Find("Text (TMP) (1)/Text (TMP)").gameObject.GetComponent<TextMeshProUGUI>().colorGradient = seasonalThemesGradient;
+        seasonalThemesToggle.transform.Find("Background").gameObject.GetComponent<Shadow>().effectColor = outlineColor;
+
+        var tooltipsGradient = tooltipsToggle.transform.Find("Text (TMP) (1)/Text (TMP)").gameObject.GetComponent<TextMeshProUGUI>().colorGradient;
+        tooltipsGradient.topLeft = topColor;
+        tooltipsGradient.topRight = topColor;
+        tooltipsGradient.bottomLeft = botColor;
+        tooltipsGradient.bottomRight = botColor;
+        tooltipsToggle.transform.Find("Text (TMP) (1)/Text (TMP)").gameObject.GetComponent<TextMeshProUGUI>().colorGradient = tooltipsGradient;
+        tooltipsToggle.transform.Find("Background").gameObject.GetComponent<Shadow>().effectColor = outlineColor;
+
+        var menuCandles = formPanel.transform.Find("Theme/Xmas/MenuGlowCandles");
+        var menuCandles2 = formPanel.transform.Find("Theme/Xmas/MenuGlowCandles2");
+        var menuCandlesBlink = formPanel.transform.Find("Theme/Xmas/MenuGlowCandles1Blink");
+        var menuCandlesBlink2 = formPanel.transform.Find("Theme/Xmas/MenuGlowCandles2Blink");
+        var settingsLights = settingsButton.transform.Find("Xmas/GlowLightsSettings");
+        var trackersLights = trackersButton.transform.Find("Xmas/GlowLightsTrackers");
+        var qolLights = qolButton.transform.Find("Xmas/GlowLightsQOL");
+
+        Color[] glowColors =
+        [
+            new Color(1f, 0f, 0f), 
+            new Color(1f, 0.5f, 0f), 
+            new Color(0f, 1f, 0f), 
+            new Color(0f, 0.9062204f, 1f),
+            new Color(1f, 0.5529412f, 0.788992f),
+            new Color(0.2071452f, 0f, 1f), 
+            new Color(1f, 0f, 0.6565428f), 
+            new Color(1f, 1f, 0f), 
+            new Color(0f, 1f, 0.4670312f), 
+            new Color(0f, 0f, 1f), 
+            new Color(0.9038821f, 0.5518868f, 1f), 
+            new Color(1f, 1f, 1f), 
+            new Color(0f, 0.444962f, 1f), 
+            new Color(1f, 0f, 0.9598556f), 
+            new Color(0.5898412f, 0.5882353f, 1f), 
+            new Color(1f, 0.7369196f, 0f), 
+        ];
+        menuCandles.gameObject.AddComponent<LightController>().glowColors = glowColors;
+        Color[] glowColors2 =
+        [
+            new(1f, 0.7369196f, 0f),
+            new(1f, 0f, 0f), 
+            new(1f, 0.5f, 0f), 
+            new(0f, 1f, 0f), 
+            new(0f, 0.9062204f, 1f),
+            new(1f, 0.5529412f, 0.788992f),
+            new(0.2071452f, 0f, 1f), 
+            new(1f, 0f, 0.6565428f), 
+            new(1f, 1f, 0f), 
+            new(0f, 1f, 0.4670312f), 
+            new(0f, 0f, 1f), 
+            new(0.9038821f, 0.5518868f, 1f), 
+            new(1f, 1f, 1f), 
+            new(0f, 0.444962f, 1f), 
+            new(1f, 0f, 0.9598556f), 
+            new(0.5898412f, 0.5882353f, 1f), 
+        ];
+        menuCandles2.gameObject.AddComponent<LightController>().glowColors = glowColors2;
+        menuCandlesBlink.gameObject.AddComponent<LightBlinking>();
+        menuCandlesBlink2.gameObject.AddComponent<LightBlinking>().alpha = 0f;
+        settingsLights.gameObject.AddComponent<LightController>();
+        trackersLights.gameObject.AddComponent<LightController>();
+        qolLights.gameObject.AddComponent<LightController>();
     }
 
     public void ShowPageBack()
@@ -1489,7 +1580,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public void ShowSettings()
     {
         SetActivePanel(settingsPanelCanvasGroup);
-        settingsImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
+        settingsImage.color = Plugin.ChristmasEvent ? new Color(1f, 0.647f, 0.65f) : new Color(1f, 0.6470588f, 0.9411765f, 1f);
         trackersImage.color = Color.white;
         qolImage.color = Color.white;
         settingsButton.enabled = false;
@@ -1500,7 +1591,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public void ShowTrackers()
     {
         SetActivePanel(trackersPanelCanvasGroup);
-        trackersImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
+        trackersImage.color = Plugin.ChristmasEvent ? new Color(1f, 0.647f, 0.65f) : new Color(1f, 0.6470588f, 0.9411765f, 1f);
         settingsImage.color = Color.white;
         qolImage.color = Color.white;
         trackersButton.enabled = false;
@@ -1511,7 +1602,7 @@ public class ArchipelagoMenu : MonoBehaviour
     public void ShowQOL()
     {
         SetActivePanel(qolPanelCanvasGroup);
-        qolImage.color = new Color(1f, 0.6470588f, 0.9411765f, 1f);
+        qolImage.color = Plugin.ChristmasEvent ? new Color(1f, 0.647f, 0.65f) : new Color(1f, 0.6470588f, 0.9411765f, 1f);
         settingsImage.color = Color.white;
         trackersImage.color = Color.white;
         trackersButton.enabled = true;

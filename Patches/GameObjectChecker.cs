@@ -113,7 +113,7 @@ public class GameObjectChecker : MonoBehaviour
         if (ArchipelagoClient.IsValidScene())
         {
             cursor = GameObject.Find("UI/Menu system/Cursor").GetComponent<scrCursor>();
-            AddVirtualMouseCursor();
+            //AddVirtualMouseCursor(); TODO: Fix controller cursor
         }
         //APArrowTracker();
         if (Plugin.newFile && SceneManager.GetActiveScene().name != "Home")
@@ -320,7 +320,7 @@ public class GameObjectChecker : MonoBehaviour
     private static void InstantiateAPMenu()
     {
         if (!ArchipelagoClient.IsValidScene()) return;
-        var apUIGameObject = Plugin.ChristmasEvent ? Assets.AssetBundleXmas.LoadAsset<GameObject>("APMenuXmasTheme") : Assets.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
+        var apUIGameObject = Assets.AssetBundle.LoadAsset<GameObject>("APMenuObjectTest1");
         APMenu = Instantiate(apUIGameObject, GameObject.Find("UI").transform, false);
         if (APMenu == null)
         {

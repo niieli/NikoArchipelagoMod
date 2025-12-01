@@ -47,6 +47,7 @@ public class ArchipelagoClient
     private static bool stopIt;
     public Task _disconnectTask;
     public static bool TrapLink { get; private set; }
+    public static bool RingLink { get; private set; }
 
     /// <summary>
     /// call to connect to an Archipelago session. Connection info should already be set up on ServerData
@@ -244,6 +245,19 @@ public class ArchipelagoClient
         _session.Socket.SendPacket(trapLinkPacket);
         Plugin.BepinLogger.LogInfo("Sent TrapLink!");
     }
+    
+    public static void ToggleRingLink()
+    {
+        RingLink = !RingLink;
+        if (RingLink)
+        {
+            _session.ConnectionInfo.UpdateConnectionOptions(_session.ConnectionInfo.Tags.Concat(["RingLink"]).ToArray());
+        }
+        else
+        {
+            _session.ConnectionInfo.UpdateConnectionOptions(_session.ConnectionInfo.Tags.Where(tag => tag != "RingLink").ToArray());
+        }
+    }
 
     public void SendDeathLink(string cause)
     {
@@ -296,7 +310,8 @@ public class ArchipelagoClient
                 .AppendLine($"Current Item: {receivedItem.ItemName}");
             if (receivedItem.ItemId is ItemID.Apples or ItemID.Bugs or ItemID.Letter or ItemID.SnailMoney
                     or ItemID.FreezeTrap or ItemID.IronBootsTrap or ItemID.WhoopsTrap or ItemID.MyTurnTrap
-                    or ItemID.GravityTrap or ItemID.HomeTrap or ItemID.WideTrap or ItemID.PhoneTrap or ItemID.TinyTrap or ItemID.JumpingJacksTrap)
+                    or ItemID.GravityTrap or ItemID.HomeTrap or ItemID.WideTrap or ItemID.PhoneTrap or ItemID.TinyTrap or ItemID.JumpingJacksTrap
+                    or ItemID.CameraStuckTrap or ItemID.InvertedCameraTrap or ItemID.ThereGoesNikoTrap)
             {
                 GameObjectChecker.LogPastItemsBatch.AppendLine($"Skipping Item: {receivedItem.ItemName}");
             }
@@ -541,6 +556,15 @@ public class ArchipelagoClient
                     break;
                 case ItemID.JumpingJacksTrap: // Jumping Jacks Trap
                     ItemHandler.AddJumpingJacksTrap(senderName, notify);
+                    break;
+                case ItemID.CameraStuckTrap: // Camera Stuck Trap
+                    ItemHandler.AddCameraStuckTrap(senderName, notify);
+                    break;
+                case ItemID.InvertedCameraTrap: // InvertedCamera Trap
+                    ItemHandler.AddInvertedCameraTrap(senderName, notify);
+                    break;
+                case ItemID.ThereGoesNikoTrap: // There Goes Niko Trap
+                    ItemHandler.AddThereGoesNikoTrap(senderName, notify);
                     break;
                 case ItemID.PartyInvitation: // Party Invitation
                     ItemHandler.AddPartyInvitation(item, notify);

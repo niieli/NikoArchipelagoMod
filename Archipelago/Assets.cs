@@ -24,6 +24,9 @@ public class Assets
         TrapPhoneCall,
         TrapTiny,
         TrapFast,
+        TrapCameraStuck,
+        TrapInvertedCamera,
+        TrapThereGoesNiko,
         NoticeBonkHelmet,
         NoticeBonkHelmetTree,
         NoticeSodaCan,
@@ -334,8 +337,11 @@ public class Assets
         BathTextboxSprite = AssetBundle.LoadAsset<Sprite>("BathTextboxItem");
         TadpoleTextboxSprite = AssetBundle.LoadAsset<Sprite>("TadpoleTextboxItem");
         GardenTextboxSprite = AssetBundle.LoadAsset<Sprite>("GardenTextboxItem");
-        NoticeBonkHelmetTree =  AssetBundle.LoadAsset<GameObject>("NoticeBonkHelmetTree");
+        NoticeBonkHelmetTree = AssetBundle.LoadAsset<GameObject>("NoticeBonkHelmetTree");
         GardenSeedSprite = AssetBundle.LoadAsset<Sprite>("GardenSeed");
+        TrapCameraStuck = AssetBundle.LoadAsset<GameObject>("TrapCameraStuck");
+        TrapInvertedCamera = AssetBundle.LoadAsset<GameObject>("TrapInvertedCamera");
+        TrapThereGoesNiko = AssetBundle.LoadAsset<GameObject>("TrapThereGoesNiko");
     }
 
     public static readonly Dictionary<string, string> PrefabMapping = new()

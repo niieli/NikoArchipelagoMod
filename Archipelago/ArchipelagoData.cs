@@ -30,6 +30,9 @@ public class ArchipelagoData
     public static bool PhoneTrapEnabled { private set; get; }
     public static bool TinyTrapEnabled { private set; get; }
     public static bool JumpingJacksTrapEnabled { private set; get; }
+    public static bool CameraStuckTrapEnabled { private set; get; }
+    public static bool InvertedCameraTrapEnabled { private set; get; }
+    public static bool ThereGoesNikoTrapEnabled { private set; get; }
 
     public bool NeedSlotData => slotData == null;
 
@@ -95,6 +98,9 @@ public class ArchipelagoData
         PhoneTrapEnabled          = GetTrapEnabled(slotData, "phone_trapweight");
         TinyTrapEnabled           = GetTrapEnabled(slotData, "tiny_trapweight");
         JumpingJacksTrapEnabled   = GetTrapEnabled(slotData, "jumpingjacks_trapweight");
+        CameraStuckTrapEnabled    = GetTrapEnabled(slotData, "camerastuck_trapweight");
+        InvertedCameraTrapEnabled = GetTrapEnabled(slotData, "invertedcamera_trapweight");
+        ThereGoesNikoTrapEnabled  = GetTrapEnabled(slotData, "theregoesniko_trapweight");
     }
     
     private static bool GetTrapEnabled(Dictionary<string, object> data, string key)

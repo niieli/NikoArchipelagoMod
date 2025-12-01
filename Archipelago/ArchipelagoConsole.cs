@@ -80,6 +80,9 @@ public class ArchipelagoConsole
                 case "/traplink":
                     ArchipelagoClient.ToggleTrapLink();
                     break;
+                case "/ringlink":
+                    ArchipelagoClient.ToggleRingLink();
+                    break;
             }
             if (CommandText.StartsWith("!hint"))
                 APItemSentNotification.HintCommand = true;

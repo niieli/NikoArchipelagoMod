@@ -17,7 +17,21 @@ namespace NikoArchipelago;
 public class TrapManager : MonoBehaviour
 {
     public static TrapManager instance;
-    public static bool FreezeOn, IronBootsOn, MyTurnOn, WhoopsOn, GravityOn, WideOn, JumpingJacksOn, HomeOn, PhoneOn, TinyOn, FastTimeOn;
+
+    public static bool FreezeOn,
+        IronBootsOn,
+        MyTurnOn,
+        WhoopsOn,
+        GravityOn,
+        WideOn,
+        JumpingJacksOn,
+        HomeOn,
+        PhoneOn,
+        TinyOn,
+        FastTimeOn,
+        CameraStuckOn,
+        InvertedCameraOn,
+        ThereGoesNikoOn;
     private readonly GameObject trapFreeze = Assets.TrapFreeze; 
     private readonly GameObject trapIronBoots = Assets.TrapIronBoots;
     private readonly GameObject trapMyTurn = Assets.TrapMyTurn;
@@ -29,6 +43,9 @@ public class TrapManager : MonoBehaviour
     private readonly GameObject trapPhoneCall = Assets.TrapPhoneCall;
     private readonly GameObject trapTiny = Assets.TrapTiny;
     private readonly GameObject trapFast = Assets.TrapFast;
+    private readonly GameObject trapCameraStuck = Assets.TrapCameraStuck;
+    private readonly GameObject trapInvertedCamera = Assets.TrapInvertedCamera;
+    private readonly GameObject trapThereGoesNiko = Assets.TrapThereGoesNiko;
     private Transform trapListUI; 
     private Transform trapListFake;
     private GameObject trapUI;
@@ -48,12 +65,18 @@ public class TrapManager : MonoBehaviour
     public static readonly Queue<(string, string, DateTime)> TrapLinkQueue = new();
     public static readonly Dictionary<string, (string, float)> TrapLinkMapping = new()
     {
+        { "Aaa Trap", ("Phone", 10f) },
         { "Banana Trap", ("Whoops!", 5f) },
+        { "Banana Peel Trap", ("Whoops!", 5f) },
+        { "Bubble Trap", ("Freeze", 5f) },
+        { "Camera Rotate Trap", ("Inverted Camera", 20f) },
         { "Chaos Control Trap", ("Freeze", 5f) },
         { "Confuse Trap", ("My Turn!", 25f) },
         { "Confusion Trap", ("My Turn!", 25f) },
         { "Controller Drift Trap", ("My Turn!", 25f) },
         { "Cutscene Trap", ("Phone", 10f) },
+        { "Cursed Ball Trap", ("My Turn!", 25f) },
+        { "Electrocution Trap", ("Freeze", 5f) },
         { "Eject Ability", ("Whoops!", 5f) },
         { "Exposition Trap", ("Phone", 10f) },
         { "Fast Trap", ("Fast", Random.Range(25f, 50f)) },
@@ -97,6 +120,9 @@ public class TrapManager : MonoBehaviour
             { "Phone", ArchipelagoData.PhoneTrapEnabled },
             { "Tiny", ArchipelagoData.TinyTrapEnabled },
             { "Jumping Jacks", ArchipelagoData.JumpingJacksTrapEnabled },
+            { "Camera Stuck", ArchipelagoData.CameraStuckTrapEnabled },
+            { "Inverted Camera", ArchipelagoData.InvertedCameraTrapEnabled },
+            { "There Goes Niko", ArchipelagoData.ThereGoesNikoTrapEnabled },
         };
     }
 
@@ -175,11 +201,25 @@ public class TrapManager : MonoBehaviour
             TinyOn = false;
             ActivateTrap("Tiny", Random.Range(10f, 60f));
         }
-
         if (FastTimeOn)
         {
             FastTimeOn = false;
             ActivateTrap("Fast", Random.Range(40f, 80f));
+        }
+        if (CameraStuckOn)
+        {
+            CameraStuckOn = false;
+            ActivateTrap("Camera Stuck", Random.Range(8f, 25f));
+        }
+        if (InvertedCameraOn)
+        {
+            InvertedCameraOn = false;
+            ActivateTrap("Inverted Camera", Random.Range(10f, 40f));
+        }
+        if (ThereGoesNikoOn)
+        {
+            ThereGoesNikoOn = false;
+            ActivateTrap("There Goes Niko", Random.Range(8f, 20f));
         }
         canvasGroup.alpha = IsUiOnScreen ? 0.35f : 1f;
     }
@@ -253,6 +293,21 @@ public class TrapManager : MonoBehaviour
                 Plugin.BepinLogger.LogInfo("Instantiating FastTrap");
                 trapUI = Instantiate(trapFast, trapListFake);
                 StartCoroutine(Fast(duration));
+                break;
+            case "Camera Stuck":
+                Plugin.BepinLogger.LogInfo("Instantiating CameraStuckTrap");
+                trapUI = Instantiate(trapCameraStuck, trapListFake);
+                StartCoroutine(CameraStuck(duration));
+                break;
+            case "Inverted Camera":
+                Plugin.BepinLogger.LogInfo("Instantiating InvertedCameraTrap");
+                trapUI = Instantiate(trapInvertedCamera, trapListFake);
+                StartCoroutine(InvertedCamera(duration));
+                break;
+            case "There Goes Niko":
+                Plugin.BepinLogger.LogInfo("Instantiating ThereGoesNikoTrap");
+                trapUI = Instantiate(trapThereGoesNiko, trapListFake);
+                StartCoroutine(ThereGoesNiko(duration));
                 break;
         }
         if (trapUI != null)
@@ -483,10 +538,11 @@ public class TrapManager : MonoBehaviour
         }
     }
     
-    private static IEnumerator BadEyeSight(float duration)
+    private static IEnumerator CameraStuck(float duration)
     {
         while (duration > 0)
         {
+            PlayerCamera.instance.blockInput = true;
             yield return null;
             duration -= Time.deltaTime;
             if (IsTransitioning())
@@ -494,7 +550,44 @@ public class TrapManager : MonoBehaviour
                 yield return new WaitUntil(() => !IsTransitioning());
             }
         }
-        Plugin.BepinLogger.LogInfo("Bad Eye Sight ended.");
+        PlayerCamera.instance.blockInput = false;
+        Plugin.BepinLogger.LogInfo("Camera Stuck Trap ended.");
+    }
+    
+    private static IEnumerator ThereGoesNiko(float duration)
+    {
+        while (duration > 0)
+        {
+            PlayerCamera.instance.FollowingSharpness = 0;
+            yield return null;
+            duration -= Time.deltaTime;
+            if (IsTransitioning())
+            {
+                yield return new WaitUntil(() => !IsTransitioning());
+            }
+        }
+        PlayerCamera.instance.FollowingSharpness = 30;
+        Plugin.BepinLogger.LogInfo("There Goes Niko Trap ended.");
+    }
+    
+    private static IEnumerator InvertedCamera(float duration)
+    {
+        PlayerCamera.instance.InvertX = !PlayerCamera.instance.InvertX;
+        PlayerCamera.instance.InvertY = !PlayerCamera.instance.InvertY;
+        while (duration > 0)
+        {
+            yield return null;
+            duration -= Time.deltaTime;
+            if (IsTransitioning())
+            {
+                yield return new WaitUntil(() => !IsTransitioning());
+                PlayerCamera.instance.InvertX = !PlayerCamera.instance.InvertX;
+                PlayerCamera.instance.InvertY = !PlayerCamera.instance.InvertY;
+            }
+        }
+        PlayerCamera.instance.InvertX = !PlayerCamera.instance.InvertX;
+        PlayerCamera.instance.InvertY = !PlayerCamera.instance.InvertY;
+        Plugin.BepinLogger.LogInfo("Inverted Camera Trap ended.");
     }
     
     private static IEnumerator Wide(float duration)
@@ -717,6 +810,10 @@ public class TrapManager : MonoBehaviour
             "##nameDetermined Child;Hello, have you by chance seen my ITEM item? ##newbox;You see, the ITEM item is an item that allows me to use items in battle. ##newbox;When I have the ITEM item, it allows me to use the ITEM button to access my items. Without the ITEM item, most items are useless. ##newbox;Of course, I could have chosen not to shuffle the ITEM button, in which I would just start with the ITEM item. ##newbox;In any case, I cannot use items until my ITEM item has been found. If you find an item that looks like the ITEM item, please let me know.");
         TrapConversations.Add("trapConv21",
             "Boy, I sure do enjoy playing AIR ##sp7; ##sp0;VOLLEY ##sp7; ##sp0;without any items! ##newbox;##morenikoimg2;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;NOTICE: You need the Item AC Repair to use ACs ##newbox;##nikoimg0;NOTICE: You need the Item AC Repair to-  I think I've taken this joke far enough.");
+        TrapConversations.Add("trapConv22",
+            "##namelower-case caller;heya. this the professional friend service? ##addinput:Yep!;skip0; ##addinput:Absolutely!;skip0; ##newbox;##nikoimg6;oh, hey. you're not pepper. glad to see he's been hiring again. ##newbox;##nikoimg0;anywho. i wanted to hire someone to hang out with my bro for a while. ##newbox;it would be really cool of you if you came by and tested the puzzles he's been building. ##newbox;he's been waiting for someone to approach from the west so that they get the 'full experience', but uh. ##newbox;between you and me? ##newbox;##nikoimg5;the place west of us is sealed up. nobody's come from there in a long time. ##newbox;##nikoimg8;nobody except humans, anyway. ##newbox;##nikoimg7;and ghosts, but... ##newbox;##morenikoimg0;so. ##newbox;yeah. ##newbox;if ya wanted to hop over here and tickle your brain for a bit, i'd happily spare a g. ##newbox;##nikoimg2;and between you and me... ##newbox;##nikoimg9;if ya happen to know a human... ##newbox;##nikoimg3;heck, if you *are* a human. ##newbox;##nikoimg3;it would mean a lot to us if my bro got to see one. ##newbox;[Thought] Puzzles for money? Sounds like a dream! Why humans though...? ##addinput:Agree;skip1; ##addinput:Wear a disguise;skip0; ##newbox;##morenikoimg3;[Thought] Bam! Flawless disguise, me. ##newbox;thanks a bunch, kiddo. it's gonna mean a lot to him. and to all of us. ##newbox;i'll message pepper with the directions. we'll see you around. ##newbox;because i won't be seeing you square. heh.");
+        TrapConversations.Add("trapConv23",
+            "##nameSkeleton of Judgement;So you finally made it. ##newbox;The end of your journey is at hand. ##newbox;In a few moments, you will meet the king. ##newbox;Together... ##newbox;You will determine the future of this world. ##newbox;That's then. ##newbox;Now. ##newbox;You will be judged. ##newbox;You will be judged for your every action. ##newbox;You will be judged for every EXP you've earned. ##newbox;What's EXP? ##newbox;It's an acronym. ##newbox;It stands for \"execution points\". ##newbox;A way of quantifying the pain you have inflicted on others. ##newbox;When you kill someone, your EXP increases. ##newbox;When you have enough EXP, your LOVE increases. ##newbox;LOVE, too, is an acronym. ##newbox;It stands for \"Level of Violence\". ##newbox;A way of measuring someone's capacity to hurt. ##newbox;The more you kill, the easier it becomes to distance yourself. ##newbox;The more you distance yourself, the less you will hurt. ##newbox;The more easily you can bring yourself to hurt others. ##newbox;... ##newbox;... but you. you never gained any LOVE. ##newbox;course, that doesn't mean you're completely innocent or naive. ##newbox;just that you kept a certain tenderness in your heart. ##newbox;no matter the struggles or hardships you faced... ##newbox;you strived to do the right thing. ##newbox;you refused to hurt anyone. ##newbox;even when you ran away, you did it with a smile. ##newbox;you never gained LOVE, but you gained love. ##newbox;does that make sense? ##newbox;maybe not. ##newbox;...\nnow. ##newbox;you're about to face the greatest challenge of your entire journey. ##newbox;your actions here... ##newbox;will determine the fate of the entire world. ##newbox;if you refuse to fight... ##newbox;asgore will take your soul and destroy humanity. ##newbox;but if you kill asgore and go home... ##newbox;monsters will remain trapped underground. ##newbox;what will you do? ##newbox;... ##newbox;well, if i were you, i would have thrown in the towel by now. ##newbox;but you didn't get this far by giving up, did you? ##newbox;that's right.\nyou have something called \"determination.\" ##newbox;so as long as you hold on... ##newbox;so long as you do what's in your heart... ##newbox;i believe you can do the right thing. ##newbox;alright.\nwe're all counting on you, kid.\ngood luck.");
         // TrapConversations.Add("trapConvXX",
         //     "");
     }

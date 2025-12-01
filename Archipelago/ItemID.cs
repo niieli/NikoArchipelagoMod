@@ -32,6 +32,9 @@ public static class ItemID
     public const long PhoneTrap = BaseID + 77;
     public const long TinyTrap = BaseID + 78;
     public const long JumpingJacksTrap = BaseID + 79;
+    public const long CameraStuckTrap = BaseID + 81;
+    public const long InvertedCameraTrap = BaseID + 82;
+    public const long ThereGoesNikoTrap = BaseID + 83;
 
     public static readonly HashSet<long> TrapIDs = new()
     {
@@ -45,6 +48,9 @@ public static class ItemID
         PhoneTrap,
         TinyTrap,
         JumpingJacksTrap,
+        CameraStuckTrap,
+        InvertedCameraTrap,
+        ThereGoesNikoTrap,
     };
     
     // Fishsanity

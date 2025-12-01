@@ -531,6 +531,30 @@ public static class ItemHandler
             3f, Assets.JumpingJacksTrapSprite);
         TrapManager.JumpingJacksOn = true;
     }
+    public static void AddCameraStuckTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Camera Stuck Trap from {sender}!" : "You found your Camera Stuck Trap!",
+            3f, Assets.JumpingJacksTrapSprite);
+        TrapManager.CameraStuckOn = true;
+    }
+    public static void AddInvertedCameraTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received Inverted Camera Trap from {sender}!" : "You found your Inverted Camera Trap!",
+            3f, Assets.JumpingJacksTrapSprite);
+        TrapManager.InvertedCameraOn = true;
+    }
+    public static void AddThereGoesNikoTrap(string sender, bool notify = true)
+    {
+        if (!notify) return;
+        Plugin.APSendNote(
+            sender != ArchipelagoClient.ServerData.SlotName ? $"Received There Goes Niko Trap from {sender}!" : "You found your There Goes Niko Trap!",
+            3f, Assets.JumpingJacksTrapSprite);
+        TrapManager.ThereGoesNikoOn = true;
+    }
     public static void AddPartyInvitation(ItemInfo itemInfo, bool notify = true)
     {
         if (!notify) return;
