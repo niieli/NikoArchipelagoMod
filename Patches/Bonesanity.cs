@@ -186,6 +186,7 @@ public class Bonesanity
         private static bool Prefix(scrBoneQuest __instance)
         {
             if (ArchipelagoData.slotData == null) return true;
+            if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Vanilla) return true;
             bool isBonesanity = ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Insanity;
             bool gotAllBones = scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("Bone")) >= 5;
             var currentBoxField = AccessTools.Field(typeof(scrTextbox), "currentBox");

@@ -423,7 +423,7 @@ public class FishingPatch
                   player = (int)swimInfo["player"];
                   location = (long)swimInfo["location"];
                   Plugin.BepinLogger.LogInfo($"Player: {player}, Location: {location}");
-                  if (ArchipelagoClient._session.RoomState.Version >= Version.Parse("0.6.3"))
+                  if (ArchipelagoClient._session.RoomState.Version >= Version.Parse("0.6.3") && SavedData.Instance.Hint)
                     ArchipelagoClient._session.Hints.CreateHints(player, HintStatus.Priority, location);
                   
                 }
