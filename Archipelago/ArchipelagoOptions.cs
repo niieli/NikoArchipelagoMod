@@ -127,7 +127,7 @@ public static class ArchipelagoOptionsParser
         options.Parasols = GetBool("parasols");
         options.SwimCourse = GetBool("swimming");
         options.AcRepair = GetBool("ac_repair");
-        options.AppleBasket = GetBool("apple_basket");
+        options.AppleBasket = GetBool("applebasket");
         options.Thoughtsanity = GetBool("thoughtsanity");
         options.DeathLinkAmnesty = GetInt("death_link_amnesty");
         options.CustomGoalCoinAmount = GetInt("custom_goal_coin_amount");

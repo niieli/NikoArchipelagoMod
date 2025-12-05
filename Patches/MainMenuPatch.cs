@@ -18,9 +18,12 @@ public class MainMenuPatch
             GameObjectChecker.APMenu.SetActive(true);
             if (Gamepad.all.Count != 0)
             {
-                Cursor.lockState = CursorLockMode.Confined;
-                GameObjectChecker.cursor.Visible = true;
-                GameObjectChecker.VirtualMouse.SetActive(true);
+                if (GameObjectChecker.VirtualMouse != null)
+                {
+                    Cursor.lockState = CursorLockMode.Confined;
+                    GameObjectChecker.cursor.Visible = true;
+                    GameObjectChecker.VirtualMouse.SetActive(true);
+                }
             }
             if (Plugin.APUpdateNotice == null) return;
             Plugin.APUpdateNotice.transform.SetParent(__instance.transform, false);
@@ -40,9 +43,12 @@ public class MainMenuPatch
             GameObjectChecker.APMenu.SetActive(false);
             if (Gamepad.all.Count != 0)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                GameObjectChecker.cursor.Visible = false;
-                GameObjectChecker.VirtualMouse.SetActive(false);
+                if (GameObjectChecker.VirtualMouse != null)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    GameObjectChecker.cursor.Visible = false;
+                    GameObjectChecker.VirtualMouse.SetActive(false);
+                }
             }
             if (Plugin.APUpdateNotice == null) return;
             Plugin.APUpdateNotice.transform.SetParent(__instance.transform, false);

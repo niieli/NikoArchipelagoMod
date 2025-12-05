@@ -238,7 +238,6 @@ public class Applesanity
         private static bool Prefix(scrApple __instance)
         {
             if (ArchipelagoData.slotData == null) return true;
-            if (!ArchipelagoData.slotData.ContainsKey("applebasket")) return true;
             if (!ArchipelagoData.Options.AppleBasket)
             {
                 needsBasket = false;
@@ -272,6 +271,7 @@ public class Applesanity
             {
                 return;
             }
+            Plugin.BepinLogger.LogInfo($"Applesanity: {applesanityOn} | AppleBasket: {ArchipelagoClient.AppleBasketAcquired} | NeedsBasket: {needsBasket}");
             var flag = "Apple" + ApplesanityStart.appleIDs[__instance];
             if (!scrWorldSaveDataContainer.instance.miscFlags.Contains(flag))
             {
