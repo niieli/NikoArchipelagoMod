@@ -55,7 +55,7 @@ public class DeathAmnesty : MonoBehaviour
 
     private static void IsTouchingWater()
     {
-        if ((!ArchipelagoClient.SwimmingAcquired && scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 24) 
+        if ((!ArchipelagoClient.SwimmingAcquired && ArchipelagoData.Options.SwimCourse && scrGameSaveManager.instance.gameData.generalGameData.currentLevel != 24) 
             || (scrGameSaveManager.instance.gameData.generalGameData.currentLevel == 24 && scrWaterIsDeath.isOn))
         {
             if (MyCharacterController.instance.isTouchingWater && !_playerTouchedHazard)
