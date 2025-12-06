@@ -197,6 +197,7 @@ public class Bonesanity
                 var totalBones = 5;
                 __instance.UIhider.visible = true;
                 __instance.UItext.text = $"{scrWorldSaveDataContainer.instance.miscFlags.Count(x => x.StartsWith("Bone")).ToString()} / {totalBones.ToString()}";
+                //Plugin.BepinLogger.LogInfo($"IsBonesanity: {isBonesanity} | gotAllBones: {gotAllBones} | hasEnough: {HasEnough()}");
             }
             else
             {
@@ -233,7 +234,7 @@ public class Bonesanity
                 }
             }
             
-            if ((gotAllBones && !isBonesanity)|| HasEnough() || scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone"))
+            if ((gotAllBones && (!isBonesanity || HasEnough())) || scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone"))
             {
                 if (scrTextbox.instance.isOn && scrTextbox.instance.conversation == "dogeBonePost")
                 {
@@ -254,7 +255,7 @@ public class Bonesanity
                 }
             }
 
-            if (!_playedSound && _isInArea && !scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone") && gotAllBones)
+            if (!_playedSound && _isInArea && !scrWorldSaveDataContainer.instance.coinFlags.Contains("arcadeBone") && gotAllBones && (!isBonesanity || HasEnough()))
             {
                 _playedSound = true;
                 GameObject gameObject = Object.Instantiate<GameObject>(__instance.audioOneShot);
@@ -263,7 +264,7 @@ public class Bonesanity
                 Object.Instantiate<GameObject>(__instance.smoke).transform.position = __instance.coin.transform.position;
             }
 
-            if (__instance.coin != null && __instance.coin && (gotAllBones || HasEnough() && isBonesanity))
+            if (__instance.coin != null && __instance.coin && gotAllBones && (!isBonesanity || HasEnough()))
             {
                 __instance.coin.SetActive(true);
                 __instance.NPCQuest.SetActive(false);

@@ -341,6 +341,7 @@ public class NpcController : MonoBehaviour
         if (conversation is "townGull3" && currentScene == "Public Pool") conversation = "MomGull2";
         if (conversation is "mahjongFrog") conversation = "MahjongFrog";
         if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+        if (conversation is "dog1") conversation = "dog";
         if (!conversation.StartsWith("trapConv") && !niko.Contains(conversation))
             conversation = "CHAT" + conversation;
         //if (conversation.EndsWith("Party"))
@@ -459,6 +460,7 @@ public class NpcController : MonoBehaviour
                         or "pepperRandom6" or "pepperRandom7" or "pepperRandom8" or "pepperRandom9")
                         conversation = "pepperMain";
                     if (conversation is "dogeBoneQuest" or "dogeBonePost") conversation = "BoneDog";
+                    if (conversation is "dog1") conversation = "dog";
                     
                     if (!niko.Contains(conversation) && !conversation.StartsWith("trapConv"))
                         conversation = "CHAT" + conversation;

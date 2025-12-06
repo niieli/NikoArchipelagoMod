@@ -265,7 +265,7 @@ public class LocationHandler : MonoBehaviour
             var worldData = scrGameSaveManager.instance.gameData.worldsData;
             var helpedEveryone = worldData[0].coinFlags.Contains("Fetch") &&
                                  worldData[1].coinFlags.Contains("volley") &&
-                                 worldData[1].coinFlags.Contains("dustan") && worldData[1].coinFlags.Contains("main") &&
+                                 worldData[1].coinFlags.Contains("Dustan") && worldData[1].coinFlags.Contains("main") &&
                                  worldData[1].coinFlags.Contains("fishing") && worldData[1].coinFlags.Contains("bug") &&
                                  worldData[1].coinFlags.Contains("graffiti") &&
                                  worldData[1].coinFlags.Contains("hamsterball") &&
