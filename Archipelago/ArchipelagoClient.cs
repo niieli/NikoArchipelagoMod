@@ -232,7 +232,7 @@ public class ArchipelagoClient
 
     public static void SendTrapLink(string trapName)
     {
-        BouncedPacket trapLinkPacket = new BouncedPacket
+        BouncePacket trapLinkPacket = new BouncePacket
         {
             Tags = ["TrapLink"],
             Data = new Dictionary<string, JToken>
