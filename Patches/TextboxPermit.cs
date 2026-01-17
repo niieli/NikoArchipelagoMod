@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class TextboxPermit : MonoBehaviour
 {
     private List<GameObject> _textboxes = new();
     private bool _setActive = false;
+    private bool _ghostActive = false;
     private void Start()
     {
         scrTextboxTrigger[] textboxes = FindObjectsOfType<scrTextboxTrigger>(includeInactive: true);
@@ -58,6 +60,7 @@ public class TextboxPermit : MonoBehaviour
         var bath = SceneManager.GetActiveScene().name == "The Bathhouse" && ArchipelagoClient.BathTextboxAcquired;
         var tadpole = SceneManager.GetActiveScene().name == "Tadpole inc" && ArchipelagoClient.TadpoleTextboxAcquired;
         var garden = SceneManager.GetActiveScene().name == "GarysGarden" && ArchipelagoClient.GardenTextboxAcquired;
+        var garyGhost = SceneManager.GetActiveScene().name == "Home" && ArchipelagoClient.GardenTextboxAcquired;
         if (home || hairball || turbine || salmon || pool || bath || tadpole || garden)
         {
             if (_setActive) return;
@@ -67,6 +70,16 @@ public class TextboxPermit : MonoBehaviour
             }
             _setActive = true;
             return;
+        }
+        
+        if (garyGhost && !_ghostActive)
+        {
+            foreach (var textbox in _textboxes.ToList().Where(textbox => textbox.GetComponent<scrTextboxTrigger>().conversation == "GarySender"))
+            {
+                textbox.SetActive(true);
+                _textboxes.Remove(textbox);
+                _ghostActive = true;
+            }
         }
         
         foreach (var textbox in _textboxes)

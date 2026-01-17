@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
-using Archipelago.MultiClient.Net.Enums;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
@@ -9,7 +7,6 @@ using NikoArchipelago.Stuff;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace NikoArchipelago.Patches;
 
@@ -251,51 +248,110 @@ public class APItemOverworld
         }
     }
     
+    private static int _letterID;
     [HarmonyPatch(typeof(scrEnvelope), "Start")]
     public static class LetterTexturePatch
     {
+        
         private static void Postfix(scrEnvelope __instance)
         {
             if (!ArchipelagoMenu.kalmi) return;
-            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(__instance.myLetter.key) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
+            if (ArchipelagoData.slotData == null) return;
+            var flag = __instance.myLetter.key;
+            if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag) || GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID()))
             {
+                if (scrWorldSaveDataContainer.instance.miscFlags.Contains(flag))
+                    Object.Destroy(__instance.gameObject);
                 return;
             }
-            var gardenAdjustment = 0;
-            var snailShopAdjustment = 0;
-            var cassetteAdjustment = 0;
-            if (ArchipelagoData.slotData == null) return;
-            if (!ArchipelagoData.Options.GarysGarden)
-                gardenAdjustment = 13;
-            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
-                gardenAdjustment += 1;
-            if (!ArchipelagoData.Options.Snailshop)
-                snailShopAdjustment = 16;
-            if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
-                cassetteAdjustment = 14;
-            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment;
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
+            __instance.StartCoroutine(PlaceModelsAfterLoading(__instance));
+        }
+        
+        private static IEnumerator PlaceModelsAfterLoading(scrEnvelope __instance)
+        {
+            yield return new WaitUntil(() => GameObjectChecker.PreviousScene != SceneManager.GetActiveScene().name);
+            var flag = __instance.myLetter.key;
+            int scoutID;
+            var currentscene = SceneManager.GetActiveScene().name;
+            switch (currentscene)
+            {
+                case "Home":
+                    scoutID = 80;
+                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+                    break;
+                case "Hairball City":
+                {
+                    _letterID = flag switch
+                    {
+                        "letter7" => 0,
+                        "letter1" => 1,
+                        _ => _letterID
+                    };
+                    scoutID = 81 + _letterID;
+                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+                    break;
+                }
+                case "Trash Kingdom":
+                {
+                    _letterID = flag switch
+                    {
+                        "letter2" => 0,
+                        "letter8" => 1,
+                        _ => _letterID
+                    };
+                    scoutID = 83 + _letterID;
+                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+                    break;
+                }
+                case "Salmon Creek Forest":
+                {
+                    _letterID = flag switch
+                    {
+                        "letter9" => 0,
+                        "letter3" => 1,
+                        _ => _letterID
+                    };
+                    scoutID = 85 + _letterID;
+                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+                    break;
+                }
+                case "Public Pool":
+                {
+                    _letterID = flag switch
+                    {
+                        "letter10" => 0,
+                        "letter4" => 1,
+                        _ => _letterID
+                    };
+                    scoutID = 87 + _letterID;
+                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+                    break;
+                }
+                case "The Bathhouse":
+                {
+                    _letterID = flag switch
+                    {
+                        "letter11" => 0,
+                        "letter5" => 1,
+                        _ => _letterID
+                    };
+                    scoutID = 89 + _letterID;
+                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+                    break;
+                }
+                case "Tadpole inc":
+                {
+                    scoutID = 250;
+                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+                    break;
+                }
+            }
             var ogQuads = __instance.transform.Find("Quads").gameObject;
-            ogQuads.SetActive(false);
-            try
-            {
-                var list = Locations.ScoutLetterList.ToList();
-                var index = list.FindIndex(pair => pair.Value == __instance.myLetter.key);
-                int offset = 181 - adjustment;
-                PlaceModelHelper.PlaceModel(index, offset, __instance);
-                GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
-                GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
-                    .AppendLine($"Index: {index}, Offset: {offset}, Flag: {__instance.myLetter.key}")
-                    .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
-                    .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
-                    .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
-                    .AppendLine($"Model: {__instance.quads.name}");
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Plugin.BepinLogger.LogWarning($"Letter not found! Probably using an apworld pre-0.5.0, where this letter does not exist." +
-                                              $"\nIf you are on 0.5.0+ and this keeps popping up please report it in the discord");
-            }
-            
+            Object.Destroy(ogQuads.gameObject);
+            GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
+                .AppendLine($"ID: {_letterID}, Flag: {flag}")
+                .AppendLine($"Model: {__instance.quads.name}");
         }
     }
     

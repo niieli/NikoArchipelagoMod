@@ -342,6 +342,10 @@ public class TrapManager : MonoBehaviour
                 trap.transform.Find("TrapDescription/TextFront").GetComponent<TextMeshProUGUI>().text = $"from {source}";
             trap.transform.Find("TrapLink").gameObject.SetActive(true);
         }
+        else
+        {
+            trap.transform.Find("TrapLink").gameObject.SetActive(false);
+        }
 
         float timeRemaining = duration;
         while (timeRemaining > 0)
