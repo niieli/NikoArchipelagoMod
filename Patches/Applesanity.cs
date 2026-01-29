@@ -76,37 +76,14 @@ public class Applesanity
             {
                 return;
             }
-            var gardenAdjustment = 0;
-            var snailShopAdjustment = 0;
-            var cassetteAdjustment = 0;
-            var idkAdjustment = 0;
-            var seedAdjustment = 0;
+            
             if (ArchipelagoData.slotData == null) return;
-            if (!ArchipelagoData.slotData.ContainsKey("applessanity")) return;
             if (!ArchipelagoData.Options.Applesanity) return;
             applesanityOn = true;
             var currentscene = SceneManager.GetActiveScene().name;
             if (currentscene == "Home") return; // Do not interact with apples in home, will need to be removed/checked for conditions.
             __instance.enabled = true;
-            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-                if (!ArchipelagoData.Options.GarysGarden)
-                {
-                    gardenAdjustment = 13;
-                    idkAdjustment = 2;
-                }
-            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
-                gardenAdjustment += 1;
-            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
-                if (!ArchipelagoData.Options.Snailshop)
-                    snailShopAdjustment = 16;
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive)
-                    cassetteAdjustment = 14;
-            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
-                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
-                    seedAdjustment = 30;
-
-            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment;
+            
             GameObject ogQuads = null;
             if (__instance.transform.Find("Quad") != null)
                 ogQuads = __instance.transform.Find("Quad").gameObject;
@@ -119,102 +96,102 @@ public class Applesanity
             if (__instance.transform.Find("Particle System Sparkle") != null)
                 if (__instance.transform.Find("Particle System Sparkle").gameObject.activeInHierarchy)
                     __instance.transform.position += new Vector3(0, 0.75f, 0);
-            var index = 0;
-            var offset = 0;
+            var list = currentscene switch
+            {
+                "Hairball City" => Locations.ScoutHCApplesList,
+                "Trash Kingdom" => Locations.ScoutTTApplesList,
+                "Salmon Creek Forest" => Locations.ScoutSCFApplesList,
+                "Public Pool" => Locations.ScoutPPApplesList,
+                "The Bathhouse" => Locations.ScoutBathApplesList,
+                "Tadpole inc" => Locations.ScoutHQApplesList,
+                _ => null
+            };
+            
+            // fix out of bounds and other stuff I forgot
             switch (currentscene)
             {
-                case "Hairball City":
-                {
-                    var list = Locations.ScoutHCApplesList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 225 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
-                case "Trash Kingdom":
-                {
-                    __instance.transform.position += new Vector3(0, -0.2f, 0);
-                    var list = Locations.ScoutTTApplesList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 257 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
                 case "Salmon Creek Forest":
                 {
-                    var list = Locations.ScoutSFCApplesList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 290 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
                     if (appleIDs[__instance] == 74 || appleIDs[__instance] == 106 || appleIDs[__instance] == 120)
                     {
                         __instance.transform.position += new Vector3(0, 0.5f, 0);
-                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                        Plugin.BepinLogger.LogInfo(
+                            $"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
                     }
                     if (appleIDs[__instance] == 75)
                     {
                         __instance.transform.position = new Vector3(27.5f, 130.3f, 139.6f);
-                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                        Plugin.BepinLogger.LogInfo(
+                            $"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
                     }
                     if (appleIDs[__instance] == 92)
                     {
                         __instance.transform.position = new Vector3(38.8f, 133.5f, 135.4f);
-                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                        Plugin.BepinLogger.LogInfo(
+                            $"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
                     }
-                    if (appleIDs[__instance] == 52 || appleIDs[__instance] == 42 || appleIDs[__instance] == 35 || appleIDs[__instance] == 55 || appleIDs[__instance] == 59 || appleIDs[__instance] == 115)
+                    if (appleIDs[__instance] == 52 || appleIDs[__instance] == 42 || appleIDs[__instance] == 35 ||
+                        appleIDs[__instance] == 55 || appleIDs[__instance] == 59 || appleIDs[__instance] == 115)
                     {
                         __instance.transform.position += new Vector3(0, 0.3f, 0);
-                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                        Plugin.BepinLogger.LogInfo(
+                            $"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
                     }
                     if (appleIDs[__instance] == 38)
                     {
                         __instance.transform.position -= new Vector3(0, 0.3f, 0);
-                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                        Plugin.BepinLogger.LogInfo(
+                            $"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
                     }
                     if (appleIDs[__instance] == 111 || appleIDs[__instance] == 83 || appleIDs[__instance] == 32)
                     {
                         __instance.transform.position += new Vector3(0, 0.8f, 0);
-                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                        Plugin.BepinLogger.LogInfo(
+                            $"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
                     }
                     break;
                 }
                 case "Public Pool":
                 {
                     __instance.transform.position += new Vector3(0, -0.125f, 0);
-                    var list = Locations.ScoutPPApplesList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 416 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
-                case "The Bathhouse":
-                {
-                    var list = Locations.ScoutBathApplesList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 510 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
                     break;
                 }
                 case "Tadpole inc":
                 {
-                    var list = Locations.ScoutHQApplesList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 582 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
                     if (appleIDs[__instance] == 11)
                     {
                         __instance.transform.position = new Vector3(111f, 3.5f, 5f);
-                        Plugin.BepinLogger.LogInfo($"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
+                        Plugin.BepinLogger.LogInfo(
+                            $"Moved Apple: {appleIDs[__instance]} to {__instance.transform.position}");
                     }
                     break;
                 }
             }
+
+            if (list == null)
+            {
+                Plugin.BepinLogger.LogError($"Couldn't find locations for {flag} | Scene: {currentscene} ");
+                return;
+            }
+            
+            var pair = list.FirstOrDefault(p => p.Value == flag);
+
+            if (pair.Key == 0)
+                return;
+
+            var locationId = pair.Key;
+
+            if (!ArchipelagoClient.ScoutedLocations.TryGetValue(locationId, out var scoutedItemInfo))
+                return;
+
+            PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
+            
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
-                .AppendLine($"Index: {index}, Offset: {offset}, FlagID: Apple{appleIDs[__instance]}")
-                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
-                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
-                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"Flag: {flag}")
+                .AppendLine($"Item: {scoutedItemInfo.ItemName}")
+                .AppendLine($"Location: {scoutedItemInfo.LocationName}")
+                .AppendLine($"LocationID: {scoutedItemInfo.LocationId}")
                 .AppendLine($"Model: {__instance.quad.name}");
         }
     }

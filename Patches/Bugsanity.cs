@@ -82,42 +82,12 @@ public class Bugsanity
             {
                 return;
             }
-            var gardenAdjustment = 0;
-            var snailShopAdjustment = 0;
-            var cassetteAdjustment = 0;
-            var idkAdjustment = 0;
-            var seedAdjustment = 0;
-            var appleAdjustment = 0;
+            
             if (ArchipelagoData.slotData == null) return;
-            if (!ArchipelagoData.slotData.ContainsKey("bugsanity")) return;
             if (!ArchipelagoData.Options.Bugsanity) return;
             var currentscene = SceneManager.GetActiveScene().name;
             __instance.enabled = true;
-            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-                if (!ArchipelagoData.Options.GarysGarden)
-                {
-                    gardenAdjustment = 13;
-                    idkAdjustment = 2;
-                }
-            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
-                gardenAdjustment += 1;
-            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
-                if (!ArchipelagoData.Options.Snailshop)
-                    snailShopAdjustment = 16;
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive || ArchipelagoData.Options.Cassette != ArchipelagoOptions.CassetteMode.Progressive)
-                {
-                    cassetteAdjustment = 14;
-                }
-
-            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
-                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
-                    seedAdjustment = 30;
-            if (ArchipelagoData.slotData.ContainsKey("applessanity"))
-                if (!ArchipelagoData.Options.Applesanity)
-                    appleAdjustment = 371;
-
-            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment + appleAdjustment;
+            
             GameObject ogQuads = null;
             if (__instance.wingRight.transform.Find("Quad") != null)
                 ogQuads = __instance.wingRight;
@@ -132,57 +102,41 @@ public class Bugsanity
             if (__instance.functionality.transform.Find("Firefly_Raw.Firefly_Loop") != null)
                 __instance.functionality.transform.Find("Firefly_Raw.Firefly_Loop").gameObject.SetActive(false);
             
-            var index = 0;
-            var offset = 0;
-            switch (currentscene)
+            var list = currentscene switch
             {
-                case "Hairball City":
-                {
-                    var list = Locations.ScoutHCBugsList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 610 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
-                case "Trash Kingdom":
-                {
-                    var list = Locations.ScoutTTBugsList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 668 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
-                case "Salmon Creek Forest":
-                {
-                    var list = Locations.ScoutSCFBugsList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 726 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
-                case "The Bathhouse":
-                {
-                    var list = Locations.ScoutBathBugsList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 858 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
-                case "Tadpole inc":
-                {
-                    var list = Locations.ScoutHQBugsList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 909 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
+                "Hairball City" => Locations.ScoutHCBugsList,
+                "Trash Kingdom" => Locations.ScoutTTBugsList,
+                "Salmon Creek Forest" => Locations.ScoutSCFBugsList,
+                "Public Pool" => Locations.ScoutPPBugsList,
+                "The Bathhouse" => Locations.ScoutBathBugsList,
+                "Tadpole inc" => Locations.ScoutHQBugsList,
+                _ => null
+            };
+
+            if (list == null)
+            {
+                Plugin.BepinLogger.LogError($"Couldn't find locations for {flag} | Scene: {currentscene} ");
+                return;
             }
+            
+            var pair = list.FirstOrDefault(p => p.Value == flag);
+
+            if (pair.Key == 0)
+                return;
+
+            var locationId = pair.Key;
+
+            if (!ArchipelagoClient.ScoutedLocations.TryGetValue(locationId, out var scoutedItemInfo))
+                return;
+
+            PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
+            
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
-                .AppendLine($"Index: {index}, Offset: {offset}, FlagID: Bug{bugIDs[__instance]}")
-                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
-                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
-                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"Flag: {flag}")
+                .AppendLine($"Item: {scoutedItemInfo.ItemName}")
+                .AppendLine($"Location: {scoutedItemInfo.LocationName}")
+                .AppendLine($"LocationID: {scoutedItemInfo.LocationId}")
                 .AppendLine($"Model: {__instance.wingRight.name}");
         }
     }
@@ -269,70 +223,46 @@ public class Bugsanity
             {
                 return;
             }
-            var gardenAdjustment = 0;
-            var snailShopAdjustment = 0;
-            var cassetteAdjustment = 0;
-            var idkAdjustment = 0;
-            var seedAdjustment = 0;
-            var appleAdjustment = 0;
+            
             if (ArchipelagoData.slotData == null) return;
-            if (!ArchipelagoData.slotData.ContainsKey("bugsanity")) return;
             if (!ArchipelagoData.Options.Bugsanity) return;
             var currentscene = SceneManager.GetActiveScene().name;
             __instance.enabled = true;
-            if (ArchipelagoData.slotData.ContainsKey("shuffle_garden"))
-                if (!ArchipelagoData.Options.GarysGarden)
-                {
-                    gardenAdjustment = 13;
-                    idkAdjustment = 2;
-                }
-            if (ArchipelagoData.Options.GoalCompletion == ArchipelagoOptions.GoalCompletionMode.Garden)
-                gardenAdjustment += 1;
-            if (ArchipelagoData.slotData.ContainsKey("snailshop"))
-                if (!ArchipelagoData.Options.Snailshop)
-                    snailShopAdjustment = 16;
-            if (ArchipelagoData.slotData.ContainsKey("cassette_logic"))
-                if (ArchipelagoData.Options.Cassette == ArchipelagoOptions.CassetteMode.Progressive || ArchipelagoData.Options.Cassette != ArchipelagoOptions.CassetteMode.Progressive)
-                    cassetteAdjustment = 14;
-            if (ArchipelagoData.slotData.ContainsKey("seedsanity"))
-                if (ArchipelagoData.Options.Seedsanity == ArchipelagoOptions.InsanityLevel.Vanilla)
-                    seedAdjustment = 30;
-            if (ArchipelagoData.slotData.ContainsKey("applessanity"))
-                if (!ArchipelagoData.Options.Applesanity)
-                    appleAdjustment = 371;
-
-            var adjustment = gardenAdjustment + snailShopAdjustment + cassetteAdjustment + seedAdjustment + appleAdjustment;
             
             if (__instance.functionality.transform.Find("Sit") != null)
                 __instance.functionality.transform.Find("Sit").gameObject.SetActive(false);
             
-            var index = 0;
-            var offset = 0;
-            switch (currentscene)
+            var list = currentscene switch
             {
-                case "Public Pool":
-                {
-                    var list = Locations.ScoutPPBugsList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 815 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
-                case "Tadpole inc":
-                {
-                    var list = Locations.ScoutHQBugsList.ToList();
-                    index = list.FindIndex(pair => pair.Value == flag);
-                    offset = 909 - adjustment + idkAdjustment;
-                    PlaceModelHelper.PlaceModel(index, offset, __instance);
-                    break;
-                }
+                "Public Pool" => Locations.ScoutPPBugsList,
+                "Tadpole inc" => Locations.ScoutHQBugsList,
+                _ => null
+            };
+
+            if (list == null)
+            {
+                Plugin.BepinLogger.LogError($"Couldn't find locations for {flag} | Scene: {currentscene} ");
+                return;
             }
+            
+            var pair = list.FirstOrDefault(p => p.Value == flag);
+
+            if (pair.Key == 0)
+                return;
+
+            var locationId = pair.Key;
+
+            if (!ArchipelagoClient.ScoutedLocations.TryGetValue(locationId, out var scoutedItemInfo))
+                return;
+
+            PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
+            
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
-                .AppendLine($"Index: {index}, Offset: {offset}, FlagID: Bug{bugIDs[__instance]}")
-                .AppendLine($"Item: {ArchipelagoClient.ScoutedLocations[index + offset].ItemName}")
-                .AppendLine($"Location: {ArchipelagoClient.ScoutedLocations[index + offset].LocationName}")
-                .AppendLine($"LocationID: {ArchipelagoClient.ScoutedLocations[index + offset].LocationId}")
+                .AppendLine($"FlagID: Bug{bugIDs[__instance]}")
+                .AppendLine($"Item: {scoutedItemInfo.ItemName}")
+                .AppendLine($"Location: {scoutedItemInfo.LocationName}")
+                .AppendLine($"LocationID: {scoutedItemInfo.LocationId}")
                 .AppendLine($"Model: {__instance.functionality.name}");
         }
     }

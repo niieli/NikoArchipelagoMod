@@ -972,15 +972,23 @@ public class ArchipelagoClient
         return count;
     }
     
-    public static readonly List<ScoutedItemInfo> ScoutedLocations = [];
+    public static readonly Dictionary<long, ScoutedItemInfo> ScoutedLocations = [];
     private static void Scout()
     {
-        _session.Locations.ScoutLocationsAsync(Locations.ScoutIDs).ContinueWith(locationInfoPacket => {
-            foreach (var itemInfo in locationInfoPacket.Result.Values) {
-                ScoutedLocations.Add(itemInfo);
+        Locations.PopulateScoutList();
+        _session.Locations.ScoutLocationsAsync(Locations.ScoutIDs).ContinueWith(task =>
+        {
+            var result = task.Result;
+
+            ScoutedLocations.Clear();
+
+            foreach (var itemInfo in result.Values)
+            {
+                ScoutedLocations[itemInfo.LocationId] = itemInfo;
             }
+
+            Plugin.BepinLogger.LogInfo($"Scouted {ScoutedLocations.Count} locations.");
         });
-        Plugin.BepinLogger.LogInfo("Scouted locations.");
     }
     
     public static void SendCompletion()

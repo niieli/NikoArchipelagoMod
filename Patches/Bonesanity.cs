@@ -40,122 +40,44 @@ public class Bonesanity
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.Options.Bonesanity == ArchipelagoOptions.InsanityLevel.Vanilla) return;
             _bonesanityOn = true;
-            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
-            __instance.StartCoroutine(PlaceModelsAfterLoading(__instance));
-        }
-
-        private static IEnumerator PlaceModelsAfterLoading(scrBone __instance)
-        {
-            yield return new WaitUntil(() => GameObjectChecker.PreviousScene != SceneManager.GetActiveScene().name);
-            var flag = __instance.name;
-            int scoutID;
             var currentscene = SceneManager.GetActiveScene().name;
-            switch (currentscene)
+            var list = currentscene switch
             {
-                case "Hairball City":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Bone" => 1,
-                        "Bone (1)" => 2,
-                        "Bone (2)" => 3,
-                        "Bone (3)" => 4,
-                        "Bone (4)" => 5,
-                        _ => ID
-                    };
-                    scoutID = 2200 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Trash Kingdom":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Bone" => 1,
-                        "Bone (1)" => 2,
-                        "Bone (2)" => 3,
-                        "Bone (3)" => 4,
-                        "Bone (4)" => 5,
-                        _ => ID
-                    };
-                    scoutID = 2205 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Salmon Creek Forest":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Bone" => 1,
-                        "Bone (1)" => 2,
-                        "Bone (2)" => 3,
-                        "Bone (3)" => 4,
-                        "Bone (4)" => 5,
-                        _ => ID
-                    };
-                    scoutID = 2210 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Public Pool":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Bone" => 1,
-                        "Bone (1)" => 2,
-                        "Bone (2)" => 3,
-                        "Bone (3)" => 4,
-                        "Bone (4)" => 5,
-                        _ => ID
-                    };
-                    scoutID = 2215 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "The Bathhouse":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Bone" => 1,
-                        "Bone (1)" => 2,
-                        "Bone (2)" => 3,
-                        "Bone (3)" => 4,
-                        "Bone (4)" => 5,
-                        _ => ID
-                    };
-                    scoutID = 2220 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Tadpole inc":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Bone" => 1,
-                        "Bone (1)" => 2,
-                        "Bone (2)" => 3,
-                        "Bone (3)" => 4,
-                        "Bone (4)" => 5,
-                        _ => ID
-                    };
-                    scoutID = 2225 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
+                "Hairball City" => Locations.ScoutHCBoneList,
+                "Trash Kingdom" => Locations.ScoutTTBoneList,
+                "Salmon Creek Forest" => Locations.ScoutSCFBoneList,
+                "Public Pool" => Locations.ScoutPPBoneList,
+                "The Bathhouse" => Locations.ScoutBathBoneList,
+                "Tadpole inc" => Locations.ScoutHQBoneList,
+                _ => null
+            };
+
+            if (list == null)
+            {
+                Plugin.BepinLogger.LogError($"Couldn't find locations for {flag} | Scene: {currentscene} ");
+                return;
             }
+            
+            var pair = list.FirstOrDefault(p => p.Value == flag);
+            
+            if (pair.Key == 0)
+                return;
+
+            var locationId = pair.Key;
+
+            if (!ArchipelagoClient.ScoutedLocations.TryGetValue(locationId, out var scoutedItemInfo))
+                return;
+
+            PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             Object.Destroy(ogQuads.gameObject);
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
-                .AppendLine($"ID: {ID}, Flag: {flag}")
+                .AppendLine($"Flag: {flag}")
+                .AppendLine($"Item: {scoutedItemInfo.ItemName}")
+                .AppendLine($"Location: {scoutedItemInfo.LocationName}")
+                .AppendLine($"LocationID: {scoutedItemInfo.LocationId}")
                 .AppendLine($"Model: {__instance.quads.name}");
-        }
-        
-        private static bool IsTransitioning(bool levelIntroduction = true)
-        {
-            return scrTrainManager.instance.isLoadingNewScene
-                   || scrTransitionManager.instance.state != scrTransitionManager.States.idle
-                   || !ArchipelagoClient.IsValidScene()
-                   || (scrLevelIntroduction.isOn && levelIntroduction);
         }
     }
 

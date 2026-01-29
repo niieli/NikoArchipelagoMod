@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
@@ -20,118 +21,46 @@ public class FishInPondPatch
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.Options.Fishsanity == ArchipelagoOptions.InsanityLevel.Vanilla) return;
             if (GameObjectChecker.LoggedInstances.Contains(__instance.GetInstanceID())) return;
-            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
-            __instance.StartCoroutine(PlaceModelsAfterLoading(__instance));
-        }
-        
-        private static IEnumerator PlaceModelsAfterLoading(scrFishInPond __instance)
-        {
-            yield return new WaitUntil(() => GameObjectChecker.PreviousScene != SceneManager.GetActiveScene().name);
-            var flag = __instance.name;
-            int scoutID;
             var currentscene = SceneManager.GetActiveScene().name;
-            switch (currentscene)
+            var list = currentscene switch
             {
-                case "Hairball City":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Sea1" => 1,
-                        "Sea2" => 2,
-                        "Sea3" => 3,
-                        "Sea4" => 4,
-                        "Sea5" => 5,
-                        _ => ID
-                    };
-                    scoutID = 200 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Trash Kingdom":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Sea1" => 1,
-                        "Sea2" => 2,
-                        "Sea3" => 3,
-                        "Sea4" => 4,
-                        "Sea5" => 5,
-                        _ => ID
-                    };
-                    scoutID = 207 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Salmon Creek Forest":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Sea1" => 1,
-                        "Sea2" => 2,
-                        "Sea3" => 3,
-                        "Sea4" => 4,
-                        "Sea5" => 5,
-                        _ => ID
-                    };
-                    scoutID = 212 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Public Pool":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Sea1" => 1,
-                        "Sea2" => 2,
-                        "Sea3" => 3,
-                        "Sea4" => 4,
-                        "Sea5" => 5,
-                        _ => ID
-                    };
-                    scoutID = 217 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "The Bathhouse":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Sea1" => 1,
-                        "Sea2" => 2,
-                        "Sea3" => 3,
-                        "Sea4" => 4,
-                        "Sea5" => 5,
-                        _ => ID
-                    };
-                    scoutID = 222 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
-                case "Tadpole inc":
-                {
-                    ID = __instance.name switch
-                    {
-                        "Sea1" => 1,
-                        "Sea2" => 2,
-                        "Sea3" => 3,
-                        "Sea4" => 4,
-                        "Sea5" => 5,
-                        _ => ID
-                    };
-                    scoutID = 227 + ID;
-                    PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
-                    break;
-                }
+                "Hairball City" => Locations.ScoutHCFishList,
+                "Trash Kingdom" => Locations.ScoutTTFishList,
+                "Salmon Creek Forest" => Locations.ScoutSCFFishList,
+                "Public Pool" => Locations.ScoutPPFishList,
+                "The Bathhouse" => Locations.ScoutBathFishList,
+                "Tadpole inc" => Locations.ScoutHQFishList,
+                _ => null
+            };
+
+            if (list == null)
+            {
+                Plugin.BepinLogger.LogError($"Couldn't find locations for {__instance.name} | Scene: {currentscene} ");
+                return;
             }
+            
+            var pair = list.FirstOrDefault(p => p.Value.Replace("fish", "Sea") == __instance.name);
+
+            if (pair.Key == 0)
+                return;
+
+            var locationId = pair.Key;
+
+            if (!ArchipelagoClient.ScoutedLocations.TryGetValue(locationId, out var scoutedItemInfo))
+                return;
+
+            PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
+            
             var ogQuads = __instance.transform.Find("Quad").gameObject;
             Object.Destroy(ogQuads.gameObject);
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
-                .AppendLine($"ID: {ID}, Flag: {flag}")
+                .AppendLine($"Flag: {__instance.name}")
+                .AppendLine($"Item: {scoutedItemInfo.ItemName}")
+                .AppendLine($"Location: {scoutedItemInfo.LocationName}")
+                .AppendLine($"LocationID: {scoutedItemInfo.LocationId}")
                 .AppendLine($"Model: {__instance.quad.name}");
-            if (__instance.name.Contains("Sea"))
-                __instance.quad.transform.Find("Quads").localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            else
-                __instance.quad.transform.Find("Quads").localScale = new Vector3(0.25f, 0.25f, 0.25f);
+            __instance.quad.transform.Find("Quads").localScale = __instance.name.Contains("Sea") ? new Vector3(0.1f, 0.1f, 0.1f) : new Vector3(0.25f, 0.25f, 0.25f);
             __instance.quad.gameObject.SetActive(false);
         }
     }

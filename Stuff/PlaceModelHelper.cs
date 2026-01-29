@@ -37,13 +37,9 @@ public static class PlaceModelHelper
         return field;
     }
 
-    public static void PlaceModel<T>(int index, int offset, T instance, bool scout = false)
+    public static void PlaceModel<T>(ScoutedItemInfo itemInfo,T instance)
     {
-        if (!scout)
-            if (index + offset >= ArchipelagoClient.ScoutedLocations.Count)
-                return;
-
-        var scoutedItemInfo = scout ? ArchipelagoClient.ScoutLocation(index, false) : ArchipelagoClient.ScoutedLocations[index + offset];
+        var scoutedItemInfo = itemInfo;
         var quadField = GetQuadField(typeof(T));
         if (quadField == null)
             return;

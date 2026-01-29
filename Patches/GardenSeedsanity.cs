@@ -1,17 +1,14 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using HarmonyLib;
 using KinematicCharacterController.Core;
 using NikoArchipelago.Archipelago;
 using NikoArchipelago.Stuff;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace NikoArchipelago.Patches;
 
 public class GardenSeedsanity
 {
-    public static int ID;
-
     [HarmonyPatch(typeof(scrGardenSeed), "Start")]
     public static class GardenSeedStartPatch
     {
@@ -27,35 +24,29 @@ public class GardenSeedsanity
             }
             if (ArchipelagoData.slotData == null) return;
             if (ArchipelagoData.Options.GoalCompletion != ArchipelagoOptions.GoalCompletionMode.Garden) return;
-            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
-            __instance.StartCoroutine(PlaceModelsAfterLoading(__instance));
-        }
-        
-        private static IEnumerator PlaceModelsAfterLoading(scrGardenSeed __instance)
-        {
-            yield return new WaitUntil(() => GameObjectChecker.PreviousScene != SceneManager.GetActiveScene().name);
-            var flag = __instance.name;
-            ID = __instance.name switch
-            {
-                "GardenSeed 1" => 1,
-                "GardenSeed 2" => 2,
-                "GardenSeed 3" => 3,
-                "GardenSeed 4" => 4,
-                "GardenSeed 5" => 5,
-                "GardenSeed 6" => 6,
-                "GardenSeed 7" => 7,
-                "GardenSeed 8" => 8,
-                "GardenSeed 9" => 9,
-                "GardenSeed 10" => 10,
-                _ => ID
-            };
-            var scoutID = 2300 + ID;
-            PlaceModelHelper.PlaceModel(scoutID, 0, __instance, true);
+            var list = Locations.ScoutGardenSeedsList;
+            
+            var pair = list.FirstOrDefault(p => p.Value == flag);
+
+            if (pair.Key == 0)
+                return;
+
+            var locationId = pair.Key;
+
+            if (!ArchipelagoClient.ScoutedLocations.TryGetValue(locationId, out var scoutedItemInfo))
+                return;
+
+            PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
             var ogQuads = __instance.transform.Find("Quads").gameObject;
             Object.Destroy(ogQuads.gameObject);
             __instance.quads.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            
+            GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
-                .AppendLine($"ID: {ID}, Flag: {flag}")
+                .AppendLine($"Flag: {flag}")
+                .AppendLine($"Item: {scoutedItemInfo.ItemName}")
+                .AppendLine($"Location: {scoutedItemInfo.LocationName}")
+                .AppendLine($"LocationID: {scoutedItemInfo.LocationId}")
                 .AppendLine($"Model: {__instance.quads.name}");
         }
     }
