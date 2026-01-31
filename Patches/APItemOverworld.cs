@@ -25,8 +25,6 @@ public class APItemOverworld
                 return;
             }
             
-            var ogQuads = __instance.transform.Find("Quads").gameObject;
-            Object.Destroy(ogQuads.gameObject);
             
             var currentscene = SceneManager.GetActiveScene().name;
             var list = currentscene switch
@@ -59,6 +57,9 @@ public class APItemOverworld
 
             PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
             
+            var ogQuads = __instance.transform.Find("Quads").gameObject;
+            Object.Destroy(ogQuads.gameObject);
+            
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
                 .AppendLine($"Flag: {flag}")
@@ -80,8 +81,6 @@ public class APItemOverworld
                 return;
             }
             
-            var ogQuads = __instance.transform.Find("Quads").gameObject;
-            ogQuads.SetActive(false);
             var currentscene = SceneManager.GetActiveScene().name;
             
             var list = currentscene switch
@@ -113,6 +112,9 @@ public class APItemOverworld
 
             PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
             
+            var ogQuads = __instance.transform.Find("Quads").gameObject;
+            ogQuads.SetActive(false);
+            
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
                 .AppendLine($"Flag: {__instance.myFlag}")
@@ -134,8 +136,6 @@ public class APItemOverworld
                 return;
             }
 
-            var ogQuads = __instance.transform.Find("Quads").gameObject;
-            ogQuads.SetActive(false);
 
             var currentscene = SceneManager.GetActiveScene().name;
             var list = Locations.ScoutKeyList;
@@ -151,6 +151,9 @@ public class APItemOverworld
                 return;
 
             PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
+            
+            var ogQuads = __instance.transform.Find("Quads").gameObject;
+            ogQuads.SetActive(false);
             
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
@@ -177,9 +180,6 @@ public class APItemOverworld
                 return;
             }
             
-            var ogQuads = __instance.transform.Find("Quads").gameObject;
-            Object.Destroy(ogQuads.gameObject);
-            
             var list = Locations.ScoutLetterList;
             
             var pair = list.FirstOrDefault(p => p.Value == flag);
@@ -193,6 +193,9 @@ public class APItemOverworld
                 return;
 
             PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
+            
+            var ogQuads = __instance.transform.Find("Quads").gameObject;
+            Object.Destroy(ogQuads.gameObject);
             
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
@@ -215,8 +218,6 @@ public class APItemOverworld
                 return;
             }
             
-            var ogQuads = __instance.transform.Find("Quads").gameObject;
-            ogQuads.SetActive(false);
             var flag = "";
             var currentscene = SceneManager.GetActiveScene().name;
             if (currentscene == "Salmon Creek Forest")
@@ -240,6 +241,9 @@ public class APItemOverworld
 
             PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
             
+            var ogQuads = __instance.transform.Find("Quads").gameObject;
+            ogQuads.SetActive(false);
+            
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
                 .AppendLine($"Flag: {flag}")
@@ -260,9 +264,6 @@ public class APItemOverworld
             {
                 return;
             }
-            
-            var ogQuads = __instance.transform.Find("Quads").gameObject;
-            ogQuads.SetActive(false);
             
             var currentscene = SceneManager.GetActiveScene().name;
             var list = currentscene switch
@@ -291,6 +292,10 @@ public class APItemOverworld
 
             PlaceModelHelper.PlaceModel(scoutedItemInfo, __instance);
             __instance.quads.transform.localScale = new Vector3(1.15f, 1f, 1);
+            
+            var ogQuads = __instance.transform.Find("Quads").gameObject;
+            ogQuads.SetActive(false);
+            
             GameObjectChecker.LoggedInstances.Add(__instance.GetInstanceID());
             GameObjectChecker.LogBatch.AppendLine("-------------------------------------------------")
                 .AppendLine($"Flag: {__instance.name}")

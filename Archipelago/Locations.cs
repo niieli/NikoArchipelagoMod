@@ -16,6 +16,18 @@ public static class Locations
 {
     private const long BaseID = 598_145_444_000;
 
+    public enum Level
+    {
+        Home = 0,
+        HairballCity = 1,
+        TurbineTown = 2,
+        SalmonCreekForest = 3,
+        PublicPool = 4,
+        Bathhouse = 5,
+        TadpoleHq = 6,
+        GarysGarden = 23
+    }
+    
     public static readonly Dictionary<long, Location> CoinLocations = new()
     {
     // Home
