@@ -211,7 +211,7 @@ public class NpcController : MonoBehaviour
             "CHATSnowFrog",                                         // Snow Frog Frog
             "CHATfrogBoil",                                         // Steamy Frog
             "CHATPenny",                                            // Penny
-            "CHATGashadokuro",                                      // Gashadokuro
+            "CHATgashadokuro",                                      // Gashadokuro
             "CHATtbhCarl",                                          // Carl
             "CHATtbhJess",                                          // Jess
             "CHATtbhMiki",                                          // Miki

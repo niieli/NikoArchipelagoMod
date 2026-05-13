@@ -1273,7 +1273,7 @@ public static class Locations
         { BaseID + 2107, new Location(BaseID +2107, "CHATSnowFrog", 2) },
         { BaseID + 2108, new Location(BaseID +2108, "CHATfrogBoil", 2) },
         { BaseID + 2109, new Location(BaseID +2109, "CHATPenny", 2) },
-        { BaseID + 2110, new Location(BaseID +2110, "CHATGashadokuro", 2) },
+        { BaseID + 2110, new Location(BaseID +2110, "CHATgashadokuro", 2) },
         { BaseID + 2111, new Location(BaseID +2111, "CHATtbhCarl", 2) },
         { BaseID + 2112, new Location(BaseID +2112, "CHATtbhJess", 2) },
         { BaseID + 2113, new Location(BaseID +2113, "CHATtbhMiki", 3) },

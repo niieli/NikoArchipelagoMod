@@ -134,7 +134,8 @@ public class SnailShopPatch
                     {
                         if (scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Contains(
                                 "Hint" + (20 + j))) continue;
-                        ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[20 + j]);
+                        ArchipelagoClient.ScoutLocation(233 + j);
+                        //ArchipelagoClient._session.Locations.ScoutLocationsAsync(true, Locations.ScoutIDs[20 + j]);
                         scrGameSaveManager.instance.gameData.generalGameData.generalFlags.Add("Hint" + (20 + j));
                     }
                     scrGameSaveManager.instance.SaveGame();
