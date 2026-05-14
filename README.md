@@ -34,7 +34,11 @@ You can delete Archipelago saves at `%localappdata%low\Frog Vibes\Here Comes Nik
 If you want to use custom Playables, you can use the [PlayableLoaderBepInEx](https://github.com/niieli/PlayableLoaderBepInEx/releases/latest)
 
 ## Known issues
-- Connecting to another slot without restarting the game can lead to unchecked locations being sent 
+- Connecting to <ins>another</ins> slot without restarting the game can lead to unchecked locations being sent (Planned fix for 0.9.X)
+- AP UI not working with controller (Planned but dunno)
+- Mitch & Mai textbox randomly breaking (Planned fix for 0.9.X)
+- Game freezing ("fix" ideas for 0.9.X)
+- In-game whiteboard sanity counts being all over the place (Planned fix for 0.9.X)
 ## What is randomized?
 - Coins
 - Cassettes
@@ -68,7 +72,3 @@ If you want to use custom Playables, you can use the [PlayableLoaderBepInEx](htt
 - Talking to NPCs *(Depending on settings)*
 
 The levels are randomized and unlocked via a Ticket *(Depending on settings)*
-
-## Planned features
-- Shuffle Tickets on Kiosk locations
-- Set total Coin count in the multiworld 
