@@ -1002,6 +1002,7 @@ public static class Locations
         { BaseID + 1450, new Location(BaseID +1450, "CHATNina", 3) },
         { BaseID + 1451, new Location(BaseID +1451, "CHATGamer", 3) },
         { BaseID + 1904, new Location(BaseID +1904, "CHATBoneDog", 3) },
+        { BaseID + 1917, new Location(BaseID +1917, "CHATMoomy", 3) },
 
         // Public Pool
         { BaseID + 1252, new Location(BaseID +1252, "CHATculley", 4) },
@@ -1044,6 +1045,7 @@ public static class Locations
         { BaseID + 1373, new Location(BaseID +1373, "CHAThandsomeFrog", 4) },
         { BaseID + 1444, new Location(BaseID +1444, "CHATCoastGaurd", 4) },
         { BaseID + 1905, new Location(BaseID +1905, "CHATBoneDog", 4) },
+        { BaseID + 1916, new Location(BaseID +1916, "CHATMelissaStijn", 4) },
         
         // Bathhouse
         { BaseID + 1289, new Location(BaseID +1289, "CHATMelissa", 5) },
@@ -1094,6 +1096,7 @@ public static class Locations
         { BaseID + 1449, new Location(BaseID +1449, "CHATGamer", 5) },
         { BaseID + 1452, new Location(BaseID +1452, "CHATMoomy", 5) },
         { BaseID + 1906, new Location(BaseID +1906, "CHATBoneDog", 5) },
+        { BaseID + 1915, new Location(BaseID +1915, "CHATpoppy", 5) },
         
         // Tadpole HQ
         { BaseID + 1331, new Location(BaseID +1331, "CHATmonthFrog", 6) },

@@ -65,7 +65,7 @@ public class NpcController : MonoBehaviour
             "CHATfrogFlowerHint1", "CHATfrogFlowerHint2", "CHATVlogFrog", "CHATArcadeBone", "CHATArcade", 
             "CHATpoppy", "CHATpaul", "CHATflippy", "CHATjippy", "CHATmippy", "CHATskippy", "CHATtippy", 
             "CHATDetective", "CHATGabi", "CHATBlessley", "CHATFischer", "CHATTravis",
-            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThandsomeFrog", "CHATCoastGaurd", "CHATBoneDog"
+            "CHATMitch", "CHATMai", "CHATKiosk", "CHAThandsomeFrog", "CHATCoastGaurd", "CHATBoneDog", "CHATMelissaStijn"
         ];
         
         bathhouse = ["CHATMelissa", "CHATStijn", "CHATmonkey1", "CHATmonkey2", "CHATmonkey3", "CHATsteamyStag", 
@@ -73,7 +73,7 @@ public class NpcController : MonoBehaviour
             "CHATbunkid3", "CHATbunkid4", "CHATbundad", "CHATbunmom", "CHATpenny", "CHATgashadokuro", 
             "CHATpaul", "CHATtippy", "CHATtrainFrog", "CHATtbhCarl", "CHATtbhJess", "CHATtbhMiki", "CHATtbhBiki", "CHATtbhWess", 
             "CHATmahjongFrog", "CHATVlogFrog", "CHATtbhMonty", "CHATArcadeBone", "CHATArcade", "CHATUnderhero",
-            "CHATTravis", "CHATSerschel", "CHATLouist", "CHATGabi", 
+            "CHATTravis", "CHATSerschel", "CHATLouist", "CHATGabi", "CHATpoppy", 
             "CHATBlessley", "CHATFischer", "CHATDustan", "CHATMelissaStijn",
             "CHATMitch", "CHATMai", "CHATKiosk", "CHAThbcHandsomeFrog", "CHATCoastGaurd", "CHATNina", "CHATGamer", "CHATMoomy", "CHATBoneDog"
         ];
